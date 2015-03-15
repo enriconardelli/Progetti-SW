@@ -1,0 +1,3 @@
+
+Questa cartella linked_list contiene la versione dei test per le classi EIFFEL di gestione di liste di interi che ho creato come esempio dell'uso della funzione di AutoTest di Eiffel.
+
