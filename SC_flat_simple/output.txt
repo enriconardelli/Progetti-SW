@@ -1,0 +1,35 @@
+condizione_1 = True
+condizione_2 = False
+condizione_3 = False
+condizione_4 = False
+condizione_5 = True
+
+stato_1
+evento vuoto / nessuna condizione / nessuna azione / stato_2
+2 / condizione_2 / azione_12 / stato_1
+5 / condizione_5 / nessuna azione / stato_5
+
+stato_2
+1 / nessuna condizione / nessuna azione / stato_3
+
+stato_3
+evento vuoto / condizione_1 / nessuna azione / stato_4
+2 / condizione_4 / azione_32 / stato_3
+
+stato_4
+evento vuoto / condizione_4 / nessuna azione / stato_3
+4 / nessuna condizione / nessuna azione / stato_5
+
+stato_5
+evento vuoto / nessuna condizione / nessuna azione / stato_2
+
+stato_iniziale = stato_1
+stato_finale = stato_5
+
+
+INIZIO ESECUZIONE STATE CHART
+Eseguo l'azione nessuna azione della transizione senza evento dello stato stato_1 con condizione nessuna condizione
+Eseguo nessuna azione per l'evento 1 dello stato stato_2
+Eseguo l'azione nessuna azione della transizione senza evento dello stato stato_3 con condizione condizione_1
+Eseguo nessuna azione per l'evento 4 dello stato stato_4
+Esecuzione state chart conclusa: stato finale raggiunto

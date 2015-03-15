@@ -1,0 +1,75 @@
+
+Specifiche per SC_flat_simple
+-----------------------------
+
+
+	-- 1. STRUTTURA FILE
+	--	1.1 model.txt
+	--	  	nome_stato_1
+	--	  	evento_1 / condizione_11 / azione_1 / target_1
+	--	  	evento_2 / condizione_12 / azione_2 / target_2
+	--	  	+
+	--	  	nome_stato_2
+	--	  	...
+	--	  	evento_j / condizione_j / azione_j / target_j
+	--	  	*
+	--
+	--	  	In caso di evento, condizione o azione vuota, si intende che nel file model.txt sia
+	--	  	presente uno spazio bianco al loro posto. Ad esempio:
+	--	  	evento / / azione / target
+
+	--	1.2 lista_eventi.txt
+	--		evento_1
+	--		evento_2
+	--		...
+	--		evento_j
+	--
+	--		In caso di riga vuota o priva di caratteri, l'evento viene letto correttamente ma
+	--		direttamente ignorato al run-time
+
+	--	1.3 lista_condizioni.txt
+	--		condizione_1 / valore
+	--		condizione_2 / valore
+	--		...
+	--		condizione_j / valore
+	--		dove "valore" può assumere valori 1 o 0 (rispettivamente, true o false)
+
+	-- 2. STATO INIZIALE O FINALE
+	--	  In model.txt un eventuale stato_iniziale predefinito avrà nome $nome_stato, un eventuale stato_finale
+	--	  predefinito avrà nome £nome_stato. In caso di mancate specificazioni, il programma considererà il primo
+	--	  stato come stato_iniziale e l'ultimo come stato_finale.
+	--	  In presenza di più stati iniziali predefiniti, il programma termina con errore.
+	--	  In presenza di più stati finali predefiniti, il programma termina con errore.
+
+	-- 3. AZIONI VUOTE
+	--	  In caso di azioni mancanti, il programma assegna "azione vuota" all'evento corrispondente.
+
+	-- 4. TARGET
+	--	  In caso il target indicato dall'evento_corrente per lo stato_attivo non esista il programma termina
+	--	  con errore. Questo avviene in gestisci_transitorio se si tratta del target di una transizione senza
+	--	  evento, in gestisci_evento se è il target di una transizione con evento.
+
+	-- 5. EVENTI
+	-- 	  In caso di esecuzione di un evento non presente nello stato_attivo, il programma ignora l'evento_corrente
+	--	  e passa al successivo. In caso di evento attivabile multiplo, il programma termina con errore.
+	--	  La classe STATO presenta la feature non_vuoto, che controlla che lo stato a cui è applicata non sia privo
+	--	  di eventi: in caso contrario, il programma termina con errore.
+
+	-- 6. TRANSIZIONI SENZA EVENTO
+	--	  In presenza di transizioni senza evento, il programma assegna "evento vuoto" all'evento corrispondente.
+	--	  In fase di esecuzione della state chart, viene eseguita SEMPRE la prima transizione senza evento la cui
+	--	  condizione sia vera: l'indice di tale transizione è restituito dalla feature indice_transizione della classe STATO.
+
+	-- 7. CONDIZIONI
+	--	  I valori booleani delle condizioni sono gestiti dall'hash_table tab_condizioni: in fase di lettura assegna
+	--	  alla chiave nome_condizione il suo valore booleano. In caso di condizione vuota, alla quaterna viene assegnato
+	--	  "nessuna condizione" che ha di default valore true.
+	--	  In caso il valore booleano associato ad una condizione non sia booleano, il programma segnala un errore in fase
+	--	  di lettura e la condizione viene ignorata.
+	--	  RUNTIME: Qualora la quaterna attiva abbia una condizione non presente nel file lista_condizioni.txt, e dunque il
+	--	  cui valore booleano non è determinato, il programma termina con errore.
+
+	-- 8. ERRORI
+	--	  Gli errori rilevati staticamente sono stampati sia su output.txt sia a video, per permettere all'utente di
+	--	  valutare durante il runtime l'opportunità o meno di eseguire la state chart.
+
