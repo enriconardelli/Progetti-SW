@@ -1,5 +1,6 @@
-# Eiffel compiled code directory
+# Eiffel compiled code directory and *.rc file
 EIFGENs
+*.rc
 
 # Windows image file caches
 Thumbs.db
