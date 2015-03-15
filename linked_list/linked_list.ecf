@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="linked_list" uuid="02D85BE1-7118-43ED-9821-6C32E0B3E3F0">
+	<target name="linked_list">
+		<root class="ROOT_FOR_TEST" feature="make"/>
+		<file_rule>
+			<exclude>test_classes</exclude>
+		</file_rule>
+		<option warning="true">
+			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
+		</option>
+		<setting name="console_application" value="true"/>
+		<precompile name="base_pre" location="$ISE_PRECOMP\base-safe.ecf"/>
+		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+		<library name="testing" location="$ISE_LIBRARY\library\testing\testing-safe.ecf"/>
+		<cluster name="linked_list" location=".\" recursive="true">
+			<option cat_call_detection="false" is_attached_by_default="false" void_safety="initialization">
+			</option>
+			<file_rule>
+				<exclude>/EIFGENs$</exclude>
+				<exclude>/CVS$</exclude>
+				<exclude>/.svn$</exclude>
+				<exclude>/test_classes$</exclude>
+			</file_rule>
+			<tests name="test_classes" location="D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\IPC-projects\Autotest\linked_list\test_classes\"/>
+		</cluster>
+	</target>
+</system>
