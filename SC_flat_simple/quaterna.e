@@ -8,7 +8,8 @@ inherit
 create
 	crea_quaterna
 
-feature
+feature -- accesso
+
 	evento: STRING
 
 	condizione: STRING
@@ -16,6 +17,20 @@ feature
 	azione: STRING
 
 	target: STRING
+
+
+feature -- creazione
+
+	crea_quaterna
+		do
+			imposta_evento("")
+			imposta_azione("")
+			imposta_target("")
+			imposta_condizione("")
+		end
+
+
+feature -- modifica
 
 	imposta_evento(s: STRING)
 		-- assegna alla feature evento il valore s
@@ -57,13 +72,8 @@ feature
 			target = s
 		end
 
-	crea_quaterna
-		do
-			imposta_evento("")
-			imposta_azione("")
-			imposta_target("")
-			imposta_condizione("")
-		end
+
+feature -- confronto
 
 	uguale(c: QUATERNA): BOOLEAN
 		-- Restituisce true se Current e `c' hanno tutti gli attributi uguali

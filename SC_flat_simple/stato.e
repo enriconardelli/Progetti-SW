@@ -9,13 +9,26 @@ inherit
 create
 	crea_stato
 
-feature
+feature -- accesso
+
 	nome: STRING
 
-	eventi: ARRAY[QUATERNA]
+	transizioni: ARRAY[QUATERNA]
 
 	transitorio: BOOLEAN
 
+
+feature -- creazione
+
+	crea_stato
+		do
+			imposta_nome("stato")
+			transitorio := false
+			create transizioni.make_empty
+		end
+
+
+feature -- modifica
 
 	imposta_nome(s: STRING)
 		require
@@ -23,9 +36,8 @@ feature
 		do
 			nome := s.twin
 		ensure
-			nome.is_equal (s)
+			nome.is_equal(s)
 		end
-
 
 	imposta_transitorio(b: BOOLEAN)
 		do
@@ -33,31 +45,35 @@ feature
 		end
 
 
-	crea_stato
-		do
-			imposta_nome("stato")
-			transitorio := false
-			create eventi.make_empty
-		end
-
-
 	aggiungi_quaterna
+	-- aggiunge quaterna vuota
 		local
 			nuova_quaterna: QUATERNA
 		do
 			create nuova_quaterna.crea_quaterna
-			eventi.force(nuova_quaterna,(eventi.upper)+1)
+			transizioni.force(nuova_quaterna,(transizioni.upper)+1)
+		end
+
+
+feature -- stato
+
+	non_vuoto: BOOLEAN
+		do
+			if transizioni.count = 0 then
+				Result := false
+			else
+				Result := true
+			end
 		end
 
 
 	acquisisci_quaterna(evento, condizione, azione, target: STRING; output: PLAIN_TEXT_FILE)
 		local
 			nuova_quaterna: QUATERNA
-
 		do
 			-- Crea e "posiziona" la nuova quaterna per il nuovo evento
 			create nuova_quaterna.crea_quaterna
-			eventi.force (nuova_quaterna, eventi.count + 1)
+			transizioni.force (nuova_quaterna, transizioni.count + 1)
 
 			-- Impostazione quaterna
 			nuova_quaterna.imposta_evento(evento)
@@ -72,16 +88,6 @@ feature
 			output.put_string(" / ")
 			output.put_string (nuova_quaterna.target)
 			output.new_line
-		end
-
-
-	non_vuoto: BOOLEAN
-		do
-			if eventi.count = 0 then
-				Result := false
-			else
-				Result := true
-			end
 		end
 
 
@@ -103,7 +109,7 @@ feature
 				transizione_trovata
 			loop
 				i := i+1
-				if eventi[i].evento.is_equal ("evento vuoto") and then tab_condizioni.has (eventi[i].condizione)and then tab_condizioni[eventi[i].condizione] then
+				if transizioni[i].evento.is_equal ("evento vuoto") and then tab_condizioni.has (transizioni[i].condizione)and then tab_condizioni[transizioni[i].condizione] then
 					transizione_trovata := true
 				end
 			end
@@ -126,17 +132,17 @@ feature
 			from
 				i := 1
 			until
-				i = eventi.count
+				i = transizioni.count
 			loop
 			-- Effetto il controllo di evento_attivabile_multiplo solo se l'evento è attivabile
-				if tab_condizioni[eventi[i].condizione] then
+				if tab_condizioni[transizioni[i].condizione] then
 					from
 						j := i + 1
 					until
-						j > eventi.count
+						j > transizioni.count
 					loop
-						if eventi[j].evento.is_equal (eventi[i].evento) and  tab_condizioni[eventi[j].condizione] then
-							if not eventi[j].uguale(eventi[i]) then
+						if transizioni[j].evento.is_equal (transizioni[i].evento) and  tab_condizioni[transizioni[j].condizione] then
+							if not transizioni[j].uguale(transizioni[i]) then
 								Result := true
 							end
 						end
@@ -162,13 +168,13 @@ feature
 			from
 				j := 1
 			until
-				j > eventi.count
+				j > transizioni.count
 			loop
-				if eventi[j].evento.is_equal(evento_corrente) and then tab_condizioni.has(eventi[j].condizione) and then tab_condizioni[eventi[j].condizione] then
+				if transizioni[j].evento.is_equal(evento_corrente) and then tab_condizioni.has(transizioni[j].condizione) and then tab_condizioni[transizioni[j].condizione] then
 					evento_attivabile := evento_attivabile + 1
 					indice_evento_attivabile := j.twin
-				elseif not tab_condizioni.has (eventi[j].condizione) then
-					output.put_string ("Il valore booleano di "+eventi[j].condizione+" non è determinato. Errore")
+				elseif not tab_condizioni.has (transizioni[j].condizione) then
+					output.put_string ("Il valore booleano di "+transizioni[j].condizione+" non è determinato. Errore")
 					die(1)
 				end
 				j := j+1
@@ -178,9 +184,9 @@ feature
 
 			-- Se evento_corrente è presente una volta in modo attivabile, stampo l'azione
 			if evento_attivabile = 1 then
-				output.put_string("Eseguo "+eventi[indice_evento_attivabile].azione+" per l'evento "+evento_corrente+" dello stato "+nome)
+				output.put_string("Eseguo "+transizioni[indice_evento_attivabile].azione+" per l'evento "+evento_corrente+" dello stato "+nome)
 				output.new_line
-				Result := eventi[indice_evento_attivabile].target
+				Result := transizioni[indice_evento_attivabile].target
 			-- Se è presente più d'una, stampo un errore
 			elseif evento_attivabile > 1 then
 				output.put_string("L'evento "+evento_corrente+" è presente molteplici volte con condizione vera. Errore")
@@ -201,12 +207,12 @@ feature
 		require
 			transitorio
 		do
-			output.put_string ("Eseguo l'azione "+eventi[indice_transizione(tab_condizioni)].azione+" della transizione senza evento dello stato "+nome+" con condizione "+eventi[indice_transizione(tab_condizioni)].condizione)
+			output.put_string ("Eseguo l'azione "+transizioni[indice_transizione(tab_condizioni)].azione+" della transizione senza evento dello stato "+nome+" con condizione "+transizioni[indice_transizione(tab_condizioni)].condizione)
 			output.new_line
-			if tab_stati.has(eventi[indice_transizione(tab_condizioni)].target) then
-				imposta_nome (eventi[indice_transizione(tab_condizioni)].target)
+			if tab_stati.has(transizioni[indice_transizione(tab_condizioni)].target) then
+				imposta_nome (transizioni[indice_transizione(tab_condizioni)].target)
 			else
-				output.put_string ("***** Lo stato "+eventi[indice_transizione(tab_condizioni)].target+" non esiste. Errore *****")
+				output.put_string ("***** Lo stato "+transizioni[indice_transizione(tab_condizioni)].target+" non esiste. Errore *****")
 				die(1)
 			end
 			Result := nome

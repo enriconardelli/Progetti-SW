@@ -333,16 +333,16 @@ feature {NONE} -- Initialization
 					from
 						j := 1
 					until
-						j > stati[i].eventi.count
+						j > stati[i].transizioni.count
 					loop
-						if not tab_stati.has(stati[i].eventi[j].target) then
+						if not tab_stati.has(stati[i].transizioni[j].target) then
 							errori := errori +1
 							-- Stampa errore (a video e su output.txt) di target non presente
-							io.put_string ("Il target "+stati[i].eventi[j].target+" dello stato "+stati[i].nome+" associato all'evento "+stati[i].eventi[j].evento+" con condizione "+stati[i].eventi[j].condizione+" non esiste.")
+							io.put_string ("Il target "+stati[i].transizioni[j].target+" dello stato "+stati[i].nome+" associato all'evento "+stati[i].transizioni[j].evento+" con condizione "+stati[i].transizioni[j].condizione+" non esiste.")
 							io.put_new_line
 							io.put_integer (errori)
 							io.put_new_line
-							output.put_string ("***** Il target "+stati[i].eventi[j].target+" dello stato "+stati[i].nome+" associato all'evento "+stati[i].eventi[j].evento+" con condizione "+stati[i].eventi[j].condizione+" non esiste. *****")
+							output.put_string ("***** Il target "+stati[i].transizioni[j].target+" dello stato "+stati[i].nome+" associato all'evento "+stati[i].transizioni[j].evento+" con condizione "+stati[i].transizioni[j].condizione+" non esiste. *****")
 							output.put_new_line
 						end
 						j := j+1
