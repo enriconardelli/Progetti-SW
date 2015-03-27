@@ -13,7 +13,7 @@ create
 	make
 
 feature {NONE} -- Initialization
-	--prova riccardo
+	--pippo
 	make
 			-- Run application.
 		local
