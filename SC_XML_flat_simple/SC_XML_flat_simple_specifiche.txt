@@ -1,12 +1,12 @@
-
+Ciao!
 VERSIONE ZERO
 -------------
 
-Modelliamo StateCharts che sono di fatto automi a stati finiti (FSA) cioè senza gerarchia e senza parallelismo.
+Modelliamo StateCharts che sono di fatto automi a stati finiti (FSA) cioÃ¨ senza gerarchia e senza parallelismo.
 
-Non rappresentiamo la storia, né i connettori.
+Non rappresentiamo la storia, nÃ© i connettori.
 
-<<da approfondire il discorso di stati iniziali (default) e finali, al momento assumiamo che il primo stato è lo stato iniziale e l'ultimo stato e lo stato finale>>
+<<da approfondire il discorso di stati iniziali (default) e finali, al momento assumiamo che il primo stato Ã¨ lo stato iniziale e l'ultimo stato e lo stato finale>>
 
 Eventi, condizioni e azioni sono semplici stringhe alfanumeriche, senza alcun operatore logico di combinazione o modifica. Le condizioni rappresentano valori booleani, Le azioni sono atomiche (si stampa la stringa) oppure assegnazione a condizioni di vero/falso.
 
@@ -27,7 +27,7 @@ Gli attributi ammessi sono (+ obbligatorio):
 *scxml
   + xmlns
   + version
-  - initial (se assente il primo elemento state presente nel file è lo stato iniziale)
+  - initial (se assente il primo elemento state presente nel file Ã¨ lo stato iniziale)
 * data
   + id
   + expr
@@ -52,12 +52,12 @@ STATO
  - finale: BOOLEAN
  - transizioni: ARRAY<TRANSIZIONE>
  * determinismo (evento_corrente: STRING): BOOLEAN
-   -- ritorna vero se con evento_corrente è attivabile nella configurazione corrente al più 1 transizione
+   -- ritorna vero se con evento_corrente Ã¨ attivabile nella configurazione corrente al piÃ¹ 1 transizione
    -- ritorna falso se con evento_corrente sono attivabili nella configurazione corrente almeno 2 transizioni
  * target (evento_corrente: STRING): STATO
    require
      determinismo(evento_corrente)
-   -- ritorna Void se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
+   -- ritorna Void se con evento_corrente nella configurazione corrente non Ã¨ attivabile alcuna transizione
    -- ritorna lo stato a cui porta l'unica transizione attivabile nella configurazione corrente con evento_corrente
 
 TRANSIZIONE
@@ -91,7 +91,7 @@ conf: CONFIGURAZIONE
 
 stati: HASH_TABLE<STRING,STATO>
   -- serve durante l'istanziazione iniziale di stati, transizione e configurazione
-  -- una volta che è terminata non serve più
+  -- una volta che Ã¨ terminata non serve piÃ¹
 
 eventi: HASH_TABLE<STRING,STATO>
   -- serve durante la lettura degli eventi dal file
@@ -101,9 +101,9 @@ La feature di creazione della root
 
 - legge file SCXML facendone il parsing e creando l'albero che rappresenta la struttura XML
 - visita l'albero XML istanziando stati, transizione e configurazione e segnalando i seguenti errori
-  - transizioni il cui target non è l'id di alcuno state
-  - transizioni la cui condizione non è l'id di alcun data
-  - azioni di assegnazione la cui condizione non è l'id di alcun data
+  - transizioni il cui target non Ã¨ l'id di alcuno state
+  - transizioni la cui condizione non Ã¨ l'id di alcun data
+  - azioni di assegnazione la cui condizione non Ã¨ l'id di alcun data
 - eventuali ulteriori verifiche statiche
 - esegue l'evoluzione della SC letta sulla base degli eventi nel file eventi.txt
 
@@ -119,7 +119,7 @@ ottieni_evento: STRING
   UNTIL
     evento_letto IN eventi
   LOOP
-    messaggio_di_errore(evento_letto non è un evento legale)
+    messaggio_di_errore(evento_letto non Ã¨ un evento legale)
     evento_letto := leggi_prossimo_evento (file_eventi)
   END
   IF evento_letto IN eventi THEN
