@@ -1,4 +1,4 @@
-Ciao!
+﻿
 VERSIONE ZERO
 -------------
 
@@ -93,7 +93,7 @@ stati: HASH_TABLE<STRING,STATO>
   -- serve durante l'istanziazione iniziale di stati, transizione e configurazione
   -- una volta che è terminata non serve più
 
-eventi: HASH_TABLE<STRING,STATO>
+eventi: HASH_TABLE<STRING,EVENTO>
   -- serve durante la lettura degli eventi dal file
 
 
