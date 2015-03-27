@@ -13,7 +13,7 @@ create
 	make
 
 feature {NONE} -- Initialization
-	--pippo
+	--elbereth2
 	make
 			-- Run application.
 		local
