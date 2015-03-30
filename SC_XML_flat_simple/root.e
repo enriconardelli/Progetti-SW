@@ -13,7 +13,7 @@ create
 	make
 
 feature {NONE} -- Initialization
-	--elbereth2
+
 	make
 			-- Run application.
 		local
@@ -29,5 +29,5 @@ feature {NONE} -- Initialization
 			print ("FINE!%N")
 
 		end
---prova fabioeeeeeeeeeee
+
 end
