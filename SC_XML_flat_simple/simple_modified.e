@@ -18,7 +18,7 @@ feature {NONE} -- Initialization
 		local
 			parser: XML_PARSER
 			file_name: STRING
-			tree: XML_CALLBACKS_TREE
+			tree: XML_CALLBACKS_NULL_FILTER_DOCUMENT
 			p: XML_PRETTY_PRINT_FILTER
 			f: XML_FORMATTER
 			s: STRING
