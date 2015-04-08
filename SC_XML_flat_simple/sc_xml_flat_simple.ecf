@@ -18,7 +18,7 @@
 				<exclude>/CVS$</exclude>
 				<exclude>/.svn$</exclude>
 			</file_rule>
-			<tests name="test_classes" location=".\SC_XML_flat_simple\test_classes\"/>
+			<tests name="test_classes" location=".\test_classes\"/>
 		</cluster>
 	</target>
 </system>
