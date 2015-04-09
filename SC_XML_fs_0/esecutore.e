@@ -17,6 +17,7 @@ feature {NONE} -- Initialization
 	local
 	--	s: SIMPLE
 		s_orig: SIMPLE_MODIFIED
+		albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
 	do
 
 		print ("INIZIO!%N")
@@ -25,6 +26,11 @@ feature {NONE} -- Initialization
 --			io.read_character
 		create s_orig.make
 		print ("FINE!%N")
+		albero:=s_orig.get_tree            --QUESTA è UN'IDEA DI COME POTREBBE ESSERE, get_tree è copiata dalla make solo
+		                                   --che sono ci sono errori anziché scrivere da qualche parte ritorna un albero che
+		                                   -- la feature di Fabio e Cristiano può usare per le tabelle. So che è una ripetizione
+		                                   --di quello che si fa già nella make ma mi sembra un punto di partenza
+--		crea_stati(albero)
 
 		--| QUI FABIO E CRISTIANO DEVONO AGGIUNGERE
 

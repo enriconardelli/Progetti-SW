@@ -42,7 +42,7 @@ feature {NONE} -- Initialization
 			parser.set_callbacks (p)
 
 				--| Parse the `file_name' content
-			parser.parse_from_filename (file_name)
+			parser.parse_from_filename (file_name)     --QUESTA CALL QUI è OBSOLETA
 			if parser.error_occurred then
 				display_parsing_error (parser)
 			else
@@ -119,5 +119,45 @@ feature {NONE} -- Implementation
 				end
 			end
 		end
+
+feature --Aggiunta da Alessandro, l'idea è farsi restituire l'albero per poter creare le hash tables
+
+	get_tree: XML_CALLBACKS_NULL_FILTER_DOCUMENT
+	local
+		parser: XML_PARSER
+		file_name: STRING
+		tree: XML_CALLBACKS_NULL_FILTER_DOCUMENT
+		p: XML_PRETTY_PRINT_FILTER
+		f: XML_FORMATTER
+		s: STRING
+		pp: XML_NODE_PRINTER
+	do
+		file_name := "test.xml"
+
+			--| Instantiate parser
+		create {XML_STANDARD_PARSER} parser.make
+
+			--| Build tree callbacks
+		create tree.make_null
+		parser.set_callbacks (tree)
+
+			--
+			-- CHANGE: Creation instruction uses call to improper feature.
+			-- create p.set_next (tree)
+			--
+		create p.make_with_next (tree)
+		p.set_output_standard
+		parser.set_callbacks (p)
+
+			--| Parse the `file_name' content
+		parser.parse_from_filename (file_name)    --QUESTA QUI è OBSOLETA
+		if parser.error_occurred then
+			display_parsing_error (parser)
+		else
+			Result:=tree
+
+		end
+	end
+
 
 end
