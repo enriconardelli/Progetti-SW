@@ -25,7 +25,7 @@ feature--creazione
 
 			id := un_id
 
-			finale:= FALSE
+			finale := FALSE
 
 			create transizioni.make_empty
 
@@ -40,6 +40,10 @@ feature--attributi
 
 
 	transizioni: ARRAY[TRANSIZIONE]
+
+	finale: BOOLEAN
+
+	id: STRING
 
 feature --setter
 
@@ -68,6 +72,9 @@ feature --routines
 		do
 			-- ritorna vero se con evento_corrente � attivabile nella configurazione corrente al pi� 1 transizione
 			-- ritorna falso se con evento_corrente sono attivabili nella configurazione corrente almeno 2 transizioni
+
+			result := TRUE
+
 		end
 
 
@@ -77,6 +84,8 @@ feature --routines
 			determinismo(evento_corrente)
 
 		do
+
+			result := void
 			-- ritorna Void se con evento_corrente nella configurazione corrente non � attivabile alcuna transizione
 			-- ritorna lo stato a cui porta l'unica transizione attivabile nella configurazione corrente con evento_corrente
 		end
