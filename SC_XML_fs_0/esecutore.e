@@ -37,7 +37,7 @@ feature {NONE} -- Initialization
 feature  --attributi
 --	conf: CONFIGURAZIONE
 
---	stati: HASH_TABLE[STATO,STRING]
+	stati: detachable HASH_TABLE[STATO,STRING]
 	-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
 	-- una volta che è terminata non serve più
 
