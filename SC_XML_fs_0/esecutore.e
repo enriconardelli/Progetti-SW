@@ -98,7 +98,7 @@ feature -- cose che si possono fare
 --					i=f.internal_nodes.count
 --				loop
 --					if attached {XML_ELEMENT} f.internal_nodes[i] as k then
---						if k.name="state" then
+--						if k.name~"state" then
 --							if attached {XML_ATTRIBUTE} k.internal_nodes[0] as l then
 --								create temp_stato.make_with_id(l.value)
 --								stati.extend(temp_stato, temp_stato.id)
@@ -117,7 +117,7 @@ feature -- cose che si possono fare
 --					i=f.internal_node.count
 --				loop
 --					if attached {XML_ELEMENT} f.internal_nodes[i] as k1 then
---						if k1.name="state" then
+--						if k1.name~"state" then
 --							if attached {XML_ATTRIBUTE} k1.internal_nodes[0] as mk then
 --								stato_temp:=stati[mk.value]
 --							end
@@ -127,7 +127,7 @@ feature -- cose che si possono fare
 --								j=k1.internal_nodes.count
 --							loop
 --								if attached {XML_ELEMENT} k.internal_nodes[j] as u then
---									if u.name="transition" then
+--									if u.name~"transition" then
 --										create trans
 --										from
 --											y:=0
@@ -135,11 +135,11 @@ feature -- cose che si possono fare
 --											y=u.internal_nodes.count
 --										loop
 --											if attached {XML_ATTRIBUTE} u.internal_nodes[y] as crio then
---												if crio.name="event" then
+--												if crio.name~"event" then
 --													trans.set_event(crio.value)
---												elseif crio.name="condizione" then
+--												elseif crio.name~"condizione" then
 --													trans.set_condition(crio.value)
---												elseif crio.name="target" then
+--												elseif crio.name~"target" then
 --													if stati.has(crio.name) then
 --														trans.set_target(stati[crio.value])
 --													else
