@@ -166,13 +166,9 @@ feature -- Cose che si possono fare
 feature
 
 	leggi_prossimo_evento (nome_file: STRING): STRING
-		local
-			file_eventi: PLAIN_TEXT_FILE
-			contenuto: STRING
+	-- Questa serve a leggere l'evento corrente
 		do
-			create file_eventi.make_open_read (nome_file)
-			file_eventi.read_line
-			result := file_eventi.last_string
+			Result:=""
 		end
 
 feature --Trattazione eventi
@@ -184,22 +180,23 @@ feature --Trattazione eventi
 		require
 			--file_name è attaccato a un file "buono"
 		local
-			file_eventi: PLAIN_TEXT_FILE
+			file: PLAIN_TEXT_FILE
 			contenuto: ARRAY [STRING]
+			i: INTEGER
 		do
 			create contenuto.make_empty
 				--create contenuto.make(1,conta_righe(file_name))
-			create file_eventi.make_open_read (file_name)
+			create file.make_open_read (file_name)
 			FROM
-				file_eventi.start;
+				file.start;
 				i := 1
 			UNTIL
-				file_eventi.off
+				file.off
 			LOOP
-				file_eventi.read_line
-				contenuto.put (file_name.last_string, i)
+				file.read_line
+				contenuto.put (file.last_string, i)
 				i := i + 1;
-				file_name.next_line
+				file.next_line
 			end
 			result := contenuto
 		end
@@ -210,8 +207,9 @@ feature --Trattazione eventi
 
 		local
 			file: PLAIN_TEXT_FILE
+			i: INTEGER
 		do
-			create file.make_open_read
+			create file.make_open_read(file_name)
 			FROM
 				i := 0;
 				file.start

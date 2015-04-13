@@ -1,0 +1,15 @@
+
+sc_xml_fs_0: PANIC: illegal opcode ...
+
+sc_xml_fs_0: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+ESECUTORE           root's creation        illegal opcode:              
+<00000000048805E8>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+sc_xml_fs_0: dumping core to generate debugging information...
