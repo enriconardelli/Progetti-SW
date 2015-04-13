@@ -1,0 +1,50 @@
+.
+.
+.
+.
+feature --Trattazione eventi
+
+	acquisisci_eventi(file_name: STRING)
+	
+		--Legge il file 'eventi.txt' , uno per riga e salva gli eventi in un array di stringhe
+			
+		require
+			--file_name è attaccato a un file "buono"
+		local
+			file_eventi: PLAIN_TEXT_FILE
+			contenuto: ARRAY[STRING]		
+		do
+			create contenuto.make_empty
+			--create contenuto.make(1,conta_righe(file_name))
+			create file_eventi.make_open_read(file_name)
+			FROM
+				file_eventi.start; i:=1
+			UNTIL
+				file_eventi.off
+			LOOP
+				file_eventi.read_line
+				contenuto.put(file_name.last_string,i)
+				i=i+1;
+				file_name.next_line
+			end
+		end 
+		
+		
+		
+		conta_righe(file_name: STRING)
+		
+			--Conta il numero di righe nel file
+			
+			local 
+				file : PLAIN_TEXT_FILE
+			do
+				create file.make_open_read
+				FROM i:=0; file.start
+				UNTIL
+					file.off
+				LOOP
+					i=i+1
+					file.next_line
+				end
+			
+			end
