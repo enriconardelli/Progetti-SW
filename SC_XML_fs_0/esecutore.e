@@ -84,8 +84,8 @@ feature -- Cose che si possono fare
 			i: INTEGER
 			first: XML_NODE
 			j: INTEGER
-			tempatt: XML_ATTRIBUTE
-			tempel: XML_ELEMENT
+			tempatt:detachable XML_ATTRIBUTE
+			tempel: detachable XML_ELEMENT
 			lis_el: LIST [XML_ELEMENT]
 		do
 			first := albero.document.first
@@ -96,13 +96,14 @@ feature -- Cose che si possono fare
 				until
 					lis_el.after
 				loop
---					if lis_el.item_for_iteration.name ~ "state" then
---						tempatt := lis_el.item_for_iteration.attribute_by_name (id)
---						if attached tempatt as asd then
---							create temp_stato.make_with_id (asd.value)
---							stati.extend (temp_stato, asd.value)
---						end
---					end
+					if lis_el.item_for_iteration.name ~ "state" then
+						tempatt := lis_el.item_for_iteration.attribute_by_name ("id")
+						if attached tempatt as asd then
+							create temp_stato.make_with_id (asd.value)
+							stati.extend (temp_stato, asd.value)
+						--	riempi_stato(asd.value, lis_el.item_for_iteration)
+						end
+					end
 				end
 			end
 				--			if attached {XML_ELEMENT} first as f then
