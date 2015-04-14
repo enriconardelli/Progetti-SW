@@ -9,6 +9,19 @@ class
 
 create
 
+make
+
+
+feature
+
+	make
+
+	do
+
+		create target.make_with_id ("dummy") --sto istanziando un target farlocco, sennò toccava a metterlo detachable
+
+
+	end
 
 
 feature --attributi
@@ -17,12 +30,17 @@ feature --attributi
 
 	condizione: STRING
 
-	azione: AZIONE
+	--azione: AZIONE
 
 	target: STATO
 
+feature --setter
 
-
-
+	set_evento (un_evento: STRING)
+		do
+			evento := un_evento
+		ensure
+			properly_setted: evento = un_evento
+		end
 
 end

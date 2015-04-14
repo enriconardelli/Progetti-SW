@@ -22,7 +22,7 @@ feature -- Test routines
 
 		do
 			-- CHIARAMENTE non funziona perché acquisisci_... è una feature della cklass eesecutore, come facciamo a testarla?
-			contenuto:=acquisisci_eventi("eventi.txt")
+			--contenuto:=acquisisci_eventi("eventi.txt")
 			assert("ERRORE DI LETTURA DA FILE",contenuto[1]=25)
 		end
 
