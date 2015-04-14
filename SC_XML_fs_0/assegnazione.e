@@ -10,16 +10,30 @@ class
 
 inherit
 
-   	AZIONE
+   	AZIONE redefine make_empty, make_with_id end
+
 
 create
-
-
+	make_empty, make_with_id
 
 feature --attributi
 
 	condizione: STRING
 
 	valore: BOOLEAN
+
+feature -- creazione
+
+	make_empty
+	do
+		create id.make_empty
+		create condizione.make_empty
+	end
+
+	make_with_id (a_string: STRING)
+	do
+		id := a_string
+		create condizione.make_empty
+	end
 
 end
