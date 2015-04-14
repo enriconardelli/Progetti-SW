@@ -12,9 +12,9 @@ inherit
 
 	AZIONE
 
-create
+feature
 
-
+	
 
 
 end
