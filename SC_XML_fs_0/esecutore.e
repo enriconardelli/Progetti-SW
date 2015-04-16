@@ -14,10 +14,12 @@ feature --Attributi
 	--	conf: CONFIGURAZIONE
 
 	stati: HASH_TABLE [STATO, STRING]
+
+	cond: HASH_TABLE [STRING, STRING]
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
 			-- una volta che è terminata non serve più
+			--	condizioni: HASH_TABLE [STRING, STRING]
 
-		--	eventi: HASH_TABLE[STATO,STRING]
 		-- serve durante la lettura degli eventi dal file
 
 feature {NONE} -- Inizializzazione
@@ -31,6 +33,7 @@ feature {NONE} -- Inizializzazione
 			eventi: ARRAY [STRING]
 		do
 			create stati.make (1)
+			create cond.make (1)
 			print ("INIZIO!%N")
 				--			create s.make
 				--			print ("FINITO 1 !%N")
@@ -38,8 +41,7 @@ feature {NONE} -- Inizializzazione
 			create s_orig.make
 			print ("FINE!%N")
 			albero := s_orig.tree
-				--		crea_stati(albero)
-
+			crea_stati (albero)
 		end
 
 feature -- Cose che si possono fare
@@ -84,7 +86,7 @@ feature -- Cose che si possono fare
 			i: INTEGER
 			first: XML_NODE
 			j: INTEGER
-			tempatt:detachable XML_ATTRIBUTE
+			tempatt: detachable XML_ATTRIBUTE
 			tempel: detachable XML_ELEMENT
 			lis_el: LIST [XML_ELEMENT]
 		do
@@ -101,83 +103,122 @@ feature -- Cose che si possono fare
 						if attached tempatt as asd then
 							create temp_stato.make_with_id (asd.value)
 							stati.extend (temp_stato, asd.value)
-						--	riempi_stato(asd.value, lis_el.item_for_iteration)
+						end
+					end
+					lis_el.forth
+				end
+					--stati istanziati, ora li riempiamo
+				from
+					lis_el.start
+				until
+					lis_el.after
+				loop
+					if lis_el.item_for_iteration.name ~ "state" then
+						tempatt := lis_el.item_for_iteration.attribute_by_name ("id")
+						if attached tempatt as asd then
+							riempi_stato (asd.value, lis_el.item_for_iteration)
+						end
+					end
+					lis_el.forth
+				end
+			end
+		end
+
+	riempi_stato (chiave: STRING; element: XML_ELEMENT)
+		local
+			temp_stato: DETACHABLE STATO
+			lis_el: LIST [XML_ELEMENT]
+			transizione: TRANSIZIONE
+			azione: detachable XML_ATTRIBUTE
+			event: detachable XML_ATTRIBUTE
+			con: detachable XML_ATTRIBUTE
+			target: detachable XML_ATTRIBUTE
+		do
+			lis_el := element.elements
+			from
+				lis_el.start
+			until
+				lis_el.after
+			loop
+				if lis_el.item_for_iteration.name ~ "transition" then
+					target := lis_el.item_for_iteration.attribute_by_name ("target")
+					if attached target then
+						if stati.has (target.value) then
+							create transizione.make_with_target (target.value)
+							event := lis_el.item_for_iteration.attribute_by_name ("event")
+							if attached event then
+								transizione.set_evento (event.value)
+							end
+							con := lis_el.item_for_iteration.attribute_by_name ("condition") -- non sappiamo come l'xml chiama le condizioni
+							if attached con then
+								transizione.set_condizione (con.value)
+							end
+							azione := lis_el.item_for_iteration.attribute_by_name ("action")
+							if attached azione then
+								transizione.set_azione (azione.value)
+							end
+						else
+							temp_stato := stati.item (chiave)
+							if attached temp_stato then
+								print ("lo stato" + temp_stato.id + "ha una transizione non valida %N")
+							end
 						end
 					end
 				end
+				lis_el.forth
 			end
-				--			if attached {XML_ELEMENT} first as f then
-				--									from
-				--										f.start
-				--									until
-				--										f.after
-				--									loop
-				--										lis_el:=taf.elements
-				--										if attached {XML_ELEMENT} f.item_for_iteration as k then
-				--					--						if k.name~"state" then
-				--					--							if attached {XML_ATTRIBUTE} k.internal_nodes[0] as l then
-				--					--								create temp_stato.make_with_id(l.value)
-				--					--								stati.extend(temp_stato, temp_stato.id)
-				--					--							end
-				----											end
-				--										end
-				--										f.forth
-				--									-- qui ci andrebbe un else che stoppa il programma e stampa a video "documento non conforme all'scxml"
-				--									end
-				--			end
-				----		-- fino a qui crea solo gli stati, senza feature, adesso li riempio e controllo se i target sono validi
-				--			if attached {XML_ELEMENT} first as f then
-				--				from
-				--					i:=0
-				--				until
-				--					i=f.internal_node.count
-				--				loop
-				--					if attached {XML_ELEMENT} f.internal_nodes[i] as k1 then
-				--						if k1.name~"state" then
-				--							if attached {XML_ATTRIBUTE} k1.internal_nodes[0] as mk then
-				--								stato_temp:=stati[mk.value]
-				--							end
-				--							from
-				--								j:=0
-				--							until
-				--								j=k1.internal_nodes.count
-				--							loop
-				--								if attached {XML_ELEMENT} k.internal_nodes[j] as u then
-				--									if u.name~"transition" then
-				--										create trans
-				--										from
-				--											y:=0
-				--										until
-				--											y=u.internal_nodes.count
-				--										loop
-				--											if attached {XML_ATTRIBUTE} u.internal_nodes[y] as crio then
-				--												if crio.name~"event" then
-				--													trans.set_event(crio.value)
-				--												elseif crio.name~"condizione" then
-				--													trans.set_condition(crio.value)
-				--												elseif crio.name~"target" then
-				--													if stati.has(crio.name) then
-				--														trans.set_target(stati[crio.value])
-				--													else
-				--														print("qui c'è un target che non esiste negli stati")
-				--														-- CHE FAMO QUINDI?
-				--													end
-				--												end
-				--											end
-				--											y:=y+1
-				--										end
-				--										stato_temp.add_transition(trans)
-				--									end
-				----								-- else if se vuoi vedere se è finale o è iniziale lo stato
-				--								end
-				--								j:=j+1
-				--							end
-				--						end
-				--						i:=i+1
-				--					end
-				--				end
-				--			end
 		end
+			--			if attached {XML_ELEMENT} first as f then
+			--				from
+			--					i:=0
+			--				until
+			--					i=f.internal_node.count
+			--				loop
+			--					if attached {XML_ELEMENT} f.internal_nodes[i] as k1 then
+			--						if k1.name~"state" then
+			--							if attached {XML_ATTRIBUTE} k1.internal_nodes[0] as mk then
+			--								stato_temp:=stati[mk.value]
+			--							end
+			--							from
+			--								j:=0
+			--							until
+			--								j=k1.internal_nodes.count
+			--							loop
+			--								if attached {XML_ELEMENT} k.internal_nodes[j] as u then
+			--									if u.name~"transition" then
+			--										create trans
+			--										from
+			--											y:=0
+			--										until
+			--											y=u.internal_nodes.count
+			--										loop
+			--											if attached {XML_ATTRIBUTE} u.internal_nodes[y] as crio then
+			--												if crio.name~"event" then
+			--													trans.set_event(crio.value)
+			--												elseif crio.name~"condizione" then
+			--													trans.set_condition(crio.value)
+			--												elseif crio.name~"target" then
+			--													if stati.has(crio.name) then
+			--														trans.set_target(stati[crio.value])
+			--													else
+			--														print("qui c'è un target che non esiste negli stati")
+			--														-- CHE FAMO QUINDI?
+			--													end
+			--												end
+			--											end
+			--											y:=y+1
+			--										end
+			--										stato_temp.add_transition(trans)
+			--									end
+			----								-- else if se vuoi vedere se è finale o è iniziale lo stato
+			--								end
+			--								j:=j+1
+			--							end
+			--						end
+			--						i:=i+1
+			--					end
+			--				end
+			--			end
 
 		-- Aggiungere 'feature' per tracciare quanto accade scrivendo su file model_out.txt:
 		--la SC costruita dal programma (cioè il file model.xml letto)
