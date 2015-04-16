@@ -8,13 +8,13 @@ class
 	TRANSIZIONE
 
 create
-	make
+	make_with_target
 
 feature --creazione
 
-	make
+	make_with_target(uno_stato: STATO)
 		do
-			create target.make_with_id ("dummy")
+			target:= uno_stato
 			azione := Void
 		end
 
