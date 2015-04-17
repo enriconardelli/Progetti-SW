@@ -15,12 +15,12 @@ feature --Attributi
 
 	stati: HASH_TABLE [STATO, STRING]
 
-	cond: HASH_TABLE [STRING, STRING]
+	condizioni: HASH_TABLE [BOOLEAN, STRING]
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
 			-- una volta che è terminata non serve più
 			--	condizioni: HASH_TABLE [STRING, STRING]
-	--eventi: ARRAY[STRING]
-		-- serve durante la lettura degli eventi dal file
+			--eventi: ARRAY[STRING]
+			-- serve durante la lettura degli eventi dal file
 
 feature {NONE} -- Inizializzazione
 
@@ -33,7 +33,7 @@ feature {NONE} -- Inizializzazione
 			eventi: ARRAY [STRING]
 		do
 			create stati.make (1)
-			create cond.make (1)
+			create condizioni.make (1)
 			print ("INIZIO!%N")
 				--			create s.make
 				--			print ("FINITO 1 !%N")
@@ -41,7 +41,7 @@ feature {NONE} -- Inizializzazione
 			create s_orig.make
 			print ("FINE!%N")
 			albero := s_orig.tree
-			crea_stati (albero)
+			crea_stati_e_cond (albero)
 		end
 
 feature -- Cose che si possono fare
@@ -77,7 +77,7 @@ feature -- Cose che si possono fare
 				--      conf.stato_corrente := conf.stato_corrente.target(evento_corrente)
 		end
 
-	crea_stati (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+	crea_stati_e_cond (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
 			--				questa feature dovra creare l'hashtable con gli stati istanziati e le transizioni,
 			--				anche garantendo che le transizioni hanno target leciti
 		local
@@ -89,6 +89,7 @@ feature -- Cose che si possono fare
 			tempatt: detachable XML_ATTRIBUTE
 			tempel: detachable XML_ELEMENT
 			lis_el: LIST [XML_ELEMENT]
+			lis_data: LIST [XML_ELEMENT]
 		do
 			first := albero.document.first
 			if attached {XML_ELEMENT} first as f then
@@ -104,6 +105,22 @@ feature -- Cose che si possono fare
 							create temp_stato.make_with_id (asd.value)
 							stati.extend (temp_stato, asd.value)
 						end
+					elseif lis_el.item_for_iteration.name ~ "datamodel" then
+						lis_data:= lis_el.item_for_iteration.elements
+						from
+							lis_data.start
+						until
+							lis_data.after
+						loop
+							if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("id") as nome then
+								if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("expr") as valore then
+								condizioni.extend(valore.value~"1",nome.value)
+								end
+							end
+
+							lis_data.forth
+						end
+
 					end
 					lis_el.forth
 				end
@@ -143,8 +160,8 @@ feature -- Cose che si possono fare
 				if lis_el.item_for_iteration.name ~ "transition" then
 					target := lis_el.item_for_iteration.attribute_by_name ("target")
 					if attached target then
-						if stati.has (target.value) then
-							create transizione.make_with_target (target.value)
+						if attached stati.item (target.value) as fabio then
+							create transizione.make_with_target (fabio)
 							event := lis_el.item_for_iteration.attribute_by_name ("event")
 							if attached event then
 								transizione.set_evento (event.value)
@@ -168,57 +185,6 @@ feature -- Cose che si possono fare
 				lis_el.forth
 			end
 		end
-			--			if attached {XML_ELEMENT} first as f then
-			--				from
-			--					i:=0
-			--				until
-			--					i=f.internal_node.count
-			--				loop
-			--					if attached {XML_ELEMENT} f.internal_nodes[i] as k1 then
-			--						if k1.name~"state" then
-			--							if attached {XML_ATTRIBUTE} k1.internal_nodes[0] as mk then
-			--								stato_temp:=stati[mk.value]
-			--							end
-			--							from
-			--								j:=0
-			--							until
-			--								j=k1.internal_nodes.count
-			--							loop
-			--								if attached {XML_ELEMENT} k.internal_nodes[j] as u then
-			--									if u.name~"transition" then
-			--										create trans
-			--										from
-			--											y:=0
-			--										until
-			--											y=u.internal_nodes.count
-			--										loop
-			--											if attached {XML_ATTRIBUTE} u.internal_nodes[y] as crio then
-			--												if crio.name~"event" then
-			--													trans.set_event(crio.value)
-			--												elseif crio.name~"condizione" then
-			--													trans.set_condition(crio.value)
-			--												elseif crio.name~"target" then
-			--													if stati.has(crio.name) then
-			--														trans.set_target(stati[crio.value])
-			--													else
-			--														print("qui c'è un target che non esiste negli stati")
-			--														-- CHE FAMO QUINDI?
-			--													end
-			--												end
-			--											end
-			--											y:=y+1
-			--										end
-			--										stato_temp.add_transition(trans)
-			--									end
-			----								-- else if se vuoi vedere se è finale o è iniziale lo stato
-			--								end
-			--								j:=j+1
-			--							end
-			--						end
-			--						i:=i+1
-			--					end
-			--				end
-			--			end
 
 		-- Aggiungere 'feature' per tracciare quanto accade scrivendo su file model_out.txt:
 		--la SC costruita dal programma (cioè il file model.xml letto)
@@ -245,10 +211,10 @@ feature --Trattazione eventi
 		local
 			file: PLAIN_TEXT_FILE
 			contenuto: ARRAY [STRING]
-			i,n: INTEGER
+			i, n: INTEGER
 		do
-			n:=conta_righe(file_name)
-			create contenuto.make_filled (" ",1,n)
+			n := conta_righe (file_name)
+			create contenuto.make_filled (" ", 1, n)
 			create file.make_open_read (file_name)
 			FROM
 				file.start;
@@ -283,7 +249,6 @@ feature --Trattazione eventi
 				file.next_line
 			end
 			result := i
-			
 		end
 
 end
