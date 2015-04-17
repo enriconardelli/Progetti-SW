@@ -222,6 +222,7 @@ feature --Trattazione eventi
 				v_eventi.force (file.last_string.to_string_32, i)
 				i := i + 1
 			end
+			file.close
 			Result := v_eventi
 		end
 
