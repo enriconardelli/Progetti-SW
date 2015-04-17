@@ -42,6 +42,7 @@ feature {NONE} -- Inizializzazione
 			print ("FINE!%N")
 			albero := s_orig.tree
 			crea_stati_e_cond (albero)
+			eventi := acquisisci_eventi
 		end
 
 feature -- Cose che si possono fare
