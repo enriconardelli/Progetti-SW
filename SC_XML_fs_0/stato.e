@@ -44,12 +44,44 @@ feature --setter
 
 feature --routines
 
-	determinismo (evento_corrente: STRING): BOOLEAN
+	determinismo (evento_corrente: STRING): BOOLEAN --attenzione: NON tiene conto della mutua esclusività delle transizioni
+													--cioè in questa implementazione se due transizioni sono attivate dallo stesso evento,
+													--NON si fa un controllo sulle condizioni e si restituisce sempre FALSE		
+	local
+
+		index_count: INTEGER
+		numero_di_transizioni_attivate_da_evento_corrente: INTEGER -- questo conta il numero di transizioni nell'array che sono attivate dall'evento corrente
+
+
 		do
-				-- ritorna vero se con evento_corrente � attivabile nella configurazione corrente al pi� 1 transizione
+				-- ritorna vero se con evento_corrente è attivabile nella configurazione corrente al più 1 transizione
 				-- ritorna falso se con evento_corrente sono attivabili nella configurazione corrente almeno 2 transizioni
 
-			result := TRUE
+			from
+				index_count:= transizioni.lower  --si parte a scorrere l'array di transizioni dal suo indice più piccolo
+				numero_di_transizioni_attivate_da_evento_corrente:= 0
+			until
+				index_count=transizioni.upper --si esce dal ciclo quando l'array è finito
+			loop
+				if
+					transizioni.entry (index_count).evento.is_equal (evento_corrente)
+				then
+					numero_di_transizioni_attivate_da_evento_corrente:=numero_di_transizioni_attivate_da_evento_corrente+1
+				end
+
+				index_count:=index_count+1
+			end
+
+
+			if
+				numero_di_transizioni_attivate_da_evento_corrente>1
+			then
+				result := FALSE
+			else
+				result := TRUE
+			end
+
+
 		end
 
 	target (evento_corrente: STRING): detachable STATO
@@ -57,7 +89,7 @@ feature --routines
 			determinismo (evento_corrente)
 		do
 			result := void
-				-- ritorna Void se con evento_corrente nella configurazione corrente non � attivabile alcuna transizione
+				-- ritorna Void se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
 				-- ritorna lo stato a cui porta l'unica transizione attivabile nella configurazione corrente con evento_corrente
 		end
 

@@ -44,7 +44,9 @@ feature --setter
 			condizione := a_string
 		end
 
-	set_azione (un_azione: AZIONE)
+	set_azione (un_azione: AZIONE)--da modificare: serve che si prenda in input una stringa e si istanzi un'azione
+								  -- a partire da quella stringa. Prima bisogna capire come fare a distinguere se la transizione è
+								  --di tipo 'fittizia' o 'assegnazione' a partire dalla stringa passata. 
 		require
 			not_void: un_azione /= Void
 		do
