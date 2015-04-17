@@ -19,7 +19,7 @@ feature --Attributi
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
 			-- una volta che è terminata non serve più
 			--	condizioni: HASH_TABLE [STRING, STRING]
-
+	--eventi: ARRAY[STRING]
 		-- serve durante la lettura degli eventi dal file
 
 feature {NONE} -- Inizializzazione
@@ -247,12 +247,11 @@ feature --Trattazione eventi
 			contenuto: ARRAY [STRING]
 			i: INTEGER
 		do
-			create contenuto.make_empty
-				--create contenuto.make(1,conta_righe(file_name))
+			create contenuto.make(1,conta_righe(file_name))
 			create file.make_open_read (file_name)
 			FROM
 				file.start;
-				i := 1
+				i := 0
 			UNTIL
 				file.off
 			LOOP
@@ -261,7 +260,7 @@ feature --Trattazione eventi
 				i := i + 1;
 				file.next_line
 			end
-			result := contenuto
+			Result := contenuto
 		end
 
 	conta_righe (file_name: STRING): INTEGER
