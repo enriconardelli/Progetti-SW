@@ -202,53 +202,27 @@ feature
 
 feature --Trattazione eventi
 
-	acquisisci_eventi (file_name: STRING): ARRAY [STRING]
-
-			--Legge il file 'eventi.txt' , uno per riga e salva gli eventi in un array di stringhe
-
-		require
-			--file_name è attaccato a un file "buono"
-		local
-			file: PLAIN_TEXT_FILE
-			contenuto: ARRAY [STRING]
-			i, n: INTEGER
-		do
-			n := conta_righe (file_name)
-			create contenuto.make_filled (" ", 1, n)
-			create file.make_open_read (file_name)
-			FROM
-				file.start;
-				i := 0
-			UNTIL
-				file.off
-			LOOP
-				file.read_line
-				contenuto.put (file.last_string, i)
-				i := i + 1;
-				file.next_line
-			end
-			Result := contenuto
-		end
-
-	conta_righe (file_name: STRING): INTEGER
-
-			--Conta il numero di righe nel file
+	acquisisci_eventi: ARRAY[STRING]
+			-- Legge gli eventi dal file 'eventi.txt' e li inserisce in un vettore
 
 		local
 			file: PLAIN_TEXT_FILE
+			v_eventi: ARRAY [STRING]
 			i: INTEGER
 		do
-			create file.make_open_read (file_name)
-			FROM
-				i := 0;
-				file.start
-			UNTIL
+			create v_eventi.make_empty
+			create file.make_open_read ("eventi.txt")
+			from
+				i := 0
+			until
 				file.off
-			LOOP
+			loop
+				file.read_line
+
+				v_eventi.force (file.last_string.to_string_32, i)
 				i := i + 1
-				file.next_line
 			end
-			result := i
+			Result := v_eventi
 		end
 
 end
