@@ -245,9 +245,10 @@ feature --Trattazione eventi
 		local
 			file: PLAIN_TEXT_FILE
 			contenuto: ARRAY [STRING]
-			i: INTEGER
+			i,n: INTEGER
 		do
-			create contenuto.make(1,conta_righe(file_name))
+			n:=conta_righe(file_name)
+			create contenuto.make_filled (" ",1,n)
 			create file.make_open_read (file_name)
 			FROM
 				file.start;
@@ -282,6 +283,7 @@ feature --Trattazione eventi
 				file.next_line
 			end
 			result := i
+			
 		end
 
 end
