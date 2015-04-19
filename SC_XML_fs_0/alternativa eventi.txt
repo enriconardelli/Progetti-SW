@@ -21,7 +21,7 @@ feature --Trattazione eventi
 				file.off
 			LOOP
 				file.read_line
-				contenuto.put (file.last_string.to_string_32, i)
+				contenuto.put (file.last_string.twin, i)
 				i := i + 1;
 
 			end
