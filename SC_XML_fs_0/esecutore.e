@@ -220,7 +220,7 @@ feature --Trattazione eventi
 			loop
 				file.read_line
 
-				v_eventi.force (file.last_string.to_string_32, i)
+				v_eventi.force (file.last_string.twin, i)
 				i := i + 1
 			end
 			file.close
