@@ -17,9 +17,6 @@ feature -- Test routines
 
 	test_lettura_eventi
 			-- leggiamo da file
-		local
-			contenuto :ARRAY[STRING]
-
 		do
 			-- CHIARAMENTE non funziona perché acquisisci_... è una feature della cklass eesecutore, come facciamo a testarla?
 			--contenuto:=acquisisci_eventi("eventi.txt")

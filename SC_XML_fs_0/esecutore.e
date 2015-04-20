@@ -22,6 +22,11 @@ feature --Attributi
 			--eventi: ARRAY[STRING]
 			-- serve durante la lettura degli eventi dal file
 
+	count_evento_corrente: INTEGER --tiene il conto del numero di eventi già processati,
+			--serve per la leggi_prossimo_evento
+
+	eventi: ARRAY [STRING]
+
 feature {NONE} -- Inizializzazione
 
 	start
@@ -30,7 +35,6 @@ feature {NONE} -- Inizializzazione
 				--	s: SIMPLE
 			s_orig: SIMPLE_MODIFIED
 			albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
-			eventi: ARRAY [STRING]
 		do
 			create stati.make (1)
 			create condizioni.make (1)
@@ -107,7 +111,7 @@ feature -- Cose che si possono fare
 							stati.extend (temp_stato, asd.value)
 						end
 					elseif lis_el.item_for_iteration.name ~ "datamodel" then
-						lis_data:= lis_el.item_for_iteration.elements
+						lis_data := lis_el.item_for_iteration.elements
 						from
 							lis_data.start
 						until
@@ -115,13 +119,11 @@ feature -- Cose che si possono fare
 						loop
 							if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("id") as nome then
 								if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("expr") as valore then
-								condizioni.extend(valore.value~"1",nome.value)
+									condizioni.extend (valore.value ~ "1", nome.value)
 								end
 							end
-
 							lis_data.forth
 						end
-
 					end
 					lis_el.forth
 				end
@@ -197,13 +199,15 @@ feature
 
 	leggi_prossimo_evento (nome_file: STRING): STRING
 			-- Questa serve a leggere l'evento corrente
+
 		do
-			Result := ""
+			Result := eventi [count_evento_corrente]
+			count_evento_corrente := count_evento_corrente + 1
 		end
 
 feature --Trattazione eventi
 
-	acquisisci_eventi: ARRAY[STRING]
+	acquisisci_eventi: ARRAY [STRING]
 			-- Legge gli eventi dal file 'eventi.txt' e li inserisce in un vettore
 
 		local
@@ -219,7 +223,6 @@ feature --Trattazione eventi
 				file.off
 			loop
 				file.read_line
-
 				v_eventi.force (file.last_string.twin, i)
 				i := i + 1
 			end
