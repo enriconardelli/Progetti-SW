@@ -57,12 +57,12 @@ feature -- Cose che si possono fare
 		do
 			Result := ""
 				--  FROM
-				--    evento_letto := leggi_prossimo_evento (file_eventi)
+				--    evento_letto := leggi_prossimo_evento
 				--  UNTIL
-				--    evento_letto IN eventi
+				--    count_evento_corrente>eventi.count
 				--  LOOP
 				--    messaggio_di_errore(evento_letto non è un evento legale)
-				--    evento_letto := leggi_prossimo_evento (file_eventi)
+				--    evento_letto := leggi_prossimo_evento
 				--  END
 				--  IF evento_letto IN eventi THEN
 				--    Result := evento_letto
@@ -197,7 +197,7 @@ feature -- Cose che si possono fare
 
 feature
 
-	leggi_prossimo_evento (nome_file: STRING): STRING
+	leggi_prossimo_evento: STRING
 			-- Questa serve a leggere l'evento corrente
 
 		do
