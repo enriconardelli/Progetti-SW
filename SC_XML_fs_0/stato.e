@@ -63,10 +63,10 @@ feature --routines
 			until
 				index_count=transizioni.upper --si esce dal ciclo quando l'array è finito
 			loop
-				if
-					transizioni.entry (index_count).evento.is_equal (evento_corrente)
-				then
-					numero_di_transizioni_attivate_da_evento_corrente:=numero_di_transizioni_attivate_da_evento_corrente+1
+				if attached transizioni[index_count].evento as ang then
+					if ang.is_equal (evento_corrente) then
+						numero_di_transizioni_attivate_da_evento_corrente:=numero_di_transizioni_attivate_da_evento_corrente+1
+					end
 				end
 
 				index_count:=index_count+1
