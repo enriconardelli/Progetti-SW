@@ -50,12 +50,25 @@ feature -- Test routines
 		end
 
 	t_stato_determinismo
-
 		do
 			create stato_prova.make_with_id ("stato_prova")
 			if attached stato_prova as sp then
-			assert("non c'è determinismo, invece dovrebbe esserci!!!", sp.determinismo("ti sfido a trovare uno stato con questo nome"))
+				assert ("non c'è determinismo, invece dovrebbe esserci!!!", sp.determinismo ("ti sfido a trovare uno stato con questo nome"))
 			end
+		end
+
+	t_stato_get_events
+		local
+			e: ESECUTORE
+			eventi: ARRAY [STRING]
+		do
+			create e.start
+			if attached e.stati.item ("reset") as reset then
+				eventi := reset.get_events
+				assert("Fatto male count",eventi.count=1)
+				assert("Fatto male contenuto",eventi[1]~"watch_reset")
+			end
+
 		end
 
 end

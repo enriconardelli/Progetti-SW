@@ -44,49 +44,40 @@ feature --setter
 
 feature --routines
 
-	agg_trans(tr: TRANSIZIONE)
-	DO
-		transizioni.force (tr, transizioni.count+1)
-	end
+	agg_trans (tr: TRANSIZIONE)
+		DO
+			transizioni.force (tr, transizioni.count + 1)
+		end
 
 	determinismo (evento_corrente: STRING): BOOLEAN --attenzione: NON tiene conto della mutua esclusività delle transizioni
-													--cioè in questa implementazione se due transizioni sono attivate dallo stesso evento,
-													--NON si fa un controllo sulle condizioni e si restituisce sempre FALSE		
-	local
-
-		index_count: INTEGER
-		numero_di_transizioni_attivate_da_evento_corrente: INTEGER -- questo conta il numero di transizioni nell'array che sono attivate dall'evento corrente
-
+			--cioè in questa implementazione se due transizioni sono attivate dallo stesso evento,
+			--NON si fa un controllo sulle condizioni e si restituisce sempre FALSE
+		local
+			index_count: INTEGER
+			numero_di_transizioni_attivate_da_evento_corrente: INTEGER -- questo conta il numero di transizioni nell'array che sono attivate dall'evento corrente
 
 		do
 				-- ritorna vero se con evento_corrente è attivabile nella configurazione corrente al più 1 transizione
 				-- ritorna falso se con evento_corrente sono attivabili nella configurazione corrente almeno 2 transizioni
 
 			from
-				index_count:= transizioni.lower  --si parte a scorrere l'array di transizioni dal suo indice più piccolo
-				numero_di_transizioni_attivate_da_evento_corrente:= 0
+				index_count := transizioni.lower --si parte a scorrere l'array di transizioni dal suo indice più piccolo
+				numero_di_transizioni_attivate_da_evento_corrente := 0
 			until
-				index_count=transizioni.upper --si esce dal ciclo quando l'array è finito
+				index_count = transizioni.upper --si esce dal ciclo quando l'array è finito
 			loop
-				if attached transizioni[index_count].evento as ang then
+				if attached transizioni [index_count].evento as ang then
 					if ang.is_equal (evento_corrente) then
-						numero_di_transizioni_attivate_da_evento_corrente:=numero_di_transizioni_attivate_da_evento_corrente+1
+						numero_di_transizioni_attivate_da_evento_corrente := numero_di_transizioni_attivate_da_evento_corrente + 1
 					end
 				end
-
-				index_count:=index_count+1
+				index_count := index_count + 1
 			end
-
-
-			if
-				numero_di_transizioni_attivate_da_evento_corrente>1
-			then
+			if numero_di_transizioni_attivate_da_evento_corrente > 1 then
 				result := FALSE
 			else
 				result := TRUE
 			end
-
-
 		end
 
 	target (evento_corrente: STRING): detachable STATO
@@ -96,6 +87,29 @@ feature --routines
 			result := void
 				-- ritorna Void se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
 				-- ritorna lo stato a cui porta l'unica transizione attivabile nella configurazione corrente con evento_corrente
+		end
+
+feature --cose a parte
+
+	get_events: ARRAY [STRING]
+		local
+			i: INTEGER
+			ev: ARRAY [STRING]
+		do
+			create ev.make_empty
+			if attached Current.transizioni as tr then
+				from
+					i := 1
+				until
+					i = tr.count + 1
+				loop
+					if attached tr [i].evento as evento then
+						ev.force (evento, i)
+					end
+					i := i + 1
+				end
+			end
+			Result := ev
 		end
 
 end

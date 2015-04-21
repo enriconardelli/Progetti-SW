@@ -176,7 +176,7 @@ feature -- Cose che si possono fare
 		--l'evoluzione della SC in termini di sequenza di quintuple:
 		--stato, evento, condizione, azione, target
 
-feature
+feature --eventi
 
 	leggi_prossimo_evento: STRING
 			-- Questa serve a leggere l'evento corrente
@@ -185,8 +185,6 @@ feature
 			Result := eventi [count_evento_corrente]
 			count_evento_corrente := count_evento_corrente + 1
 		end
-
-feature --Trattazione eventi
 
 	acquisisci_eventi: ARRAY [STRING]
 			-- Legge gli eventi dal file 'eventi.txt' e li inserisce in un vettore
@@ -211,7 +209,7 @@ feature --Trattazione eventi
 			Result := v_eventi
 		end
 
-	ottieni_evento: STRING --serve a verificare che tutti gli venti nel file eventi.txt compaiano effettivamente
+	ottieni_evento: STRING --serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente
 						   --tra gli eventi di qualche transizione
 			--  local
 			--    evento_letto: STRING
