@@ -47,6 +47,7 @@ feature {NONE} -- Inizializzazione
 			albero := s_orig.tree
 			crea_stati_e_cond (albero)
 			eventi := acquisisci_eventi
+			print("cristiano è brutto")
 		end
 
 feature -- Cose che si possono fare
@@ -87,12 +88,8 @@ feature -- Cose che si possono fare
 			--				anche garantendo che le transizioni hanno target leciti
 		local
 			temp_stato: STATO
-			temp_node: XML_NODE
-			i: INTEGER
 			first: XML_NODE
-			j: INTEGER
 			tempatt: detachable XML_ATTRIBUTE
-			tempel: detachable XML_ELEMENT
 			lis_el: LIST [XML_ELEMENT]
 			lis_data: LIST [XML_ELEMENT]
 		do
@@ -174,9 +171,9 @@ feature -- Cose che si possono fare
 								transizione.set_condizione (con.value)
 							end
 							azione := lis_el.item_for_iteration.attribute_by_name ("action")
-							if attached azione then
-								transizione.set_azione (azione.value)
-							end
+--							if attached azione then
+--								transizione.set_azione (azione.value)
+--							end
 						else
 							temp_stato := stati.item (chiave)
 							if attached temp_stato then
