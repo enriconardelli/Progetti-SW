@@ -16,13 +16,15 @@ feature --creazione
 		do
 			target:= uno_stato
 			azione := Void
+			evento:= Void
+			condizione:= Void
 		end
 
 feature --attributi
 
-	evento: STRING
+	evento: detachable STRING
 
-	condizione: STRING
+	condizione: detachable STRING
 
 	azione: detachable AZIONE
 
@@ -46,7 +48,7 @@ feature --setter
 
 	set_azione (un_azione: AZIONE)--da modificare: serve che si prenda in input una stringa e si istanzi un'azione
 								  -- a partire da quella stringa. Prima bisogna capire come fare a distinguere se la transizione è
-								  --di tipo 'fittizia' o 'assegnazione' a partire dalla stringa passata. 
+								  --di tipo 'fittizia' o 'assegnazione' a partire dalla stringa passata.
 		require
 			not_void: un_azione /= Void
 		do
