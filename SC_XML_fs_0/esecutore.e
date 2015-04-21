@@ -216,7 +216,7 @@ feature --Trattazione eventi
 			create v_eventi.make_empty
 			create file.make_open_read ("eventi.txt")
 			from
-				i := 0
+				i := 1
 			until
 				file.off
 			loop
