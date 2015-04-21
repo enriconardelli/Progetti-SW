@@ -70,7 +70,6 @@ feature  -- Initialization
 						pp.process_document (doc)
 						the_file.close
 					end
-					inspect_node (doc)
 				end
 			end
 		end

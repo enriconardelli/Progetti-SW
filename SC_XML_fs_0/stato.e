@@ -44,6 +44,11 @@ feature --setter
 
 feature --routines
 
+	agg_trans(tr: TRANSIZIONE)
+	DO
+		transizioni.force (tr, transizioni.count+1)
+	end
+
 	determinismo (evento_corrente: STRING): BOOLEAN --attenzione: NON tiene conto della mutua esclusività delle transizioni
 													--cioè in questa implementazione se due transizioni sono attivate dallo stesso evento,
 													--NON si fa un controllo sulle condizioni e si restituisce sempre FALSE		
