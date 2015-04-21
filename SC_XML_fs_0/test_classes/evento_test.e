@@ -6,22 +6,33 @@ note
 	date: "$13/04$"
 	revision: "$0$"
 
-
 class
 	EVENTO_TEST
 
 inherit
+
 	EQA_TEST_SET
+		redefine
+			on_prepare
+		end
 
 feature -- Test routines
 
-test_contenuto_eventi
-		local
-			e:esecutore
+	e: ESECUTORE
+
+	on_prepare
 		do
 			create e.start
-			assert("Fatto male", e.eventi[1]~"25")
 		end
+
+	test_contenuto_eventi
+		do
+			assert ("Fatto male", e.eventi [1] ~ "25")
+		end
+
+	test_count_eventi
+		do
+			assert ("Fatto male", e.eventi.count = 4)
+		end
+
 end
-
-
