@@ -49,4 +49,13 @@ feature -- Test routines
 			end
 		end
 
+	t_stato_determinismo
+
+		do
+			create stato_prova.make_with_id ("stato_prova")
+			if attached stato_prova as sp then
+			assert("non c'è determinismo, invece dovrebbe esserci!!!", sp.determinismo("ti sfido a trovare uno stato con questo nome"))
+			end
+		end
+
 end
