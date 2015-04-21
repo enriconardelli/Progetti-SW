@@ -52,23 +52,6 @@ feature {NONE} -- Inizializzazione
 
 feature -- Cose che si possono fare
 
-	ottieni_evento: STRING --qui ho commentato tutto se no non compilava
-			--  local
-			--    evento_letto: STRING
-		do
-			Result := ""
-				--  FROM
-				--    evento_letto := leggi_prossimo_evento
-				--  UNTIL
-				--    count_evento_corrente>eventi.count
-				--  LOOP
-				--    messaggio_di_errore(evento_letto non è un evento legale)
-				--    evento_letto := leggi_prossimo_evento
-				--  END
-				--  IF evento_letto IN eventi THEN
-				--    Result := evento_letto
-		end
-
 	evolvi_SC
 		do
 				--  FROM
@@ -226,6 +209,24 @@ feature --Trattazione eventi
 			end
 			file.close
 			Result := v_eventi
+		end
+
+	ottieni_evento: STRING --serve a verificare che tutti gli venti nel file eventi.txt compaiano effettivamente
+						   --tra gli eventi di qualche transizione
+			--  local
+			--    evento_letto: STRING
+		do
+			Result := ""
+				--  FROM
+				--    evento_letto := leggi_prossimo_evento
+				--  UNTIL
+				--    count_evento_corrente>eventi.count
+				--  LOOP
+				--    messaggio_di_errore(evento_letto non è un evento legale)
+				--    evento_letto := leggi_prossimo_evento
+				--  END
+				--  IF evento_letto IN eventi THEN
+				--    Result := evento_letto
 		end
 
 end
