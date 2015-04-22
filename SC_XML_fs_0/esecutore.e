@@ -157,7 +157,10 @@ feature -- Cose che si possono fare
 								--							if attached azione then
 								--								transizione.set_azione (azione.value)
 								--							end
-							fabio.agg_trans (transizione)
+							temp_stato := stati.item (chiave)
+							if attached temp_stato then
+								temp_stato.agg_trans (transizione)
+							end
 						else
 							temp_stato := stati.item (chiave)
 							if attached temp_stato then
