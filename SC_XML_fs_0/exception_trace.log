@@ -13,3 +13,4 @@ ESECUTORE           root's creation        illegal opcode:
 -------------------------------------------------------------------------------
 
 sc_xml_fs_0: dumping core to generate debugging information...
+Catcall detected in {SPECIAL}.fill_with for arg#1: expected STRING_8 but got Void

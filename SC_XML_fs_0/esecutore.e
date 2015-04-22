@@ -48,6 +48,7 @@ feature {NONE} -- Inizializzazione
 			crea_stati_e_cond (albero)
 			eventi := acquisisci_eventi
 			print ("cristiano è brutto")
+			eventi := current.verifica_eventi
 		end
 
 feature -- Cose che si possono fare
@@ -212,22 +213,71 @@ feature --eventi
 			Result := v_eventi
 		end
 
-	ottieni_evento: STRING --serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente
-						   --tra gli eventi di qualche transizione
-			--  local
-			--    evento_letto: STRING
+		--			ottieni_evento: STRING --serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente
+		--								   --tra gli eventi di qualche transizione
+		--					  local
+		--					    evento_letto: STRING
+		--				do
+		--					Result := ""
+		--						  FROM
+		--						    evento_letto := leggi_prossimo_evento
+		--						  UNTIL
+		--						    count_evento_corrente>eventi.count
+		--						  LOOP
+		--						    messaggio_di_errore(evento_letto non è un evento legale)
+		--						    evento_letto := leggi_prossimo_evento
+		--						  END
+		--						  IF evento_letto IN eventi THEN
+		--						    Result := evento_letto
+		--				end
+
+	verifica_eventi: ARRAY [STRING]
+			--serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
+		local
+			v_new: ARRAY [STRING]
+			v_old: ARRAY [STRING]
+			n: INTEGER
+			h_stati: HASH_TABLE [STATO, STRING]
+			k: INTEGER
+			i: INTEGER
+			flag: BOOLEAN
+			de_bug: STRING
 		do
-			Result := ""
-				--  FROM
-				--    evento_letto := leggi_prossimo_evento
-				--  UNTIL
-				--    count_evento_corrente>eventi.count
-				--  LOOP
-				--    messaggio_di_errore(evento_letto non è un evento legale)
-				--    evento_letto := leggi_prossimo_evento
-				--  END
-				--  IF evento_letto IN eventi THEN
-				--    Result := evento_letto
+			create v_new.make_empty
+			h_stati := current.stati
+			v_old := current.eventi
+			n := current.eventi.count
+			k := 1
+			from
+				i := 1
+			until
+				i = n + 1
+			loop
+				flag := False
+				from
+					h_stati.start
+				until
+					h_stati.after OR flag
+				loop
+					if attached h_stati.item_for_iteration as stato then
+						if attached stato.get_events as tp then
+							de_bug := v_old [i].twin    --QUI STA IL PROBLEMA, de_bug non è la stringa che ci aspettiamo
+							if tp.has (v_old [i]) then
+								v_new.force (v_old [i].twin, k)
+								k := k + 1
+								flag := True
+							else
+								h_stati.forth
+							end
+						end
+					end
+				end
+				if h_stati.after then
+					print ("%N SANTIDDIO!! L'evento " + v_old [i] + " non va bene!")
+				end
+				i := i + 1
+			end
+			Result := v_new
 		end
 
 end

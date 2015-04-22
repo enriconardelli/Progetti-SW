@@ -35,4 +35,16 @@ feature -- Test routines
 			assert ("Fatto male", e.eventi.count = 4)
 		end
 
+	test_verifica_eventi
+		local
+			v: ARRAY [STRING]
+			v_v: ARRAY [STRING]
+		do
+			v := e.eventi
+			v_v := e.verifica_eventi
+			assert ("Fatto male e si vede dal count", v_v.count < v.count)
+			assert ("Fatto male contenuto verificato.1", not v_v.has ("25"))
+			assert("Fatto male contenuto verificato.2", v_v.has ("watch_start"))
+		end
+
 end

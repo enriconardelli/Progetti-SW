@@ -66,7 +66,7 @@ feature -- Test routines
 			if attached e.stati.item ("reset") as reset then
 				eventi := reset.get_events
 				assert("Fatto male count",eventi.count=1)
-				assert("Fatto male contenuto",eventi[1]~"watch_reset")
+				assert("Fatto male contenuto",eventi[1]~"watch_start")
 			end
 
 		end
