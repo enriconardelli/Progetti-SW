@@ -27,7 +27,7 @@ feature -- Test routines
 
 	test_contenuto_eventi
 		do
-			assert ("Fatto male", e.eventi [1] ~ "25")
+			assert ("Fatto male", e.eventi [1] ~ "watch_reset")
 		end
 
 	test_count_eventi

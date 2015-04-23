@@ -48,7 +48,6 @@ feature {NONE} -- Inizializzazione
 			crea_stati_e_cond (albero)
 			eventi := acquisisci_eventi
 			print ("cristiano è brutto")
-			eventi := current.verifica_eventi
 		end
 
 feature -- Cose che si possono fare
