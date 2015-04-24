@@ -64,7 +64,7 @@ feature --routines
 				index_count := transizioni.lower --si parte a scorrere l'array di transizioni dal suo indice più piccolo
 				numero_di_transizioni_attivate_da_evento_corrente := 0
 			until
-				index_count = transizioni.upper --si esce dal ciclo quando l'array è finito
+				index_count = transizioni.upper+1 --si esce dal ciclo quando l'array è finito
 			loop
 				if attached transizioni [index_count].evento as ang then
 					if ang.is_equal (evento_corrente) then
