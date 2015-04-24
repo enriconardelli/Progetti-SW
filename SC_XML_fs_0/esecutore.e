@@ -261,6 +261,7 @@ feature --eventi
 				until
 					h_stati.after OR flag
 				loop
+					flag_1:=False
 					if attached h_stati.item_for_iteration.get_events as tp then
 						from
 							j := 1
@@ -276,8 +277,8 @@ feature --eventi
 								j := j + 1
 							end
 						end
-						h_stati.forth
 					end
+					h_stati.forth
 				end
 				if h_stati.after then
 					print ("%N SANTIDDIO!! L'evento " + v_old [i] + " non va bene!")
