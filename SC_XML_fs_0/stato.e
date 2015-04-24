@@ -64,7 +64,7 @@ feature --routines
 				index_count := transizioni.lower --si parte a scorrere l'array di transizioni dal suo indice più piccolo
 				numero_di_transizioni_attivate_da_evento_corrente := 0
 			until
-				index_count = transizioni.upper+1 --si esce dal ciclo quando l'array è finito
+				index_count = transizioni.upper + 1 --si esce dal ciclo quando l'array è finito
 			loop
 				if attached transizioni [index_count].evento as ang then
 					if ang.is_equal (evento_corrente) then
@@ -87,36 +87,19 @@ feature --routines
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
 		do
-			target_della_transizione:=Void
-
-
+			target_della_transizione := Void
 			from
-				index_count:=transizioni.lower
+				index_count := transizioni.lower
 			until
-				index_count=transizioni.upper+1
+				index_count = transizioni.upper + 1
 			loop
-
-				if attached transizioni[index_count].evento as ang then
-
-								if ang.is_equal (evento_corrente) then
-
-									target_della_transizione := transizioni[index_count].target
-
-								end
-
-
+				if attached transizioni [index_count].evento as ang then
+					if ang.is_equal (evento_corrente) then
+						target_della_transizione := transizioni [index_count].target
+					end
 				end
-
-
-				index_count:=index_count+1
-
+				index_count := index_count + 1
 			end
-
-
-
-
-
-
 			result := target_della_transizione
 				-- ritorna Void se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
 				-- ritorna lo stato a cui porta l'unica transizione attivabile nella configurazione corrente con evento_corrente
