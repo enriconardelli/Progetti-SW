@@ -8,36 +8,34 @@ class
 	CONFIGURAZIONE
 
 create
+	make_with_condition
 
-	make_with_all
+feature --creazione
 
-feature--creazione
+	make_with_condition (hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING])
+		do
+			condizioni := hash_delle_condizioni
+		ensure
+			condizioni_settate: condizioni = hash_delle_condizioni
+		end
 
-	make_with_all(stato_iniziale: STATO ; hash_delle_condizioni: HASH_TABLE[BOOLEAN,STRING])
+feature --attributi
 
-	do
+	stato_corrente: detachable STATO
 
-		stato_corrente:= stato_iniziale
-		condizioni:= hash_delle_condizioni
+	condizioni: HASH_TABLE [BOOLEAN, STRING]
 
-	ensure
+feature --routines
 
-		stato_settato: stato_corrente= stato_iniziale
-		condizioni_settate: condizioni= hash_delle_condizioni
-
-	end
-
-feature--attributi
-
-	stato_corrente: STATO
-	condizioni: HASH_TABLE[BOOLEAN,STRING]
-
-feature--routines
+	set_stato_corrente (uno_stato: STATO)
+		require
+			stato_corrente_not_void: stato_corrente /= Void
+		do
+			stato_corrente := uno_stato
+		end
 
 	chiusura
-
-	do
-
-	end
+		do
+		end
 
 end
