@@ -237,26 +237,19 @@ feature --eventi
 			--Serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
 			--Comunica a video se ci sono eventi incompatibili
 		local
-			v_new: ARRAY [STRING]
-			v_old: ARRAY [STRING]
-			n: INTEGER
+			v_new,v_old: ARRAY [STRING]
 			h_stati: HASH_TABLE [STATO, STRING]
-			k: INTEGER
-			j: INTEGER
-			i: INTEGER
-			flag: BOOLEAN
-			flag_1: BOOLEAN
-			de_bug1, de_bug2: STRING
+			i,j,k: INTEGER
+			flag,flag_1: BOOLEAN
 		do
 			create v_new.make_empty
 			h_stati := current.stati
 			v_old := current.eventi
-			n := current.eventi.count
 			k := 1
 			from
 				i := 1
 			until
-				i = n + 1
+				i = eventi.count + 1
 			loop
 				flag := False
 				from
@@ -271,8 +264,6 @@ feature --eventi
 						until
 							j = tp.count + 1 or flag_1
 						loop
-							de_bug1 := tp [j]
-							de_bug2 := v_old [i]
 							if tp [j] ~ v_old [i] then
 								v_new.force (v_old [i].twin, k)
 								k := k + 1
