@@ -62,4 +62,11 @@ feature -- Test routines
 			assert("Fatto male flag_1", flag_1)
 		end
 
+	test_crea_stati
+		local
+			
+		do
+
+		end
+
 end

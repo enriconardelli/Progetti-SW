@@ -14,6 +14,7 @@ feature --Attributi
 	--	conf: CONFIGURAZIONE
 
 	stati: HASH_TABLE [STATO, STRING]
+	configuratore: CONFIGURAZIONE
 
 	condizioni: HASH_TABLE [BOOLEAN, STRING]
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
@@ -74,12 +75,15 @@ feature -- Cose che si possono fare
 			--				anche garantendo che le transizioni hanno target leciti
 		local
 			temp_stato: STATO
+			primo_stato: STATO
+			falg: BOOLEAN
 			first: XML_NODE
 			tempatt: detachable XML_ATTRIBUTE
 			lis_el: LIST [XML_ELEMENT]
 			lis_data: LIST [XML_ELEMENT]
 		do
 			first := albero.document.first
+			flag:=false
 			if attached {XML_ELEMENT} first as f then
 				lis_el := f.elements
 				from
@@ -91,6 +95,9 @@ feature -- Cose che si possono fare
 						tempatt := lis_el.item_for_iteration.attribute_by_name ("id")
 						if attached tempatt as asd then
 							create temp_stato.make_with_id (asd.value)
+							if flag=false then
+								primo_stato:=temp_stato
+							end
 							stati.extend (temp_stato, asd.value)
 						end
 					elseif lis_el.item_for_iteration.name ~ "datamodel" then
@@ -125,6 +132,7 @@ feature -- Cose che si possono fare
 					lis_el.forth
 				end
 			end
+			configuratore.make_with_all(primo_stato , condizioni)
 		end
 
 	riempi_stato (chiave: STRING; element: XML_ELEMENT)
