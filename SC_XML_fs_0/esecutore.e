@@ -32,6 +32,7 @@ feature {NONE} -- Inizializzazione
 	start
 			-- Run application.
 		local
+			eventi_v: ARRAY [STRING]
 				--	s: SIMPLE
 			s_orig: SIMPLE_MODIFIED
 			albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
@@ -48,6 +49,7 @@ feature {NONE} -- Inizializzazione
 			crea_stati_e_cond (albero)
 			eventi := acquisisci_eventi
 			print ("cristiano è brutto")
+			eventi_v := Current.verifica_eventi
 		end
 
 feature -- Cose che si possono fare
@@ -238,9 +240,10 @@ feature --eventi
 			n: INTEGER
 			h_stati: HASH_TABLE [STATO, STRING]
 			k: INTEGER
+			j: INTEGER
 			i: INTEGER
 			flag: BOOLEAN
-			de_bug: STRING
+			flag_1: BOOLEAN
 		do
 			create v_new.make_empty
 			h_stati := current.stati
@@ -258,17 +261,22 @@ feature --eventi
 				until
 					h_stati.after OR flag
 				loop
-					if attached h_stati.item_for_iteration as stato then
-						if attached stato.get_events as tp then
-							de_bug := v_old [i].twin    --QUI STA IL PROBLEMA, de_bug non è la stringa che ci aspettiamo
-							if tp.has (v_old [i]) then
+					if attached h_stati.item_for_iteration.get_events as tp then
+						from
+							j := 1
+						until
+							j = tp.count + 1 or flag_1
+						loop
+							if tp [j] ~ v_old [i] then
 								v_new.force (v_old [i].twin, k)
 								k := k + 1
+								flag_1 := True
 								flag := True
 							else
-								h_stati.forth
+								j := j + 1
 							end
 						end
+						h_stati.forth
 					end
 				end
 				if h_stati.after then
