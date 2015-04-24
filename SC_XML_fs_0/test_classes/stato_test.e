@@ -57,6 +57,20 @@ feature -- Test routines
 			end
 		end
 
+
+	t_stato_target
+
+		do
+			create stato_prova.make_with_id ("stato_prova")
+
+			if attached stato_prova as sp then
+				assert ("restituito target non void, mentre doveva restituirlo void", sp.target("ti sfido a trovare uno stato con questo nome")=Void)
+			end
+
+		end
+
+
+
 	t_stato_get_events
 		local
 			e: ESECUTORE

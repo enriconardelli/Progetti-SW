@@ -83,8 +83,41 @@ feature --routines
 	target (evento_corrente: STRING): detachable STATO
 		require
 			determinismo (evento_corrente)
+		local
+			target_della_transizione: detachable STATO
+			index_count: INTEGER
 		do
-			result := void
+			target_della_transizione:=Void
+
+
+			from
+				index_count:=transizioni.lower
+			until
+				index_count=transizioni.upper+1
+			loop
+
+				if attached transizioni[index_count].evento as ang then
+
+								if ang.is_equal (evento_corrente) then
+
+									target_della_transizione := transizioni[index_count].target
+
+								end
+
+
+				end
+
+
+				index_count:=index_count+1
+
+			end
+
+
+
+
+
+
+			result := target_della_transizione
 				-- ritorna Void se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
 				-- ritorna lo stato a cui porta l'unica transizione attivabile nella configurazione corrente con evento_corrente
 		end
