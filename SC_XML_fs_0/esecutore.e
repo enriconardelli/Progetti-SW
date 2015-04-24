@@ -40,6 +40,7 @@ feature {NONE} -- Inizializzazione
 		do
 			create stati.make (1)
 			create condizioni.make (1)
+			create configuratore.
 			print ("INIZIO!%N")
 				--			create s.make
 				--			print ("FINITO 1 !%N")
@@ -76,7 +77,7 @@ feature -- Cose che si possono fare
 		local
 			temp_stato: STATO
 			primo_stato: STATO
-			falg: BOOLEAN
+			flag: BOOLEAN
 			first: XML_NODE
 			tempatt: detachable XML_ATTRIBUTE
 			lis_el: LIST [XML_ELEMENT]
@@ -97,6 +98,7 @@ feature -- Cose che si possono fare
 							create temp_stato.make_with_id (asd.value)
 							if flag=false then
 								primo_stato:=temp_stato
+								create configuratore.make_with_all(primo_stato , condizioni)
 							end
 							stati.extend (temp_stato, asd.value)
 						end
@@ -132,7 +134,7 @@ feature -- Cose che si possono fare
 					lis_el.forth
 				end
 			end
-			configuratore.make_with_all(primo_stato , condizioni)
+
 		end
 
 	riempi_stato (chiave: STRING; element: XML_ELEMENT)
