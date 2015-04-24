@@ -40,7 +40,6 @@ feature {NONE} -- Inizializzazione
 		do
 			create stati.make (1)
 			create condizioni.make (1)
-			create configuratore.
 			print ("INIZIO!%N")
 				--			create s.make
 				--			print ("FINITO 1 !%N")
@@ -76,7 +75,7 @@ feature -- Cose che si possono fare
 			--				anche garantendo che le transizioni hanno target leciti
 		local
 			temp_stato: STATO
-			primo_stato: STATO
+			primo_stato: detachable STATO
 			flag: BOOLEAN
 			first: XML_NODE
 			tempatt: detachable XML_ATTRIBUTE
@@ -98,7 +97,6 @@ feature -- Cose che si possono fare
 							create temp_stato.make_with_id (asd.value)
 							if flag=false then
 								primo_stato:=temp_stato
-								create configuratore.make_with_all(primo_stato , condizioni)
 							end
 							stati.extend (temp_stato, asd.value)
 						end
@@ -133,6 +131,10 @@ feature -- Cose che si possono fare
 					end
 					lis_el.forth
 				end
+			end
+			create configuratore.make_with_condition(condizioni)
+			if attached primo_stato as goku then
+				configuratore.set_stato_corrente(goku)
 			end
 
 		end
