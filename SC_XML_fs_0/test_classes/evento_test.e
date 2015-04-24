@@ -39,12 +39,27 @@ feature -- Test routines
 		local
 			v: ARRAY [STRING]
 			v_v: ARRAY [STRING]
+			i:INTEGER
+			flag,flag_1:BOOLEAN
 		do
 			v := e.eventi
 			v_v := e.verifica_eventi
 			assert ("Fatto male e si vede dal count", v_v.count < v.count)
-			assert ("Fatto male contenuto verificato.1", not v_v.has ("25"))
-			assert("Fatto male contenuto verificato.2", v_v.has ("watch_start"))
+			from
+				i:=1
+			until
+				i=v_v.count+1
+			loop
+				if v_v[i]~"25" then
+					flag:=true
+				end
+				if v_v[i]~"watch_reset" then
+					flag_1:=true
+				end
+				i:=i+1
+			end
+			assert ("Fatto male flag", not flag)
+			assert("Fatto male flag_1", flag_1)
 		end
 
 end
