@@ -50,6 +50,8 @@ feature {NONE} -- Inizializzazione
 			eventi := acquisisci_eventi
 			print ("cristiano è brutto")
 			eventi_v := Current.verifica_eventi
+			print ("cristiano è brutto")
+
 		end
 
 feature -- Cose che si possono fare
@@ -244,6 +246,7 @@ feature --eventi
 			i: INTEGER
 			flag: BOOLEAN
 			flag_1: BOOLEAN
+			de_bug1,de_bug2:STRING
 		do
 			create v_new.make_empty
 			h_stati := current.stati
@@ -268,6 +271,8 @@ feature --eventi
 						until
 							j = tp.count + 1 or flag_1
 						loop
+							de_bug1:=tp[j]
+							de_bug2:=v_old[i]
 							if tp [j] ~ v_old [i] then
 								v_new.force (v_old [i].twin, k)
 								k := k + 1
@@ -280,7 +285,7 @@ feature --eventi
 					end
 					h_stati.forth
 				end
-				if h_stati.after then
+				if NOT flag then
 					print ("%N SANTIDDIO!! L'evento " + v_old [i] + " non va bene!")
 				end
 				i := i + 1
