@@ -50,8 +50,7 @@ feature {NONE} -- Inizializzazione
 			eventi := acquisisci_eventi
 			print ("cristiano è brutto")
 			eventi_v := Current.verifica_eventi
-			print ("cristiano è brutto")
-
+			print ("%Ncristiano è brutto")
 		end
 
 feature -- Cose che si possono fare
@@ -235,7 +234,8 @@ feature --eventi
 		--				end
 
 	verifica_eventi: ARRAY [STRING]
-			--serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
+			--Serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
+			--Comunica a video se ci sono eventi incompatibili
 		local
 			v_new: ARRAY [STRING]
 			v_old: ARRAY [STRING]
@@ -246,7 +246,7 @@ feature --eventi
 			i: INTEGER
 			flag: BOOLEAN
 			flag_1: BOOLEAN
-			de_bug1,de_bug2:STRING
+			de_bug1, de_bug2: STRING
 		do
 			create v_new.make_empty
 			h_stati := current.stati
@@ -264,15 +264,15 @@ feature --eventi
 				until
 					h_stati.after OR flag
 				loop
-					flag_1:=False
+					flag_1 := False
 					if attached h_stati.item_for_iteration.get_events as tp then
 						from
 							j := 1
 						until
 							j = tp.count + 1 or flag_1
 						loop
-							de_bug1:=tp[j]
-							de_bug2:=v_old[i]
+							de_bug1 := tp [j]
+							de_bug2 := v_old [i]
 							if tp [j] ~ v_old [i] then
 								v_new.force (v_old [i].twin, k)
 								k := k + 1
@@ -286,7 +286,7 @@ feature --eventi
 					h_stati.forth
 				end
 				if NOT flag then
-					print ("%N SANTIDDIO!! L'evento " + v_old [i] + " non va bene!")
+					print ("%N SANTIDDIO!! L'evento " + v_old [i] + " non viene utilizzato!")
 				end
 				i := i + 1
 			end
