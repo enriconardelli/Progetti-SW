@@ -14,6 +14,7 @@ feature --Attributi
 	--	conf: CONFIGURAZIONE
 
 	stati: HASH_TABLE [STATO, STRING]
+
 	configuratore: CONFIGURAZIONE
 
 	condizioni: HASH_TABLE [BOOLEAN, STRING]
@@ -33,41 +34,51 @@ feature {NONE} -- Inizializzazione
 	start
 			-- Run application.
 		local
-			eventi_v: ARRAY [STRING]
-				--	s: SIMPLE
 			s_orig: SIMPLE_MODIFIED
 			albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
 		do
 			create stati.make (1)
 			create condizioni.make (1)
 			print ("INIZIO!%N")
-				--			create s.make
-				--			print ("FINITO 1 !%N")
-				--			io.read_character
+
 			create s_orig.make
 			print ("FINE!%N")
 			albero := s_orig.tree
 			crea_stati_e_cond (albero)
 			eventi := acquisisci_eventi
 			print ("cristiano è brutto")
-			eventi_v := Current.verifica_eventi
-			print ("%Ncristiano è brutto")
+			create configuratore.make_with_condition (condizioni)
 		end
 
 feature -- Cose che si possono fare
 
 	evolvi_SC
+		local
+			evento_corrente: STRING
+			--st:STATO
 		do
-				--  FROM
-				--  UNTIL
-				--    conf.stato_corrente.finale
-				--  LOOP
-				--    conf.chiusura
-				--  IF evento_corrente /= "" THEN
-				--    IF NOT conf.stato_corrente.determinismo(evento_corrente) THEN
-				--      messaggio_di_errore
-				--    ELSE
-				--      conf.stato_corrente := conf.stato_corrente.target(evento_corrente)
+			if attached configuratore.stato_corrente as stato then
+
+				FROM
+				UNTIL
+				stato.finale
+				LOOP
+					configuratore.chiusura
+					evento_corrente := current.leggi_prossimo_evento
+					IF NOT stato.determinismo (evento_corrente,configuratore.condizioni) THEN
+						print ("ERRORE!!! Non c'è determinismo!!!")
+					ELSE
+					--	st:=stato.target (evento_corrente,configuratore.condizioni)   ERRORE
+					--	configuratore.set_stato_corrente (st)
+					--	stato:=st   												  ERRORE non so come fare ad aggiornare lo stato
+																					--corrente dato che con l'if_attached gli ho
+																					--cambiato nome
+
+					end
+				end
+			else
+				print ("Non c'è alcun stato corrente!!!Errore!")
+			end
 		end
 
 	crea_stati_e_cond (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
@@ -83,7 +94,7 @@ feature -- Cose che si possono fare
 			lis_data: LIST [XML_ELEMENT]
 		do
 			first := albero.document.first
-			flag:=false
+			flag := false
 			if attached {XML_ELEMENT} first as f then
 				lis_el := f.elements
 				from
@@ -95,8 +106,8 @@ feature -- Cose che si possono fare
 						tempatt := lis_el.item_for_iteration.attribute_by_name ("id")
 						if attached tempatt as asd then
 							create temp_stato.make_with_id (asd.value)
-							if flag=false then
-								primo_stato:=temp_stato
+							if flag = false then
+								primo_stato := temp_stato
 							end
 							stati.extend (temp_stato, asd.value)
 						end
@@ -132,11 +143,10 @@ feature -- Cose che si possono fare
 					lis_el.forth
 				end
 			end
-			create configuratore.make_with_condition(condizioni)
+			create configuratore.make_with_condition (condizioni)
 			if attached primo_stato as goku then
-				configuratore.set_stato_corrente(goku)
+				configuratore.set_stato_corrente (goku)
 			end
-
 		end
 
 	riempi_stato (chiave: STRING; element: XML_ELEMENT)
@@ -249,10 +259,10 @@ feature --eventi
 			--Serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
 			--Comunica a video se ci sono eventi incompatibili
 		local
-			v_new,v_old: ARRAY [STRING]
+			v_new, v_old: ARRAY [STRING]
 			h_stati: HASH_TABLE [STATO, STRING]
-			i,j,k: INTEGER
-			flag,flag_1: BOOLEAN
+			i, j, k: INTEGER
+			flag, flag_1: BOOLEAN
 		do
 			create v_new.make_empty
 			h_stati := current.stati
