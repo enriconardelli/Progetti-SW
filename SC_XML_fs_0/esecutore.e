@@ -78,7 +78,11 @@ feature -- Cose che si possono fare
 
 				end
 			end
-			configuratore.chiusura
+			if
+				not	configuratore.stato_corrente.finale
+			then
+				configuratore.chiusura
+			end
 		end
 
 	crea_stati_e_cond (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)

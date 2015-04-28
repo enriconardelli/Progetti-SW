@@ -148,5 +148,4 @@ feature --cose a parte
 			end
 			Result := ev
 		end
-
 end
