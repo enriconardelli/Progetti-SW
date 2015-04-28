@@ -8,7 +8,7 @@ class
 	ESECUTORE
 
 create
-	start
+	start, start_new
 
 feature --Attributi
 	--	conf: CONFIGURAZIONE
@@ -30,6 +30,8 @@ feature --Attributi
 			--serve per la leggi_prossimo_evento
 
 	eventi: ARRAY [STRING]
+
+	file_name: STRING = "test.xml"
 
 feature {NONE} -- Inizializzazione
 
@@ -53,6 +55,38 @@ feature {NONE} -- Inizializzazione
 			eventi := acquisisci_eventi
 			print ("cristiano è brutto")
 		end
+
+	start_new
+			-- Run application.
+		local
+			parser: XML_PARSER
+			albero: XML_CALLBACKS_TREE
+			ht: HASH_TABLE [BOOLEAN, STRING]
+		do
+				--| Instantiate parser
+			create {XML_STANDARD_PARSER} parser.make
+				--| Build tree callbacks
+			create albero.make_null
+			parser.set_callbacks (albero)
+				--| Parse the `file_name' content
+			parser.parse_from_filename (file_name)
+			if parser.error_occurred then
+				print ("Parsing error!!! %N")
+			else
+				print ("Parsing OK. %N")
+			end
+			create eventi.make_empty
+			create ht.make (0)
+			create configuratore.make_with_condition (ht)
+			create stati.make (1)
+			create condizioni.make (1)
+			print ("INIZIO!%N")
+
+--			crea_stati_e_cond (albero)
+--			eventi := acquisisci_eventi
+--			print ("cristiano è brutto")
+--			create configuratore.make_with_condition (condizioni)
+	end
 
 feature -- Cose che si possono fare
 
