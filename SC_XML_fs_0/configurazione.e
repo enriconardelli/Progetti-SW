@@ -12,12 +12,12 @@ create
 
 feature --creazione
 
-	make_with_condition (statoin: STATO; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING])
+	make_with_condition (lo_stato_iniziale: STATO; le_condizioni: HASH_TABLE [BOOLEAN, STRING])
 		do
-			condizioni := hash_delle_condizioni
-			stato_corrente:= statoin
+			stato_corrente:= lo_stato_iniziale
+			condizioni := le_condizioni
 		ensure
-			condizioni_settate: condizioni = hash_delle_condizioni
+			condizioni_settate: condizioni = le_condizioni
 		end
 
 feature --attributi
