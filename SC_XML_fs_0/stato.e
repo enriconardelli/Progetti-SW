@@ -23,6 +23,13 @@ feature --creazione
 			attributo_assegnato: id = un_id
 		end
 
+	make_empty
+		do
+			create transizioni.make_empty
+			finale := false
+			create id.make_empty
+		end
+
 feature --attributi
 
 	transizioni: ARRAY [TRANSIZIONE]
