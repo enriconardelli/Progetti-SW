@@ -43,6 +43,7 @@ feature {NONE} -- Inizializzazione
 			stato_iniziale.set_final
 			create stati.make (1)
 			create condizioni.make (1)
+			count_evento_corrente:=1
 			print ("INIZIO!%N")
 			create s_orig.make
 			print ("FINE!%N")
@@ -62,7 +63,7 @@ feature -- Cose che si possono fare
 		do
 			FROM
 			UNTIL
-				configuratore.stato_corrente.finale
+				configuratore.stato_corrente.finale or count_evento_corrente>eventi.count
 			LOOP
 				configuratore.chiusura
 				evento_corrente := current.leggi_prossimo_evento
@@ -77,6 +78,7 @@ feature -- Cose che si possono fare
 
 				end
 			end
+			configuratore.chiusura
 		end
 
 	crea_stati_e_cond (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)

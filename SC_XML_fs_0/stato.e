@@ -8,7 +8,7 @@ class
 	STATO
 
 create
-	make_with_id
+	make_with_id, make_empty
 
 feature --creazione
 
@@ -56,8 +56,7 @@ feature --routines
 			transizioni.force (tr, transizioni.count + 1)
 		end
 
-	determinismo (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE[BOOLEAN, STRING]): BOOLEAN
-
+	determinismo (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
 		local
 			index_count: INTEGER
 			numero_di_transizioni_attivate_da_evento_corrente: INTEGER -- questo conta il numero di transizioni nell'array che sono attivate dall'evento corrente
@@ -70,55 +69,29 @@ feature --routines
 			from
 				index_count := transizioni.lower --si parte a scorrere l'array di transizioni dal suo indice più piccolo
 				numero_di_transizioni_attivate_da_evento_corrente := 0
-				numero_di_transizioni_senza_evento_con_condizione_vera:=0
+				numero_di_transizioni_senza_evento_con_condizione_vera := 0
 			until
-				index_count = transizioni.upper + 1 or numero_di_transizioni_attivate_da_evento_corrente>1 or numero_di_transizioni_senza_evento_con_condizione_vera>1
+				index_count = transizioni.upper + 1 or numero_di_transizioni_attivate_da_evento_corrente > 1 or numero_di_transizioni_senza_evento_con_condizione_vera > 1
 			loop
-
-
-
 				if attached transizioni [index_count].evento as ang then
-
 					if ang.is_equal (evento_corrente) then
-
-						if attached transizioni[index_count].condizione as cond then
-
+						if attached transizioni [index_count].condizione as cond then
 							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
-
 								if cond_in_hash = TRUE then
-
 									numero_di_transizioni_attivate_da_evento_corrente := numero_di_transizioni_attivate_da_evento_corrente + 1
-
 								end
-
 							end
-
 						end
-
-
 					end
-
 				else
-
-					if attached transizioni[index_count].condizione as cond then
-
-						if attached hash_delle_condizioni.item (cond) as cond_in_hash   then
-
-							if cond_in_hash = TRUE
-
-							then
-								numero_di_transizioni_senza_evento_con_condizione_vera:=numero_di_transizioni_senza_evento_con_condizione_vera+1
-
+					if attached transizioni [index_count].condizione as cond then
+						if attached hash_delle_condizioni.item (cond) as cond_in_hash then
+							if cond_in_hash = TRUE then
+								numero_di_transizioni_senza_evento_con_condizione_vera := numero_di_transizioni_senza_evento_con_condizione_vera + 1
 							end
-
-
 						end
-
-
 					end
-
 				end
-
 				index_count := index_count + 1
 			end
 			if numero_di_transizioni_attivate_da_evento_corrente > 1 or numero_di_transizioni_senza_evento_con_condizione_vera > 1 then
@@ -128,7 +101,7 @@ feature --routines
 			end
 		end
 
-	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE[BOOLEAN, STRING]): detachable STATO
+	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
 		require
 			determinismo (evento_corrente, hash_delle_condizioni)
 		local
