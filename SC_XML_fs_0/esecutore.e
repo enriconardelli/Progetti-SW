@@ -57,11 +57,9 @@ feature {NONE} -- Inizializzazione
 		end
 
 	start_new
-			-- Run application.
 		local
 			parser: XML_PARSER
 			albero: XML_CALLBACKS_TREE
-			ht: HASH_TABLE [BOOLEAN, STRING]
 		do
 				--| Instantiate parser
 			create {XML_STANDARD_PARSER} parser.make
@@ -75,11 +73,11 @@ feature {NONE} -- Inizializzazione
 			else
 				print ("Parsing OK. %N")
 			end
+			create stato_iniziale.make_empty
 			create eventi.make_empty
-			create ht.make (0)
-			create configuratore.make_with_condition (ht)
 			create stati.make (1)
 			create condizioni.make (1)
+			create configuratore.make_with_condition (stato_iniziale, condizioni)
 			print ("INIZIO!%N")
 
 --			crea_stati_e_cond (albero)
