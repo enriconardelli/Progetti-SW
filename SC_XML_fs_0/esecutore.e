@@ -13,6 +13,8 @@ create
 feature --Attributi
 	--	conf: CONFIGURAZIONE
 
+	stato_iniziale: STATO
+
 	stati: HASH_TABLE [STATO, STRING]
 
 	configuratore: CONFIGURAZIONE
@@ -37,17 +39,18 @@ feature {NONE} -- Inizializzazione
 			s_orig: SIMPLE_MODIFIED
 			albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
 		do
+			create stato_iniziale.make_empty
+			stato_iniziale.set_final
 			create stati.make (1)
 			create condizioni.make (1)
 			print ("INIZIO!%N")
-
 			create s_orig.make
 			print ("FINE!%N")
 			albero := s_orig.tree
 			crea_stati_e_cond (albero)
+			create configuratore.make_with_condition (stato_iniziale, condizioni)
 			eventi := acquisisci_eventi
 			print ("cristiano è brutto")
-			create configuratore.make_with_condition (condizioni)
 		end
 
 feature -- Cose che si possono fare
@@ -55,29 +58,24 @@ feature -- Cose che si possono fare
 	evolvi_SC
 		local
 			evento_corrente: STRING
-			--st:STATO
+			st:detachable STATO
 		do
-			if attached configuratore.stato_corrente as stato then
+			FROM
+			UNTIL
+				configuratore.stato_corrente.finale
+			LOOP
+				configuratore.chiusura
+				evento_corrente := current.leggi_prossimo_evento
+				IF NOT configuratore.stato_corrente.determinismo (evento_corrente, configuratore.condizioni) THEN
+					print ("ERRORE!!! Non c'è determinismo!!!")
+				ELSE
+							st:=configuratore.stato_corrente.target (evento_corrente,configuratore.condizioni)
+							if attached st as s then
+								configuratore.set_stato_corrente (s)
+							end
 
-				FROM
-				UNTIL
-				stato.finale
-				LOOP
-					configuratore.chiusura
-					evento_corrente := current.leggi_prossimo_evento
-					IF NOT stato.determinismo (evento_corrente,configuratore.condizioni) THEN
-						print ("ERRORE!!! Non c'è determinismo!!!")
-					ELSE
-					--	st:=stato.target (evento_corrente,configuratore.condizioni)   ERRORE
-					--	configuratore.set_stato_corrente (st)
-					--	stato:=st   												  ERRORE non so come fare ad aggiornare lo stato
-																					--corrente dato che con l'if_attached gli ho
-																					--cambiato nome
 
-					end
 				end
-			else
-				print ("Non c'è alcun stato corrente!!!Errore!")
 			end
 		end
 
@@ -143,9 +141,8 @@ feature -- Cose che si possono fare
 					lis_el.forth
 				end
 			end
-			create configuratore.make_with_condition (condizioni)
 			if attached primo_stato as goku then
-				configuratore.set_stato_corrente (goku)
+				stato_iniziale := goku
 			end
 		end
 
