@@ -31,7 +31,6 @@ feature --Attributi
 
 	eventi: ARRAY [STRING]
 
-	file_name: STRING = "test.xml"
 
 feature {NONE} -- Inizializzazione
 
@@ -56,7 +55,7 @@ feature {NONE} -- Inizializzazione
 			print ("cristiano è brutto")
 		end
 
-	start_new
+	start_new (un_file: STRING)
 		local
 			parser: XML_PARSER
 			albero: XML_CALLBACKS_TREE
@@ -67,7 +66,7 @@ feature {NONE} -- Inizializzazione
 			create albero.make_null
 			parser.set_callbacks (albero)
 				--| Parse the `file_name' content
-			parser.parse_from_filename (file_name)
+			parser.parse_from_filename (un_file)
 			if parser.error_occurred then
 				print ("Parsing error!!! %N")
 			else
@@ -80,10 +79,10 @@ feature {NONE} -- Inizializzazione
 			create configuratore.make_with_condition (stato_iniziale, condizioni)
 			print ("INIZIO!%N")
 
---			crea_stati_e_cond (albero)
---			eventi := acquisisci_eventi
---			print ("cristiano è brutto")
---			create configuratore.make_with_condition (condizioni)
+			crea_stati_e_cond (albero)
+			eventi := acquisisci_eventi
+			print ("acquisiti eventi")
+			create configuratore.make_with_condition (stato_iniziale, condizioni)
 	end
 
 feature -- Cose che si possono fare

@@ -17,10 +17,10 @@ feature -- Test routines
 
 	esecutore_test: detachable ESECUTORE
 
-	t_start_new
+	t_start_con_test
 			-- New test routine
 		do
-			create esecutore_test.start_new
+			create esecutore_test.start_new ("test.xml")
 			--assert ("not_implemented", False)
 		end
 
