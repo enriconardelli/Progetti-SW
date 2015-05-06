@@ -4,17 +4,15 @@ note
 	date: "9-04-2015"
 	revision: "0"
 
-
 class
 	ASSEGNAZIONE
 
 inherit
 
-   	AZIONE redefine make_empty, make_with_id end
-
+	AZIONE
 
 create
-	make_empty, make_with_id
+	make_with_cond_and_value
 
 feature --attributi
 
@@ -24,16 +22,10 @@ feature --attributi
 
 feature -- creazione
 
-	make_empty
-	do
-		create id.make_empty
-		create condizione.make_empty
-	end
-
-	make_with_id (a_string: STRING)
-	do
-		id := a_string
-		create condizione.make_empty
-	end
+	make_with_cond_and_value (una_condizione: STRING; un_valore: BOOLEAN)
+		do
+			condizione := una_condizione
+			valore := un_valore
+		end
 
 end

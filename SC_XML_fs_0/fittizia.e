@@ -12,8 +12,18 @@ inherit
 	AZIONE
 
 create
-	make_empty, make_with_id
+	make_with_id
 
-feature
+feature --attributi
+
+	id: STRING
+
+feature--creazione
+
+	make_with_id (un_id: STRING)
+
+		do
+			id := un_id
+		end
 
 end
