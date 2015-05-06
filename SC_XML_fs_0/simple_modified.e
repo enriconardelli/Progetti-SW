@@ -25,7 +25,7 @@ feature  -- Initialization
 			s: STRING
 			pp: XML_NODE_PRINTER
 		do
-			file_name := "test.xml"
+			file_name := "esempio.xml"
 
 				--| Instantiate parser
 			create {XML_STANDARD_PARSER} parser.make

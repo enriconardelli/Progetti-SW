@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="one">
+	<datamodel>
+		<data id="alfa" expr="true" />
+		<data id="beta" expr="true" />
+		<data id="gamma" expr="false" />
+	</datamodel>
+	<state id="one">
+		<transition event="star" cond="alfa" target="two">
+			<assign location="alfa" expr="false" />
+			<assign location="beta" expr="false" />
+		</transition>
+		<transition event="circle" cond="beta" target="three">
+			<assign name="alfa" expr="true" />
+			<log name="una prima azione" />
+		</transition>
+	</state>
+	<state id="two">
+		<transition event="square" target="three">
+			<log name="una seconda azione" />
+		</transition>
+	</state>
+	<state id="three">
+		<transition event="plus" target="one">
+			<assign name="alfa" expr="false" />
+		</transition>
+		<transition event="minus" target="one">
+			<assign name="alfa" expr="true" />
+		</transition>
+	</state>
+</scxml>
