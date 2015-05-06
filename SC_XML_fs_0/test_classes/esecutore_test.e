@@ -23,7 +23,7 @@ feature -- Test routines
 			create esecutore_test.start_new ("test.xml")
 			--assert ("not_implemented", False)
 		end
-
+	
 end
 
 

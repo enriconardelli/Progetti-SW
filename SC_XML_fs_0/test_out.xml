@@ -1,52 +1,62 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="reset">
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="one">
 	<datamodel>
-		<data id="running$value" expr="0"></data>
-		<data id="paused$value" expr="0"></data>
-		<data id="stopped$value" expr="0"></data>
-		<data id="reset$value" expr="0"></data>
+		<data id="alfa" expr="true"></data>
+		<data id="beta" expr="true"></data>
+		<data id="gamma" expr="false"></data>
 	</datamodel>
-	<state id="reset">
-		<transition event="watch_start" target="running"></transition>
+	<state id="one">
+		<transition event="star" cond="alfa" target="two">
+			<assign location="alfa" expr="false"></assign>
+			<assign location="beta" expr="false"></assign>
+		</transition>
+		<transition event="circle" cond="beta" target="three">
+			<assign name="alfa" expr="true"></assign>
+			<log name="una prima azione"></log>
+		</transition>
 	</state>
-	<state id="running">
-		<transition event="watch_split" target="paused"></transition>
-		<transition event="watch_stop" target="stopped"></transition>
+	<state id="two">
+		<transition event="square" target="three">
+			<log name="una seconda azione"></log>
+		</transition>
 	</state>
-
-	<state id="paused">
-		<transition event="watch_unsplit" target="running"></transition>
-		<transition event="watch_stop" target="stopped"></transition>
+	<state id="three">
+		<transition event="plus" target="one">
+			<assign name="alfa" expr="false"></assign>
+		</transition>
+		<transition event="minus" target="one">
+			<assign name="alfa" expr="true"></assign>
+		</transition>
 	</state>
-
-	<state id="stopped">
-		<transition event="watch_reset" target="reset"></transition>
-	</state>
-
 </scxml>
 ---
-<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="reset">
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="one">
 	<datamodel>
-		<data id="running$value" expr="0"/>
-		<data id="paused$value" expr="0"/>
-		<data id="stopped$value" expr="0"/>
-		<data id="reset$value" expr="0"/>
+		<data id="alfa" expr="true"/>
+		<data id="beta" expr="true"/>
+		<data id="gamma" expr="false"/>
 	</datamodel>
-	<state id="reset">
-		<transition event="watch_start" target="running"/>
+	<state id="one">
+		<transition event="star" cond="alfa" target="two">
+			<assign location="alfa" expr="false"/>
+			<assign location="beta" expr="false"/>
+		</transition>
+		<transition event="circle" cond="beta" target="three">
+			<assign name="alfa" expr="true"/>
+			<log name="una prima azione"/>
+		</transition>
 	</state>
-	<state id="running">
-		<transition event="watch_split" target="paused"/>
-		<transition event="watch_stop" target="stopped"/>
+	<state id="two">
+		<transition event="square" target="three">
+			<log name="una seconda azione"/>
+		</transition>
 	</state>
-
-	<state id="paused">
-		<transition event="watch_unsplit" target="running"/>
-		<transition event="watch_stop" target="stopped"/>
+	<state id="three">
+		<transition event="plus" target="one">
+			<assign name="alfa" expr="false"/>
+		</transition>
+		<transition event="minus" target="one">
+			<assign name="alfa" expr="true"/>
+		</transition>
 	</state>
-
-	<state id="stopped">
-		<transition event="watch_reset" target="reset"/>
-	</state>
-
 </scxml>

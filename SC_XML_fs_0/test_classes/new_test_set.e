@@ -18,11 +18,12 @@ inherit
 
 feature {NONE} -- Events
 e: ESECUTORE
-
+a: ESECUTORE
 	on_prepare
 			-- <Precursor>
 		do
 			create e.start
+			create a.start_new("esempio.xml")
 		end
 
 feature -- Test routines

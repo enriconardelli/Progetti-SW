@@ -31,7 +31,6 @@ feature --Attributi
 
 	eventi: ARRAY [STRING]
 
-
 feature {NONE} -- Inizializzazione
 
 	start
@@ -44,7 +43,7 @@ feature {NONE} -- Inizializzazione
 			stato_iniziale.set_final
 			create stati.make (1)
 			create condizioni.make (1)
-			count_evento_corrente:=1
+			count_evento_corrente := 1
 			print ("INIZIO!%N")
 			create s_orig.make
 			print ("FINE!%N")
@@ -78,40 +77,35 @@ feature {NONE} -- Inizializzazione
 			create condizioni.make (1)
 			create configuratore.make_with_condition (stato_iniziale, condizioni)
 			print ("INIZIO!%N")
-
 			crea_stati_e_cond (albero)
 			eventi := acquisisci_eventi
 			print ("acquisiti eventi")
 			create configuratore.make_with_condition (stato_iniziale, condizioni)
-	end
+		end
 
 feature -- Cose che si possono fare
 
 	evolvi_SC
 		local
 			evento_corrente: STRING
-			st:detachable STATO
+			st: detachable STATO
 		do
 			FROM
 			UNTIL
-				configuratore.stato_corrente.finale or count_evento_corrente>eventi.count
+				configuratore.stato_corrente.finale or count_evento_corrente > eventi.count
 			LOOP
 				configuratore.chiusura
 				evento_corrente := current.leggi_prossimo_evento
 				IF NOT configuratore.stato_corrente.determinismo (evento_corrente, configuratore.condizioni) THEN
 					print ("ERRORE!!! Non c'è determinismo!!!")
 				ELSE
-							st:=configuratore.stato_corrente.target (evento_corrente,configuratore.condizioni)
-							if attached st as s then
-								configuratore.set_stato_corrente (s)
-							end
-
-
+					st := configuratore.stato_corrente.target (evento_corrente, configuratore.condizioni)
+					if attached st as s then
+						configuratore.set_stato_corrente (s)
+					end
 				end
 			end
-			if
-				not	configuratore.stato_corrente.finale
-			then
+			if not configuratore.stato_corrente.finale then
 				configuratore.chiusura
 			end
 		end
@@ -187,11 +181,17 @@ feature -- Cose che si possono fare
 		local
 			temp_stato: DETACHABLE STATO
 			lis_el: LIST [XML_ELEMENT]
+			lis_el2: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
 			azione: detachable XML_ATTRIBUTE
 			event: detachable XML_ATTRIBUTE
 			con: detachable XML_ATTRIBUTE
 			target: detachable XML_ATTRIBUTE
+			assegn: ASSEGNAZIONE
+			finta: FITTIZIA
+			location: STRING
+			val: BOOLEAN
+
 		do
 			lis_el := element.elements
 			from
@@ -208,14 +208,30 @@ feature -- Cose che si possono fare
 							if attached event then
 								transizione.set_evento (event.value)
 							end
-							con := lis_el.item_for_iteration.attribute_by_name ("condition") -- non sappiamo come l'xml chiama le condizioni
+							con := lis_el.item_for_iteration.attribute_by_name ("cond") -- non sappiamo come l'xml chiama le condizioni
 							if attached con then
 								transizione.set_condizione (con.value)
 							end
-							azione := lis_el.item_for_iteration.attribute_by_name ("action")
-								--							if attached azione then
-								--								transizione.set_azione (azione.value)
-								--							end
+							li
+							lis_el2 := lis_el.item_for_iteration.elements
+							from
+								lis_el2.start
+							until
+								lis_el2.after
+							loop
+								if lis_el2.item_for_iteration.name~"assign" then
+									if attached lis_el2.item_for_iteration.attribute_by_name ("location") as luogo then
+
+										if attached lis_el2.item_for_iteration.attribute_by_name ("expr") as expr then
+											if expr.value~"false" then
+												create assegn.make(luogo.value,expr.value)
+												transizione.set_azione (assegn)
+											end
+										end
+
+									end
+								end
+							end
 							temp_stato := stati.item (chiave)
 							if attached temp_stato then
 								temp_stato.agg_trans (transizione)
