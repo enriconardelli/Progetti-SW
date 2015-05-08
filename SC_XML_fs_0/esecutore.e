@@ -149,7 +149,7 @@ feature -- Cose che si possono fare
 						loop
 							if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("id") as nome then
 								if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("expr") as valore then
-									condizioni.extend ( valore.value ~ "true" or valore.value ~ "1", nome.value)
+									condizioni.extend ( valore.value ~ "true", nome.value)
 								end
 							end
 							lis_data.forth
@@ -220,7 +220,7 @@ feature -- Cose che si possono fare
 								if lis_el2.item_for_iteration.name ~ "assign" then
 									if attached lis_el2.item_for_iteration.attribute_by_name ("location") as luogo then
 										if attached lis_el2.item_for_iteration.attribute_by_name ("expr") as expr then
-											if expr.value ~ "false" or expr.value ~ "0"  then
+											if expr.value ~ "false"  then
 												create assegn.make_with_cond_and_value (luogo.value, FALSE)
 												transizione.set_azione (assegn)
 											end
