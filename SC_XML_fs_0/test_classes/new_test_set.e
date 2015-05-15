@@ -28,19 +28,19 @@ a: ESECUTORE
 
 feature -- Test routines
 
-	ha4stati
+	testha4stati
 			-- New test routine
 		do
 			assert ("gli stati so 4", e.stati.count=4)
 		end
-	haglistati
+	testhaglistati
 		do
 			assert("non ha reset", e.stati.has ("reset"))
 			assert("non ha paused", e.stati.has ("paused"))
 			assert("non ha running", e.stati.has ("running"))
 			assert("non ha stopped", e.stati.has ("stopped"))
 		end
-	halecond
+	testhalecond
 	do
 			assert("non ha running$value", e.condizioni.has ("running$value"))
 			assert("non ha paused$value", e.condizioni.has ("paused$value"))
@@ -48,6 +48,23 @@ feature -- Test routines
 			assert("non ha reset$value", e.condizioni.has ("reset$value"))
 	end
 
+	esempioha3stati
+			-- New test routine
+		do
+			assert ("gli stati so 3", a.stati.count=3)
+		end
+	esempiohaglistati
+		do
+			assert("non ha one", a.stati.has ("one"))
+			assert("non ha two", a.stati.has ("two"))
+			assert("non ha three", a.stati.has ("three"))
+		end
+	esempiohalecond
+	do
+			assert("non ha alfa", a.condizioni.has ("alfa"))
+			assert("non ha beta", a.condizioni.has ("beta"))
+			assert("non ha gamma" a.condizioni.has ("gamma"))
+	end
 end
 
 
