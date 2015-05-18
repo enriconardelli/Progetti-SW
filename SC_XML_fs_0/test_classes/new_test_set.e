@@ -63,7 +63,7 @@ feature -- Test routines
 	do
 			assert("non ha alfa", a.condizioni.has ("alfa"))
 			assert("non ha beta", a.condizioni.has ("beta"))
-			assert("non ha gamma" a.condizioni.has ("gamma"))
+			assert("non ha gamma", a.condizioni.has ("gamma"))
 	end
 end
 

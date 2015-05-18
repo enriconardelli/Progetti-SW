@@ -36,8 +36,14 @@ feature --routines
 		end
 
 	chiusura
-
+		require
+			controllo_determinismo: stato_corrente.determinismo_senza_evento(condizioni)
 		do
+			set_stato_corrente(stato_corrente.target_senza_evento(condizioni))
+			if stato_corrente.determinismo_senza_evento(condizioni) then
+				stato_corrente.chiusura
+			end
+
 		end
 
 end
