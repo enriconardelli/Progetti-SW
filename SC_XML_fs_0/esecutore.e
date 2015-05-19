@@ -115,7 +115,6 @@ feature -- Cose che si possono fare
 			--				anche garantendo che le transizioni hanno target leciti
 		local
 			temp_stato: STATO
-			primo_stato: detachable STATO
 			flag: BOOLEAN
 			first: XML_NODE
 			tempatt: detachable XML_ATTRIBUTE
@@ -131,13 +130,18 @@ feature -- Cose che si possono fare
 				until
 					lis_el.after
 				loop
+					if lis_el.item_for_iteration.name ~ "final" then
+						tempatt := lis_el.item_for_iteration.attribute_by_name ("id")
+						if attached tempatt as asd then
+							create temp_stato.make_with_id (asd.value)
+							stati.extend (temp_stato, asd.value)
+							temp_stato.set_final
+						end
+					end
 					if lis_el.item_for_iteration.name ~ "state" then
 						tempatt := lis_el.item_for_iteration.attribute_by_name ("id")
 						if attached tempatt as asd then
 							create temp_stato.make_with_id (asd.value)
-							if flag = false then
-								primo_stato := temp_stato
-							end
 							stati.extend (temp_stato, asd.value)
 						end
 					elseif lis_el.item_for_iteration.name ~ "datamodel" then
@@ -157,7 +161,12 @@ feature -- Cose che si possono fare
 					end
 					lis_el.forth
 				end
-					--stati istanziati, ora li riempiamo
+				--assegno chi è l'iniziale
+				if attached f.attribute_by_name ("initial") as primo_stato then
+					stato_iniziale:=stati.item (primo_stato.value)
+				end
+
+				--stati istanziati, ora li riempiamo
 				from
 					lis_el.start
 				until
@@ -171,9 +180,6 @@ feature -- Cose che si possono fare
 					end
 					lis_el.forth
 				end
-			end
-			if attached primo_stato as goku then
-				stato_iniziale := goku
 			end
 		end
 
