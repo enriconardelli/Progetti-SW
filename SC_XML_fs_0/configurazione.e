@@ -14,7 +14,7 @@ feature --creazione
 
 	make_with_condition (lo_stato_iniziale: STATO; le_condizioni: HASH_TABLE [BOOLEAN, STRING])
 		do
-			stato_corrente:= lo_stato_iniziale
+			stato_corrente := lo_stato_iniziale
 			condizioni := le_condizioni
 		ensure
 			condizioni_settate: condizioni = le_condizioni
@@ -37,13 +37,14 @@ feature --routines
 
 	chiusura
 		require
-			controllo_determinismo: stato_corrente.determinismo_senza_evento(condizioni)
+			controllo_determinismo: stato_corrente.determinismo_senza_evento (condizioni)
 		do
-			set_stato_corrente(stato_corrente.target_senza_evento(condizioni))
-			if stato_corrente.determinismo_senza_evento(condizioni) then
-				stato_corrente.chiusura
+			if stato_corrente.target_senza_evento (condizioni) /= Void then
+				set_stato_corrente (stato_corrente.target_senza_evento (condizioni))
+				if stato_corrente.determinismo_senza_evento (condizioni) then
+					chiusura
+				end
 			end
-
 		end
 
 end
