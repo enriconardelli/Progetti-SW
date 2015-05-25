@@ -49,13 +49,24 @@ feature -- Test routines
 			end
 		end
 
---	t_stato_determinismo
---		do
---			create stato_prova.make_with_id ("stato_prova")
---			if attached stato_prova as sp then
---				assert ("non c'è determinismo, invece dovrebbe esserci!!!", sp.determinismo ("ti sfido a trovare uno stato con questo nome"))
---			end
---		end
+	t_stato_determinismo
+		local
+
+		hash_di_prova: HASH_TABLE[BOOLEAN, STRING]
+
+
+		do
+			create stato_prova.make_with_id ("stato_prova")
+			create hash_di_prova.make (2)
+			hash_di_prova.put (TRUE, "Pippo" )
+			hash_di_prova.put (FALSE, "Pluto" )
+			hash_di_prova.put (TRUE, "Minnie" )
+		
+
+			if attached stato_prova as sp then
+				assert ("non c'è determinismo, invece dovrebbe esserci!!!", sp.determinismo ("ti sfido a trovare uno stato con questo nome",hash_di_prova))
+			end
+		end
 
 
 --	t_stato_target

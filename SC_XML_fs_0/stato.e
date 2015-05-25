@@ -65,6 +65,8 @@ feature --routines
 				-- ritorna vero se con evento_corrente è attivabile nella configurazione corrente al più 1 transizione
 				-- ritorna falso se con evento_corrente sono attivabili nella configurazione corrente almeno 2 transizioni
 
+			result := TRUE
+
 			from
 				index_count := transizioni.lower --si parte a scorrere l'array di transizioni dal suo indice più piccolo
 				numero_di_transizioni_attivate_da_evento_corrente := 0
