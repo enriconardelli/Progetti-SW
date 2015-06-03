@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="External Libraries/jdom.jar"/>
+	<classpathentry kind="lib" path="External Libraries/commons-lang-2.6/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="External Libraries/commons-scxml-0.9/commons-scxml-0.9-javadoc.jar"/>
+	<classpathentry kind="lib" path="External Libraries/commons-scxml-0.9/commons-scxml-0.9.jar" sourcepath="External Libraries/commons-scxml-0.9/commons-scxml-0.9-sources.jar"/>
+	<classpathentry kind="lib" path="External Libraries/commons-scxml-0.9/commons-scxml-0.9-sources.jar"/>
+	<classpathentry kind="lib" path="External Libraries/commons-jexl-1.1/commons-jexl-1.1.jar"/>
+	<classpathentry kind="lib" path="External Libraries/commons-logging-1.1.1/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="External Libraries/commons-digester-2.1/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="External Libraries/commons-beanutils-1.8.3/commons-beanutils-1.8.3.jar"/>
+	<classpathentry kind="lib" path="External Libraries/libsbmlj.jar"/>
+	<classpathentry kind="lib" path="External Libraries/jsp-api-2.0.jar"/>
+	<classpathentry kind="lib" path="External Libraries/commons-el-1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
