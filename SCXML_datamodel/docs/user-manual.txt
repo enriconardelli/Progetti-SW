@@ -1,0 +1,85 @@
+
+Il file NOME.scxml nella directory data_dir contiene la definizione della SC secondo le specifiche W3C
+- lo stato iniziale deve essere dichiarato con l'attributo "initial"
+
+L'esecuzione di Generator.java del package framework genera il package NOME e ci mette dentro:
+ - ImplASM.java (codice generato da ASMCodeCreator) estensione di classe astratta AbstractASM in package core
+   - contiene costruttore dell'ASM
+   - contiene un metodo per ogni stato della SC
+ - ImplGUI.java (codice generato da GUICodeCreator) estensione di classe astratta AbstractGUI in package core
+   - definisce il frame che contiene l'interfaccia
+   - per ogni evento che etichetta una transizione della SC
+     - crea e aggiunge al frame un pulsante etichettato con l'evento e lo associa con HashMap al pulsante
+     - assegna al pulsante il nome dell'evento come ActionCommand e la GUI come ActionListener
+   - per ogni variabile (data id) del datamodel definito nella SC
+     - crea e aggiunge al frame un campo testuale etichettato con la variabile e lo associa con HashMap alla variabile
+     - assegna al campo testuale il nome della variabile come ActionCommand e la GUI come ActionListener
+ - Launcher.java (codice generato da LauncherCodeCreator) che ha il seguente comportamento
+   - crea un'istanza di GUI sulla stringa NOME (ed automaticamente la GUI va in esecuzione)
+   - crea un'istanza di ASM per la stringa NOME (ed automaticamente l'istanza si porta nello stato iniziale ed esegue il relativo metodo in ImplASM)
+   - inizializza l'istanza della GUI con quella dell'ASM
+   - inizializza l'istanza della ASM con quella della GUI
+ - model.scxml (copia di NOME.scxml)
+
+L'attivazione di Launcher.java manda in esecuzione la SC definita da NOME.scxml
+
+Se si cambia il model bisogna far rieseguire il Generator.
+
+Se si aggiunge codice a metodi esistenti dell'ASM non e' necessario rigenerare ma solo rieseguire il Launcher.
+
+Pero' il codice dello stato iniziale (e di tutti gli stati che vengono raggiunti in modo transiente da esso) viene eseguito durante l'istanziazione della ASM e quindi PRIMA della sua inizializzazione con la GUI e quindi in questo o questi stati NON si puo' scrivere sulla GUI.
+
+Bisogna avere uno stato iniziale (che NON deve scrivere sulla GUI) da cui uscire ESPLICITAMENTE (altrimenti il problema si ripete) con un evento. Infatti se l'uscita e' implicita senza evento e senza condizioni (stato transiente) allora anche lo stato successivo viene eseguito prima e va in errore.
+
+
+Il package core nella directory src
+ - classe astratta AbstractASM e' estensione di AbstractStateMachine di CommonsSCXML
+   - ridefinisce costruttore
+   - contiene metodi
+     - initialize, permette all'istanza dell'ASM di riferirsi all'istanza della GUI
+     - get_value, per ottenere il valore di un DataID, cioe' di una variabile del datamodel
+     - set_value, per assegnare un valore ad un DataID, cioe' ad una variabile del datamodel
+ - classe astratta AbstractGUI in package core e' implementazione di interfacce ActionListener e SCXMLListener
+   - contiene metodo di inizializzazione della GUI
+     - assegna all'ASM la GUI come Listener
+     - per ogni coppia campo_testuale/variabile
+       - assegna al campo testuale il valore corrente nell'engine dell'ASM per quella variabile (cioe' il valore iniziale)
+     - per ogni stato corrente dell'ASM (cioe' stato iniziale)
+       - scrive nella traccia della GUI il nome dello stato
+       - per ogni transizione con eventi associata allo stato iniziale ne abilita il relativo pulsante
+   - definisce metodo actionPerformed dell'interfaccia ActionListener
+     - ottiene un valore ritornato dalla GUI mediante l'ActionCommand
+     - se il valore si riferisce ad un campo testuale aggiorna la variabile del datamodel
+     - costruisce con questo valore il TriggerEvent, usando un evento fittizio nel caso il valore si riferisca ad un campo testuale, e lo passa all'ASM
+   - definisce metodi onTransition, onEntry, onExit dell'interfaccia SCXMLListener
+     - onTransition
+       - per ogni assign di variabile associata alla transizione
+         - valuta per quella variabile il valore corrente nell'engine dell'ASM e lo assegna al campo testuale associato ad essa
+         - aggiorna la traccia con la transizione
+         - abilita i pulsanti delle transizioni dello stato di arrivo attivabili mediante eventi 
+     - onEntrY
+       - al momento e' vuoto
+     - onExit
+       - disabilita tutti i pulsanti
+
+Il package framework nella directory src
+ - ASMCodeCreator.java
+   - metodo create genera il codice di ImplASM.java nel package NOME della directory source_dir, mantenendo il codice dei metodi corrispondenti agli stati gia' presenti in ImplASM. Segnala se esistono metodi che non corrispondono agli stati attuali del model. 
+ - GUICodeCreator.java
+   - metodo create genera il codice di ImplGUI.java nel package NOME della directory source_dir, riscrivendolo sempre anche se gia' esiste
+ - LauncherCodeCreator.java
+   - metodo create genera il codice di Launcher.java nel package NOME della directory source_dir, solo se non esiste gia'
+ - Generator.java
+   - legge negli argomenti il NOME del file .scxml di definizione della SC
+   - crea il package NOME se non esiste in src
+   - legge il file NOME.scxml in data_dir e ne fa il parsing (con un minimo di verifica sintattica) estrando nomi di stati, variabili ed eventi
+   - crea mediante l'invocazione dei metodi di classe create il codice di
+     - ImplASM.java
+     - ImplGUI.java
+     - Launcher.java
+   - crea nel package NOME il file model.scxml copiandoci dentro NOME.scxml
+ - Conf.java
+   - file per la configurazione di vari parametri
+
+
+

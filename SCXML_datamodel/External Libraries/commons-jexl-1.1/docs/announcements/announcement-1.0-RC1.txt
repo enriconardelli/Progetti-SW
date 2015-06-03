@@ -1,0 +1,21 @@
+The commons-jexl team is pleased to announce the Commons JEXL 1.0-RC1 release! 
+
+http://jakarta.apache.org/commons/jexl/
+
+Jexl is an implementation of the JSTL Expression Language with extensions. 
+
+Changes in this version include:
+
+  New Features:
+
+o Handle any size() method that returns an int 
+
+  Fixed bugs:
+
+o Fix string concatenation broken for variables Thanks to Geoff Waggott. 
+o Implement short circuit logic for boolean and/or Issue: JEXL-12. 
+o Can't issue .size() on java.util.Set Issue: JEXL-9.  
+
+Have fun!
+-The commons-jexl team
+      

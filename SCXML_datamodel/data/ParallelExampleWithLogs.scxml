@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" exmode="lax" initial="initialstate">
+	<datamodel>
+		<data id="initialstate$value" expr="0"></data>
+		<data id="onetwo$value" expr="0"></data>
+		<data id="one$value" expr="0"></data>
+		<data id="two$value" expr="0"></data>
+		<data id="three$value" expr="0"></data>
+		<data id="four$value" expr="0"></data>
+	</datamodel>
+	<state id="initialstate">
+		<onentry> <log expr="'entering initialstate'" /> </onentry>
+		<onexit> <log expr="'leaving initialstate'" /> </onexit>
+		<transition event="start" target="onetwo" />
+	</state>
+	<parallel id="onetwo">
+		<onentry> <log expr="'entering onetwo'" /> </onentry>
+		<onexit> <log expr="'leaving onetwo'" /> </onexit>
+		<transition event="onetwo_three" target="three" />
+		<state id="one">
+			<onentry> <log expr="'entering one'" /> </onentry>
+			<onexit> <log expr="'leaving one'" /> </onexit>
+		</state>
+		<state id="two">
+			<onentry> <log expr="'entering two'" /> </onentry>
+			<onexit> <log expr="'leaving two'" /> </onexit>
+			<transition event="two_four" target="four" />
+		</state>
+	</parallel>
+	<state id="three">
+		<onentry> <log expr="'entering three'" /> </onentry>
+		<onexit> <log expr="'leaving three'" /> </onexit>
+		<transition event="three_one" target="one" />
+		<transition event="three_four" target="four" />
+	</state>
+	<state id="four">
+		<onentry> <log expr="'entering four'" /> </onentry>
+		<onexit> <log expr="'leaving four'" /> </onexit>
+		<transition event="four_onetwo" target="onetwo" />
+		<transition event="four_three" target="three" />
+	</state>
+</scxml>

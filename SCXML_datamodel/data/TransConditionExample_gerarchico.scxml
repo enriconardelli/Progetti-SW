@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:my="http://my.custom-actions.domain/CUSTOM"
+	version="1.0" exmode="strict" initial="lower">
+	<datamodel>
+		<data id="valore" expr="30" />
+	</datamodel>
+
+	<state id="common" initial="lower">
+
+		<state id="lower">
+			<transition cond="${valore &gt;= 50}" target="higher" />
+		</state>
+	
+		<state id="higher">
+			<transition cond="${valore lt 50}" target="lower" />
+		</state>
+		
+		<transition cond="${valore gt 100}" target="final_state" />
+
+		<transition event="to_other" target="other">
+			<assign name="valore" expr="${valore * 2}" />
+		</transition>
+		
+	</state>
+	
+	<state id="other">
+		<transition event="to_common" target="common" />
+	</state>
+
+	
+	<final id="final_state" />
+
+</scxml>
+
+

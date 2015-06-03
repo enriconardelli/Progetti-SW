@@ -1,0 +1,432 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Commons JEXL Syntax - Commons JEXL</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");@import url("../style/project.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta></head><body class="composite"><div id="banner"><a href="http://jakarta.apache.org" id="organizationLogo"><img alt="The Apache Software Foundation" src="http://jakarta.apache.org/images/jakarta-logo.gif"></img></a><a href="http://jakarta.apache.org/commons/jexl/" id="projectLogo"><img alt="Commons JEXL" src="../images/jexl-logo-white.png"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 September 2006
+                <span class="separator">|</span> Doc for  1.1
+                </div><div class="xright"></div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuCommons Jexl"><h5>Commons Jexl</h5><ul><li class="none"><a href="../index.html">Overview</a></li><li class="none"><a href="../apidocs-1.0/index.html">1.0 Javadoc</a></li><li class="none"><a href="../apidocs/index.html">Latest Javadoc</a></li><li class="none"><a href="http://svn.apache.org/viewvc/jakarta/commons/proper/jexl/trunk/examples/" class="externalLink" title="External Link">Examples</a></li><li class="none"><a href="../releases.html">Releases and Builds</a></li><li class="none"><a href="../downloads.html">Jar Downloads</a></li><li class="none"><a href="../reference/index.html">Reference</a></li><li class="none"><a href="../building.html">Building</a></li><li class="none"><a href="http://wiki.apache.org/jakarta-commons/JEXL" class="externalLink" title="External Link">JEXL Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="none"><a href="../downloads.html">Downloads</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://jakarta.apache.org/commons/charter.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menuCommons"><h5>Commons</h5><ul><li class="none"><a href="http://jakarta.apache.org/commons/" class="externalLink" title="External Link">Home</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/components.html" class="externalLink" title="External Link">Components</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/sandbox/index.html" class="externalLink" title="External Link">Sandbox</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/dormant/index.html" class="externalLink" title="External Link">Dormant</a></li><li class="none"><a href="http://jakarta.apache.org/commons/volunteering.html" class="externalLink" title="External Link">Volunteering</a></li><li class="none"><a href="http://jakarta.apache.org/commons/patches.html" class="externalLink" title="External Link">Contributing Patches</a></li><li class="none"><a href="http://jakarta.apache.org/commons/building.html" class="externalLink" title="External Link">Building Components</a></li><li class="none"><a href="http://jakarta.apache.org/commons/releases/index.html" class="externalLink" title="External Link">Releasing Components</a></li><li class="none"><a href="http://wiki.apache.org/jakarta-commons/FrontPage" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-feather.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Overview"></a><h2>Overview</h2>
+      <p>
+        This reference is split up into the following sections:
+        <ol>
+          <li><a href="#Language_Elements">Language Elements</a></li>
+          <li><a href="#Literals">Literals</a></li>
+          <li><a href="#Functions">Functions</a></li>
+          <li><a href="#Operators">Operators</a></li>
+          <li><a href="#Conditional">Conditional Statements</a></li>
+        </ol>
+      </p>
+      <p>
+        For more technical information about the JEXL Grammar, you can find the
+        <a href="https://javacc.dev.java.net/" class="externalLink" title="External Link">JavaCC</a> grammar for JEXL
+        here: <a href="http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/jexl/trunk/src/java/org/apache/commons/jexl/parser/Parser.jj?view=markup" class="externalLink" title="External Link">Parser.jj</a>
+      </p>
+    </div><div class="section"><a name="Language_Elements"></a><h2>Language Elements</h2>
+      <table class="bodyTable">
+        <tr class="a"><th width="15%">Item</th><th>Description</th></tr>
+        <tr class="b">
+          <td>Comments</td>
+          <td>
+            Specified using <code>##</code> and extend to the end of line, e.g.
+            
+    <div class="source"><pre>## This is a comment</pre></div>
+  
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Identifiers / variables</td>
+          <td>
+            Must start with <code>a-z</code>, <code>A-Z</code>, <code>_</code> or <code>$</code>.
+            Can then be followed by <code>0-9</code>, <code>a-z</code>, <code>A-Z</code>, <code>_</code> or <code>$</code>.
+            e.g.
+            <ul>
+              <li>Valid: <code>var1</code>,<code>_a99</code>,<code>$1</code></li>
+              <li>Invalid: <code>9v</code>,<code>!a99</code>,<code>1$</code></li>
+            </ul>
+            <p>
+              JEXL also supports <code>ant-style</code> variables, e.g. 
+    <div class="source"><pre>my.dotted.var</pre></div>
+  
+              is a valid variable name.
+            </p>
+            <p>
+              <strong>NOTE:</strong> JEXL does not support variables with hyphens in them, e.g.
+              
+    <div class="source"><pre>commons-logging</pre></div>
+   is not a valid variable, but instead is treated as a
+              subtraction of the variable <code>logging</code> from the variable <code>commons</code>
+            </p>
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Scripts</td>
+          <td>
+            A script in Jexl is made up of zero or more statements. Scripts can be read from a String, File or URL.
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Statements</td>
+          <td>
+            A statement can be the empty statement, the semicolon (<code>;</code>) ,  block, assignment or an expression.
+            Statements are optionally terminated with a semicolon.
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Block</td>
+          <td>
+            A block is simply multiple statements inside curly braces (<code>{, }</code>).
+          </td>
+        </tr>
+      </table>
+    </div><div class="section"><a name="Literals"></a><h2>Literals</h2>
+      <table class="bodyTable">
+        <tr class="a"><th width="15%">Item</th><th>Description</th></tr>
+        <tr class="b">
+          <td>Integer Literals</td>
+          <td>1 or more digits from <code>0</code> to <code>9</code></td>
+        </tr>
+        <tr class="a">
+          <td>Floating point Literals</td>
+          <td>
+            1 or more digits from <code>0</code> to <code>9</code>, followed
+            by a decimal point and then one or more digits from
+            <code>0</code> to <code>9</code>. 
+          </td>
+        </tr>
+        <tr class="b">
+          <td>String literals</td>
+          <td>
+            Can start and end with either <code>'</code> or <code>"</code>, e.g.
+            
+    <div class="source"><pre>"Hello world"</pre></div>
+   and
+            
+    <div class="source"><pre>'Hello world'</pre></div>
+   are equivalent.
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Boolean literals</td>
+          <td>
+            The literals <code>true</code> and <code>false</code> can be used, e.g.
+            
+    <div class="source"><pre>val1 == true</pre></div>
+  
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Null literal</td>
+          <td>
+            The null value is represented as in java using the literal <code>null</code>, e.g.
+            
+    <div class="source"><pre>val1 == null</pre></div>
+  
+          </td>
+        </tr>
+      </table>
+    </div><div class="section"><a name="Functions"></a><h2>Functions</h2>
+      <table class="bodyTable">
+        <tr class="a"><th width="15%">Function</th><th>Description</th></tr>
+        <tr class="b">
+          <td>empty</td>
+          <td>
+            Returns true if the expression following is either:
+            <ol>
+              <li><code>null</code></li>
+              <li>An empty string</li>
+              <li>An array of length zero</li>
+              <li>A collection of size zero</li>
+              <li>An empty map</li>
+            </ol>
+            
+    <div class="source"><pre>empty(var1)</pre></div>
+  
+          </td>
+        </tr>
+        <tr class="a">
+          <td>size</td>
+          <td>
+            Returns the information about the expression:
+            <ol>
+              <li>Length of an array</li>
+              <li>Size of a List</li>
+              <li>Size of a Map</li>
+              <li>Size of a Set</li>
+              <li>Length of a string</li>
+            </ol>
+            
+    <div class="source"><pre>size("Hello")</pre></div>
+   returns 5.
+          </td>
+        </tr>
+      </table>
+    </div><div class="section"><a name="Operators"></a><h2>Operators</h2>
+      <table class="bodyTable">
+        <tr class="b"><th width="15%">Operator</th><th>Description</th></tr>
+        <tr class="a">
+          <td>Boolean <code>and</code></td>
+          <td>
+            The usual <code>&amp;&amp;</code> operator can be used as well as the word <code>and</code>, e.g.
+            
+    <div class="source"><pre>cond1 and cond2</pre></div>
+   and
+            
+    <div class="source"><pre>cond1 &amp;&amp; cond2</pre></div>
+   are equivalent
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Boolean <code>or</code></td>
+          <td>
+            The usual <code>||</code> operator can be used as well as the word <code>or</code>, e.g.
+            
+    <div class="source"><pre>cond1 or cond2</pre></div>
+   and
+            
+    <div class="source"><pre>cond1 || cond2</pre></div>
+   are equivalent
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Boolean <code>not</code></td>
+          <td>
+            The usual <code>!</code> operator can be used as well as the word <code>not</code>, e.g.
+            
+    <div class="source"><pre>!cond1</pre></div>
+   and
+            
+    <div class="source"><pre>not cond1</pre></div>
+   are equivalent
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Bitwise <code>and</code></td>
+          <td>
+            The usual <code>&amp;</code> operator is used, e.g. 
+            
+    <div class="source"><pre>33 &amp; 4</pre></div>
+  , 0010 0001 &amp; 0000 0100 = 0.
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Bitwise <code>or</code></td>
+          <td>
+            The usual <code>|</code> operator is used, e.g.
+            
+    <div class="source"><pre>33 | 4</pre></div>
+  , 0010 0001 | 0000 0100 = 0010 0101 = 37.
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Bitwise <code>xor</code></td>
+          <td>
+            The usual <code>^</code> operator is used, e.g.
+            
+    <div class="source"><pre>33 ^ 4</pre></div>
+  , 0010 0001 ^ 0000 0100 = 0010 0100 = 37.
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Bitwise <code>complement</code></td>
+          <td>
+            The usual <code>~</code> operator is used, e.g.
+            
+    <div class="source"><pre>~33</pre></div>
+  , ~0010 0001 = 1101 1110 = -34.
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Equality</td>
+          <td>
+            The usual <code>==</code> operator can be used as well as the abbreviation <code>eq</code>.
+            For example 
+            
+    <div class="source"><pre>val1 == val2</pre></div>
+   and
+            
+    <div class="source"><pre>val1 eq val2</pre></div>
+   are equivalent.
+            <ol>
+              <li>
+                <code>null</code> is only ever equal to null, that is if you compare null
+                to any non-null value, the result is false.
+              </li>
+              <li>Equality uses the java <code>equals</code> method</li>
+            </ol>
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Inequality</td>
+          <td>
+            The usual <code>!=</code> operator can be used as well as the abbreviation <code>ne</code>.
+            For example
+            
+    <div class="source"><pre>val1 != val2</pre></div>
+   and
+            
+    <div class="source"><pre>val1 ne val2</pre></div>
+   are equivalent.
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Less Than</td>
+          <td>
+            The usual <code>&lt;</code> operator can be used as well as the abbreviation <code>lt</code>.
+            For example
+            
+    <div class="source"><pre>val1 &lt; val2</pre></div>
+   and
+            
+    <div class="source"><pre>val1 lt val2</pre></div>
+   are equivalent.
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Less Than Or Equal To</td>
+          <td>
+            The usual <code>&lt;=</code> operator can be used as well as the abbreviation <code>le</code>.
+            For example
+            
+    <div class="source"><pre>val1 &lt;= val2</pre></div>
+   and
+            
+    <div class="source"><pre>val1 le val2</pre></div>
+   are equivalent.
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Greater Than</td>
+          <td>
+            The usual <code>&gt;</code> operator can be used as well as the abbreviation <code>gt</code>.
+            For example
+            
+    <div class="source"><pre>val1 &gt; val2</pre></div>
+   and
+            
+    <div class="source"><pre>val1 gt val2</pre></div>
+   are equivalent.
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Greater Than Or Equal To</td>
+          <td>
+            The usual <code>&gt;=</code> operator can be used as well as the abbreviation <code>ge</code>.
+            For example
+            
+    <div class="source"><pre>val1 &gt;= val2</pre></div>
+   and
+            
+    <div class="source"><pre>val1 ge val2</pre></div>
+   are equivalent.
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Addition</td>
+          <td>
+            The usual <code>+</code> operator is used.
+            For example
+            
+    <div class="source"><pre>val1 + val2</pre></div>
+  
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Subtraction</td>
+          <td>
+            The usual <code>-</code> operator is used.
+            For example
+            
+    <div class="source"><pre>val1 - val2</pre></div>
+  
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Multiplication</td>
+          <td>
+            The usual <code>*</code> operator is used.
+            For example
+            
+    <div class="source"><pre>val1 * val2</pre></div>
+  
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Division</td>
+          <td>
+            The usual <code>/</code> operator is used.
+            For example
+            
+    <div class="source"><pre>val1 / val2</pre></div>
+  
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Integer Division</td>
+          <td>
+            The <code>div</code> operator is used.
+            For example
+            
+    <div class="source"><pre>4 div 3</pre></div>
+   gives 1.
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Modulus (or remainder)</td>
+          <td>
+            The <code>%</code> operator is used. An alternative is the <code>mod</code>
+            operator.
+            For example
+            
+    <div class="source"><pre>5 mod 2</pre></div>
+   gives 1 and is equivalent to 
+    <div class="source"><pre>5 % 2</pre></div>
+  
+          </td>
+        </tr>
+        <tr class="b">
+          <td>Negation</td>
+          <td>
+            The unary <code>-</code> operator is used.
+            For example
+            
+    <div class="source"><pre>-12</pre></div>
+  
+          </td>
+        </tr>
+        <tr class="a">
+          <td>Array access</td>
+          <td>
+            Array elements may be accessed using either square brackets or a dotted numeral, e.g.
+            
+    <div class="source"><pre>arr1[0]</pre></div>
+   and 
+    <div class="source"><pre>arr1.0</pre></div>
+   are equivalent
+          </td>
+        </tr>
+      </table>
+    </div><div class="section"><a name="Conditional"></a><h2>Conditional</h2>
+      <table class="bodyTable">
+        <tr class="b"><th width="15%">Operator</th><th>Description</th></tr>
+        <tr class="a">
+          <td>if</td>
+          <td>
+            Classic, if/else statement, e.g.
+            <code>if ((x * 2) == 5) {y = 1;} else {y = 2;}</code>
+          </td>
+        </tr>
+        <tr class="b">
+          <td>foreach</td>
+          <td>
+            Loop through items of an Array, Collection, Map, Iterator or Enumeration, e.g.
+            <code>foreach (item in list) { x = x + item; }</code>
+            Where <code>item</code> and <code>list</code> are variables.
+          </td>
+        </tr>
+        <tr class="a">
+          <td>while</td>
+          <td>
+            Loop until a condition is satisfied, e.g.
+            <code>while (x lt 10) { x = x + 2; }</code>
+          </td>
+        </tr>
+      </table>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2003-2006, The Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

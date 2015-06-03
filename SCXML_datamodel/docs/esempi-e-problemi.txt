@@ -1,0 +1,30 @@
+
+L'esempio OneTwoThree e' un esempio con condizioni sugli eventi: non va incontro ad errori
+
+-----------------------------------------------------
+
+in contatore_gerarchico_potenza quando si rientra in stand_by non si riscrive nella traccia che si e' rientrati anche nello stato gerarchico superiore common
+
+-----------------------------------------------------
+
+L'esempio ParallelExample e' un esempio senza condizioni sugli eventi che serviva a dimostrare l'errore nell'engine di AbstractStateMachine: se dopo l'evento start si attiva l'evento two_four c'e' l'errore
+-----------
+AVVERTENZA: ILLEGAL_CONFIG (Not all AND states active for parallel onetwo): /onetwo : [/onetwo/one]
+Illegal state machine configuration!
+AVVERTENZA: ILLEGAL_CONFIG (Multiple top-level OR states active!): <SCXML> : [/onetwo, /four]
+-----------
+
+
+-----------------------------------------------------
+
+L'esempio OneTwoThreeFour e' un esempio con condizioni sugli eventi: va incontro allo stesso errore dell'engine di AbstractStateMachine: se dopo l'evento start si attiva l'evento beta c'e' l'errore
+-----------
+AVVERTENZA: ILLEGAL_CONFIG (Not all AND states active for parallel onetwo): /onetwo : [/onetwo/one]
+Illegal state machine configuration!
+AVVERTENZA: ILLEGAL_CONFIG (Multiple top-level OR states active!): <SCXML> : [/onetwo, /four]
+-----------
+
+
+-----------------------------------------------------
+
+

@@ -1,0 +1,1004 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" /><title>JexlTest xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
+</head>
+<body>
+<pre>
+
+<a name="1" href="#1">1</a>   <em class="comment">/*</em>
+<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2002,2004 The Apache Software Foundation.</em>
+<a name="3" href="#3">3</a>   <em class="comment"> * </em>
+<a name="4" href="#4">4</a>   <em class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
+<a name="5" href="#5">5</a>   <em class="comment"> * you may not use this file except in compliance with the License.</em>
+<a name="6" href="#6">6</a>   <em class="comment"> * You may obtain a copy of the License at</em>
+<a name="7" href="#7">7</a>   <em class="comment"> * </em>
+<a name="8" href="#8">8</a>   <em class="comment"> *      <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a name="9" href="#9">9</a>   <em class="comment"> * </em>
+<a name="10" href="#10">10</a>  <em class="comment"> * Unless required by applicable law or agreed to in writing, software</em>
+<a name="11" href="#11">11</a>  <em class="comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
+<a name="12" href="#12">12</a>  <em class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</em>
+<a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
+<a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
+<a name="15" href="#15">15</a>  <em class="comment"> */</em>
+<a name="16" href="#16">16</a>  <strong>package</strong> <a href="../../../../org/apache/commons/jexl/package-summary.html">org.apache.commons.jexl</a>;
+<a name="17" href="#17">17</a>  
+<a name="18" href="#18">18</a>  <strong>import</strong> java.io.StringReader;
+<a name="19" href="#19">19</a>  <strong>import</strong> java.math.BigDecimal;
+<a name="20" href="#20">20</a>  <strong>import</strong> java.math.BigInteger;
+<a name="21" href="#21">21</a>  <strong>import</strong> java.util.ArrayList;
+<a name="22" href="#22">22</a>  <strong>import</strong> java.util.BitSet;
+<a name="23" href="#23">23</a>  <strong>import</strong> java.util.Calendar;
+<a name="24" href="#24">24</a>  <strong>import</strong> java.util.Collections;
+<a name="25" href="#25">25</a>  <strong>import</strong> java.util.GregorianCalendar;
+<a name="26" href="#26">26</a>  <strong>import</strong> java.util.HashMap;
+<a name="27" href="#27">27</a>  <strong>import</strong> java.util.HashSet;
+<a name="28" href="#28">28</a>  <strong>import</strong> java.util.LinkedList;
+<a name="29" href="#29">29</a>  <strong>import</strong> java.util.List;
+<a name="30" href="#30">30</a>  <strong>import</strong> java.util.Map;
+<a name="31" href="#31">31</a>  <strong>import</strong> java.util.Set;
+<a name="32" href="#32">32</a>  
+<a name="33" href="#33">33</a>  <strong>import</strong> junit.framework.Test;
+<a name="34" href="#34">34</a>  <strong>import</strong> junit.framework.TestCase;
+<a name="35" href="#35">35</a>  <strong>import</strong> junit.framework.TestSuite;
+<a name="36" href="#36">36</a>  
+<a name="37" href="#37">37</a>  <strong>import</strong> org.apache.commons.jexl.parser.ParseException;
+<a name="38" href="#38">38</a>  <strong>import</strong> org.apache.commons.jexl.parser.Parser;
+<a name="39" href="#39">39</a>  <strong>import</strong> org.apache.commons.jexl.resolver.FlatResolver;
+<a name="40" href="#40">40</a>  
+<a name="41" href="#41">41</a>  <em>/**<em>*</em></em>
+<a name="42" href="#42">42</a>  <em> *  Simple testcases</em>
+<a name="43" href="#43">43</a>  <em> *</em>
+<a name="44" href="#44">44</a>  <em> *  @since 1.0</em>
+<a name="45" href="#45">45</a>  <em> *  @author &lt;a href="<a href="mailto:geirm@apache.org" target="alexandria_uri">mailto:geirm@apache.org</a>">Geir Magnusson Jr.&lt;/a></em>
+<a name="46" href="#46">46</a>  <em> *  @version $Id: JexlTest.java 391888 2006-04-06 03:34:59Z dion $</em>
+<a name="47" href="#47">47</a>  <em> */</em>
+<a name="48" href="#48">48</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../org/apache/commons/jexl/JexlTest.html">JexlTest</a> <strong>extends</strong> TestCase
+<a name="49" href="#49">49</a>  {
+<a name="50" href="#50">50</a>      <strong>protected</strong> <strong>static</strong> <strong>final</strong> String METHOD_STRING = <span class="string">"Method string"</span>;
+<a name="51" href="#51">51</a>      <strong>protected</strong> <strong>static</strong> <strong>final</strong> String GET_METHOD_STRING = <span class="string">"GetMethod string"</span>;
+<a name="52" href="#52">52</a>  
+<a name="53" href="#53">53</a>      <strong>protected</strong> <strong>static</strong> <strong>final</strong> String[] GET_METHOD_ARRAY =
+<a name="54" href="#54">54</a>          <strong>new</strong> String[] { <span class="string">"One"</span>, <span class="string">"Two"</span>, <span class="string">"Three"</span> };
+<a name="55" href="#55">55</a>  
+<a name="56" href="#56">56</a>      <strong>protected</strong> <strong>static</strong> <strong>final</strong> String[][] GET_METHOD_ARRAY2 =
+<a name="57" href="#57">57</a>          <strong>new</strong> String[][] { {<span class="string">"One"</span>, <span class="string">"Two"</span>, <span class="string">"Three"</span>},{<span class="string">"Four"</span>, <span class="string">"Five"</span>, <span class="string">"Six"</span>} };
+<a name="58" href="#58">58</a>  
+<a name="59" href="#59">59</a>      <strong>public</strong> <strong>static</strong> Test suite()
+<a name="60" href="#60">60</a>      {
+<a name="61" href="#61">61</a>          <strong>return</strong> <strong>new</strong> TestSuite(JexlTest.<strong>class</strong>);
+<a name="62" href="#62">62</a>      }
+<a name="63" href="#63">63</a>  
+<a name="64" href="#64">64</a>      <strong>public</strong> <a href="../../../../org/apache/commons/jexl/JexlTest.html">JexlTest</a>(String testName)
+<a name="65" href="#65">65</a>      {
+<a name="66" href="#66">66</a>          <strong>super</strong>(testName);
+<a name="67" href="#67">67</a>      }
+<a name="68" href="#68">68</a>  
+<a name="69" href="#69">69</a>      <em>/**<em>*</em></em>
+<a name="70" href="#70">70</a>  <em>      *  test a simple property expression</em>
+<a name="71" href="#71">71</a>  <em>      */</em>
+<a name="72" href="#72">72</a>      <strong>public</strong> <strong>void</strong> testProperty()
+<a name="73" href="#73">73</a>           throws Exception
+<a name="74" href="#74">74</a>      {
+<a name="75" href="#75">75</a>          <em class="comment">/*</em>
+<a name="76" href="#76">76</a>  <em class="comment">         *  tests a simple property expression</em>
+<a name="77" href="#77">77</a>  <em class="comment">         */</em>
+<a name="78" href="#78">78</a>  
+<a name="79" href="#79">79</a>          Expression e = ExpressionFactory.createExpression(<span class="string">"foo.bar"</span>);
+<a name="80" href="#80">80</a>          JexlContext jc = JexlHelper.createContext();
+<a name="81" href="#81">81</a>  
+<a name="82" href="#82">82</a>          jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>() );
+<a name="83" href="#83">83</a>          Object o = e.evaluate(jc);
+<a name="84" href="#84">84</a>  
+<a name="85" href="#85">85</a>          assertTrue(<span class="string">"o not instanceof String"</span>, o instanceof String);
+<a name="86" href="#86">86</a>          assertEquals(<span class="string">"o incorrect"</span>, GET_METHOD_STRING, o);
+<a name="87" href="#87">87</a>      }
+<a name="88" href="#88">88</a>  
+<a name="89" href="#89">89</a>      <em>/**<em>*</em></em>
+<a name="90" href="#90">90</a>  <em>      *  test a simple method expression</em>
+<a name="91" href="#91">91</a>  <em>      */</em>
+<a name="92" href="#92">92</a>      <strong>public</strong> <strong>void</strong> testMethod()
+<a name="93" href="#93">93</a>           throws Exception
+<a name="94" href="#94">94</a>      {
+<a name="95" href="#95">95</a>          <em class="comment">/*</em>
+<a name="96" href="#96">96</a>  <em class="comment">         *  tests a simple method expression</em>
+<a name="97" href="#97">97</a>  <em class="comment">         */</em>
+<a name="98" href="#98">98</a>          JexlContext jc = JexlHelper.createContext();
+<a name="99" href="#99">99</a>          jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>() );
+<a name="100" href="#100">100</a>         assertExpression(jc, <span class="string">"foo.bar()"</span>, METHOD_STRING);
+<a name="101" href="#101">101</a>     }
+<a name="102" href="#102">102</a> 
+<a name="103" href="#103">103</a>     <em>/**<em>*</em></em>
+<a name="104" href="#104">104</a> <em>      *  test a simple method expression</em>
+<a name="105" href="#105">105</a> <em>      */</em>
+<a name="106" href="#106">106</a>     <strong>public</strong> <strong>void</strong> testArrayAccess()
+<a name="107" href="#107">107</a>          throws Exception
+<a name="108" href="#108">108</a>     {
+<a name="109" href="#109">109</a>         JexlContext jc = JexlHelper.createContext();
+<a name="110" href="#110">110</a> 
+<a name="111" href="#111">111</a>         <em class="comment">/*</em>
+<a name="112" href="#112">112</a> <em class="comment">         *  test List access</em>
+<a name="113" href="#113">113</a> <em class="comment">         */</em>
+<a name="114" href="#114">114</a> 
+<a name="115" href="#115">115</a>         List l = <strong>new</strong> ArrayList();
+<a name="116" href="#116">116</a>         l.add(<strong>new</strong> Integer(1));
+<a name="117" href="#117">117</a>         l.add(<strong>new</strong> Integer(2));
+<a name="118" href="#118">118</a>         l.add(<strong>new</strong> Integer(3));
+<a name="119" href="#119">119</a> 
+<a name="120" href="#120">120</a>         jc.getVars().put(<span class="string">"list"</span>, l);
+<a name="121" href="#121">121</a> 
+<a name="122" href="#122">122</a>         assertExpression(jc, <span class="string">"list[1]"</span>, <strong>new</strong> Integer(2));
+<a name="123" href="#123">123</a>         assertExpression(jc, <span class="string">"list[1+1]"</span>, <strong>new</strong> Integer(3));
+<a name="124" href="#124">124</a>         jc.getVars().put(<span class="string">"loc"</span>, <strong>new</strong> Integer(1));
+<a name="125" href="#125">125</a>         assertExpression(jc, <span class="string">"list[loc+1]"</span>, <strong>new</strong> Integer(3));
+<a name="126" href="#126">126</a> 
+<a name="127" href="#127">127</a>         <em class="comment">/*</em>
+<a name="128" href="#128">128</a> <em class="comment">         * test array access</em>
+<a name="129" href="#129">129</a> <em class="comment">         */</em>
+<a name="130" href="#130">130</a> 
+<a name="131" href="#131">131</a>         String[] args = {<span class="string">"hello"</span>, <span class="string">"there"</span>};
+<a name="132" href="#132">132</a>         jc.getVars().put(<span class="string">"array"</span>, args);
+<a name="133" href="#133">133</a>         assertExpression(jc, <span class="string">"array[0]"</span>, <span class="string">"hello"</span>);
+<a name="134" href="#134">134</a> 
+<a name="135" href="#135">135</a>         <em class="comment">/*</em>
+<a name="136" href="#136">136</a> <em class="comment">         * to think that this was an intentional syntax...</em>
+<a name="137" href="#137">137</a> <em class="comment">         */</em>
+<a name="138" href="#138">138</a>         assertExpression(jc, <span class="string">"array.0"</span>, <span class="string">"hello"</span>);
+<a name="139" href="#139">139</a> 
+<a name="140" href="#140">140</a>         <em class="comment">/*</em>
+<a name="141" href="#141">141</a> <em class="comment">         * test map access</em>
+<a name="142" href="#142">142</a> <em class="comment">         */</em>
+<a name="143" href="#143">143</a>         Map m = <strong>new</strong> HashMap();
+<a name="144" href="#144">144</a>         m.put(<span class="string">"foo"</span>, <span class="string">"bar"</span>);
+<a name="145" href="#145">145</a> 
+<a name="146" href="#146">146</a>         jc.getVars().put(<span class="string">"map"</span>, m);
+<a name="147" href="#147">147</a>         jc.getVars().put(<span class="string">"key"</span>, <span class="string">"foo"</span>);
+<a name="148" href="#148">148</a> 
+<a name="149" href="#149">149</a>         assertExpression(jc, <span class="string">"map[\&quot;foo\&quot;]"</span>, <span class="string">"bar"</span>);
+<a name="150" href="#150">150</a>         assertExpression(jc, <span class="string">"map[key]"</span>, <span class="string">"bar"</span>);
+<a name="151" href="#151">151</a> 
+<a name="152" href="#152">152</a>         <em class="comment">/*</em>
+<a name="153" href="#153">153</a> <em class="comment">         *  test bean access</em>
+<a name="154" href="#154">154</a> <em class="comment">         */</em>
+<a name="155" href="#155">155</a>         jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>());
+<a name="156" href="#156">156</a>         assertExpression(jc, <span class="string">"foo[\&quot;bar\&quot;]"</span>, GET_METHOD_STRING);
+<a name="157" href="#157">157</a>         assertExpression(jc, <span class="string">"foo[\&quot;bar\&quot;] == foo.bar"</span>, Boolean.TRUE);
+<a name="158" href="#158">158</a> 
+<a name="159" href="#159">159</a>     }
+<a name="160" href="#160">160</a> 
+<a name="161" href="#161">161</a>     <strong>public</strong> <strong>void</strong> testMulti()
+<a name="162" href="#162">162</a>          throws Exception
+<a name="163" href="#163">163</a>     {
+<a name="164" href="#164">164</a>         <em class="comment">/*</em>
+<a name="165" href="#165">165</a> <em class="comment">         *  tests a simple property expression</em>
+<a name="166" href="#166">166</a> <em class="comment">         */</em>
+<a name="167" href="#167">167</a>         JexlContext jc = JexlHelper.createContext();
+<a name="168" href="#168">168</a>         jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>() );
+<a name="169" href="#169">169</a>         assertExpression(jc, <span class="string">"foo.innerFoo.bar()"</span>, METHOD_STRING);
+<a name="170" href="#170">170</a>     }
+<a name="171" href="#171">171</a> 
+<a name="172" href="#172">172</a>     <strong>public</strong> <strong>void</strong> testBoolean()
+<a name="173" href="#173">173</a>          throws Exception
+<a name="174" href="#174">174</a>     {
+<a name="175" href="#175">175</a>         JexlContext jc = JexlHelper.createContext();
+<a name="176" href="#176">176</a>         jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>() );
+<a name="177" href="#177">177</a>         jc.getVars().put(<span class="string">"a"</span>, Boolean.TRUE);
+<a name="178" href="#178">178</a>         jc.getVars().put(<span class="string">"b"</span>, Boolean.FALSE);
+<a name="179" href="#179">179</a> 
+<a name="180" href="#180">180</a>         assertExpression(jc, <span class="string">"foo.convertBoolean(a==b)"</span>, <span class="string">"Boolean : false"</span>);
+<a name="181" href="#181">181</a>         assertExpression(jc, <span class="string">"foo.convertBoolean(a==true)"</span>, <span class="string">"Boolean : true"</span>);
+<a name="182" href="#182">182</a>         assertExpression(jc, <span class="string">"foo.convertBoolean(a==false)"</span>, <span class="string">"Boolean : false"</span>);
+<a name="183" href="#183">183</a>         assertExpression(jc, <span class="string">"foo.convertBoolean(true==false)"</span>, <span class="string">"Boolean : false"</span>);
+<a name="184" href="#184">184</a>         assertExpression(jc, <span class="string">"true eq false"</span>, Boolean.FALSE);
+<a name="185" href="#185">185</a>         assertExpression(jc, <span class="string">"true ne false"</span>, Boolean.TRUE);
+<a name="186" href="#186">186</a>     }
+<a name="187" href="#187">187</a> 
+<a name="188" href="#188">188</a>     <strong>public</strong> <strong>void</strong> testStringLit()
+<a name="189" href="#189">189</a>          throws Exception
+<a name="190" href="#190">190</a>     {
+<a name="191" href="#191">191</a>         <em class="comment">/*</em>
+<a name="192" href="#192">192</a> <em class="comment">         *  tests a simple property expression</em>
+<a name="193" href="#193">193</a> <em class="comment">         */</em>
+<a name="194" href="#194">194</a>         JexlContext jc = JexlHelper.createContext();
+<a name="195" href="#195">195</a>         jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>() );
+<a name="196" href="#196">196</a>         assertExpression(jc, <span class="string">"foo.get(\&quot;woogie\&quot;)"</span>, <span class="string">"Repeat : woogie"</span>);
+<a name="197" href="#197">197</a>     }
+<a name="198" href="#198">198</a> 
+<a name="199" href="#199">199</a>     <strong>public</strong> <strong>void</strong> testExpression()
+<a name="200" href="#200">200</a>          throws Exception
+<a name="201" href="#201">201</a>     {
+<a name="202" href="#202">202</a>         JexlContext jc = JexlHelper.createContext();
+<a name="203" href="#203">203</a>         jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>() );
+<a name="204" href="#204">204</a>         jc.getVars().put(<span class="string">"a"</span>, Boolean.TRUE);
+<a name="205" href="#205">205</a>         jc.getVars().put(<span class="string">"b"</span>, Boolean.FALSE);
+<a name="206" href="#206">206</a>         jc.getVars().put(<span class="string">"num"</span>, <strong>new</strong> Integer(5));
+<a name="207" href="#207">207</a>         jc.getVars().put(<span class="string">"now"</span>, Calendar.getInstance().getTime());
+<a name="208" href="#208">208</a>         GregorianCalendar gc = <strong>new</strong> GregorianCalendar(5000, 11, 20);
+<a name="209" href="#209">209</a>         jc.getVars().put(<span class="string">"now2"</span>, gc.getTime());
+<a name="210" href="#210">210</a> 
+<a name="211" href="#211">211</a>         assertExpression(jc, <span class="string">"a == b"</span>, Boolean.FALSE);
+<a name="212" href="#212">212</a>         assertExpression(jc, <span class="string">"a==true"</span>, Boolean.TRUE);
+<a name="213" href="#213">213</a>         assertExpression(jc, <span class="string">"a==false"</span>, Boolean.FALSE);
+<a name="214" href="#214">214</a>         assertExpression(jc, <span class="string">"true==false"</span>, Boolean.FALSE);
+<a name="215" href="#215">215</a>         
+<a name="216" href="#216">216</a>         assertExpression(jc, <span class="string">"2 &lt; 3"</span>, Boolean.TRUE);
+<a name="217" href="#217">217</a>         assertExpression(jc, <span class="string">"num &lt; 5"</span>, Boolean.FALSE);
+<a name="218" href="#218">218</a>         assertExpression(jc, <span class="string">"num &lt; num"</span>, Boolean.FALSE);
+<a name="219" href="#219">219</a>         assertExpression(jc, <span class="string">"num &lt; null"</span>, Boolean.FALSE);
+<a name="220" href="#220">220</a>         assertExpression(jc, <span class="string">"num &lt; 2.5"</span>, Boolean.FALSE);
+<a name="221" href="#221">221</a>         assertExpression(jc, <span class="string">"now2 &lt; now"</span>, Boolean.FALSE); <em class="comment">// test comparable</em>
+<a name="222" href="#222">222</a> <em class="comment">//</em>
+<a name="223" href="#223">223</a>         assertExpression(jc, <span class="string">"'6' &lt;= '5'"</span>, Boolean.FALSE);
+<a name="224" href="#224">224</a>         assertExpression(jc, <span class="string">"num &lt;= 5"</span>, Boolean.TRUE);
+<a name="225" href="#225">225</a>         assertExpression(jc, <span class="string">"num &lt;= num"</span>, Boolean.TRUE);
+<a name="226" href="#226">226</a>         assertExpression(jc, <span class="string">"num &lt;= null"</span>, Boolean.FALSE);
+<a name="227" href="#227">227</a>         assertExpression(jc, <span class="string">"num &lt;= 2.5"</span>, Boolean.FALSE);
+<a name="228" href="#228">228</a>         assertExpression(jc, <span class="string">"now2 &lt;= now"</span>, Boolean.FALSE); <em class="comment">// test comparable</em>
+<a name="229" href="#229">229</a> 
+<a name="230" href="#230">230</a> <em class="comment">//        </em>
+<a name="231" href="#231">231</a>         assertExpression(jc, <span class="string">"'6' >= '5'"</span>, Boolean.TRUE);
+<a name="232" href="#232">232</a>         assertExpression(jc, <span class="string">"num >= 5"</span>, Boolean.TRUE);
+<a name="233" href="#233">233</a>         assertExpression(jc, <span class="string">"num >= num"</span>, Boolean.TRUE);
+<a name="234" href="#234">234</a>         assertExpression(jc, <span class="string">"num >= null"</span>, Boolean.FALSE);
+<a name="235" href="#235">235</a>         assertExpression(jc, <span class="string">"num >= 2.5"</span>, Boolean.TRUE);
+<a name="236" href="#236">236</a>         assertExpression(jc, <span class="string">"now2 >= now"</span>, Boolean.TRUE); <em class="comment">// test comparable</em>
+<a name="237" href="#237">237</a> 
+<a name="238" href="#238">238</a>         assertExpression(jc, <span class="string">"'6' > '5'"</span>, Boolean.TRUE);
+<a name="239" href="#239">239</a>         assertExpression(jc, <span class="string">"num > 4"</span>, Boolean.TRUE);
+<a name="240" href="#240">240</a>         assertExpression(jc, <span class="string">"num > num"</span>, Boolean.FALSE);
+<a name="241" href="#241">241</a>         assertExpression(jc, <span class="string">"num > null"</span>, Boolean.FALSE);
+<a name="242" href="#242">242</a>         assertExpression(jc, <span class="string">"num > 2.5"</span>, Boolean.TRUE);
+<a name="243" href="#243">243</a>         assertExpression(jc, <span class="string">"now2 > now"</span>, Boolean.TRUE); <em class="comment">// test comparable</em>
+<a name="244" href="#244">244</a> 
+<a name="245" href="#245">245</a>         assertExpression(jc, <span class="string">"\&quot;foo\&quot; + \&quot;bar\&quot; == \&quot;foobar\&quot;"</span>, Boolean.TRUE);
+<a name="246" href="#246">246</a> 
+<a name="247" href="#247">247</a>     }
+<a name="248" href="#248">248</a> 
+<a name="249" href="#249">249</a>     <strong>public</strong> <strong>void</strong> testEmpty()
+<a name="250" href="#250">250</a>          throws Exception
+<a name="251" href="#251">251</a>     {
+<a name="252" href="#252">252</a>         JexlContext jc = JexlHelper.createContext();
+<a name="253" href="#253">253</a>         jc.getVars().put(<span class="string">"string"</span>, <span class="string">""</span>);
+<a name="254" href="#254">254</a>         jc.getVars().put(<span class="string">"array"</span>, <strong>new</strong> Object[0]);
+<a name="255" href="#255">255</a>         jc.getVars().put(<span class="string">"map"</span>, <strong>new</strong> HashMap());
+<a name="256" href="#256">256</a>         jc.getVars().put(<span class="string">"list"</span>, <strong>new</strong> ArrayList());
+<a name="257" href="#257">257</a>         jc.getVars().put(<span class="string">"set"</span>, (<strong>new</strong> HashMap()).keySet());
+<a name="258" href="#258">258</a>         jc.getVars().put(<span class="string">"longstring"</span>, <span class="string">"thingthing"</span>);
+<a name="259" href="#259">259</a> 
+<a name="260" href="#260">260</a>         <em class="comment">/*</em>
+<a name="261" href="#261">261</a> <em class="comment">         *  I can't believe anyone thinks this is a syntax.. :)</em>
+<a name="262" href="#262">262</a> <em class="comment">         */</em>
+<a name="263" href="#263">263</a>         assertExpression(jc, <span class="string">"empty nullthing"</span>, Boolean.TRUE);
+<a name="264" href="#264">264</a>         assertExpression(jc, <span class="string">"empty string"</span>, Boolean.TRUE);
+<a name="265" href="#265">265</a>         assertExpression(jc, <span class="string">"empty array"</span>, Boolean.TRUE);
+<a name="266" href="#266">266</a>         assertExpression(jc, <span class="string">"empty map"</span>, Boolean.TRUE);
+<a name="267" href="#267">267</a>         assertExpression(jc, <span class="string">"empty set"</span>, Boolean.TRUE);
+<a name="268" href="#268">268</a>         assertExpression(jc, <span class="string">"empty list"</span>, Boolean.TRUE);
+<a name="269" href="#269">269</a>         assertExpression(jc, <span class="string">"empty longstring"</span>, Boolean.FALSE);
+<a name="270" href="#270">270</a>         assertExpression(jc, <span class="string">"not empty longstring"</span>, Boolean.TRUE);
+<a name="271" href="#271">271</a>     }
+<a name="272" href="#272">272</a> 
+<a name="273" href="#273">273</a>     <strong>public</strong> <strong>void</strong> testSize()
+<a name="274" href="#274">274</a>          throws Exception
+<a name="275" href="#275">275</a>     {
+<a name="276" href="#276">276</a>         JexlContext jc = JexlHelper.createContext();
+<a name="277" href="#277">277</a>         jc.getVars().put(<span class="string">"s"</span>, <span class="string">"five!"</span>);
+<a name="278" href="#278">278</a>         jc.getVars().put(<span class="string">"array"</span>, <strong>new</strong> Object[5]);
+<a name="279" href="#279">279</a> 
+<a name="280" href="#280">280</a>         Map map = <strong>new</strong> HashMap();
+<a name="281" href="#281">281</a> 
+<a name="282" href="#282">282</a>         map.put(<span class="string">"1"</span>, <strong>new</strong> Integer(1));
+<a name="283" href="#283">283</a>         map.put(<span class="string">"2"</span>, <strong>new</strong> Integer(2));
+<a name="284" href="#284">284</a>         map.put(<span class="string">"3"</span>, <strong>new</strong> Integer(3));
+<a name="285" href="#285">285</a>         map.put(<span class="string">"4"</span>, <strong>new</strong> Integer(4));
+<a name="286" href="#286">286</a>         map.put(<span class="string">"5"</span>, <strong>new</strong> Integer(5));
+<a name="287" href="#287">287</a> 
+<a name="288" href="#288">288</a>         jc.getVars().put(<span class="string">"map"</span>, map);
+<a name="289" href="#289">289</a> 
+<a name="290" href="#290">290</a>         List list = <strong>new</strong> ArrayList();
+<a name="291" href="#291">291</a> 
+<a name="292" href="#292">292</a>         list.add(<span class="string">"1"</span>);
+<a name="293" href="#293">293</a>         list.add(<span class="string">"2"</span>);
+<a name="294" href="#294">294</a>         list.add(<span class="string">"3"</span>);
+<a name="295" href="#295">295</a>         list.add(<span class="string">"4"</span>);
+<a name="296" href="#296">296</a>         list.add(<span class="string">"5"</span>);
+<a name="297" href="#297">297</a> 
+<a name="298" href="#298">298</a>         jc.getVars().put(<span class="string">"list"</span>, list);
+<a name="299" href="#299">299</a> 
+<a name="300" href="#300">300</a>         <em class="comment">// 30652 - support for set</em>
+<a name="301" href="#301">301</a>         Set set = <strong>new</strong> HashSet();
+<a name="302" href="#302">302</a>         set.addAll(list);
+<a name="303" href="#303">303</a>         set.add(<span class="string">"1"</span>);
+<a name="304" href="#304">304</a>         
+<a name="305" href="#305">305</a>         jc.getVars().put(<span class="string">"set"</span>, set);
+<a name="306" href="#306">306</a>         
+<a name="307" href="#307">307</a>         <em class="comment">// support generic int size() method</em>
+<a name="308" href="#308">308</a>         BitSet bitset = <strong>new</strong> BitSet(5);
+<a name="309" href="#309">309</a>         jc.getVars().put(<span class="string">"bitset"</span>, bitset);
+<a name="310" href="#310">310</a> 
+<a name="311" href="#311">311</a>         assertExpression(jc, <span class="string">"size(s)"</span>, <strong>new</strong> Integer(5));
+<a name="312" href="#312">312</a>         assertExpression(jc, <span class="string">"size(array)"</span>, <strong>new</strong> Integer(5));
+<a name="313" href="#313">313</a>         assertExpression(jc, <span class="string">"size(list)"</span>, <strong>new</strong> Integer(5));
+<a name="314" href="#314">314</a>         assertExpression(jc, <span class="string">"size(map)"</span>, <strong>new</strong> Integer(5));
+<a name="315" href="#315">315</a>         assertExpression(jc, <span class="string">"size(set)"</span>, <strong>new</strong> Integer(5));
+<a name="316" href="#316">316</a>         assertExpression(jc, <span class="string">"size(bitset)"</span>, <strong>new</strong> Integer(64));
+<a name="317" href="#317">317</a>         assertExpression(jc, <span class="string">"list.size()"</span>, <strong>new</strong> Integer(5));
+<a name="318" href="#318">318</a>         assertExpression(jc, <span class="string">"map.size()"</span>, <strong>new</strong> Integer(5));
+<a name="319" href="#319">319</a>         assertExpression(jc, <span class="string">"set.size()"</span>, <strong>new</strong> Integer(5));
+<a name="320" href="#320">320</a>         assertExpression(jc, <span class="string">"bitset.size()"</span>, <strong>new</strong> Integer(64));
+<a name="321" href="#321">321</a> 
+<a name="322" href="#322">322</a>         assertExpression(jc, <span class="string">"list.get(size(list) - 1)"</span>, <span class="string">"5"</span>);
+<a name="323" href="#323">323</a>         assertExpression(jc, <span class="string">"list[size(list) - 1]"</span>, <span class="string">"5"</span>);
+<a name="324" href="#324">324</a>         assertExpression(jc, <span class="string">"list.get(list.size() - 1)"</span>, <span class="string">"5"</span>);
+<a name="325" href="#325">325</a>     }
+<a name="326" href="#326">326</a> 
+<a name="327" href="#327">327</a>     <strong>public</strong> <strong>void</strong> testSizeAsProperty() throws Exception
+<a name="328" href="#328">328</a>     {
+<a name="329" href="#329">329</a>         JexlContext jc = JexlHelper.createContext();
+<a name="330" href="#330">330</a> 
+<a name="331" href="#331">331</a>         jc.getVars().put(<span class="string">"map"</span>, Collections.singletonMap( <span class="string">"size"</span>, <span class="string">"cheese"</span>));
+<a name="332" href="#332">332</a>         jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>());
+<a name="333" href="#333">333</a> 
+<a name="334" href="#334">334</a>         assertExpression(jc, <span class="string">"map['size']"</span>, <span class="string">"cheese"</span>);
+<a name="335" href="#335">335</a> <em class="comment">// PR - unsure whether or not we should support map.size or force usage of the above 'escaped' version        </em>
+<a name="336" href="#336">336</a> <em class="comment">//        assertExpression(jc, "map.size", "cheese");</em>
+<a name="337" href="#337">337</a>         assertExpression(jc, <span class="string">"foo.getSize()"</span>, <strong>new</strong> Integer(22));
+<a name="338" href="#338">338</a>         <em class="comment">// failing assertion for size property</em>
+<a name="339" href="#339">339</a>         <em class="comment">//assertExpression(jc, "foo.size", new Integer(22));</em>
+<a name="340" href="#340">340</a>     }
+<a name="341" href="#341">341</a> 
+<a name="342" href="#342">342</a>     <em>/**<em>*</em></em>
+<a name="343" href="#343">343</a> <em>      *  test some String method calls</em>
+<a name="344" href="#344">344</a> <em>      */</em>
+<a name="345" href="#345">345</a>     <strong>public</strong> <strong>void</strong> testStringMethods()
+<a name="346" href="#346">346</a>          throws Exception
+<a name="347" href="#347">347</a>     {
+<a name="348" href="#348">348</a>         JexlContext jc = JexlHelper.createContext();
+<a name="349" href="#349">349</a> 
+<a name="350" href="#350">350</a>         jc.getVars().put(<span class="string">"foo"</span>, <span class="string">"abcdef"</span>);
+<a name="351" href="#351">351</a> 
+<a name="352" href="#352">352</a>         assertExpression(jc, <span class="string">"foo.substring(3)"</span>, <span class="string">"def"</span>);
+<a name="353" href="#353">353</a>         assertExpression(jc, <span class="string">"foo.substring(0,(size(foo)-3))"</span>, <span class="string">"abc"</span>);
+<a name="354" href="#354">354</a>         assertExpression(jc, <span class="string">"foo.substring(0,size(foo)-3)"</span>, <span class="string">"abc"</span>);
+<a name="355" href="#355">355</a>         assertExpression(jc, <span class="string">"foo.substring(0,foo.length()-3)"</span>, <span class="string">"abc"</span>);
+<a name="356" href="#356">356</a>         assertExpression(jc, <span class="string">"foo.substring(0, 1+1)"</span>, <span class="string">"ab"</span>);
+<a name="357" href="#357">357</a>     }
+<a name="358" href="#358">358</a> 
+<a name="359" href="#359">359</a> 
+<a name="360" href="#360">360</a> 
+<a name="361" href="#361">361</a>    <em>/**<em>*</em></em>
+<a name="362" href="#362">362</a> <em>    *  test some simple mathematical calculations</em>
+<a name="363" href="#363">363</a> <em>    */</em>
+<a name="364" href="#364">364</a>    <strong>public</strong> <strong>void</strong> testUnaryMinus()
+<a name="365" href="#365">365</a>         throws Exception
+<a name="366" href="#366">366</a>    {
+<a name="367" href="#367">367</a>        JexlContext jc = JexlHelper.createContext();
+<a name="368" href="#368">368</a> 
+<a name="369" href="#369">369</a>        jc.getVars().put(<span class="string">"aByte"</span>, <strong>new</strong> Byte((byte)1));
+<a name="370" href="#370">370</a>        jc.getVars().put(<span class="string">"aShort"</span>, <strong>new</strong> Short((<strong>short</strong>)2));
+<a name="371" href="#371">371</a>        jc.getVars().put(<span class="string">"anInteger"</span>, <strong>new</strong> Integer(3));
+<a name="372" href="#372">372</a>        jc.getVars().put(<span class="string">"aLong"</span>, <strong>new</strong> Long(4));
+<a name="373" href="#373">373</a>        jc.getVars().put(<span class="string">"aFloat"</span>, <strong>new</strong> Float(5.5));
+<a name="374" href="#374">374</a>        jc.getVars().put(<span class="string">"aDouble"</span>, <strong>new</strong> Double(6.6));
+<a name="375" href="#375">375</a>        jc.getVars().put(<span class="string">"aBigInteger"</span>, <strong>new</strong> BigInteger(<span class="string">"7"</span>));
+<a name="376" href="#376">376</a>        jc.getVars().put(<span class="string">"aBigDecimal"</span>, <strong>new</strong> BigDecimal(<span class="string">"8.8"</span>));
+<a name="377" href="#377">377</a>        assertExpression(jc, <span class="string">"-3"</span>, <strong>new</strong> Integer(<span class="string">"-3"</span>));
+<a name="378" href="#378">378</a>        assertExpression(jc, <span class="string">"-3.0"</span>, <strong>new</strong> Float(<span class="string">"-3.0"</span>));
+<a name="379" href="#379">379</a>        assertExpression(jc, <span class="string">"-aByte"</span>, <strong>new</strong> Byte((byte)-1));
+<a name="380" href="#380">380</a>        assertExpression(jc, <span class="string">"-aShort"</span>, <strong>new</strong> Short((<strong>short</strong>)-2));
+<a name="381" href="#381">381</a>        assertExpression(jc, <span class="string">"-anInteger"</span>, <strong>new</strong> Integer(-3));
+<a name="382" href="#382">382</a>        assertExpression(jc, <span class="string">"-aLong"</span>, <strong>new</strong> Long(-4));
+<a name="383" href="#383">383</a>        assertExpression(jc, <span class="string">"-aFloat"</span>, <strong>new</strong> Float(-5.5));
+<a name="384" href="#384">384</a>        assertExpression(jc, <span class="string">"-aDouble"</span>, <strong>new</strong> Double(-6.6));
+<a name="385" href="#385">385</a>        assertExpression(jc, <span class="string">"-aBigInteger"</span>, <strong>new</strong> BigInteger(<span class="string">"-7"</span>));
+<a name="386" href="#386">386</a>        assertExpression(jc, <span class="string">"-aBigDecimal"</span>, <strong>new</strong> BigDecimal(<span class="string">"-8.8"</span>));
+<a name="387" href="#387">387</a>    }
+<a name="388" href="#388">388</a> 
+<a name="389" href="#389">389</a>     
+<a name="390" href="#390">390</a>     <em>/**<em>*</em></em>
+<a name="391" href="#391">391</a> <em>      *  test some simple mathematical calculations</em>
+<a name="392" href="#392">392</a> <em>      */</em>
+<a name="393" href="#393">393</a>     <strong>public</strong> <strong>void</strong> testCalculations()
+<a name="394" href="#394">394</a>          throws Exception
+<a name="395" href="#395">395</a>     {
+<a name="396" href="#396">396</a>         JexlContext jc = JexlHelper.createContext();
+<a name="397" href="#397">397</a> 
+<a name="398" href="#398">398</a>         jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> Integer(2) );
+<a name="399" href="#399">399</a> 
+<a name="400" href="#400">400</a>         assertExpression(jc, <span class="string">"foo + 2"</span>, <strong>new</strong> Long(4));
+<a name="401" href="#401">401</a>         assertExpression(jc, <span class="string">"3 + 3"</span>, <strong>new</strong> Long(6));
+<a name="402" href="#402">402</a>         assertExpression(jc, <span class="string">"3 + 3 + foo"</span>, <strong>new</strong> Long(8));
+<a name="403" href="#403">403</a>         assertExpression(jc, <span class="string">"3 * 3"</span>, <strong>new</strong> Long(9));
+<a name="404" href="#404">404</a>         assertExpression(jc, <span class="string">"3 * 3 + foo"</span>, <strong>new</strong> Long(11));
+<a name="405" href="#405">405</a>         assertExpression(jc, <span class="string">"3 * 3 - foo"</span>, <strong>new</strong> Long(7));
+<a name="406" href="#406">406</a> 
+<a name="407" href="#407">407</a>         <em class="comment">/*</em>
+<a name="408" href="#408">408</a> <em class="comment">         * test some floaty stuff</em>
+<a name="409" href="#409">409</a> <em class="comment">         */</em>
+<a name="410" href="#410">410</a>         assertExpression(jc, <span class="string">"3 * \&quot;3.0\&quot;"</span>, <strong>new</strong> Double(9));
+<a name="411" href="#411">411</a>         assertExpression(jc, <span class="string">"3 * 3.0"</span>, <strong>new</strong> Double(9));
+<a name="412" href="#412">412</a> 
+<a name="413" href="#413">413</a>         <em class="comment">/*</em>
+<a name="414" href="#414">414</a> <em class="comment">         *  test / and %</em>
+<a name="415" href="#415">415</a> <em class="comment">         */</em>
+<a name="416" href="#416">416</a>         assertExpression(jc, <span class="string">"6 / 3"</span>, <strong>new</strong> Double(6/3));
+<a name="417" href="#417">417</a>         assertExpression(jc, <span class="string">"6.4 / 3"</span>, <strong>new</strong> Double(6.4 / 3));
+<a name="418" href="#418">418</a>         assertExpression(jc, <span class="string">"0 / 3"</span>, <strong>new</strong> Double(0 / 3));
+<a name="419" href="#419">419</a>         assertExpression(jc, <span class="string">"3 / 0"</span>, <strong>new</strong> Double(0));
+<a name="420" href="#420">420</a>         assertExpression(jc, <span class="string">"4 % 3"</span>, <strong>new</strong> Long(1));
+<a name="421" href="#421">421</a>         assertExpression(jc, <span class="string">"4.8 % 3"</span>, <strong>new</strong> Double(4.8 % 3));
+<a name="422" href="#422">422</a> 
+<a name="423" href="#423">423</a>         <em class="comment">/*</em>
+<a name="424" href="#424">424</a> <em class="comment">         * test to ensure new string cat works</em>
+<a name="425" href="#425">425</a> <em class="comment">         */</em>
+<a name="426" href="#426">426</a>         jc.getVars().put(<span class="string">"stringy"</span>, <span class="string">"thingy"</span> );
+<a name="427" href="#427">427</a>         assertExpression(jc, <span class="string">"stringy + 2"</span>, <span class="string">"thingy2"</span>);
+<a name="428" href="#428">428</a> 
+<a name="429" href="#429">429</a>         <em class="comment">/*</em>
+<a name="430" href="#430">430</a> <em class="comment">         * test new null coersion</em>
+<a name="431" href="#431">431</a> <em class="comment">         */</em>
+<a name="432" href="#432">432</a>         jc.getVars().put(<span class="string">"imanull"</span>, <strong>null</strong> );
+<a name="433" href="#433">433</a>         assertExpression(jc, <span class="string">"imanull + 2"</span>, <strong>new</strong> Long(2));
+<a name="434" href="#434">434</a>         assertExpression(jc, <span class="string">"imanull + imanull"</span>, <strong>new</strong> Long(0));
+<a name="435" href="#435">435</a>         
+<a name="436" href="#436">436</a>         <em class="comment">/*<em class="comment"> test for bugzilla 31577 */</em></em>
+<a name="437" href="#437">437</a>         jc.getVars().put(<span class="string">"n"</span>, <strong>new</strong> Integer(0));
+<a name="438" href="#438">438</a>         assertExpression(jc, <span class="string">"n != null &amp;&amp; n != 0"</span>, Boolean.FALSE);
+<a name="439" href="#439">439</a>     }
+<a name="440" href="#440">440</a> 
+<a name="441" href="#441">441</a>     <em>/**<em>*</em></em>
+<a name="442" href="#442">442</a> <em>      *  test some simple conditions</em>
+<a name="443" href="#443">443</a> <em>      */</em>
+<a name="444" href="#444">444</a>     <strong>public</strong> <strong>void</strong> testConditions()
+<a name="445" href="#445">445</a>          throws Exception
+<a name="446" href="#446">446</a>     {
+<a name="447" href="#447">447</a>         JexlContext jc = JexlHelper.createContext();
+<a name="448" href="#448">448</a>         jc.getVars().put(<span class="string">"foo"</span>, <strong>new</strong> Integer(2) );
+<a name="449" href="#449">449</a>         jc.getVars().put(<span class="string">"aFloat"</span>, <strong>new</strong> Float(1));
+<a name="450" href="#450">450</a>         jc.getVars().put(<span class="string">"aDouble"</span>, <strong>new</strong> Double(2));
+<a name="451" href="#451">451</a>         jc.getVars().put(<span class="string">"aChar"</span>, <strong>new</strong> Character('A'));
+<a name="452" href="#452">452</a>         jc.getVars().put(<span class="string">"aBool"</span>, Boolean.TRUE);
+<a name="453" href="#453">453</a>         StringBuffer buffer = <strong>new</strong> StringBuffer(<span class="string">"abc"</span>);
+<a name="454" href="#454">454</a>         List list = <strong>new</strong> ArrayList();
+<a name="455" href="#455">455</a>         List list2 = <strong>new</strong> LinkedList();
+<a name="456" href="#456">456</a>         jc.getVars().put(<span class="string">"aBuffer"</span>, buffer);
+<a name="457" href="#457">457</a>         jc.getVars().put(<span class="string">"aList"</span>, list);
+<a name="458" href="#458">458</a>         jc.getVars().put(<span class="string">"bList"</span>, list2);
+<a name="459" href="#459">459</a>         
+<a name="460" href="#460">460</a>         assertExpression(jc, <span class="string">"foo == 2"</span>, Boolean.TRUE);
+<a name="461" href="#461">461</a>         assertExpression(jc, <span class="string">"2 == 3"</span>, Boolean.FALSE);
+<a name="462" href="#462">462</a>         assertExpression(jc, <span class="string">"3 == foo"</span>, Boolean.FALSE);
+<a name="463" href="#463">463</a>         assertExpression(jc, <span class="string">"3 != foo"</span>, Boolean.TRUE);
+<a name="464" href="#464">464</a>         assertExpression(jc, <span class="string">"foo != 2"</span>, Boolean.FALSE);
+<a name="465" href="#465">465</a>         <em class="comment">// test float and double equality</em>
+<a name="466" href="#466">466</a>         assertExpression(jc, <span class="string">"aFloat eq aDouble"</span>, Boolean.FALSE);
+<a name="467" href="#467">467</a>         assertExpression(jc, <span class="string">"aFloat ne aDouble"</span>, Boolean.TRUE);
+<a name="468" href="#468">468</a>         assertExpression(jc, <span class="string">"aFloat == aDouble"</span>, Boolean.FALSE);
+<a name="469" href="#469">469</a>         assertExpression(jc, <span class="string">"aFloat != aDouble"</span>, Boolean.TRUE);
+<a name="470" href="#470">470</a>         <em class="comment">// test number and character equality</em>
+<a name="471" href="#471">471</a>         assertExpression(jc, <span class="string">"foo == aChar"</span>, Boolean.FALSE);
+<a name="472" href="#472">472</a>         assertExpression(jc, <span class="string">"foo != aChar"</span>, Boolean.TRUE);
+<a name="473" href="#473">473</a>         <em class="comment">// test string and boolean</em>
+<a name="474" href="#474">474</a>         assertExpression(jc, <span class="string">"aBool == 'true'"</span>, Boolean.TRUE);
+<a name="475" href="#475">475</a>         assertExpression(jc, <span class="string">"aBool == 'false'"</span>, Boolean.FALSE);
+<a name="476" href="#476">476</a>         assertExpression(jc, <span class="string">"aBool != 'false'"</span>, Boolean.TRUE);
+<a name="477" href="#477">477</a>         <em class="comment">// test null and boolean</em>
+<a name="478" href="#478">478</a>         assertExpression(jc, <span class="string">"aBool == notThere"</span>, Boolean.FALSE);
+<a name="479" href="#479">479</a>         assertExpression(jc, <span class="string">"aBool != notThere"</span>, Boolean.TRUE);
+<a name="480" href="#480">480</a>         <em class="comment">// anything and string as a string comparison</em>
+<a name="481" href="#481">481</a>         assertExpression(jc, <span class="string">"aBuffer == 'abc'"</span>, Boolean.TRUE);
+<a name="482" href="#482">482</a>         assertExpression(jc, <span class="string">"aBuffer != 'abc'"</span>, Boolean.FALSE);
+<a name="483" href="#483">483</a>         <em class="comment">// arbitrary equals</em>
+<a name="484" href="#484">484</a>         assertExpression(jc, <span class="string">"aList == bList"</span>, Boolean.TRUE);
+<a name="485" href="#485">485</a>         assertExpression(jc, <span class="string">"aList != bList"</span>, Boolean.FALSE);
+<a name="486" href="#486">486</a>     }
+<a name="487" href="#487">487</a> 
+<a name="488" href="#488">488</a>     <em>/**<em>*</em></em>
+<a name="489" href="#489">489</a> <em>      *  test some simple conditions</em>
+<a name="490" href="#490">490</a> <em>      */</em>
+<a name="491" href="#491">491</a>     <strong>public</strong> <strong>void</strong> testNotConditions()
+<a name="492" href="#492">492</a>          throws Exception
+<a name="493" href="#493">493</a>     {
+<a name="494" href="#494">494</a>         JexlContext jc = JexlHelper.createContext();
+<a name="495" href="#495">495</a> 
+<a name="496" href="#496">496</a>         <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a> foo = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="497" href="#497">497</a>         jc.getVars().put(<span class="string">"x"</span>, Boolean.TRUE );
+<a name="498" href="#498">498</a>         jc.getVars().put(<span class="string">"foo"</span>, foo );
+<a name="499" href="#499">499</a>         jc.getVars().put(<span class="string">"bar"</span>, <span class="string">"true"</span> );
+<a name="500" href="#500">500</a> 
+<a name="501" href="#501">501</a>         assertExpression(jc, <span class="string">"!x"</span>, Boolean.FALSE);
+<a name="502" href="#502">502</a>         assertExpression(jc, <span class="string">"x"</span>, Boolean.TRUE);
+<a name="503" href="#503">503</a>         assertExpression(jc, <span class="string">"!bar"</span>, Boolean.FALSE);
+<a name="504" href="#504">504</a>         assertExpression(jc, <span class="string">"!foo.isSimple()"</span>, Boolean.FALSE);
+<a name="505" href="#505">505</a>         assertExpression(jc, <span class="string">"foo.isSimple()"</span>, Boolean.TRUE);
+<a name="506" href="#506">506</a>         assertExpression(jc, <span class="string">"!foo.simple"</span>, Boolean.FALSE);
+<a name="507" href="#507">507</a>         assertExpression(jc, <span class="string">"foo.simple"</span>, Boolean.TRUE);
+<a name="508" href="#508">508</a>         assertExpression(jc, <span class="string">"foo.getCheeseList().size() == 3"</span>, Boolean.TRUE);
+<a name="509" href="#509">509</a>         assertExpression(jc, <span class="string">"foo.cheeseList.size() == 3"</span>, Boolean.TRUE);
+<a name="510" href="#510">510</a> 
+<a name="511" href="#511">511</a>         jc.getVars().put(<span class="string">"string"</span>, <span class="string">""</span>);
+<a name="512" href="#512">512</a>         assertExpression(jc, <span class="string">"not empty string"</span>, Boolean.FALSE);
+<a name="513" href="#513">513</a>         assertExpression(jc, <span class="string">"not(empty string)"</span>, Boolean.FALSE);
+<a name="514" href="#514">514</a>         assertExpression(jc, <span class="string">"not empty(string)"</span>, Boolean.FALSE);
+<a name="515" href="#515">515</a>         assertExpression(jc, <span class="string">"! empty string"</span>, Boolean.FALSE);
+<a name="516" href="#516">516</a>         assertExpression(jc, <span class="string">"!(empty string)"</span>, Boolean.FALSE);
+<a name="517" href="#517">517</a>         assertExpression(jc, <span class="string">"!empty(string)"</span>, Boolean.FALSE);
+<a name="518" href="#518">518</a> 
+<a name="519" href="#519">519</a>     }
+<a name="520" href="#520">520</a> 
+<a name="521" href="#521">521</a> 
+<a name="522" href="#522">522</a>     <em>/**<em>*</em></em>
+<a name="523" href="#523">523</a> <em>      *  GMJ : disabled - need to fix</em>
+<a name="524" href="#524">524</a> <em>      *</em>
+<a name="525" href="#525">525</a> <em>      *  test some simple conditions</em>
+<a name="526" href="#526">526</a> <em>      */</em>
+<a name="527" href="#527">527</a>     <strong>public</strong> <strong>void</strong> testNotConditionsWithDots()
+<a name="528" href="#528">528</a>          throws Exception
+<a name="529" href="#529">529</a>     {
+<a name="530" href="#530">530</a>         JexlContext jc = JexlHelper.createContext();
+<a name="531" href="#531">531</a> 
+<a name="532" href="#532">532</a>         jc.getVars().put(<span class="string">"x.a"</span>, Boolean.TRUE );
+<a name="533" href="#533">533</a>         jc.getVars().put(<span class="string">"x.b"</span>, Boolean.FALSE );
+<a name="534" href="#534">534</a> 
+<a name="535" href="#535">535</a>         assertExpression(jc, <span class="string">"x.a"</span>, Boolean.TRUE);
+<a name="536" href="#536">536</a>         assertExpression(jc, <span class="string">"!x.a"</span>, Boolean.FALSE);
+<a name="537" href="#537">537</a>         assertExpression(jc, <span class="string">"!x.b"</span>, Boolean.TRUE);
+<a name="538" href="#538">538</a>     }
+<a name="539" href="#539">539</a> 
+<a name="540" href="#540">540</a>     <em>/**<em>*</em></em>
+<a name="541" href="#541">541</a> <em>      *  test some simple conditions</em>
+<a name="542" href="#542">542</a> <em>      */</em>
+<a name="543" href="#543">543</a>     <strong>public</strong> <strong>void</strong> testComparisons()
+<a name="544" href="#544">544</a>          throws Exception
+<a name="545" href="#545">545</a>     {
+<a name="546" href="#546">546</a>         JexlContext jc = JexlHelper.createContext();
+<a name="547" href="#547">547</a>         jc.getVars().put(<span class="string">"foo"</span>, <span class="string">"the quick and lazy fox"</span> );
+<a name="548" href="#548">548</a> 
+<a name="549" href="#549">549</a>         assertExpression(jc, <span class="string">"foo.indexOf('quick') > 0"</span>, Boolean.TRUE);
+<a name="550" href="#550">550</a>         assertExpression(jc, <span class="string">"foo.indexOf('bar') >= 0"</span>, Boolean.FALSE);
+<a name="551" href="#551">551</a>         assertExpression(jc, <span class="string">"foo.indexOf('bar') &lt; 0"</span>, Boolean.TRUE);
+<a name="552" href="#552">552</a>     }
+<a name="553" href="#553">553</a> 
+<a name="554" href="#554">554</a>     <em>/**<em>*</em></em>
+<a name="555" href="#555">555</a> <em>      *  test some null conditions</em>
+<a name="556" href="#556">556</a> <em>      */</em>
+<a name="557" href="#557">557</a>     <strong>public</strong> <strong>void</strong> testNull()
+<a name="558" href="#558">558</a>          throws Exception
+<a name="559" href="#559">559</a>     {
+<a name="560" href="#560">560</a>         JexlContext jc = JexlHelper.createContext();
+<a name="561" href="#561">561</a>         jc.getVars().put(<span class="string">"bar"</span>, <strong>new</strong> Integer(2) );
+<a name="562" href="#562">562</a> 
+<a name="563" href="#563">563</a>         assertExpression(jc, <span class="string">"empty foo"</span>, Boolean.TRUE);
+<a name="564" href="#564">564</a>         assertExpression(jc, <span class="string">"bar == null"</span>, Boolean.FALSE);
+<a name="565" href="#565">565</a>         assertExpression(jc, <span class="string">"foo == null"</span>, Boolean.TRUE);
+<a name="566" href="#566">566</a>         assertExpression(jc, <span class="string">"bar != null"</span>, Boolean.TRUE);
+<a name="567" href="#567">567</a>         assertExpression(jc, <span class="string">"foo != null"</span>, Boolean.FALSE);
+<a name="568" href="#568">568</a>         assertExpression(jc, <span class="string">"empty(bar)"</span>, Boolean.FALSE);
+<a name="569" href="#569">569</a>         assertExpression(jc, <span class="string">"empty(foo)"</span>, Boolean.TRUE);
+<a name="570" href="#570">570</a>     }
+<a name="571" href="#571">571</a> 
+<a name="572" href="#572">572</a>     <em>/**<em>*</em></em>
+<a name="573" href="#573">573</a> <em>      *  test some blank strings</em>
+<a name="574" href="#574">574</a> <em>      */</em>
+<a name="575" href="#575">575</a>     <strong>public</strong> <strong>void</strong> testBlankStrings()
+<a name="576" href="#576">576</a>          throws Exception
+<a name="577" href="#577">577</a>     {
+<a name="578" href="#578">578</a>         JexlContext jc = JexlHelper.createContext();
+<a name="579" href="#579">579</a>         jc.getVars().put(<span class="string">"bar"</span>, <span class="string">""</span> );
+<a name="580" href="#580">580</a> 
+<a name="581" href="#581">581</a>         assertExpression(jc, <span class="string">"foo == ''"</span>, Boolean.FALSE);
+<a name="582" href="#582">582</a>         assertExpression(jc, <span class="string">"bar == ''"</span>, Boolean.TRUE);
+<a name="583" href="#583">583</a>         assertExpression(jc, <span class="string">"barnotexist == ''"</span>, Boolean.FALSE);
+<a name="584" href="#584">584</a>         assertExpression(jc, <span class="string">"empty bar"</span>, Boolean.TRUE);
+<a name="585" href="#585">585</a>         assertExpression(jc, <span class="string">"bar.length() == 0"</span>, Boolean.TRUE);
+<a name="586" href="#586">586</a>         assertExpression(jc, <span class="string">"size(bar) == 0"</span>, Boolean.TRUE);
+<a name="587" href="#587">587</a>     }
+<a name="588" href="#588">588</a> 
+<a name="589" href="#589">589</a>     <em>/**<em>*</em></em>
+<a name="590" href="#590">590</a> <em>      *  test some blank strings</em>
+<a name="591" href="#591">591</a> <em>      */</em>
+<a name="592" href="#592">592</a>     <strong>public</strong> <strong>void</strong> testLogicExpressions()
+<a name="593" href="#593">593</a>          throws Exception
+<a name="594" href="#594">594</a>     {
+<a name="595" href="#595">595</a>         JexlContext jc = JexlHelper.createContext();
+<a name="596" href="#596">596</a>         jc.getVars().put(<span class="string">"foo"</span>, <span class="string">"abc"</span> );
+<a name="597" href="#597">597</a>         jc.getVars().put(<span class="string">"bar"</span>, <span class="string">"def"</span> );
+<a name="598" href="#598">598</a> 
+<a name="599" href="#599">599</a>         assertExpression(jc, <span class="string">"foo == 'abc' || bar == 'abc'"</span>, Boolean.TRUE);
+<a name="600" href="#600">600</a>         assertExpression(jc, <span class="string">"foo == 'abc' or bar == 'abc'"</span>, Boolean.TRUE);
+<a name="601" href="#601">601</a>         assertExpression(jc, <span class="string">"foo == 'abc' &amp;&amp; bar == 'abc'"</span>, Boolean.FALSE);
+<a name="602" href="#602">602</a>         assertExpression(jc, <span class="string">"foo == 'abc' and bar == 'abc'"</span>, Boolean.FALSE);
+<a name="603" href="#603">603</a> 
+<a name="604" href="#604">604</a>         assertExpression(jc, <span class="string">"foo == 'def' || bar == 'abc'"</span>, Boolean.FALSE);
+<a name="605" href="#605">605</a>         assertExpression(jc, <span class="string">"foo == 'def' or bar == 'abc'"</span>, Boolean.FALSE);
+<a name="606" href="#606">606</a>         assertExpression(jc, <span class="string">"foo == 'abc' &amp;&amp; bar == 'def'"</span>, Boolean.TRUE);
+<a name="607" href="#607">607</a>         assertExpression(jc, <span class="string">"foo == 'abc' and bar == 'def'"</span>, Boolean.TRUE);
+<a name="608" href="#608">608</a>     }
+<a name="609" href="#609">609</a> 
+<a name="610" href="#610">610</a> 
+<a name="611" href="#611">611</a>     <em>/**<em>*</em></em>
+<a name="612" href="#612">612</a> <em>      *  test some simple double array lookups</em>
+<a name="613" href="#613">613</a> <em>      */</em>
+<a name="614" href="#614">614</a>     <strong>public</strong> <strong>void</strong> testDoubleArrays()
+<a name="615" href="#615">615</a>          throws Exception
+<a name="616" href="#616">616</a>     {
+<a name="617" href="#617">617</a>         JexlContext jc = JexlHelper.createContext();
+<a name="618" href="#618">618</a> 
+<a name="619" href="#619">619</a>         Object[][] foo = <strong>new</strong> Object[2][2];
+<a name="620" href="#620">620</a>         foo[0][0] = <span class="string">"one"</span>;
+<a name="621" href="#621">621</a>         foo[0][1] = <span class="string">"two"</span>;
+<a name="622" href="#622">622</a> 
+<a name="623" href="#623">623</a>         jc.getVars().put(<span class="string">"foo"</span>, foo );
+<a name="624" href="#624">624</a> 
+<a name="625" href="#625">625</a>         assertExpression(jc, <span class="string">"foo[0][1]"</span>, <span class="string">"two"</span>);
+<a name="626" href="#626">626</a>     }
+<a name="627" href="#627">627</a> 
+<a name="628" href="#628">628</a>     <em>/**<em>*</em></em>
+<a name="629" href="#629">629</a> <em>      *  test variables with underscore names</em>
+<a name="630" href="#630">630</a> <em>      */</em>
+<a name="631" href="#631">631</a>     <strong>public</strong> <strong>void</strong> testVariableNames()
+<a name="632" href="#632">632</a>          throws Exception
+<a name="633" href="#633">633</a>     {
+<a name="634" href="#634">634</a>         JexlContext jc = JexlHelper.createContext();
+<a name="635" href="#635">635</a>         jc.getVars().put(<span class="string">"foo_bar"</span>, <span class="string">"123"</span> );
+<a name="636" href="#636">636</a>         
+<a name="637" href="#637">637</a>         assertExpression(jc, <span class="string">"foo_bar"</span>, <span class="string">"123"</span>);
+<a name="638" href="#638">638</a>     }
+<a name="639" href="#639">639</a> 
+<a name="640" href="#640">640</a>     <em>/**<em>*</em></em>
+<a name="641" href="#641">641</a> <em>      *  test the use of dot notation to lookup map entries</em>
+<a name="642" href="#642">642</a> <em>      */</em>
+<a name="643" href="#643">643</a>     <strong>public</strong> <strong>void</strong> testMapDot()
+<a name="644" href="#644">644</a>          throws Exception
+<a name="645" href="#645">645</a>     {
+<a name="646" href="#646">646</a>         Map foo = <strong>new</strong> HashMap();
+<a name="647" href="#647">647</a>         foo.put( <span class="string">"bar"</span>, <span class="string">"123"</span> );
+<a name="648" href="#648">648</a> 
+<a name="649" href="#649">649</a>         JexlContext jc = JexlHelper.createContext();
+<a name="650" href="#650">650</a>         jc.getVars().put(<span class="string">"foo"</span>, foo );
+<a name="651" href="#651">651</a>         
+<a name="652" href="#652">652</a>         assertExpression(jc, <span class="string">"foo.bar"</span>, <span class="string">"123"</span>);
+<a name="653" href="#653">653</a>     }
+<a name="654" href="#654">654</a> 
+<a name="655" href="#655">655</a>     <em>/**<em>*</em></em>
+<a name="656" href="#656">656</a> <em>     *  Tests string literals</em>
+<a name="657" href="#657">657</a> <em>     */</em>
+<a name="658" href="#658">658</a>     <strong>public</strong> <strong>void</strong> testStringLiterals()
+<a name="659" href="#659">659</a>         throws Exception
+<a name="660" href="#660">660</a>     {
+<a name="661" href="#661">661</a>         JexlContext jc = JexlHelper.createContext();
+<a name="662" href="#662">662</a>         jc.getVars().put(<span class="string">"foo"</span>, <span class="string">"bar"</span> );
+<a name="663" href="#663">663</a> 
+<a name="664" href="#664">664</a>         assertExpression(jc, <span class="string">"foo == \&quot;bar\&quot;"</span>, Boolean.TRUE);
+<a name="665" href="#665">665</a>         assertExpression(jc, <span class="string">"foo == 'bar'"</span>, Boolean.TRUE);
+<a name="666" href="#666">666</a>     }
+<a name="667" href="#667">667</a> 
+<a name="668" href="#668">668</a>     <em>/**<em>*</em></em>
+<a name="669" href="#669">669</a> <em>      *  test the use of an int based property</em>
+<a name="670" href="#670">670</a> <em>      */</em>
+<a name="671" href="#671">671</a>     <strong>public</strong> <strong>void</strong> testIntProperty()
+<a name="672" href="#672">672</a>          throws Exception
+<a name="673" href="#673">673</a>     {
+<a name="674" href="#674">674</a>         <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a> foo = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="675" href="#675">675</a> 
+<a name="676" href="#676">676</a>         <em class="comment">// lets check the square function first..</em>
+<a name="677" href="#677">677</a>         assertEquals(4, foo.square(2));
+<a name="678" href="#678">678</a>         assertEquals(4, foo.square(-2));
+<a name="679" href="#679">679</a> 
+<a name="680" href="#680">680</a>         JexlContext jc = JexlHelper.createContext();
+<a name="681" href="#681">681</a>         jc.getVars().put(<span class="string">"foo"</span>, foo );
+<a name="682" href="#682">682</a> 
+<a name="683" href="#683">683</a>         assertExpression(jc, <span class="string">"foo.count"</span>, <strong>new</strong> Integer(5));
+<a name="684" href="#684">684</a>         assertExpression(jc, <span class="string">"foo.square(2)"</span>, <strong>new</strong> Integer(4));
+<a name="685" href="#685">685</a>         assertExpression(jc, <span class="string">"foo.square(-2)"</span>, <strong>new</strong> Integer(4));
+<a name="686" href="#686">686</a>     }
+<a name="687" href="#687">687</a> 
+<a name="688" href="#688">688</a>     <em>/**<em>*</em></em>
+<a name="689" href="#689">689</a> <em>      *  test the -1 comparison bug</em>
+<a name="690" href="#690">690</a> <em>      */</em>
+<a name="691" href="#691">691</a>     <strong>public</strong> <strong>void</strong> testNegativeIntComparison()
+<a name="692" href="#692">692</a>          throws Exception
+<a name="693" href="#693">693</a>     {
+<a name="694" href="#694">694</a>         JexlContext jc = JexlHelper.createContext();
+<a name="695" href="#695">695</a>         <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a> foo = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="696" href="#696">696</a>         jc.getVars().put(<span class="string">"foo"</span>, foo );
+<a name="697" href="#697">697</a> 
+<a name="698" href="#698">698</a>         assertExpression(jc, <span class="string">"foo.count != -1"</span>, Boolean.TRUE);
+<a name="699" href="#699">699</a>         assertExpression(jc, <span class="string">"foo.count == 5"</span>, Boolean.TRUE);
+<a name="700" href="#700">700</a>         assertExpression(jc, <span class="string">"foo.count == -1"</span>, Boolean.FALSE);
+<a name="701" href="#701">701</a>     }
+<a name="702" href="#702">702</a> 
+<a name="703" href="#703">703</a>     <strong>public</strong> <strong>void</strong> testArrayProperty()
+<a name="704" href="#704">704</a>         throws Exception
+<a name="705" href="#705">705</a>     {
+<a name="706" href="#706">706</a>         <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a> foo = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="707" href="#707">707</a> 
+<a name="708" href="#708">708</a>         JexlContext jc = JexlHelper.createContext();
+<a name="709" href="#709">709</a>         jc.getVars().put(<span class="string">"foo"</span>, foo );
+<a name="710" href="#710">710</a> 
+<a name="711" href="#711">711</a>         assertExpression(jc, <span class="string">"foo.array[1]"</span>, GET_METHOD_ARRAY[1]);
+<a name="712" href="#712">712</a>         assertExpression(jc, <span class="string">"foo.array.1"</span>, GET_METHOD_ARRAY[1]);
+<a name="713" href="#713">713</a>         assertExpression(jc, <span class="string">"foo.array2[1][1]"</span>, GET_METHOD_ARRAY2[1][1]);
+<a name="714" href="#714">714</a>         <em class="comment">//assertExpression(jc, "foo.array2.1.1", GET_METHOD_ARRAY2[1][1]);</em>
+<a name="715" href="#715">715</a>     }
+<a name="716" href="#716">716</a> 
+<a name="717" href="#717">717</a>     <em>/**<em>*</em></em>
+<a name="718" href="#718">718</a> <em>     * Attempts to recreate bug <a href="http://jira.werken.com/ViewIssue.jspa?key=JELLY-8" target="alexandria_uri">http://jira.werken.com/ViewIssue.jspa?key=JELLY-8</a></em>
+<a name="719" href="#719">719</a> <em>     */</em>
+<a name="720" href="#720">720</a>     <strong>public</strong> <strong>void</strong> testCharAtBug()
+<a name="721" href="#721">721</a>         throws Exception
+<a name="722" href="#722">722</a>     {
+<a name="723" href="#723">723</a>         JexlContext jc = JexlHelper.createContext();
+<a name="724" href="#724">724</a> 
+<a name="725" href="#725">725</a>         jc.getVars().put(<span class="string">"foo"</span>, <span class="string">"abcdef"</span>);
+<a name="726" href="#726">726</a> 
+<a name="727" href="#727">727</a>         assertExpression(jc, <span class="string">"foo.substring(2,4)"</span>, <span class="string">"cd"</span>);
+<a name="728" href="#728">728</a>         assertExpression(jc, <span class="string">"foo.charAt(2)"</span>, <strong>new</strong> Character('c'));
+<a name="729" href="#729">729</a> 
+<a name="730" href="#730">730</a>         <strong>try</strong> {
+<a name="731" href="#731">731</a>             assertExpression(jc, <span class="string">"foo.charAt(-2)"</span>, <strong>null</strong>);
+<a name="732" href="#732">732</a>             fail(<span class="string">"this test should have thrown an exception"</span> );
+<a name="733" href="#733">733</a>         }
+<a name="734" href="#734">734</a>         <strong>catch</strong> (IndexOutOfBoundsException e) {
+<a name="735" href="#735">735</a>             <em class="comment">// expected behaviour</em>
+<a name="736" href="#736">736</a>         }
+<a name="737" href="#737">737</a>         <strong>catch</strong> (Exception e) {
+<a name="738" href="#738">738</a>             <strong>throw</strong> e;
+<a name="739" href="#739">739</a>         }
+<a name="740" href="#740">740</a>     }
+<a name="741" href="#741">741</a> 
+<a name="742" href="#742">742</a>     <strong>public</strong> <strong>void</strong> testEmptyDottedVariableName() throws Exception
+<a name="743" href="#743">743</a>     {
+<a name="744" href="#744">744</a>         JexlContext jc = JexlHelper.createContext();
+<a name="745" href="#745">745</a> 
+<a name="746" href="#746">746</a>         jc.getVars().put( <span class="string">"this.is.a.test"</span>, <span class="string">""</span>);
+<a name="747" href="#747">747</a> 
+<a name="748" href="#748">748</a>         assertExpression(jc, <span class="string">"empty(this.is.a.test)"</span>, Boolean.TRUE);
+<a name="749" href="#749">749</a>     }
+<a name="750" href="#750">750</a> 
+<a name="751" href="#751">751</a>     <strong>public</strong> <strong>void</strong> testEmptySubListOfMap() throws Exception
+<a name="752" href="#752">752</a>     {
+<a name="753" href="#753">753</a>         JexlContext jc = JexlHelper.createContext();
+<a name="754" href="#754">754</a>         Map m = Collections.singletonMap(<span class="string">"aList"</span>, Collections.EMPTY_LIST);
+<a name="755" href="#755">755</a> 
+<a name="756" href="#756">756</a>         jc.getVars().put( <span class="string">"aMap"</span>, m );
+<a name="757" href="#757">757</a> 
+<a name="758" href="#758">758</a>         assertExpression( jc, <span class="string">"empty( aMap.aList )"</span>, Boolean.TRUE );
+<a name="759" href="#759">759</a>     }
+<a name="760" href="#760">760</a> 
+<a name="761" href="#761">761</a>     <strong>public</strong> <strong>void</strong> testCoercionWithComparisionOperators()
+<a name="762" href="#762">762</a>         throws Exception
+<a name="763" href="#763">763</a>     {
+<a name="764" href="#764">764</a>         JexlContext jc = JexlHelper.createContext();
+<a name="765" href="#765">765</a> 
+<a name="766" href="#766">766</a>         assertExpression(jc, <span class="string">"'2' > 1"</span>, Boolean.TRUE);
+<a name="767" href="#767">767</a>         assertExpression(jc, <span class="string">"'2' >= 1"</span>, Boolean.TRUE);
+<a name="768" href="#768">768</a>         assertExpression(jc, <span class="string">"'2' >= 2"</span>, Boolean.TRUE);
+<a name="769" href="#769">769</a>         assertExpression(jc, <span class="string">"'2' &lt; 1"</span>, Boolean.FALSE);
+<a name="770" href="#770">770</a>         assertExpression(jc, <span class="string">"'2' &lt;= 1"</span>, Boolean.FALSE);
+<a name="771" href="#771">771</a>         assertExpression(jc, <span class="string">"'2' &lt;= 2"</span>, Boolean.TRUE);
+<a name="772" href="#772">772</a> 
+<a name="773" href="#773">773</a>         assertExpression(jc, <span class="string">"2 > '1'"</span>, Boolean.TRUE);
+<a name="774" href="#774">774</a>         assertExpression(jc, <span class="string">"2 >= '1'"</span>, Boolean.TRUE);
+<a name="775" href="#775">775</a>         assertExpression(jc, <span class="string">"2 >= '2'"</span>, Boolean.TRUE);
+<a name="776" href="#776">776</a>         assertExpression(jc, <span class="string">"2 &lt; '1'"</span>, Boolean.FALSE);
+<a name="777" href="#777">777</a>         assertExpression(jc, <span class="string">"2 &lt;= '1'"</span>, Boolean.FALSE);
+<a name="778" href="#778">778</a>         assertExpression(jc, <span class="string">"2 &lt;= '2'"</span>, Boolean.TRUE);
+<a name="779" href="#779">779</a> }
+<a name="780" href="#780">780</a> 
+<a name="781" href="#781">781</a>     <strong>public</strong> <strong>void</strong> testResolver()
+<a name="782" href="#782">782</a>         throws Exception
+<a name="783" href="#783">783</a>     {
+<a name="784" href="#784">784</a>         <em class="comment">/*</em>
+<a name="785" href="#785">785</a> <em class="comment">         * first, a simple override</em>
+<a name="786" href="#786">786</a> <em class="comment">         */</em>
+<a name="787" href="#787">787</a> 
+<a name="788" href="#788">788</a>         Expression expr = ExpressionFactory.createExpression(<span class="string">"foo.bar"</span>);
+<a name="789" href="#789">789</a>         expr.addPreResolver(<strong>new</strong> FlatResolver());
+<a name="790" href="#790">790</a> 
+<a name="791" href="#791">791</a>         JexlContext jc = JexlHelper.createContext();
+<a name="792" href="#792">792</a>         <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a> foo = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="793" href="#793">793</a>         jc.getVars().put(<span class="string">"foo.bar"</span>, <span class="string">"flat value"</span>);
+<a name="794" href="#794">794</a>         jc.getVars().put(<span class="string">"foo"</span>, foo );
+<a name="795" href="#795">795</a> 
+<a name="796" href="#796">796</a>         Object o = expr.evaluate(jc);
+<a name="797" href="#797">797</a>         assertEquals(<span class="string">"flat override"</span>, <span class="string">"flat value"</span>, o);
+<a name="798" href="#798">798</a> 
+<a name="799" href="#799">799</a>         <em class="comment">/*</em>
+<a name="800" href="#800">800</a> <em class="comment">         * now, let the resolver not find it and have it drop to jexl</em>
+<a name="801" href="#801">801</a> <em class="comment">         */</em>
+<a name="802" href="#802">802</a>         expr = ExpressionFactory.createExpression(<span class="string">"foo.bar.length()"</span>);
+<a name="803" href="#803">803</a>         expr.addPreResolver(<strong>new</strong> FlatResolver());
+<a name="804" href="#804">804</a>         o = expr.evaluate(jc);
+<a name="805" href="#805">805</a>         assertEquals(<span class="string">"flat override 1"</span>, <strong>new</strong> Integer(GET_METHOD_STRING.length()), o);
+<a name="806" href="#806">806</a> 
+<a name="807" href="#807">807</a>         <em class="comment">/*</em>
+<a name="808" href="#808">808</a> <em class="comment">         * now, let the resolver not find it and NOT drop to jexl</em>
+<a name="809" href="#809">809</a> <em class="comment">         */</em>
+<a name="810" href="#810">810</a> 
+<a name="811" href="#811">811</a>         expr = ExpressionFactory.createExpression(<span class="string">"foo.bar.length()"</span>);
+<a name="812" href="#812">812</a>         expr.addPreResolver(<strong>new</strong> FlatResolver(false));
+<a name="813" href="#813">813</a>         o = expr.evaluate(jc);
+<a name="814" href="#814">814</a>         assertEquals(<span class="string">"flat override 2"</span>, o, <strong>null</strong>);
+<a name="815" href="#815">815</a>         
+<a name="816" href="#816">816</a>         <em class="comment">// now for a post resolver</em>
+<a name="817" href="#817">817</a>         expr = ExpressionFactory.createExpression(<span class="string">"foo.bar.baz"</span>);
+<a name="818" href="#818">818</a>         Long result = <strong>new</strong> Long(1);
+<a name="819" href="#819">819</a>         jc.getVars().put(<span class="string">"foo.bar.baz"</span>, result);
+<a name="820" href="#820">820</a>         expr.addPostResolver(<strong>new</strong> FlatResolver());
+<a name="821" href="#821">821</a>         assertEquals(<span class="string">"flat override"</span>, result, expr.evaluate(jc));
+<a name="822" href="#822">822</a> 
+<a name="823" href="#823">823</a>     }
+<a name="824" href="#824">824</a> 
+<a name="825" href="#825">825</a>     <em>/**<em>*</em></em>
+<a name="826" href="#826">826</a> <em>     * Test that 'and' only evaluates the second item if needed</em>
+<a name="827" href="#827">827</a> <em>     * @throws Exception if there are errors</em>
+<a name="828" href="#828">828</a> <em>     */</em>
+<a name="829" href="#829">829</a>     <strong>public</strong> <strong>void</strong> testBooleanShortCircuitAnd() throws Exception
+<a name="830" href="#830">830</a>     {
+<a name="831" href="#831">831</a>         <em class="comment">// handle false for the left arg of 'and'</em>
+<a name="832" href="#832">832</a>         <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a> tester = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="833" href="#833">833</a>         JexlContext jc = JexlHelper.createContext();
+<a name="834" href="#834">834</a>         jc.getVars().put(<span class="string">"first"</span>, Boolean.FALSE);
+<a name="835" href="#835">835</a>         jc.getVars().put(<span class="string">"foo"</span>, tester);
+<a name="836" href="#836">836</a>         Expression expr = ExpressionFactory.createExpression(<span class="string">"first and foo.trueAndModify"</span>);
+<a name="837" href="#837">837</a>         expr.evaluate(jc);
+<a name="838" href="#838">838</a>         assertTrue(<span class="string">"Short circuit failure: rhs evaluated when lhs FALSE"</span>, !tester.getModified());
+<a name="839" href="#839">839</a>         <em class="comment">// handle true for the left arg of 'and' </em>
+<a name="840" href="#840">840</a>         tester = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="841" href="#841">841</a>         jc.getVars().put(<span class="string">"first"</span>, Boolean.TRUE);
+<a name="842" href="#842">842</a>         jc.getVars().put(<span class="string">"foo"</span>, tester);
+<a name="843" href="#843">843</a>         expr.evaluate(jc);
+<a name="844" href="#844">844</a>         assertTrue(<span class="string">"Short circuit failure: rhs not evaluated when lhs TRUE"</span>, tester.getModified());
+<a name="845" href="#845">845</a>     }
+<a name="846" href="#846">846</a>     
+<a name="847" href="#847">847</a>     <em>/**<em>*</em></em>
+<a name="848" href="#848">848</a> <em>     * Test that 'or' only evaluates the second item if needed</em>
+<a name="849" href="#849">849</a> <em>     * @throws Exception if there are errors</em>
+<a name="850" href="#850">850</a> <em>     */</em>
+<a name="851" href="#851">851</a>     <strong>public</strong> <strong>void</strong> testBooleanShortCircuitOr() throws Exception
+<a name="852" href="#852">852</a>     {
+<a name="853" href="#853">853</a>         <em class="comment">// handle false for the left arg of 'or'</em>
+<a name="854" href="#854">854</a>         <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a> tester = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="855" href="#855">855</a>         JexlContext jc = JexlHelper.createContext();
+<a name="856" href="#856">856</a>         jc.getVars().put(<span class="string">"first"</span>, Boolean.FALSE);
+<a name="857" href="#857">857</a>         jc.getVars().put(<span class="string">"foo"</span>, tester);
+<a name="858" href="#858">858</a>         Expression expr = ExpressionFactory.createExpression(<span class="string">"first or foo.trueAndModify"</span>);
+<a name="859" href="#859">859</a>         expr.evaluate(jc);
+<a name="860" href="#860">860</a>         assertTrue(<span class="string">"Short circuit failure: rhs not evaluated when lhs FALSE"</span>, tester.getModified());
+<a name="861" href="#861">861</a>         <em class="comment">// handle true for the left arg of 'or' </em>
+<a name="862" href="#862">862</a>         tester = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="863" href="#863">863</a>         jc.getVars().put(<span class="string">"first"</span>, Boolean.TRUE);
+<a name="864" href="#864">864</a>         jc.getVars().put(<span class="string">"foo"</span>, tester);
+<a name="865" href="#865">865</a>         expr.evaluate(jc);
+<a name="866" href="#866">866</a>         assertTrue(<span class="string">"Short circuit failure: rhs evaluated when lhs TRUE"</span>, !tester.getModified());
+<a name="867" href="#867">867</a>     }
+<a name="868" href="#868">868</a> 
+<a name="869" href="#869">869</a>     <em>/**<em>*</em></em>
+<a name="870" href="#870">870</a> <em>     * Simple test of '+' as a string concatenation operator</em>
+<a name="871" href="#871">871</a> <em>     * @throws Exception</em>
+<a name="872" href="#872">872</a> <em>     */</em>
+<a name="873" href="#873">873</a>     <strong>public</strong> <strong>void</strong> testStringConcatenation() throws Exception
+<a name="874" href="#874">874</a>     {
+<a name="875" href="#875">875</a>         JexlContext jc = JexlHelper.createContext();
+<a name="876" href="#876">876</a>         jc.getVars().put(<span class="string">"first"</span>, <span class="string">"Hello"</span>);
+<a name="877" href="#877">877</a>         jc.getVars().put(<span class="string">"second"</span>, <span class="string">"World"</span>);
+<a name="878" href="#878">878</a>         assertExpression(jc, <span class="string">"first + ' ' + second"</span>, <span class="string">"Hello World"</span>);
+<a name="879" href="#879">879</a>     }
+<a name="880" href="#880">880</a> 
+<a name="881" href="#881">881</a>     <em>/**<em>*</em></em>
+<a name="882" href="#882">882</a> <em>     * Ensures static methods on objects can be called.</em>
+<a name="883" href="#883">883</a> <em>     */</em>
+<a name="884" href="#884">884</a>     <strong>public</strong> <strong>void</strong> testStaticMethodInvocation() throws Exception
+<a name="885" href="#885">885</a>     {
+<a name="886" href="#886">886</a>         JexlContext jc = JexlHelper.createContext();
+<a name="887" href="#887">887</a>         jc.getVars().put(<span class="string">"aBool"</span>, Boolean.FALSE);
+<a name="888" href="#888">888</a>         assertExpression(jc, <span class="string">"aBool.valueOf('true')"</span>, Boolean.TRUE);
+<a name="889" href="#889">889</a>     }
+<a name="890" href="#890">890</a>     
+<a name="891" href="#891">891</a>     <strong>public</strong> <strong>void</strong> testStaticMethodInvocationOnClasses() throws Exception
+<a name="892" href="#892">892</a>     {
+<a name="893" href="#893">893</a>         JexlContext jc = JexlHelper.createContext();
+<a name="894" href="#894">894</a>         jc.getVars().put(<span class="string">"Boolean"</span>, Boolean.<strong>class</strong>);
+<a name="895" href="#895">895</a>         assertExpression(jc, <span class="string">"Boolean.valueOf('true')"</span>, Boolean.TRUE);        
+<a name="896" href="#896">896</a>     }
+<a name="897" href="#897">897</a>     
+<a name="898" href="#898">898</a>     <strong>public</strong> <strong>void</strong> testToString() throws Exception {
+<a name="899" href="#899">899</a>         String code = <span class="string">"abcd"</span>;
+<a name="900" href="#900">900</a>         Expression expr = ExpressionFactory.createExpression(code);
+<a name="901" href="#901">901</a>         assertEquals(<span class="string">"Bad expression value"</span>, code, expr.toString());
+<a name="902" href="#902">902</a>     }
+<a name="903" href="#903">903</a>     
+<a name="904" href="#904">904</a>     <em>/**<em>*</em></em>
+<a name="905" href="#905">905</a> <em>     * Make sure bad syntax throws ParseException</em>
+<a name="906" href="#906">906</a> <em>     * @throws Exception on errors</em>
+<a name="907" href="#907">907</a> <em>     */</em>
+<a name="908" href="#908">908</a>     <strong>public</strong> <strong>void</strong> testBadParse() throws Exception
+<a name="909" href="#909">909</a>     {
+<a name="910" href="#910">910</a>         <strong>try</strong>
+<a name="911" href="#911">911</a>         {
+<a name="912" href="#912">912</a>             assertExpression(JexlHelper.createContext(), <span class="string">"empty()"</span>, <strong>null</strong>);
+<a name="913" href="#913">913</a>             fail(<span class="string">"Bad expression didn't throw ParseException"</span>);
+<a name="914" href="#914">914</a>         }
+<a name="915" href="#915">915</a>         <strong>catch</strong> (ParseException pe)
+<a name="916" href="#916">916</a>         {
+<a name="917" href="#917">917</a>             <em class="comment">// expected behaviour</em>
+<a name="918" href="#918">918</a>         }
+<a name="919" href="#919">919</a>     }
+<a name="920" href="#920">920</a> 
+<a name="921" href="#921">921</a>     <em>/**<em>*</em></em>
+<a name="922" href="#922">922</a> <em>     * Test the ## comment in a string</em>
+<a name="923" href="#923">923</a> <em>     * @throws Exception</em>
+<a name="924" href="#924">924</a> <em>     */</em>
+<a name="925" href="#925">925</a>     <strong>public</strong> <strong>void</strong> testComment() throws Exception
+<a name="926" href="#926">926</a>     {
+<a name="927" href="#927">927</a>         assertExpression(JexlHelper.createContext(), <span class="string">"## double or nothing\n 1 + 1"</span>, Long.valueOf(<span class="string">"2"</span>));
+<a name="928" href="#928">928</a>     }
+<a name="929" href="#929">929</a>     
+<a name="930" href="#930">930</a>     <em>/**<em>*</em></em>
+<a name="931" href="#931">931</a> <em>     * Test assignment.</em>
+<a name="932" href="#932">932</a> <em>     * @throws Exception</em>
+<a name="933" href="#933">933</a> <em>     */</em>
+<a name="934" href="#934">934</a>     <strong>public</strong> <strong>void</strong> testAssignment() throws Exception
+<a name="935" href="#935">935</a>     {
+<a name="936" href="#936">936</a>         JexlContext jc = JexlHelper.createContext();
+<a name="937" href="#937">937</a>         jc.getVars().put(<span class="string">"aString"</span>, <span class="string">"Hello"</span>);
+<a name="938" href="#938">938</a>         <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a> foo = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/Foo.html">Foo</a>();
+<a name="939" href="#939">939</a>         jc.getVars().put(<span class="string">"foo"</span>, foo);
+<a name="940" href="#940">940</a>         Parser parser = <strong>new</strong> Parser(<strong>new</strong> StringReader(<span class="string">";"</span>));
+<a name="941" href="#941">941</a>         parser.parse(<strong>new</strong> StringReader(<span class="string">"aString = 'World';"</span>));
+<a name="942" href="#942">942</a>         
+<a name="943" href="#943">943</a>         assertExpression(jc, <span class="string">"hello = 'world'"</span>, <span class="string">"world"</span>);
+<a name="944" href="#944">944</a>         assertEquals(<span class="string">"hello variable not changed"</span>, <span class="string">"world"</span>, jc.getVars().get(<span class="string">"hello"</span>));
+<a name="945" href="#945">945</a>         assertExpression(jc, <span class="string">"result = 1 + 1"</span>, <strong>new</strong> Long(2));
+<a name="946" href="#946">946</a>         assertEquals(<span class="string">"result variable not changed"</span>, <strong>new</strong> Long(2), jc.getVars().get(<span class="string">"result"</span>));
+<a name="947" href="#947">947</a>         <em class="comment">// todo: make sure properties can be assigned to, fall back to flat var if no property</em>
+<a name="948" href="#948">948</a>         <em class="comment">// assertExpression(jc, "foo.property1 = '99'", "99");</em>
+<a name="949" href="#949">949</a>         <em class="comment">// assertEquals("property not set", "99", foo.getProperty1());</em>
+<a name="950" href="#950">950</a>     }
+<a name="951" href="#951">951</a>     
+<a name="952" href="#952">952</a>     <strong>public</strong> <strong>void</strong> testAntPropertiesWithMethods() throws Exception
+<a name="953" href="#953">953</a>     {
+<a name="954" href="#954">954</a>         JexlContext jc = JexlHelper.createContext();
+<a name="955" href="#955">955</a>         String value = <span class="string">"Stinky Cheese"</span>;
+<a name="956" href="#956">956</a>         jc.getVars().put(<span class="string">"maven.bob.food"</span>, value);
+<a name="957" href="#957">957</a>         assertExpression(jc, <span class="string">"maven.bob.food.length()"</span>, <strong>new</strong> Integer(value.length()));
+<a name="958" href="#958">958</a>         assertExpression(jc, <span class="string">"empty(maven.bob.food)"</span>, Boolean.FALSE);
+<a name="959" href="#959">959</a>         assertExpression(jc, <span class="string">"size(maven.bob.food)"</span>, <strong>new</strong> Integer(value.length()));
+<a name="960" href="#960">960</a>         assertExpression(jc, <span class="string">"maven.bob.food + ' is good'"</span>, value + <span class="string">" is good"</span>);
+<a name="961" href="#961">961</a> 
+<a name="962" href="#962">962</a>         <em class="comment">// DG: Note the following ant properties don't work</em>
+<a name="963" href="#963">963</a> <em class="comment">//        String version = "1.0.3";</em>
+<a name="964" href="#964">964</a> <em class="comment">//        jc.getVars().put("commons-logging", version);</em>
+<a name="965" href="#965">965</a> <em class="comment">//        assertExpression(jc, "commons-logging", version);</em>
+<a name="966" href="#966">966</a>     }
+<a name="967" href="#967">967</a> 
+<a name="968" href="#968">968</a>     <em>/**<em>*</em></em>
+<a name="969" href="#969">969</a> <em>     * Asserts that the given expression returns the given value when applied to the</em>
+<a name="970" href="#970">970</a> <em>     * given context</em>
+<a name="971" href="#971">971</a> <em>     */</em>
+<a name="972" href="#972">972</a>     <strong>protected</strong> <strong>void</strong> assertExpression(JexlContext jc, String expression, Object expected) throws Exception
+<a name="973" href="#973">973</a>     {
+<a name="974" href="#974">974</a>         Expression e = ExpressionFactory.createExpression(expression);
+<a name="975" href="#975">975</a>         Object actual = e.evaluate(jc);
+<a name="976" href="#976">976</a>         assertEquals(expression, expected, actual);
+<a name="977" href="#977">977</a>     }
+<a name="978" href="#978">978</a> 
+<a name="979" href="#979">979</a> 
+<a name="980" href="#980">980</a>     <em>/**<em>*</em></em>
+<a name="981" href="#981">981</a> <em>     *  Helps in debugging the testcases when working with it</em>
+<a name="982" href="#982">982</a> <em>     *</em>
+<a name="983" href="#983">983</a> <em>     */</em>
+<a name="984" href="#984">984</a>     <strong>public</strong> <strong>static</strong> <strong>void</strong> main(String[] args)
+<a name="985" href="#985">985</a>         throws Exception
+<a name="986" href="#986">986</a>     {
+<a name="987" href="#987">987</a>         <a href="../../../../org/apache/commons/jexl/JexlTest.html">JexlTest</a> jt = <strong>new</strong> <a href="../../../../org/apache/commons/jexl/JexlTest.html">JexlTest</a>(<span class="string">"foo"</span>);
+<a name="988" href="#988">988</a>         jt.testEmpty();
+<a name="989" href="#989">989</a>     }
+<a name="990" href="#990">990</a> 
+<a name="991" href="#991">991</a> }
+</pre>
+<hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
+</html>
+

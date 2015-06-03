@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:my="http://my.custom-actions.domain/CUSTOM"
+	version="1.0" initial="inizio">
+	<datamodel>
+		<data id="iniz" expr="3" />
+		<data id="midd"  expr="3" />
+		<data id="cust" expr="3" />
+	</datamodel>
+
+	<state id="inizio">
+		<transition event="helloevent" target="middle1">
+			<assign name="cust" expr="1"/>
+		</transition>
+	</state>
+
+	<state id="middle1">
+		<transition target="custom" cond="${cust eq 1+1-1}" />
+	</state>
+
+	<final id="custom" />
+
+</scxml>
+
+

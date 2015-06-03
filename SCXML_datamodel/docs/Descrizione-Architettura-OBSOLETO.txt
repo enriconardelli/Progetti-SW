@@ -1,0 +1,50 @@
+
+
+===== DOCUMENTO OBSOLETO =====
+
+===== FA RIFERIMENTO AD ARCHITETTURA PRIMA PROGETTO SCAROZZA TRYCZ =====
+
+AbstractASM e' la classe astratta che estende AbstractStateMachine di CommonsSCXML definendo i metodi:
+ - setMyGUI: per agganciare la GUI che visualizza la specifica ASM corrispondente alla SC definita dal file .scxml. I vari metodi corrispondenti agli stati chiedono alla GUI di aggiornare l'interfaccia.
+ - init: metodo generico per inizializzare tutti gli stati con i valori iniziali specificati in .scxml
+ - get_value: metodo generico per ottenere il valore dello stato passato come argomento
+ - set_value: metodo generico per assegnare un valore allo stato passato come argomento
+
+Le ASM create automaticamente sulla base del file di specifica .scxml estendono AbstractASM implementando questi metodi e poi aggiungono per ogni stato un metodo per interagire con la gui
+
+StateChartGUI e' l'interfaccia che definisce i metodi che devono implementare le specifiche GUI create automaticamente per interagire con le specifiche ASM create automaticamente
+ - setMyASM: per agganciare la specifica ASM corrispondente alla SC definita dal file .scxml
+ - statchartTraceAppend
+ - stateDisplayUpdate
+ - stateValueUpdate
+
+StateChartLauncher crea un'istanza di StateChartAPPL e ne invoca il metodo .startSC che:
+- crea e compila il codice della sottoclasse <nome_file>ASM di AbstractASM corrispondente al file <nome_file>.scxml
+- crea un'istanza di <nome_file>ASM e la inizializza
+- crea e compila il codice della classe <nome_file>GUI che implementa ActionListener (come tutte le GUI) e StateChartGUI e che interagisce con <nome_file>ASM
+- crea un'istanza di <nome_file>GUI ((quindi attiva la GUI)) 
+- inietta nell'istanza di <nome_file>ASM l'istanza di <nome_file>GUI che le fa da GUI in modo che <nome_file>ASM possa far evolvere lo stato (usando i metodi implementati in AbstractStateMachine di CommonsSCXML) in funzione degli eventi che <nome_file>GUI le passa
+- inietta nell'istanza di <nome_file>GUI l'istanza di <nome_file>ASM che contiene la specifica ASM in modo che la GUI possa passarle gli eventi necessari a far evolvere lo stato
+
+
+Nel file .scxml la parte di datamodel deve avere un elemento <data> per ogni stato con "id" uguale a <nome>_value dove <nome> deve coincidere con quanto specificato come "id" dello stato. Il _ e' stato scelto come separatore, la parte finale "value" e' stata scelta arbitrariamente uguale per tutti.
+
+L'implementazione del datamodel in <nome_file>ASM e' una variabile privata per ogni elemento <data>, con metodi get e set accoppiati allo stato.
+
+
+L'esempio ParallelExample e' un esempio senza condizioni sugli eventi che serviva a dimostrare l'errore nell'engine di AbstractStateMachine: se dopo l'evento start si attiva l'evento two_four c'e' l'errore
+-----------
+AVVERTENZA: ILLEGAL_CONFIG (Not all AND states active for parallel onetwo): /onetwo : [/onetwo/one]
+Illegal state machine configuration!
+AVVERTENZA: ILLEGAL_CONFIG (Multiple top-level OR states active!): <SCXML> : [/onetwo, /four]
+-----------
+
+L'esempio OneTwoThreeFour e' un esempio con condizioni sugli eventi: va incontro allo stesso errore dell'engine di AbstractStateMachine: se dopo l'evento start si attiva l'evento beta c'e' l'errore
+-----------
+AVVERTENZA: ILLEGAL_CONFIG (Not all AND states active for parallel onetwo): /onetwo : [/onetwo/one]
+Illegal state machine configuration!
+AVVERTENZA: ILLEGAL_CONFIG (Multiple top-level OR states active!): <SCXML> : [/onetwo, /four]
+-----------
+
+L'esempio OneTwoThree e' un esempio con condizioni sugli eventi: non va incontro ad errori
+

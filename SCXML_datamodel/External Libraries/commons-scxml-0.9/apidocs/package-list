@@ -1,0 +1,11 @@
+org.apache.commons.scxml
+org.apache.commons.scxml.env
+org.apache.commons.scxml.env.faces
+org.apache.commons.scxml.env.jexl
+org.apache.commons.scxml.env.jsp
+org.apache.commons.scxml.env.servlet
+org.apache.commons.scxml.invoke
+org.apache.commons.scxml.io
+org.apache.commons.scxml.model
+org.apache.commons.scxml.semantics
+org.apache.commons.scxml.test

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" exmode="lax" initial="initialstate">
+	<datamodel>
+		<data id="initialstate$value" expr="0"></data>
+		<data id="S$value" expr="0"></data>
+		<data id="s1$value" expr="0"></data>
+		<data id="s11$value" expr="0"></data>
+		<data id="s12$value" expr="0"></data>
+		<data id="s2$value" expr="0"></data>
+		<data id="s21$value" expr="0"></data>
+	</datamodel>
+	<state id="initialstate">
+		<transition event="start" target="S" />
+	</state>
+	<state id="S" initial="s1">
+	   <onentry>
+	     <log expr="'entering S'"/>
+	   </onentry>   
+
+	   <onexit>
+	     <log expr="'leaving S'"/>
+	   </onexit>
+
+	   <state id="s1" initial="s11">
+	     <onexit>
+	         <log expr="'leaving s1'"/>
+	     </onexit>
+	     
+	     <transition event="e" target="s21">
+	        <log expr="'executing transition from s1 to s21'"/>
+	     </transition>
+	     
+	     <state id="s11">
+	        <onexit>
+	           <log expr="'leaving s11'"/>
+	        </onexit>
+	        <transition event="e_s11TOs12" target="s12" />
+	     	<transition event="e_s11TOs21" target="s21">
+	        	<log expr="'executing transition from s11 to s21'"/>
+	     	</transition>
+	     </state>
+
+	     <state id="s12">
+	        <onexit>
+	           <log expr="'leaving s12'"/>
+	        </onexit>
+	        <transition event="e_s12TOs11" target="s11" />
+	     </state>
+	   </state>
+	  
+	   <state id="s2" initial="s21">
+	      <onentry>
+	         <log expr="'entering s2'"/>
+	      </onentry>
+
+	      <state id="s21">
+	         <onentry>
+	            <log expr="'entering s21'"/>
+	         </onentry>
+	        <transition event="e_s21TOs1" target="s1" />
+	      </state>
+	   </state>
+	
+	</state>
+</scxml>

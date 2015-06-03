@@ -1,0 +1,37 @@
+The commons-jexl team is pleased to announce the Commons JEXL 1.1-SNAPSHOT 
+release! 
+
+http://jakarta.apache.org/commons/jexl/
+
+Jexl is an implementation of the JSTL Expression Language with extensions. 
+
+Changes in this version include:
+
+  New Features:
+
+o Added Script and ScriptFactory to allow scripts to be executed from text, 
+  files or a URL. 
+o Added implementation for bitwise operators: and, complement, or, xor. 
+o Added implementation for the foreach statement. 
+o Added implementation for the while statement. 
+o Added implementation for block statements, e.g. curly braces containing 
+  multiple statements. 
+o Added implementation for the if statement. 
+o Support assignment to variables Issue: JEXL-4. Thanks to Barry Lagerweij. 
+
+  Fixed bugs:
+
+o Consistently throw ParseException in case of a parsing failure, not an 
+  Error. Issue: JEXL-17. Thanks to Kohsuke Kawaguchi. 
+o Allow for static methods to be called on classes and not just objects. 
+  Issue: JEXL-3. Thanks to Guido Anzuoni. 
+o Unary minus was only working for integer values. Issue: JEXL-6. 
+o 'abc'.substring(0,1+1) is empty (method matching problem) Issue: JEXL-5. 
+
+  Changes:
+
+o Add @since tags to code so we can track API additions via javadoc  
+
+Have fun!
+-The commons-jexl team
+      

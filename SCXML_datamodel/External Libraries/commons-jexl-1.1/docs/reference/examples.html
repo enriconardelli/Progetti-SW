@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Commons JEXL Examples - Commons JEXL</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");@import url("../style/project.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta></head><body class="composite"><div id="banner"><a href="http://jakarta.apache.org" id="organizationLogo"><img alt="The Apache Software Foundation" src="http://jakarta.apache.org/images/jakarta-logo.gif"></img></a><a href="http://jakarta.apache.org/commons/jexl/" id="projectLogo"><img alt="Commons JEXL" src="../images/jexl-logo-white.png"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 September 2006
+                <span class="separator">|</span> Doc for  1.1
+                </div><div class="xright"></div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuCommons Jexl"><h5>Commons Jexl</h5><ul><li class="none"><a href="../index.html">Overview</a></li><li class="none"><a href="../apidocs-1.0/index.html">1.0 Javadoc</a></li><li class="none"><a href="../apidocs/index.html">Latest Javadoc</a></li><li class="none"><a href="http://svn.apache.org/viewvc/jakarta/commons/proper/jexl/trunk/examples/" class="externalLink" title="External Link">Examples</a></li><li class="none"><a href="../releases.html">Releases and Builds</a></li><li class="none"><a href="../downloads.html">Jar Downloads</a></li><li class="none"><a href="../reference/index.html">Reference</a></li><li class="none"><a href="../building.html">Building</a></li><li class="none"><a href="http://wiki.apache.org/jakarta-commons/JEXL" class="externalLink" title="External Link">JEXL Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="none"><a href="../downloads.html">Downloads</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="http://jakarta.apache.org/commons/charter.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menuCommons"><h5>Commons</h5><ul><li class="none"><a href="http://jakarta.apache.org/commons/" class="externalLink" title="External Link">Home</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/components.html" class="externalLink" title="External Link">Components</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/sandbox/index.html" class="externalLink" title="External Link">Sandbox</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/dormant/index.html" class="externalLink" title="External Link">Dormant</a></li><li class="none"><a href="http://jakarta.apache.org/commons/volunteering.html" class="externalLink" title="External Link">Volunteering</a></li><li class="none"><a href="http://jakarta.apache.org/commons/patches.html" class="externalLink" title="External Link">Contributing Patches</a></li><li class="none"><a href="http://jakarta.apache.org/commons/building.html" class="externalLink" title="External Link">Building Components</a></li><li class="none"><a href="http://jakarta.apache.org/commons/releases/index.html" class="externalLink" title="External Link">Releasing Components</a></li><li class="none"><a href="http://wiki.apache.org/jakarta-commons/FrontPage" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/maven-feather.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Overview"></a><h2>Overview</h2>
+      <p>
+        In this reference you will find the following topics to help with your use of JEXL.
+        <ul>
+          <li><a href="#Evaluating_Expressions">Evaluating Expressions</a></li>
+          <li><a href="#Custom_Contexts">Custom Contexts</a></li>
+          <li><a href="#Custom_Resolvers">Custom Resolvers</a></li>
+          <li><a href="#Example_Expressions">Example Expressions</a></li>
+        </ul>
+      </p>
+      <p>
+        You can find two sample programs in JEXL's CVS repository:
+        <ul>
+          <li><a href="http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/jexl/trunk/examples/ArrayExample.java?view=markup" class="externalLink" title="External Link">Using arrays</a></li>
+          <li><a href="http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/jexl/trunk/examples/MethodPropertyExample.java?view=markup" class="externalLink" title="External Link">Accessing Properties and invoking methods</a></li>
+        </ul>
+      </p>
+      <p>
+        As well, <a href="http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/jexl/trunk/src/test/org/apache/commons/jexl/JexlTest.java?view=markup" class="externalLink" title="External Link">JEXL's Unit Tests</a>
+        provide handy examples of expressions. The test code also contains a
+        <a href="http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/jexl/trunk/src/test/org/apache/commons/jexl/Jexl.java?view=markup" class="externalLink" title="External Link">simple class</a>
+        that evaluates its command line arguments as JEXL expressions when run.
+      </p>
+    </div><div class="section"><a name="Evaluating_Expressions"></a><h2>Evaluating Expressions</h2>
+      <p>
+        To evaluate expressions using JEXL, you need two things:
+        <ul>
+          <li>A <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/JexlContext.html" class="externalLink" title="External Link">context</a> containing any variables, and</li>
+          <li>An <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/Expression.html" class="externalLink" title="External Link">expression</a></li>
+        </ul>
+      </p>
+      <p>
+        The easiest way of obtaining a a context is to use the
+        <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/JexlHelper.html#createContext()" class="externalLink" title="External Link">JexlHelper.createContext()</a>
+        method. This creates a context which is simply an extension of a
+        <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/HashMap.html" class="externalLink" title="External Link">HashMap</a>
+      </p>
+      <p>
+        <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/Expression.html" class="externalLink" title="External Link">Expressions</a> are
+        created using the <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/ExpressionFactory.html#createExpression(java.lang.String)" class="externalLink" title="External Link">ExpressionFactory.createExpression(String)</a>
+        method. 
+      </p>
+      <p>
+        Once you have your expression, you can then use use the
+        <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/Expression.html#evaluate(org.apache.commons.jexl.JexlContext)" class="externalLink" title="External Link">evaluate</a>
+        to execute it and obtain a result.
+      </p>
+      <p>
+        Here's a typical scenario:
+      </p>
+      
+    <div class="source"><pre>
+    // Create an expression object for our calculation
+    String calculateTax = taxManager.getTaxCalc(); //e.g. "((G1 + G2 + G3) * 0.1) + G4";
+    Expression e = ExpressionFactory.createExpression( calculateTax );
+
+    // populate the context
+    JexlContext context = JexlHelper.createContext();
+    context.getVars().put("G1", businessObject.getTotalSales());
+    context.getVars().put("G2", taxManager.getTaxCredit(businessObject.getYear()));
+    context.getVars().put("G3", businessObject.getIntercompanyPayments());
+    context.getVars().put("G4", -taxManager.getAllowances());
+    // ...
+    
+    // work it out
+    Float result = (Float)e.evaluate(context);
+      </pre></div>
+  
+    </div><div class="section"><a name="Custom_Contexts"></a><h2>Custom Contexts</h2>
+      <p>
+        Often you have the objects and values that are needed in the context available
+        elsewhere, and instead of creating the default context and populating it
+        manually in the code, it may be simpler to create a context implementation of your
+        own.
+      </p>
+      <p>
+        The <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/JexlContext.html" class="externalLink" title="External Link">JexlContext</a>
+        interface is very simple with only two methods, one to get the variables of the
+        context as a <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/Map.html" class="externalLink" title="External Link">Map</a> and
+        another to set the variables of the context from a Map.
+      </p>
+      <p>
+        Here's a simple context that wraps the JVM's system properties:
+        
+    <div class="source"><pre>
+        JexlContext context = new JexlContext() {
+            public Map getVars() { return System.getProperties(); }
+            public void setVars(Map map) { }
+        };
+        </pre></div>
+  
+      </p>
+    </div><div class="section"><a name="Custom_Resolvers"></a><h2>Custom Resolvers</h2>
+      <p>
+        JEXL allows you to add custom expression resolvers that will get called with before or after expression
+        evaluation.
+      </p>
+      <p>
+        If <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/JexlExprResolver.html" class="externalLink" title="External Link">pre-resolvers</a>
+        is added to an expression, any value it returns will be used instead of that normally provided by JEXL. If JEXL evaluates
+        an expression to <code>null</code> post-resolvers of an expression are called in turn in an attempt to get a value.
+      </p>
+      <p>
+        Expression resolvers are called in the order that they are added.
+      </p>
+    </div><div class="section"><a name="Example_Expressions"></a><h2>Example Expressions</h2>
+      
+      <div class="subsection"><a name="Arithmetic"></a><h3>Arithmetic</h3>
+        <p>Most valid arithmetic expressions in Java are also valid in Jexl.</p>
+        
+    <div class="source"><pre>
+1 + 2
+12.0 - 5.2
+6 * 12 + 5 / 2.6
+12 % 2
+6 div 4
+-12 + 77.2
+x * 1.1 + y
+        </pre></div>
+  
+        <p>Arithmetic expressions can use variables. <code>null</code> is treated as a zero for arithmetic.</p>
+      </div>
+      <div class="subsection"><a name="Calling_methods"></a><h3>Calling methods</h3>
+        <p>
+          JEXL allows you to call any method on a Java object using the same syntax.
+          If you have a string in the context under the name <code>aString</code>,
+          you could call it's <code>length</code> 
+          method like this:
+          
+    <div class="source"><pre>
+aString.length()
+aString.substring(6)
+          </pre></div>
+  
+        </p>
+        <p>
+          Often the values you want to pass to a method are other variables or expressions.
+          If you have a number in the context, named <code>i</code>, you could use it
+          in a method call:
+          
+    <div class="source"><pre>aString.substring(i)</pre></div>
+  
+        </p>
+      </div>
+      <div class="subsection"><a name="Accessing_properties"></a><h3>Accessing properties</h3>
+        <p>
+          JEXL provides a shorthand syntax to access methods that
+          follow the JavaBean naming convention for properties, i.e.
+          setters and getters.
+        </p>
+        <p>
+          If you have some object foo in the context and it has a
+          method <code>getBar()</code>, you can call that method using
+          the following syntax:
+          
+    <div class="source"><pre>foo.bar</pre></div>
+  
+        </p>
+        <p>
+          Since <code>java.lang.Object</code> has a <code>getClass()</code> method
+          that returns a <code>java.lang.Class</code> object, and the
+          class has a <code>getName()</code> method, the following is a shorthand
+          for obtaining the class name of an object <code>foo</code> in the context: 
+          
+    <div class="source"><pre>foo.class.name</pre></div>
+  
+        </p>
+      </div>
+      <div class="subsection"><a name="Arrays__Lists_and_Maps"></a><h3>Arrays, Lists and Maps</h3>
+        <p>
+          Array elements can be accessed using either square brackets or a dotted
+          index notation, e.g. the following are equivalent
+          
+    <div class="source"><pre>arr[0]
+arr.0</pre></div>
+  
+          The same holds true for lists.
+        </p>
+        <p>
+          For a map, the syntax is very similar, except the 'index' is an object, e.g.
+          the following are equivalent.
+          
+    <div class="source"><pre>aMap['key']
+aMap.get('key')</pre></div>
+  
+          Please note that the index does not have to be a string, and
+          that the string usage above is just one possible option.
+        </p>
+      </div>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2003-2006, The Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

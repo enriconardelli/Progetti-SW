@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" exmode="lax" initial="initialstate">
+	<datamodel>
+		<data id="initialstate$value" expr="0"></data>
+		<data id="one$value" expr="0"></data>
+		<data id="two$value" expr="0"></data>
+	</datamodel>
+	<state id="initialstate">
+		<transition event="start" target="one" />
+	</state>
+	   <state id="one">
+	      <onentry>
+	         <log expr="'entering one'"/>
+	      </onentry>
+
+	     <onexit>
+	         <log expr="'leaving one'"/>
+	     </onexit>
+	     
+	     <transition event="event_1_to_2" target="two">
+	        <log expr="'executing transition from one to two'"/>
+	     </transition>
+	   </state>
+	  
+	   <state id="two">
+	      <onentry>
+	         <log expr="'entering two'"/>
+	      </onentry>
+
+	     <onexit>
+	         <log expr="'leaving two'"/>
+	     </onexit>
+	     
+	     <transition event="event_2_to_1" target="one">
+	        <log expr="'executing transition from two to one'"/>
+	     </transition>
+	   </state>
+</scxml>

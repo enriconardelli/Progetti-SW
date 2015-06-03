@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" exmode="lax" initial="initialstate">
+	<datamodel>
+		<data id="initialstate$value" expr="0"></data>
+		<data id="S$value" expr="0"></data>
+		<data id="s1$value" expr="0"></data>
+		<data id="s11$value" expr="0"></data>
+		<data id="s12$value" expr="0"></data>
+		<data id="s2$value" expr="0"></data>
+		<data id="s21$value" expr="0"></data>
+	</datamodel>
+	<state id="initialstate">
+		<transition event="start" target="S" />
+	</state>
+	<state id="S" initial="s1">
+	   <onentry>
+	     <log expr="'entering S'"/>
+	   </onentry>   
+	   <onexit>
+	     <log expr="'leaving S'"/>
+	   </onexit>
+	   <transition event="f" target="s12" type="internal">
+	      <log expr="'executing INTERNAL transition from S to its descendant s12 - NOT IMPLEMENTED, EXECUTE EXTERNAL'"/>
+	   </transition>
+
+	   <state id="s1" initial="s11">
+	     <onentry>
+	       <log expr="'entering s1'"/>
+	     </onentry>   
+	     <onexit>
+	         <log expr="'leaving s1'"/>
+	     </onexit>
+	     <transition event="e" target="s21" />
+	     
+	     <state id="s11">
+	        <onentry>
+	          <log expr="'entering s11'"/>
+	        </onentry>   
+	        <onexit>
+	           <log expr="'leaving s11'"/>
+	        </onexit>
+	        <transition event="s11TOs12" target="s12" />
+	     	<transition event="s11TOs21" target="s21" />
+	     </state>
+
+	     <state id="s12">
+	        <onentry>
+	          <log expr="'entering s12'"/>
+	        </onentry>   
+	        <onexit>
+	           <log expr="'leaving s12'"/>
+	        </onexit>
+	        <transition event="s12TOs11" target="s11" />
+	     </state>
+	   </state>
+	  
+	   <state id="s2" initial="s21">
+	        <onentry>
+	           <log expr="'entering s2'"/>
+	        </onentry>
+	        <onexit>
+	           <log expr="'leaving s2'"/>
+	        </onexit>
+
+	        <state id="s21">
+	          <onentry>
+	            <log expr="'entering s21'"/>
+	          </onentry>
+	          <onexit>
+	            <log expr="'leaving s21'"/>
+	          </onexit>
+	          <transition event="s21TOs1" target="s1" />
+	        </state>
+	   </state>
+	
+	</state>
+</scxml>

@@ -1,0 +1,28 @@
+-classpath
+'/Users/simone/Documents/workspace-private/commons-digester/target/checkout/target/classes:/Users/simone/.m2/repository/commons-beanutils/commons-beanutils/1.8.3/commons-beanutils-1.8.3.jar:/Users/simone/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar'
+-encoding
+'iso-8859-1'
+-protected
+-quiet
+-source
+'1.5'
+-sourcepath
+'/Users/simone/Documents/workspace-private/commons-digester/target/checkout/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2001-2010 <a href="http://www.apache.org/">The Apache Software Foundation</a>. All Rights Reserved.'
+-charset
+'iso-8859-1'
+-d
+'/Users/simone/Documents/workspace-private/commons-digester/target/checkout/target/site/apidocs'
+-docencoding
+'iso-8859-1'
+-doctitle
+'Commons Digester 2.1 API'
+-link
+'http://java.sun.com/javase/6/docs/api'
+-linksource
+-use
+-version
+-windowtitle
+'Commons Digester 2.1 API'

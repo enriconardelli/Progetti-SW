@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:my="http://my.custom-actions.domain/CUSTOM"
+	version="1.0" exmode="strict" initial="lower">
+	<datamodel>
+		<data id="valore" expr="0" />
+	</datamodel>
+
+	<state id="lower">
+		<transition cond="${valore &gt;= 50}" target="higher"></transition>
+		<transition cond="${valore gt 100}" target="final_state"></transition>
+	</state>
+
+	<state id="higher">
+		<transition cond="${valore lt 50}" target="lower"></transition>
+		<transition cond="${valore gt 100}" target="final_state"></transition>
+	</state>
+
+	<final id="final_state" />
+
+</scxml>
+
+

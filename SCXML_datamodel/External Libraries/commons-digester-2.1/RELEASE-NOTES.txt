@@ -1,0 +1,90 @@
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+$Id: RELEASE-NOTES.txt 996369 2010-09-12 19:22:04Z simonetripodi $
+
+
+                          Commons Digester Package
+                                Version 2.1
+                               Release Notes
+
+
+INTRODUCTION
+============
+
+This is a minor release with new features. New projects are encouraged to
+use this release of digester. There is no urgency for existing projects to
+upgrade; Digester 2.0 has proven to be a stable release.
+
+IMPORTANT NOTES
+================
+
+BREAKING CHANGES:
+
+ * This release eliminates the Apache Ant build support. Apache Maven 2 is
+   required to build this release of Digester;
+
+ * The project structure has been moved to the default Apache Maven
+   archetype structure;
+
+ * Tests have been migrated from JUnit 3.X to JUnit 4.X.
+
+OTHER IMPORTANT CHANGES:
+
+ * The project documentation is no more present in the Javadoc but rather
+   in the generated Digester site, under the menu 'Users Guide'.
+
+DEPENDENCIES
+=============
+
+Digester 2.1 users should upgrade to the recommended dependency set below
+where possible.
+
+The Recommended Dependency Set for Digester 2.1 is:
+   Digester 2.1 + Logging 1.1.1 + BeanUtils 1.8.3
+
+It is also possible to use Logging 1.0.x or BeanUtils 1.7.0 instead.
+
+NEW FEATURES
+=============
+
+ * JAVA5 ANNOTATIONS SUPPORT
+       Added a new package 'annotations' that provides for Java5 Annotations
+       meta-data based definition of rules for Digester.
+       This improves maintainability of both Java code and XML documents, as
+       rules are now defined in POJOs and generating Digester parsers at
+       runtime, avoiding manual updates.
+
+BUGS FROM PREVIOUS RELEASE
+===========================
+
+ * none.
+
+IMPROVEMENTS OVER PREVIOUS RELEASE
+===================================
+
+ * none.
+
+DEPRECATIONS
+============
+
+ * none.
+
+OTHER NOTES
+============
+
+ * This is the first Digester release that provides an Apache Maven 2 build only.
+   The Apache Maven 1 and Apache Ant builds have been removed.

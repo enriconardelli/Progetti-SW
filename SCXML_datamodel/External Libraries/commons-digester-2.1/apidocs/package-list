@@ -1,0 +1,14 @@
+org.apache.commons.digester
+org.apache.commons.digester.annotations
+org.apache.commons.digester.annotations.handlers
+org.apache.commons.digester.annotations.internal
+org.apache.commons.digester.annotations.providers
+org.apache.commons.digester.annotations.reflect
+org.apache.commons.digester.annotations.rules
+org.apache.commons.digester.annotations.spi
+org.apache.commons.digester.annotations.utils
+org.apache.commons.digester.parser
+org.apache.commons.digester.plugins
+org.apache.commons.digester.plugins.strategies
+org.apache.commons.digester.substitution
+org.apache.commons.digester.xmlrules

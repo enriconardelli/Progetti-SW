@@ -1,0 +1,45 @@
+3-giu-2011 3.30.35 org.apache.commons.scxml.model.Log execute
+INFO: null: entering initialstate
+
+event: start
+3-giu-2011 3.30.46 org.apache.commons.scxml.model.Log execute
+INFO: null: leaving initialstate
+3-giu-2011 3.30.46 org.apache.commons.scxml.model.Log execute
+INFO: null: entering onetwo
+3-giu-2011 3.30.46 org.apache.commons.scxml.model.Log execute
+INFO: null: entering one
+3-giu-2011 3.30.46 org.apache.commons.scxml.model.Log execute
+INFO: null: entering two
+
+event: onetwo_three
+3-giu-2011 3.30.53 org.apache.commons.scxml.model.Log execute
+INFO: null: leaving two
+3-giu-2011 3.30.53 org.apache.commons.scxml.model.Log execute
+INFO: null: leaving one
+3-giu-2011 3.30.53 org.apache.commons.scxml.model.Log execute
+INFO: null: leaving onetwo
+3-giu-2011 3.30.53 org.apache.commons.scxml.model.Log execute
+INFO: null: entering three
+
+event: three_four
+3-giu-2011 3.31.04 org.apache.commons.scxml.model.Log execute
+INFO: null: leaving three
+3-giu-2011 3.31.04 org.apache.commons.scxml.model.Log execute
+INFO: null: entering four
+
+event: four_onetwo
+3-giu-2011 3.31.08 org.apache.commons.scxml.model.Log execute
+INFO: null: leaving four
+3-giu-2011 3.31.08 org.apache.commons.scxml.model.Log execute
+INFO: null: entering onetwo
+3-giu-2011 3.31.08 org.apache.commons.scxml.model.Log execute
+INFO: null: entering one
+3-giu-2011 3.31.08 org.apache.commons.scxml.model.Log execute
+INFO: null: entering two
+
+event: two_four
+3-giu-2011 3.31.15 org.apache.commons.scxml.env.SimpleErrorReporter onError
+AVVERTENZA: ILLEGAL_CONFIG (Not all AND states active for parallel onetwo): /onetwo : [/onetwo/one]
+Illegal state machine configuration!
+3-giu-2011 3.31.15 org.apache.commons.scxml.env.SimpleErrorReporter onError
+AVVERTENZA: ILLEGAL_CONFIG (Multiple top-level OR states active!): <SCXML> : [/four, /onetwo]

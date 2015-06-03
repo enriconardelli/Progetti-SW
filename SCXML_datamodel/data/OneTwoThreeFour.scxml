@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" exmode="lax" initial="initialstate">
+	<datamodel>
+		<data id="initialstate$value" expr="0"></data>
+		<data id="onetwo$value" expr="0"></data>
+		<data id="one$value" expr="0"></data>
+		<data id="two$value" expr="44"></data>
+		<data id="three$value" expr="0"></data>
+		<data id="four$value" expr="0"></data>
+	</datamodel>
+	<state id="initialstate">
+		<transition event="start" target="one" />
+	</state>
+	<parallel id="onetwo">
+	<state id="one">
+		<transition event="alfa" cond= "_eventdata.getone$value() ==  0" target="two">
+			<assign location="one$value" expr="_eventdata.setone$value(1)" />
+		</transition>
+		<transition event="alfa" cond= "_eventdata.getone$value() ==  1" target="two">
+			<assign location="one$value" expr="_eventdata.setone$value(2)" />
+		</transition>
+		<transition event="alfa" cond= "_eventdata.getone$value() ==  2" target="two">
+			<assign location="one$value" expr="_eventdata.setone$value(0)" />
+		</transition>
+	</state>
+	<state id="two">
+		<transition event="beta" cond= "_eventdata.gettwo$value() ==  33" target="three">
+			<assign location="two$value" expr="_eventdata.settwo$value(44)" />
+		</transition>
+		<transition event="beta" cond= "_eventdata.gettwo$value() ==  44" target="four">
+			<assign location="two$value" expr="_eventdata.settwo$value(33)" />
+		</transition>
+	</state>
+	</parallel>
+	<state id="three">
+		<transition event="gamma" cond= "_eventdata.getthree$value() ==  0" target="one">
+			<assign location="three$value" expr="_eventdata.setthree$value(1)" />
+		</transition>
+		<transition event="gamma" cond= "_eventdata.getthree$value() ==  1" target="one">
+			<assign location="three$value" expr="_eventdata.setthree$value(2)" />
+		</transition>
+		<transition event="gamma" cond= "_eventdata.getthree$value() ==  2" target="one">
+			<assign location="three$value" expr="_eventdata.setthree$value(0)" />
+		</transition>
+	</state>
+	<state id="four">
+		<transition event="gamma" cond= "_eventdata.getfour$value() ==  0" target="one">
+			<assign location="four$value" expr="_eventdata.setfour$value(1)" />
+		</transition>
+		<transition event="gamma" cond= "_eventdata.getfour$value() ==  1" target="one">
+			<assign location="four$value" expr="_eventdata.setfour$value(2)" />
+		</transition>
+		<transition event="gamma" cond= "_eventdata.getfour$value() ==  2" target="one">
+			<assign location="four$value" expr="_eventdata.setfour$value(0)" />
+		</transition>
+	</state>
+</scxml>

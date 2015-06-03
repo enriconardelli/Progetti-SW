@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Commons JEXL Overview - Commons JEXL</title><style type="text/css" media="all">
+          @import url("./style/maven-base.css");
+          
+          @import url("./style/maven-theme.css");@import url("./style/project.css");</style><link rel="stylesheet" href="./style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta></head><body class="composite"><div id="banner"><a href="http://jakarta.apache.org" id="organizationLogo"><img alt="The Apache Software Foundation" src="http://jakarta.apache.org/images/jakarta-logo.gif"></img></a><a href="http://jakarta.apache.org/commons/jexl/" id="projectLogo"><img alt="Commons JEXL" src="./images/jexl-logo-white.png"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 September 2006
+                <span class="separator">|</span> Doc for  1.1
+                </div><div class="xright"></div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuCommons Jexl"><h5>Commons Jexl</h5><ul><li class="none"><strong><a href="index.html">Overview</a></strong></li><li class="none"><a href="apidocs-1.0/index.html">1.0 Javadoc</a></li><li class="none"><a href="apidocs/index.html">Latest Javadoc</a></li><li class="none"><a href="http://svn.apache.org/viewvc/jakarta/commons/proper/jexl/trunk/examples/" class="externalLink" title="External Link">Examples</a></li><li class="none"><a href="releases.html">Releases and Builds</a></li><li class="none"><a href="downloads.html">Jar Downloads</a></li><li class="none"><a href="reference/index.html">Reference</a></li><li class="none"><a href="building.html">Building</a></li><li class="none"><a href="http://wiki.apache.org/jakarta-commons/JEXL" class="externalLink" title="External Link">JEXL Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><strong><a href="index.html">About</a></strong></li><li class="none"><a href="downloads.html">Downloads</a></li><li class="collapsed"><a href="project-info.html">Project Info</a></li><li class="collapsed"><a href="maven-reports.html">Project Reports</a></li><li class="none"><a href="http://jakarta.apache.org/commons/charter.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menuCommons"><h5>Commons</h5><ul><li class="none"><a href="http://jakarta.apache.org/commons/" class="externalLink" title="External Link">Home</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/components.html" class="externalLink" title="External Link">Components</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/sandbox/index.html" class="externalLink" title="External Link">Sandbox</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/dormant/index.html" class="externalLink" title="External Link">Dormant</a></li><li class="none"><a href="http://jakarta.apache.org/commons/volunteering.html" class="externalLink" title="External Link">Volunteering</a></li><li class="none"><a href="http://jakarta.apache.org/commons/patches.html" class="externalLink" title="External Link">Contributing Patches</a></li><li class="none"><a href="http://jakarta.apache.org/commons/building.html" class="externalLink" title="External Link">Building Components</a></li><li class="none"><a href="http://jakarta.apache.org/commons/releases/index.html" class="externalLink" title="External Link">Releasing Components</a></li><li class="none"><a href="http://wiki.apache.org/jakarta-commons/FrontPage" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="./images/logos/maven-feather.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Java_Expression_Language__JEXL_"></a><h2>Java Expression Language (JEXL)</h2>
+
+    <p>
+      Java Expression Language (JEXL) is an expression language engine which can be 
+      embedded in applications and frameworks.  JEXL is inspired by Jakarta Velocity 
+      and the Expression Language defined in the JavaServer Pages Standard Tag Library 
+      version 1.1 (JSTL) and JavaServer Pages version 2.0 (JSP).  
+      While inspired by JSTL EL, it must be noted that JEXL is not a compatible 
+      implementation of EL as defined in JSTL 1.1 (JSR-052) or JSP 2.0 (JSR-152). For a 
+      compatible implementation of these specifications, see the 
+      <a href="http://jakarta.apache.org/commons/el/" class="externalLink" title="External Link">Commons EL</a> project.
+
+    </p>
+
+    <p>
+      JEXL attempts to bring some of the lessons learned by the Velocity
+      community about expression languages in templating to a wider audience.
+      <a href="http://jakarta.apache.org/commons/jelly" class="externalLink" title="External Link">Commons Jelly</a> needed
+      Velocity-ish method access, it just had to have it.
+    </p>
+    
+    </div><div class="section"><a name="A_Brief_Example"></a><h2>A Brief Example</h2>
+
+    <p>
+      When evaluating expressions, JEXL merges an <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/Expression.html" class="externalLink" title="External Link">Expression</a> with a <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/JexlContext.html" class="externalLink" title="External Link">JexlContext</a>.
+      An Expression is created using <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/ExpressionFactory.html#createExpression(java.lang.String)" class="externalLink" title="External Link">ExpressionFactory.createExpression()</a>, passing a
+      String containing valid JEXL syntax.  A JexlContext is created using 
+      <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/JexlHelper.html#createContext()" class="externalLink" title="External Link">JexlHelper.createContext()</a>, and variables are put into a map exposed through
+      the <a href="http://jakarta.apache.org/commons/jexl/apidocs/org/apache/commons/jexl/JexlContext.html#getVars()" class="externalLink" title="External Link">getVars()</a> method on JexlContext.  The following example, takes a variable
+      named foo, and invokes the bar() method on the property innerFoo:
+    </p>
+
+    
+    <div class="source"><pre>
+    // Create an expression object
+    String jexlExp = "foo.innerFoo.bar()";
+    Expression e = ExpressionFactory.createExpression( jexlExp );
+
+    // Create a context and add data
+    JexlContext jc = JexlHelper.createContext();
+    jc.getVars().put("foo", new Foo() );
+
+    // Now evaluate the expression, getting the result
+    Object o = e.evaluate(jc);</pre></div>
+  
+
+    </div><div class="section"><a name="Extensions_to_JSTL_Expression_Language"></a><h2>Extensions to JSTL Expression Language</h2>
+
+    <p>
+    While JEXL is similar to the expression language defined in JSTL, it has improved
+    upon the syntax in a few areas:
+    </p>
+
+    <ul>
+        <li>
+        Support for invocation of any accessible method (see example above).
+        </li>
+        <li>
+        Added a general <span class="literal">size()</span> method, which works on:
+          <ul>
+            <li><span class="literal">String</span> - returns length</li>
+            <li><span class="literal">Map</span> - returns number of keys</li>
+            <li><span class="literal">List</span> - returns number of elements.</li>
+          </ul>
+        </li>
+        <li>
+        Optional syntax for the 'empty' function : empty(obj)
+        </li>
+        <li>
+        Misc : '+' has been overloaded to be use as a String concatenation operator
+        </li>
+
+     </ul>
+
+    </div><div class="section"><a name="Releases"></a><h2>Releases</h2>
+        <p>
+        JEXL 1.0 has been released.
+        See the <a href="releases.html">releases</a> page for information on obtaining releases.
+        </p>
+    </div><div class="section"><a name="Related_Resources"></a><h2>Related Resources</h2>
+        <p>
+          JEXL is not a product of the Java Community Process (JCP), but it provides a
+          similar expression syntax.  For more information about JSP 2.0 EL and JSTL 1.1
+          EL:
+        </p>
+        <ul>
+          <li>
+            <a href="http://java.sun.com/products/jsp/index.jsp" class="externalLink" title="External Link">JSP 2.0</a> is covered 
+            by Java Specification Requests (JSR) 
+            <a href="http://www.jcp.org/en/jsr/detail?id=152" class="externalLink" title="External Link">JSR-152: JavaServer 
+            Pages 2.0 Specification</a>.
+          </li>
+          <li>
+            Apache has an implementation of the expression language for JSP 2.0,
+            called <a href="http://jakarta.apache.org/commons/el/index.html" class="externalLink" title="External Link">EL</a>
+          </li>
+          <li>
+            <a href="http://java.sun.com/products/jsp/jstl/" class="externalLink" title="External Link">JSTL 1.1</a> is covered 
+            by <a href="http://jcp.org/en/jsr/detail?id=52" class="externalLink" title="External Link">JSR 52: A Standard 
+            Tag Library for JavaServer Pages</a>. See the 
+            <a href="http://java.sun.com/products/jsp/jstl/1.1/docs/api/index.html" class="externalLink" title="External Link">JSTL API</a>.
+          </li>
+          <li>Apache has a <a href="http://jakarta.apache.org/taglibs/doc/standard-doc/intro.html" class="externalLink" title="External Link">JSTL Implementation</a>.</li>
+        </ul>
+        <div class="subsection"><a name="Velocity"></a><h3>Velocity</h3>
+          <p>
+            <a href="http://jakarta.apache.org/velocity" class="externalLink" title="External Link">Jakarta Velocity</a> implements 
+            a similar expression language. 
+          </p>
+          <p>
+            In particular the <a href="http://jakarta.apache.org/velocity/user-guide.html#References" class="externalLink" title="External Link">References</a>
+            section of the User Guide has some good information on properties and method which correlate
+            directly to JEXL.
+          </p>
+        </div>
+    </div><div class="section"><a name="Anyone_Using_It_Yet_"></a><h2>Anyone Using It Yet?</h2>
+        <ul>
+          <li>
+           <a href="http://jakarta.apache.org/commons/jelly" class="externalLink" title="External Link">Jelly</a>
+          </li>
+          <li>
+           <a href="http://jakarta.apache.org/commons/scxml" class="externalLink" title="External Link">Commons SCXML</a>
+          </li>
+        </ul>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2003-2006, The Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

@@ -1,0 +1,20 @@
+
+
+ASMCodeCreator
+
+
+GUICodeCreator
+
+
+LauncherCodeCreator 
+
+
+Generator
+
+
+- cambiare meccanismo di inserimento del commento di warning per lo stato iniziale in modo da cancellarlo quando cambia lo stato iniziale
+
+parametrizzare i valori della GUI
+ - con un file di parametri letto alla partenza e NON mediante il Conf
+
+realizzare test di controllo sul codice esistente!!

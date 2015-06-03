@@ -1,0 +1,1057 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>JDepend Source Code Analysis - Commons JEXL</title><style type="text/css" media="all">
+          @import url("./style/maven-base.css");
+          
+          @import url("./style/maven-theme.css");@import url("./style/project.css");</style><link rel="stylesheet" href="./style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><style type="text/css">.jdepend td ul, .jdepend td ul li { margin:0; padding:0; list-style-type: none; }</style></head><body class="jdepend"><div id="banner"><a href="http://jakarta.apache.org" id="organizationLogo"><img alt="The Apache Software Foundation" src="http://jakarta.apache.org/images/jakarta-logo.gif"></img></a><a href="http://jakarta.apache.org/commons/jexl/" id="projectLogo"><img alt="Commons JEXL" src="./images/jexl-logo-white.png"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 08 September 2006
+                <span class="separator">|</span> Doc for  1.1
+                </div><div class="xright"></div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuCommons Jexl"><h5>Commons Jexl</h5><ul><li class="none"><a href="index.html">Overview</a></li><li class="none"><a href="apidocs-1.0/index.html">1.0 Javadoc</a></li><li class="none"><a href="apidocs/index.html">Latest Javadoc</a></li><li class="none"><a href="http://svn.apache.org/viewvc/jakarta/commons/proper/jexl/trunk/examples/" class="externalLink" title="External Link">Examples</a></li><li class="none"><a href="releases.html">Releases and Builds</a></li><li class="none"><a href="downloads.html">Jar Downloads</a></li><li class="none"><a href="reference/index.html">Reference</a></li><li class="none"><a href="building.html">Building</a></li><li class="none"><a href="http://wiki.apache.org/jakarta-commons/JEXL" class="externalLink" title="External Link">JEXL Wiki</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="index.html">About</a></li><li class="none"><a href="downloads.html">Downloads</a></li><li class="collapsed"><a href="project-info.html">Project Info</a></li><li class="expanded"><a href="maven-reports.html">Project Reports</a><ul><li class="none"><a href="changes-report.html">Changes</a></li><li class="none"><a href="checkstyle-report.html">Checkstyle</a></li><li class="none"><a href="apidocs/index.html" class="newWindow" title="New Window" target="_blank">JavaDocs</a></li><li class="none"><a href="javadoc.html">JavaDoc Report</a></li><li class="none"><a href="javadoc-warnings-report.html">JavaDoc Warnings Report</a></li><li class="none"><a href="jcoverage/index.html">JCoverage</a></li><li class="none"><strong><a href="jdepend-report.html">Metrics</a></strong></li><li class="none"><a href="junit-report.html">Unit Tests</a></li><li class="none"><a href="xref/index.html" class="newWindow" title="New Window" target="_blank">Source Xref</a></li><li class="none"><a href="xref-test/index.html" class="newWindow" title="New Window" target="_blank">Test Xref</a></li><li class="none"><a href="license.html">Project License</a></li><li class="none"><a href="pmd-report.html">PMD Report</a></li><li class="none"><a href="task-list.html">Task List</a></li></ul></li><li class="none"><a href="http://jakarta.apache.org/commons/charter.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><div id="menuCommons"><h5>Commons</h5><ul><li class="none"><a href="http://jakarta.apache.org/commons/" class="externalLink" title="External Link">Home</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/components.html" class="externalLink" title="External Link">Components</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/sandbox/index.html" class="externalLink" title="External Link">Sandbox</a></li><li class="collapsed"><a href="http://jakarta.apache.org/commons/dormant/index.html" class="externalLink" title="External Link">Dormant</a></li><li class="none"><a href="http://jakarta.apache.org/commons/volunteering.html" class="externalLink" title="External Link">Volunteering</a></li><li class="none"><a href="http://jakarta.apache.org/commons/patches.html" class="externalLink" title="External Link">Contributing Patches</a></li><li class="none"><a href="http://jakarta.apache.org/commons/building.html" class="externalLink" title="External Link">Building Components</a></li><li class="none"><a href="http://jakarta.apache.org/commons/releases/index.html" class="externalLink" title="External Link">Releasing Components</a></li><li class="none"><a href="http://wiki.apache.org/jakarta-commons/FrontPage" class="externalLink" title="External Link">Wiki</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="./images/logos/maven-feather.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Metric_Results"></a><h2>Metric Results</h2>
+      <p>[
+        <a href="#Summary">summary</a>] [
+        <a href="#Packages">packages</a>] [
+        <a href="#Cycles">cycles</a>] [
+        <a href="#Explanations">explanations</a>]</p>
+      <p>The following document contains the results of a
+        <a href="http://www.clarkware.com/software/JDepend.html" class="externalLink" title="External Link">JDepend</a>metric analysis. The various metrics are defined at the bottom of this document.</p>
+    </div><div class="section"><a name="Summary"></a><h2>Summary</h2>
+      <p>[
+        <a href="#Summary">summary</a>] [
+        <a href="#Packages">packages</a>] [
+        <a href="#Cycles">cycles</a>] [
+        <a href="#Explanations">explanations</a>]</p>
+      <table class="bodyTable">
+        <thead>
+          <tr class="a">
+            <th title="Package">Package</th>
+            <th style="text-align:right">
+              <acronym title="Total Classes">TC</acronym>
+            </th>
+            <th style="text-align:right">
+              <acronym title="Abstract Classes">AC</acronym>
+            </th>
+            <th style="text-align:right">
+              <acronym title="Concrete Classes">CC</acronym>
+            </th>
+            <th style="text-align:right">
+              <acronym title="Afferent Couplings">AC</acronym>
+            </th>
+            <th style="text-align:right">
+              <acronym title="Efferent Couplings">EC</acronym>
+            </th>
+            <th style="text-align:right">
+              <acronym title="Abstractness">A</acronym>
+            </th>
+            <th style="text-align:right">
+              <acronym title="Instability">I</acronym>
+            </th>
+            <th style="text-align:right">
+              <acronym title="Distance">D</acronym>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="b">
+            <td>
+              <a href="#org_apache_commons_jexl">org.apache.commons.jexl</a>
+            </td>
+            <td style="text-align:right">9</td>
+            <td style="text-align:right">4</td>
+            <td style="text-align:right">5</td>
+            <td style="text-align:right">4</td>
+            <td style="text-align:right">7</td>
+            <td style="text-align:right">0.44</td>
+            <td style="text-align:right">64%</td>
+            <td style="text-align:right">8%</td>
+          </tr>
+          <tr class="a">
+            <td>
+              <a href="#org_apache_commons_jexl_context">org.apache.commons.jexl.context</a>
+            </td>
+            <td style="text-align:right">1</td>
+            <td style="text-align:right">0</td>
+            <td style="text-align:right">1</td>
+            <td style="text-align:right">1</td>
+            <td style="text-align:right">2</td>
+            <td style="text-align:right">0</td>
+            <td style="text-align:right">67%</td>
+            <td style="text-align:right">33%</td>
+          </tr>
+          <tr class="b">
+            <td>
+              <a href="#org_apache_commons_jexl_junit">org.apache.commons.jexl.junit</a>
+            </td>
+            <td style="text-align:right">1</td>
+            <td style="text-align:right">0</td>
+            <td style="text-align:right">1</td>
+            <td style="text-align:right">0</td>
+            <td style="text-align:right">4</td>
+            <td style="text-align:right">0</td>
+            <td style="text-align:right">100%</td>
+            <td style="text-align:right">0%</td>
+          </tr>
+          <tr class="a">
+            <td>
+              <a href="#org_apache_commons_jexl_parser">org.apache.commons.jexl.parser</a>
+            </td>
+            <td style="text-align:right">55</td>
+            <td style="text-align:right">4</td>
+            <td style="text-align:right">51</td>
+            <td style="text-align:right">1</td>
+            <td style="text-align:right">8</td>
+            <td style="text-align:right">0.07</td>
+            <td style="text-align:right">89%</td>
+            <td style="text-align:right">4%</td>
+          </tr>
+          <tr class="b">
+            <td>
+              <a href="#org_apache_commons_jexl_resolver">org.apache.commons.jexl.resolver</a>
+            </td>
+            <td style="text-align:right">1</td>
+            <td style="text-align:right">0</td>
+            <td style="text-align:right">1</td>
+            <td style="text-align:right">0</td>
+            <td style="text-align:right">3</td>
+            <td style="text-align:right">0</td>
+            <td style="text-align:right">100%</td>
+            <td style="text-align:right">0%</td>
+          </tr>
+          <tr class="a">
+            <td>
+              <a href="#org_apache_commons_jexl_util">org.apache.commons.jexl.util</a>
+            </td>
+            <td style="text-align:right">8</td>
+            <td style="text-align:right">1</td>
+            <td style="text-align:right">7</td>
+            <td style="text-align:right">2</td>
+            <td style="text-align:right">5</td>
+            <td style="text-align:right">0.12</td>
+            <td style="text-align:right">71%</td>
+            <td style="text-align:right">16%</td>
+          </tr>
+          <tr class="b">
+            <td>
+              <a href="#org_apache_commons_jexl_util_introspection">org.apache.commons.jexl.util.introspection</a>
+            </td>
+            <td style="text-align:right">18</td>
+            <td style="text-align:right">5</td>
+            <td style="text-align:right">13</td>
+            <td style="text-align:right">2</td>
+            <td style="text-align:right">5</td>
+            <td style="text-align:right">0.28</td>
+            <td style="text-align:right">71%</td>
+            <td style="text-align:right">1%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div><div class="section"><a name="Packages"></a><h2>Packages</h2>
+      <p>[
+        <a href="#Summary">summary</a>] [
+        <a href="#Packages">packages</a>] [
+        <a href="#Cycles">cycles</a>] [
+        <a href="#Explanations">explanations</a>]</p>
+      <div class="subsection"><a name="org_apache_commons_jexl"></a><h3>org.apache.commons.jexl</h3>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Afferent Couplings</th>
+              <th>Efferent Couplings</th>
+              <th>Abstractness</th>
+              <th>Instability</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>4</td>
+              <td>7</td>
+              <td>44%</td>
+              <td>64%</td>
+              <td>8%</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Abstract Classes</th>
+              <th>Concrete Classes</th>
+              <th>Used by Packages</th>
+              <th>Uses Packages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/Expression.html">Expression</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/JexlContext.html">JexlContext</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/JexlExprResolver.html">JexlExprResolver</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/Script.html">Script</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/ExpressionFactory.html">ExpressionFactory</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/ExpressionImpl.html">ExpressionImpl</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/JexlHelper.html">JexlHelper</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/ScriptFactory.html">ScriptFactory</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/ScriptImpl.html">ScriptImpl</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#org_apache_commons_jexl_context">org.apache.commons.jexl.context</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_junit">org.apache.commons.jexl.junit</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_parser">org.apache.commons.jexl.parser</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_resolver">org.apache.commons.jexl.resolver</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#java_io">java.io</a>
+                  </li>
+                  <li>
+                    <a href="#java_lang">java.lang</a>
+                  </li>
+                  <li>
+                    <a href="#java_net">java.net</a>
+                  </li>
+                  <li>
+                    <a href="#java_util">java.util</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_context">org.apache.commons.jexl.context</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_parser">org.apache.commons.jexl.parser</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_logging">org.apache.commons.logging</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="subsection"><a name="org_apache_commons_jexl_context"></a><h3>org.apache.commons.jexl.context</h3>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Afferent Couplings</th>
+              <th>Efferent Couplings</th>
+              <th>Abstractness</th>
+              <th>Instability</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>1</td>
+              <td>2</td>
+              <td>0%</td>
+              <td>67%</td>
+              <td>33%</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Abstract Classes</th>
+              <th>Concrete Classes</th>
+              <th>Used by Packages</th>
+              <th>Uses Packages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>
+                <em>None</em>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/context/HashMapContext.html">HashMapContext</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#org_apache_commons_jexl">org.apache.commons.jexl</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#java_util">java.util</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl">org.apache.commons.jexl</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="subsection"><a name="org_apache_commons_jexl_junit"></a><h3>org.apache.commons.jexl.junit</h3>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Afferent Couplings</th>
+              <th>Efferent Couplings</th>
+              <th>Abstractness</th>
+              <th>Instability</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>0</td>
+              <td>4</td>
+              <td>0%</td>
+              <td>100%</td>
+              <td>0%</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Abstract Classes</th>
+              <th>Concrete Classes</th>
+              <th>Used by Packages</th>
+              <th>Uses Packages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>
+                <em>None</em>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/junit/Asserter.html">Asserter</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <em>None</em>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#java_lang">java.lang</a>
+                  </li>
+                  <li>
+                    <a href="#java_util">java.util</a>
+                  </li>
+                  <li>
+                    <a href="#junit_framework">junit.framework</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl">org.apache.commons.jexl</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="subsection"><a name="org_apache_commons_jexl_parser"></a><h3>org.apache.commons.jexl.parser</h3>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Afferent Couplings</th>
+              <th>Efferent Couplings</th>
+              <th>Abstractness</th>
+              <th>Instability</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>1</td>
+              <td>8</td>
+              <td>7%</td>
+              <td>89%</td>
+              <td>4%</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Abstract Classes</th>
+              <th>Concrete Classes</th>
+              <th>Used by Packages</th>
+              <th>Uses Packages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/Node.html">Node</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ParserConstants.html">ParserConstants</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ParserTreeConstants.html">ParserTreeConstants</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ParserVisitor.html">ParserVisitor</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTAddNode.html">ASTAddNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTAndNode.html">ASTAndNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTArrayAccess.html">ASTArrayAccess</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTAssignment.html">ASTAssignment</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTBitwiseAndNode.html">ASTBitwiseAndNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTBitwiseComplNode.html">ASTBitwiseComplNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTBitwiseOrNode.html">ASTBitwiseOrNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTBitwiseXorNode.html">ASTBitwiseXorNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTBlock.html">ASTBlock</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTDivNode.html">ASTDivNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTEQNode.html">ASTEQNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTEmptyFunction.html">ASTEmptyFunction</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTExpression.html">ASTExpression</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTExpressionExpression.html">ASTExpressionExpression</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTFalseNode.html">ASTFalseNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTFloatLiteral.html">ASTFloatLiteral</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTForeachStatement.html">ASTForeachStatement</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTGENode.html">ASTGENode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTGTNode.html">ASTGTNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTIdentifier.html">ASTIdentifier</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTIfStatement.html">ASTIfStatement</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTIntegerLiteral.html">ASTIntegerLiteral</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTJexlScript.html">ASTJexlScript</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTLENode.html">ASTLENode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTLTNode.html">ASTLTNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTMethod.html">ASTMethod</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTModNode.html">ASTModNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTMulNode.html">ASTMulNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTNENode.html">ASTNENode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTNotNode.html">ASTNotNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTNullLiteral.html">ASTNullLiteral</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTOrNode.html">ASTOrNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTReference.html">ASTReference</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTReferenceExpression.html">ASTReferenceExpression</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTSizeFunction.html">ASTSizeFunction</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTSizeMethod.html">ASTSizeMethod</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTStatementExpression.html">ASTStatementExpression</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTStringLiteral.html">ASTStringLiteral</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTSubtractNode.html">ASTSubtractNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTTrueNode.html">ASTTrueNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTUnaryMinusNode.html">ASTUnaryMinusNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ASTWhileStatement.html">ASTWhileStatement</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/JJTParserState.html">JJTParserState</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ParseException.html">ParseException</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/Parser.html">Parser</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/Parser.html">Parser$JJCalls</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/ParserTokenManager.html">ParserTokenManager</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/SimpleCharStream.html">SimpleCharStream</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/SimpleNode.html">SimpleNode</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/Token.html">Token</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/parser/TokenMgrError.html">TokenMgrError</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#org_apache_commons_jexl">org.apache.commons.jexl</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#java_io">java.io</a>
+                  </li>
+                  <li>
+                    <a href="#java_lang">java.lang</a>
+                  </li>
+                  <li>
+                    <a href="#java_lang_reflect">java.lang.reflect</a>
+                  </li>
+                  <li>
+                    <a href="#java_math">java.math</a>
+                  </li>
+                  <li>
+                    <a href="#java_util">java.util</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl">org.apache.commons.jexl</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_util">org.apache.commons.jexl.util</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_util_introspection">org.apache.commons.jexl.util.introspection</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="subsection"><a name="org_apache_commons_jexl_resolver"></a><h3>org.apache.commons.jexl.resolver</h3>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Afferent Couplings</th>
+              <th>Efferent Couplings</th>
+              <th>Abstractness</th>
+              <th>Instability</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>0</td>
+              <td>3</td>
+              <td>0%</td>
+              <td>100%</td>
+              <td>0%</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Abstract Classes</th>
+              <th>Concrete Classes</th>
+              <th>Used by Packages</th>
+              <th>Uses Packages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>
+                <em>None</em>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/resolver/FlatResolver.html">FlatResolver</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <em>None</em>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#java_lang">java.lang</a>
+                  </li>
+                  <li>
+                    <a href="#java_util">java.util</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl">org.apache.commons.jexl</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="subsection"><a name="org_apache_commons_jexl_util"></a><h3>org.apache.commons.jexl.util</h3>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Afferent Couplings</th>
+              <th>Efferent Couplings</th>
+              <th>Abstractness</th>
+              <th>Instability</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>2</td>
+              <td>5</td>
+              <td>12%</td>
+              <td>71%</td>
+              <td>16%</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Abstract Classes</th>
+              <th>Concrete Classes</th>
+              <th>Used by Packages</th>
+              <th>Uses Packages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/AbstractExecutor.html">AbstractExecutor</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/ArrayIterator.html">ArrayIterator</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/BooleanPropertyExecutor.html">BooleanPropertyExecutor</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/Coercion.html">Coercion</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/EnumerationIterator.html">EnumerationIterator</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/GetExecutor.html">GetExecutor</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/Introspector.html">Introspector</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/PropertyExecutor.html">PropertyExecutor</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#org_apache_commons_jexl_parser">org.apache.commons.jexl.parser</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_util_introspection">org.apache.commons.jexl.util.introspection</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#java_lang">java.lang</a>
+                  </li>
+                  <li>
+                    <a href="#java_lang_reflect">java.lang.reflect</a>
+                  </li>
+                  <li>
+                    <a href="#java_util">java.util</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_util_introspection">org.apache.commons.jexl.util.introspection</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_logging">org.apache.commons.logging</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="subsection"><a name="org_apache_commons_jexl_util_introspection"></a><h3>org.apache.commons.jexl.util.introspection</h3>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Afferent Couplings</th>
+              <th>Efferent Couplings</th>
+              <th>Abstractness</th>
+              <th>Instability</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>2</td>
+              <td>5</td>
+              <td>28%</td>
+              <td>71%</td>
+              <td>1%</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="bodyTable">
+          <thead>
+            <tr class="a">
+              <th>Abstract Classes</th>
+              <th>Concrete Classes</th>
+              <th>Used by Packages</th>
+              <th>Uses Packages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="b">
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/Uberspect.html">Uberspect</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/UberspectLoggable.html">UberspectLoggable</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/VelMethod.html">VelMethod</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/VelPropertyGet.html">VelPropertyGet</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/VelPropertySet.html">VelPropertySet</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/ClassMap.html">ClassMap</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/ClassMap.html">ClassMap$1</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/ClassMap.html">ClassMap$CacheMiss</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/ClassMap.html">ClassMap$MethodInfo</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/Info.html">Info</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/Introspector.html">Introspector</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/IntrospectorBase.html">IntrospectorBase</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/MethodMap.html">MethodMap</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/MethodMap.html">MethodMap$AmbiguousException</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/UberspectImpl.html">UberspectImpl</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/UberspectImpl.html">UberspectImpl$VelGetterImpl</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/UberspectImpl.html">UberspectImpl$VelMethodImpl</a>
+                  </li>
+                  <li>
+                    <a href="xref/org/apache/commons/jexl/util/introspection/UberspectImpl.html">UberspectImpl$VelSetterImpl</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#org_apache_commons_jexl_parser">org.apache.commons.jexl.parser</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_util">org.apache.commons.jexl.util</a>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>
+                    <a href="#java_lang">java.lang</a>
+                  </li>
+                  <li>
+                    <a href="#java_lang_reflect">java.lang.reflect</a>
+                  </li>
+                  <li>
+                    <a href="#java_util">java.util</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_jexl_util">org.apache.commons.jexl.util</a>
+                  </li>
+                  <li>
+                    <a href="#org_apache_commons_logging">org.apache.commons.logging</a>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div><div class="section"><a name="Cycles"></a><h2>Cycles</h2>
+      <p>[
+        <a href="#Summary">summary</a>] [
+        <a href="#Packages">packages</a>] [
+        <a href="#Cycles">cycles</a>] [
+        <a href="#Explanations">explanations</a>]</p>
+      <table class="bodyTable">
+        <thead>
+          <tr class="a">
+            <th>Package</th>
+            <th>Cyclic Dependencies</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="b">
+            <td>org.apache.commons.jexl</td>
+            <td>
+              <ul>
+                <li>org.apache.commons.jexl.parser</li>
+                <li>org.apache.commons.jexl.util</li>
+                <li>org.apache.commons.jexl.util.introspection</li>
+                <li>org.apache.commons.jexl.util</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="a">
+            <td>org.apache.commons.jexl.context</td>
+            <td>
+              <ul>
+                <li>org.apache.commons.jexl</li>
+                <li>org.apache.commons.jexl.parser</li>
+                <li>org.apache.commons.jexl.util</li>
+                <li>org.apache.commons.jexl.util.introspection</li>
+                <li>org.apache.commons.jexl.util</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="b">
+            <td>org.apache.commons.jexl.junit</td>
+            <td>
+              <ul>
+                <li>org.apache.commons.jexl</li>
+                <li>org.apache.commons.jexl.parser</li>
+                <li>org.apache.commons.jexl.util</li>
+                <li>org.apache.commons.jexl.util.introspection</li>
+                <li>org.apache.commons.jexl.util</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="a">
+            <td>org.apache.commons.jexl.parser</td>
+            <td>
+              <ul>
+                <li>org.apache.commons.jexl.util</li>
+                <li>org.apache.commons.jexl.util.introspection</li>
+                <li>org.apache.commons.jexl.util</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="b">
+            <td>org.apache.commons.jexl.resolver</td>
+            <td>
+              <ul>
+                <li>org.apache.commons.jexl</li>
+                <li>org.apache.commons.jexl.parser</li>
+                <li>org.apache.commons.jexl.util</li>
+                <li>org.apache.commons.jexl.util.introspection</li>
+                <li>org.apache.commons.jexl.util</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="a">
+            <td>org.apache.commons.jexl.util</td>
+            <td>
+              <ul>
+                <li>org.apache.commons.jexl.util.introspection</li>
+                <li>org.apache.commons.jexl.util</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="b">
+            <td>org.apache.commons.jexl.util.introspection</td>
+            <td>
+              <ul>
+                <li>org.apache.commons.jexl.util</li>
+                <li>org.apache.commons.jexl.util.introspection</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div><div class="section"><a name="Explanations"></a><h2>Explanations</h2>
+      <p>[
+        <a href="#Summary">summary</a>] [
+        <a href="#Packages">packages</a>] [
+        <a href="#Cycles">cycles</a>] [
+        <a href="#Explanations">explanations</a>]</p>
+      <p>The following explanations are for quick reference and are lifted directly from the original
+        <a href="http://www.clarkware.com/software/JDepend.html" class="externalLink" title="External Link">JDepend documentation</a>.</p>
+      <table class="bodyTable">
+        <thead>
+          <tr class="a">
+            <th>Term</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="b">
+            <td>Number of Classes</td>
+            <td>The number of concrete and abstract classes (and interfaces) in the package is an indicator of the extensibility of the package.</td>
+          </tr>
+          <tr class="a">
+            <td>Afferent Couplings</td>
+            <td>The number of other packages that depend upon classes within the package is an indicator of the package's responsibility.</td>
+          </tr>
+          <tr class="b">
+            <td>Efferent Couplings</td>
+            <td>The number of other packages that the classes in the package depend upon is an indicator of the package's independence.</td>
+          </tr>
+          <tr class="a">
+            <td>Abstractness</td>
+            <td>The ratio of the number of abstract classes (and interfaces) in the analyzed package to the total number of classes in the analyzed package. The range for this metric is 0 to 1, with A=0 indicating a completely concrete package and A=1 indicating a completely abstract package.</td>
+          </tr>
+          <tr class="b">
+            <td>Instability</td>
+            <td>The ratio of efferent coupling (Ce) to total coupling (Ce / (Ce + Ca)). This metric is an indicator of the package's resilience to change. The range for this metric is 0 to 1, with I=0 indicating a completely stable package and I=1 indicating a completely instable package.</td>
+          </tr>
+          <tr class="a">
+            <td>Distance</td>
+            <td>The perpendicular distance of a package from the idealized line A + I = 1. This metric is an indicator of the package's balance between abstractness and stability. A package squarely on the main sequence is optimally balanced with respect to its abstractness and stability. Ideal packages are either completely abstract and stable (x=0, y=1) or completely concrete and instable (x=1, y=0). The range for this metric is 0 to 1, with D=0 indicating a package that is coincident with the main sequence and D=1 indicating a package that is as far from the main sequence as possible.</td>
+          </tr>
+          <tr class="b">
+            <td>Cycles</td>
+            <td>Packages participating in a package dependency cycle are in a deadly embrace with respect to reusability and their release cycle. Package dependency cycles can be easily identified by reviewing the textual reports of dependency cycles. Once these dependency cycles have been identified with JDepend, they can be broken by employing various object-oriented techniques.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2003-2006, The Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

@@ -1,0 +1,14 @@
+<scxml initial="new_node14" name="mio esempio di prova" version="0.9" xmlns="http://www.w3.org/2005/07/scxml"><!--   node-size-and-position x=0.0 y=0.0 w=648.0 h=595.0  -->
+ <datamodel>var1
+var2</datamodel>
+ <state id="new_node14"><!--   node-size-and-position x=81.0 y=94.0 w=100.0 h=100.0  --><!-- prova di commento su una transizion -->
+  <transition cond="shift premuto" event="next" target="new_node16">a := a+1</transition>
+ </state>
+ <final id="new_node16"><!--   node-size-and-position x=320.0 y=90.0 w=100.0 h=100.0  --></final>
+ <parallel id="new_node18"><!--   node-size-and-position x=100.0 y=280.0 w=460.0 h=163.0  -->
+  <state id="new_node22"><!--   node-size-and-position x=180.0 y=43.0 w=100.0 h=100.0  --></state>
+  <state id="new_node24"><!--   node-size-and-position x=340.0 y=43.0 w=100.0 h=100.0  --></state>
+  <state id="A"><!--   node-size-and-position x=20.0 y=43.0 w=100.0 h=100.0  --></state>
+ </parallel>
+ <state id="new_node20"><!--   node-size-and-position x=460.0 y=110.0 w=100.0 h=100.0  --></state>
+</scxml>

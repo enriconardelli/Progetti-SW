@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" exmode="lax" initial="initialstate">
+	<datamodel>
+		<data id="initialstate$value" expr="0"></data>
+		<data id="onetwo$value" expr="0"></data>
+		<data id="one$value" expr="0"></data>
+		<data id="two$value" expr="0"></data>
+		<data id="three$value" expr="0"></data>
+		<data id="four$value" expr="0"></data>
+	</datamodel>
+	<state id="initialstate">
+		<transition event="start" target="onetwo" />
+	</state>
+	<parallel id="onetwo">
+		<transition event="onetwo_three" target="three" />
+				
+		<state id="onefive" initial="five">
+				<state id="one">
+				<transition event="one_five" target="five" />
+				</state>
+				<state id="five">
+				<transition event="five_one" target="one" />
+				</state>
+		</state>
+		
+		<state id="two">
+    	<transition event="two_four" target="four" />
+    </state>
+	</parallel>
+	<state id="three">
+		<transition event="three_one" target="one" />
+		<transition event="three_four" target="four" />
+	</state>
+	<state id="four">
+		<transition event="four_onetwo" target="onetwo" />
+		<transition event="four_three" target="three" />
+	</state>
+</scxml>

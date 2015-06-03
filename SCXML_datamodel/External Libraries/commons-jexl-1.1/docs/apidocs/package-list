@@ -1,0 +1,7 @@
+org.apache.commons.jexl
+org.apache.commons.jexl.context
+org.apache.commons.jexl.junit
+org.apache.commons.jexl.parser
+org.apache.commons.jexl.resolver
+org.apache.commons.jexl.util
+org.apache.commons.jexl.util.introspection

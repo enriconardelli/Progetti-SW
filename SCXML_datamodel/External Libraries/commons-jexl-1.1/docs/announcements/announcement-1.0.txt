@@ -1,0 +1,15 @@
+The commons-jexl team is pleased to announce the Commons JEXL 1.0 release! 
+
+http://jakarta.apache.org/commons/jexl/
+
+Jexl is an implementation of the JSTL Expression Language with extensions. 
+
+Changes in this version include:
+
+  Fixed bugs:
+
+o Support ant-style properties  
+
+Have fun!
+-The commons-jexl team
+      

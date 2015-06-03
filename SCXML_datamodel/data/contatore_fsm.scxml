@@ -1,0 +1,31 @@
+<scxml initial="initial_state" version="0.9" xmlns="http://www.w3.org/2005/07/scxml" xmlns:my="http://my.custom-actions.domain/CUSTOM"><!--   node-size-and-position x=0 y=0 w=510 h=390  -->
+ <datamodel>
+  <data expr="0" id="totale"></data>
+  <data expr="0" id="contatore"></data>
+ </datamodel>
+ <state id="initial_state"><!--   node-size-and-position x=140 y=43 w=90 h=75  -->
+  <transition event="start" target="standby"></transition>
+ </state>
+ <state id="standby"><!--   node-size-and-position x=147,5 y=168 w=75 h=75  -->
+  <transition event="piu" target="transient_state">
+   <assign expr="${totale + 1}" name="totale"></assign>
+   <assign expr="${contatore + 1}" name="contatore"></assign>
+<!--   edge-path [transient_state]  x=128 y=268  --></transition>
+  <transition cond="${totale gt 0}" event="meno" target="transient_state">
+   <assign expr="${totale  - 1}" name="totale"></assign>
+   <assign expr="${contatore + 1}" name="contatore"></assign>
+<!--   edge-path [transient_state]  x=142,72 y=281,54  --></transition>
+  <transition event="doppio" target="raddoppiato">
+   <assign expr="${totale * 2}" name="totale"></assign>
+   <assign expr="${contatore + 1}" name="contatore"></assign>
+<!--   edge-path [raddoppiato]  x=250 y=260  --></transition>
+  <transition event="stop" target="final_state"></transition>
+ </state>
+ <state id="raddoppiato"><!--   node-size-and-position x=250,5 y=290 w=75 h=75  -->
+  <transition event="back_to_standby" target="standby"><!--   edge-path [standby]  x=176,5 y=268,2  --></transition>
+ </state>
+ <state id="transient_state"><!--   node-size-and-position x=20 y=293 w=100 h=75  -->
+  <transition target="standby"><!--   edge-path [standby]  x=113,28 y=254,46  --></transition>
+ </state>
+ <final id="final_state"><!--   node-size-and-position x=380,5 y=290 w=75 h=75  --></final>
+</scxml>
