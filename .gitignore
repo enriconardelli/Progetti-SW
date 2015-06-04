@@ -1,3 +1,6 @@
+# Java compiled code directory
+bin
+
 # Eiffel compiled code directory and *.rc file
 EIFGENs
 *.rc
