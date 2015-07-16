@@ -162,8 +162,9 @@ feature -- Cose che si possono fare
 					lis_el.forth
 				end
 				--assegno chi è l'iniziale
-				if attached f.attribute_by_name ("initial") as primo_stato then
-					stato_iniziale:=stati.item (primo_stato.value)
+				if attached f.attribute_by_name ("initial") as primo_stato and then
+					attached stati.item (primo_stato.value) as valore_primo_stato then
+						stato_iniziale:=valore_primo_stato
 				end
 
 				--stati istanziati, ora li riempiamo
@@ -241,14 +242,12 @@ feature -- Cose che si possono fare
 									end
 								lis_el2.forth
 							end
-							temp_stato := stati.item (chiave)
-							if attached temp_stato then
-								temp_stato.agg_trans (transizione)
+							if attached stati.item (chiave) as si_c then
+								si_c.agg_trans (transizione)
 							end
 						else
-							temp_stato := stati.item (chiave)
-							if attached temp_stato then
-								print ("lo stato" + temp_stato.id + "ha una transizione non valida %N")
+							if attached stati.item (chiave) as si_c then
+								print ("lo stato" + si_c.id + "ha una transizione non valida %N")
 							end
 						end
 					end

@@ -39,8 +39,8 @@ feature --routines
 		require
 			controllo_determinismo: stato_corrente.determinismo_senza_evento (condizioni)
 		do
-			if stato_corrente.target_senza_evento (condizioni) /= Void then
-				set_stato_corrente (stato_corrente.target_senza_evento (condizioni))
+			if attached stato_corrente.target_senza_evento (condizioni) as sc_tse then
+				set_stato_corrente (sc_tse)
 				if stato_corrente.determinismo_senza_evento (condizioni) then
 					chiusura
 				end
