@@ -2,7 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="External Libraries/jdom.jar"/>
+	<classpathentry kind="lib" path="External Libraries/jdom/build/jdom.jar" sourcepath="External Libraries/jdom/src">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/ENRICO/DIDATTICA/INTERAZIONE-UOMO-CALCOLATORE/Progetti-SW/SCXML_datamodel/External Libraries/jdom/build/apidocs/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="External Libraries/commons-lang-2.6/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="External Libraries/commons-scxml-0.9/commons-scxml-0.9-javadoc.jar"/>
 	<classpathentry kind="lib" path="External Libraries/commons-scxml-0.9/commons-scxml-0.9.jar" sourcepath="External Libraries/commons-scxml-0.9/commons-scxml-0.9-sources.jar"/>

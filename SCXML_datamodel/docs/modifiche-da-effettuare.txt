@@ -18,3 +18,5 @@ parametrizzare i valori della GUI
  - con un file di parametri letto alla partenza e NON mediante il Conf
 
 realizzare test di controllo sul codice esistente!!
+
+realizzare un meccanismo per incapsulare dentro src il codice di tutti i progetti generati così da separarli dal codice del progetto stesso. definire semplicemente una sottodirectory non va bene

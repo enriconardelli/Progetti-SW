@@ -1,0 +1,38 @@
+10
+
+dir
+70
+svn+ssh://simbiosys.informatica.uniroma2.it/var/svn-repos/Simbiosys-SW/Simulatore-reazioni/branches/ReactionSimulator/libraries/jdom/build/apidocs/org
+svn+ssh://simbiosys.informatica.uniroma2.it/var/svn-repos/Simbiosys-SW
+
+
+
+2011-06-18T20:03:23.693868Z
+66
+nardelli
+has-props
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+d2d83ece-fe0b-475b-b11e-b18c5f6bf833
+
+
+
+
+
+
+0
+
+jdom
+dir
+
