@@ -77,8 +77,90 @@ public class Generator {
 				}
 			}
 		}
+		checkOK= scxml_control_scxml(pDocumentRoot);
 		return checkOK;
+		
 	}
+	
+	private static boolean scxml_control_scxml(Element pDocumentRoot) {
+
+		boolean check=true;
+		// controllo indirizzo e versione e deve avere almeno uno state oppure un parallel o un final
+		if (pDocumentRoot.getAttribute("version")!=null){
+			if (!pDocumentRoot.getAttribute("version").getValue().equals("1.0")) {
+				System.err.println("ERROR version");
+				check=false;
+			}
+		}
+		else{
+			System.err.println("ERROR: version not found");
+			check=false;
+		}
+		if (!pDocumentRoot.getNamespace().getURI().equals("http://www.w3.org/2005/07/scxml")){
+				System.err.println("ERROR xmlns");
+				check=false;
+		}
+		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty()){
+			if (pDocumentRoot.getContent(new ElementFilter("parallel")).isEmpty()){
+				if (pDocumentRoot.getContent(new ElementFilter("final")).isEmpty()){
+					System.err.println("ERROR state or parallel or final not found");
+					check=false;
+				}
+			}
+		}
+		//Ora controlleremo i figli chiamando funzioni ricorsive
+		Iterator<Element> datamodel =pDocumentRoot.getContent(new ElementFilter("datamodel")).iterator();
+		if (datamodel.hasNext()) {
+			check=check & check_datamodel(datamodel.next());
+		}
+		if (datamodel.hasNext()){
+			System.err.println("ERROR più di un datamodel");
+			check=false;
+		}
+		Iterator<Element> states =pDocumentRoot.getContent(new ElementFilter("state")).iterator();
+		while (states.hasNext()) {
+			check=check & check_state(states.next());
+		}
+		Iterator<Element> parallels =pDocumentRoot.getContent(new ElementFilter("parallel")).iterator();
+		while (parallels.hasNext()) {
+			check=check & check_parallel(parallels.next());
+		}
+		Iterator<Element> finals =pDocumentRoot.getContent(new ElementFilter("final")).iterator();
+		while (finals.hasNext()) {
+			check=check & check_final(finals.next());
+		}
+		return check;
+	}
+	
+	private static boolean check_state(Element state) {
+		//fantasma della check state
+		return true;
+	}	
+	private static boolean check_parallel(Element para) {
+		//fantasma della check parallel
+		return true;
+	}	
+	
+	private static boolean check_datamodel(Element datamodel) {
+		//fantasma della check datamodel
+		return true;
+	}	
+	
+	private static boolean check_trans(Element trans) {
+		//fantasma della check trans
+		return true;
+	}	
+	
+	private static boolean check_final(Element finale) {
+		//fantasma della check final
+		return true;
+	}	
+	
+	
+	
+	
+	
+	
 
 	private static void stateChartGeneration(String pSCXMLModel, Element pDocumentRoot, File pInputFile) {
 		try {
