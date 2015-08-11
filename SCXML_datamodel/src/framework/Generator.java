@@ -22,6 +22,10 @@ import org.jdom.filter.Filter;
 import org.jdom.input.SAXBuilder;
 
 public class Generator {
+	public static List<String> stati = new ArrayList<String>();
+	public static List<String> targets = new ArrayList<String>();
+	public static List<String> data = new ArrayList<String>();
+	public static List<String> data_assign = new ArrayList<String>();
 	// To pass arguments in Eclipse: "Run Configurations...", "Arguments", "Program Arguments"
 	public static void main(String[] args) throws Exception {
 		// checking input file name(s)
@@ -133,32 +137,181 @@ public class Generator {
 	}
 	
 	private static boolean check_state(Element state) {
-		//fantasma della check state
-		return true;
+		//
+		boolean flag=true;
+		if (state.getAttribute("id")== null){
+			System.err.println("ERROR stato senza nome");
+			flag=false;
+		}
+		else{
+			if (stati.contains(state.getAttribute("id").getValue())){
+				flag=false;
+				System.err.println("ERROR esistono più stati chiamati "+state.getAttribute("id").getValue());
+			}
+			stati.add(state.getAttribute("id").getValue());
+		}
+		Iterator<Element> onentry =state.getContent(new ElementFilter("onentry")).iterator();
+		while (onentry.hasNext()) {
+			flag=flag & check_onentry(onentry.next());
+		}		
+		Iterator<Element> onexit =state.getContent(new ElementFilter("onexit")).iterator();
+		while (onexit.hasNext()) {
+			flag=flag & check_onexit(onexit.next());
+		}
+		
+		Iterator<Element> children =state.getContent(new ElementFilter("state")).iterator();
+		while (children.hasNext())
+			flag=flag & check_state(children.next());
+		Iterator<Element> childrenp =state.getContent(new ElementFilter("parallel")).iterator();
+		while (childrenp.hasNext())
+			flag=flag & check_parallel(childrenp.next());
+		Iterator<Element> childrenf =state.getContent(new ElementFilter("final")).iterator();
+		while (childrenf.hasNext())
+			flag=flag & check_final(childrenf.next());
+		Iterator<Element> childrent =state.getContent(new ElementFilter("transition")).iterator();
+		while (childrent.hasNext())
+			flag=flag & check_trans(childrent.next());
+		return flag;
 	}	
-	private static boolean check_parallel(Element para) {
+	
+	private static boolean check_parallel(Element state) {
 		//fantasma della check parallel
-		return true;
+		boolean flag=true;
+		if (state.getAttribute("id")== null){
+			System.err.println("ERROR stato senza nome");
+			flag=false;
+		}
+		else{
+			if (stati.contains(state.getAttribute("id").getValue())){
+				flag=false;
+				System.err.println("ERROR esistono più stati chiamati "+state.getAttribute("id").getValue());
+			}
+			stati.add(state.getAttribute("id").getValue());
+		}
+		Iterator<Element> onentry =state.getContent(new ElementFilter("onentry")).iterator();
+		while (onentry.hasNext()) {
+			flag=flag & check_onentry(onentry.next());
+		}		
+		Iterator<Element> onexit =state.getContent(new ElementFilter("onexit")).iterator();
+		while (onexit.hasNext()) {
+			flag=flag & check_onexit(onexit.next());
+		}
+		
+		Iterator<Element> children =state.getContent(new ElementFilter("state")).iterator();
+		while (children.hasNext())
+			flag=flag & check_state(children.next());
+		Iterator<Element> childrenp =state.getContent(new ElementFilter("parallel")).iterator();
+		while (childrenp.hasNext())
+			flag=flag & check_parallel(childrenp.next());
+		Iterator<Element> childrent =state.getContent(new ElementFilter("transition")).iterator();
+		while (childrent.hasNext())
+			flag=flag & check_trans(childrent.next());
+		return flag;
 	}	
 	
 	private static boolean check_datamodel(Element datamodel) {
-		//fantasma della check datamodel
-		return true;
+		boolean flag=true;
+		Iterator<Element> datas =datamodel.getContent(new ElementFilter("data")).iterator();
+		while (datas.hasNext())
+			flag=flag & check_data(datas.next());
+		return flag;
 	}	
-	
+	private static boolean check_data(Element dato){
+		boolean flag=true;
+		if (dato.getAttribute("id")==null){
+			System.err.println("ERROR un data non ha id");
+			flag=false;}
+		if (dato.getAttribute("src")!=null & dato.getAttribute("expr")!=null){
+			System.err.println("ERROR un data non puo avere src E expr");
+		}
+		return flag;
+	}
 	private static boolean check_trans(Element trans) {
-		//fantasma della check trans
-		return true;
+		//   SE VOGLIAMO ESSERE PIU CHIARI BISOGNA PASSARE ANCHE IL PADRE
+		boolean flag=true;
+		if (trans.getAttribute("event")==null & trans.getAttribute("cond")==null & trans.getAttribute("target")==null){
+			System.err.println("ERROR una transizione non ha ne target ne event ne cond");
+			flag=false;
+		}
+		if (trans.getAttribute("target")!=null){
+			targets.add(trans.getAttribute("target").getValue());
+		}
+		
+		Iterator<Element> assigns =trans.getContent(new ElementFilter("assign")).iterator();
+		while (assigns.hasNext()) {
+			flag=flag & check_assign(assigns.next());
+		}
+		Iterator<Element> logs =trans.getContent(new ElementFilter("log")).iterator();
+		while (logs.hasNext()) {
+			flag=flag & check_log(logs.next());
+		}
+		return flag;
 	}	
 	
 	private static boolean check_final(Element finale) {
 		//fantasma della check final
-		return true;
+		boolean flag=true;
+		if (finale.getAttribute("id")== null){
+			System.err.println("ERROR stato senza nome");
+			flag=false;
+		}
+		else{
+			if (stati.contains(finale.getAttribute("id").getValue())){
+				flag=false;
+				System.err.println("ERROR esistono più stati chiamati "+finale.getAttribute("id").getValue());
+			}
+			stati.add(finale.getAttribute("id").getValue());
+		}
+		Iterator<Element> onentry =finale.getContent(new ElementFilter("onentry")).iterator();
+		while (onentry.hasNext()) {
+			flag=flag & check_onentry(onentry.next());
+		}		
+		Iterator<Element> onexit =finale.getContent(new ElementFilter("onexit")).iterator();
+		while (onexit.hasNext()) {
+			flag=flag & check_onexit(onexit.next());
+		}
+		return flag;
+	}	
+	private static boolean check_onentry(Element onentry) {
+		boolean flag=true;
+		Iterator<Element> assigns =onentry.getContent(new ElementFilter("assign")).iterator();
+		while (assigns.hasNext()) {
+			flag=flag & check_assign(assigns.next());
+		}
+		Iterator<Element> logs =onentry.getContent(new ElementFilter("log")).iterator();
+		while (logs.hasNext()) {
+			flag=flag & check_log(logs.next());
+		}
+		return flag;
+	}	
+	private static boolean check_onexit(Element onexit) {
+		boolean flag=true;
+		Iterator<Element> assigns =onexit.getContent(new ElementFilter("assign")).iterator();
+		while (assigns.hasNext()) {
+			flag=flag & check_assign(assigns.next());
+		}
+		Iterator<Element> logs =onexit.getContent(new ElementFilter("log")).iterator();
+		while (logs.hasNext()) {
+			flag=flag & check_log(logs.next());
+		}
+		return flag;
 	}	
 	
-	
-	
-	
+	private static boolean check_assign(Element assegna) {
+		boolean flag=true;
+		if (assegna.getAttribute("name")==null){
+			System.err.println("ERROR assegnazione senza nome");
+			flag=false;
+		}else{
+			data_assign.add(assegna.getAttribute("name").getValue());
+		}
+		
+		return flag;
+	}	
+	private static boolean check_log(Element log) {
+		//fantasma della check log
+		return true;
+	}	
 	
 	
 
