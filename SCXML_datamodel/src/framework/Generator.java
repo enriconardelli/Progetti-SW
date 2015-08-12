@@ -62,10 +62,7 @@ public class Generator {
 	private static boolean SCXMLDocumentSyntaxOK(Element pDocumentRoot) {
 		boolean checkOK = true;
 		//checking initial state
-		if (pDocumentRoot.getAttribute("initial")==null){
-			System.err.println("ERROR: initial not found");
-			checkOK = false;
-		}
+		
 		// checking "data" node in the document
 		Iterator<Element> anElement = pDocumentRoot.getDescendants(new ElementFilter("data"));
 		while (anElement.hasNext()) {
@@ -82,7 +79,17 @@ public class Generator {
 			}
 		}
 		checkOK= scxml_control_scxml(pDocumentRoot);
+		if (pDocumentRoot.getAttribute("initial")==null){
+			System.err.println("ERROR: initial not found");
+			checkOK = false;
+		}
+		else
+			if (!(stati.contains(pDocumentRoot.getAttribute("initial").getValue()))){
+				System.err.println("ERROR lo stato identificato come iniziale non esiste");
+				checkOK=false;
+			}
 		return checkOK;
+		
 		
 	}
 	
@@ -104,13 +111,11 @@ public class Generator {
 				System.err.println("ERROR xmlns");
 				check=false;
 		}
-		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty()){
-			if (pDocumentRoot.getContent(new ElementFilter("parallel")).isEmpty()){
-				if (pDocumentRoot.getContent(new ElementFilter("final")).isEmpty()){
-					System.err.println("ERROR state or parallel or final not found");
+		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty() & 
+				pDocumentRoot.getContent(new ElementFilter("parallel")).isEmpty() & 
+				pDocumentRoot.getContent(new ElementFilter("final")).isEmpty()){
+					System.err.println("ERROR non è presente nè uno state ne un parallel ne un final");
 					check=false;
-				}
-			}
 		}
 		//Ora controlleremo i figli chiamando funzioni ricorsive
 		Iterator<Element> datamodel =pDocumentRoot.getContent(new ElementFilter("datamodel")).iterator();
@@ -133,11 +138,19 @@ public class Generator {
 		while (finals.hasNext()) {
 			check=check & check_final(finals.next());
 		}
+		if (!(stati.containsAll(targets))){
+			System.err.println("ERROR esistono target non validi");
+			check=stati.containsAll(targets);
+		}
+		if (!(data.containsAll(data_assign))){
+			System.err.println("ERROR ci sono assegnazioni a dati non esistenti");
+			check=data.containsAll(data_assign);
+		}
 		return check;
 	}
 	
 	private static boolean check_state(Element state) {
-		//
+		List<String> figli = new ArrayList<String>();
 		boolean flag=true;
 		if (state.getAttribute("id")== null){
 			System.err.println("ERROR stato senza nome");
@@ -151,26 +164,30 @@ public class Generator {
 			stati.add(state.getAttribute("id").getValue());
 		}
 		Iterator<Element> onentry =state.getContent(new ElementFilter("onentry")).iterator();
-		while (onentry.hasNext()) {
-			flag=flag & check_onentry(onentry.next());
-		}		
+		while (onentry.hasNext()) 
+			flag=flag & check_onentry(onentry.next());		
 		Iterator<Element> onexit =state.getContent(new ElementFilter("onexit")).iterator();
-		while (onexit.hasNext()) {
+		while (onexit.hasNext()) 
 			flag=flag & check_onexit(onexit.next());
-		}
-		
 		Iterator<Element> children =state.getContent(new ElementFilter("state")).iterator();
+		figli.addAll(state.getContent(new ElementFilter("state")));
 		while (children.hasNext())
 			flag=flag & check_state(children.next());
 		Iterator<Element> childrenp =state.getContent(new ElementFilter("parallel")).iterator();
+		figli.addAll(state.getContent(new ElementFilter("parallel")));
 		while (childrenp.hasNext())
 			flag=flag & check_parallel(childrenp.next());
 		Iterator<Element> childrenf =state.getContent(new ElementFilter("final")).iterator();
+		figli.addAll(state.getContent(new ElementFilter("final")));
 		while (childrenf.hasNext())
 			flag=flag & check_final(childrenf.next());
 		Iterator<Element> childrent =state.getContent(new ElementFilter("transition")).iterator();
 		while (childrent.hasNext())
 			flag=flag & check_trans(childrent.next());
+		if ((state.getAttribute("id")!= null & state.getAttribute("initial")!=null) && !(figli.contains(state.getAttribute("initial").getValue()))){
+			flag=false;
+			System.err.println("ERROR lo stato "+ state.getAttributeValue("id") + "ha un initial="+state.getAttributeValue("initial")+" che non è un figlio");
+		}
 		return flag;
 	}	
 	
@@ -189,14 +206,11 @@ public class Generator {
 			stati.add(state.getAttribute("id").getValue());
 		}
 		Iterator<Element> onentry =state.getContent(new ElementFilter("onentry")).iterator();
-		while (onentry.hasNext()) {
+		while (onentry.hasNext())
 			flag=flag & check_onentry(onentry.next());
-		}		
 		Iterator<Element> onexit =state.getContent(new ElementFilter("onexit")).iterator();
-		while (onexit.hasNext()) {
-			flag=flag & check_onexit(onexit.next());
-		}
-		
+		while (onexit.hasNext()) 
+			flag=flag & check_onexit(onexit.next());		
 		Iterator<Element> children =state.getContent(new ElementFilter("state")).iterator();
 		while (children.hasNext())
 			flag=flag & check_state(children.next());
@@ -221,8 +235,16 @@ public class Generator {
 		if (dato.getAttribute("id")==null){
 			System.err.println("ERROR un data non ha id");
 			flag=false;}
+		else 
+			if (data.contains(dato.getAttributeValue("id"))){
+				System.err.println("ERROR piu data hanno nome"+dato.getAttributeValue("id"));
+				flag=false;
+			}
+			else
+			data.add(dato.getAttribute("id").getValue());
 		if (dato.getAttribute("src")!=null & dato.getAttribute("expr")!=null){
 			System.err.println("ERROR un data non puo avere src E expr");
+			flag=false;
 		}
 		return flag;
 	}
