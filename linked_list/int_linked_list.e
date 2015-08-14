@@ -40,44 +40,67 @@ feature
 		end
 
 	has (a_value: INTEGER): BOOLEAN
-			-- Does list contain `a_value'?
+			-- La lista contiene `a_value'?
 		local
-			temp, pre_temp: like first_element
+			current_element, temp: like first_element
 		do
 			from
-				temp := first_element;
-				pre_temp := Void
+				current_element := first_element;
+				temp := Void
 			invariant
-				not Result implies (pre_temp /= Void implies pre_temp.value /= a_value)
+				not Result implies (temp /= Void implies temp.value /= a_value)
 			until
-				(temp = Void) or Result
+				(current_element = Void) or Result
 			loop
-				if temp.value = a_value then
+				if current_element.value = a_value then
 					Result := True
 				end
-				pre_temp := temp
-				temp := temp.next
+				temp := current_element
+				current_element := current_element.next
+			end
+		end
+
+	value_follows (a_value, target: INTEGER): BOOLEAN
+			-- La lista contiene `a_value' dopo la prima occorrenza di `target'?
+		require
+			esiste_bersaglio: has(target)
+		local
+			current_element, temp: like first_element
+		do
+			from
+				current_element := get_element(target)
+				temp := Void
+			invariant
+				not Result implies (temp /= Void implies temp.value /= a_value)
+			until
+				(current_element = Void) or Result
+			loop
+				if current_element.value = a_value then
+					Result := True
+				end
+				temp := current_element
+				current_element := current_element.next
 			end
 		end
 
 	get_element (a_value: INTEGER): detachable INT_LINKABLE
-			-- Return item containing `a_value', if any
+			-- Ritorna il primo elemento contenente `a_value', se esiste
 		local
-			temp, pre_temp: like first_element
+			current_element, temp: like first_element
 		do
 			from
-				temp := first_element;
-				pre_temp := Void
+				current_element := first_element;
+				temp := Void
 			invariant
-				Result = Void implies (pre_temp /= Void implies pre_temp.value /= a_value)
+				Result = Void implies (temp /= Void implies temp.value /= a_value)
 			until
-				(temp = Void) or (Result /= Void)
+				(current_element = Void) or (Result /= Void)
 			loop
-				if temp.value = a_value then
-					Result := temp
+				if current_element.value = a_value then
+					Result := current_element
 				end
-				pre_temp := temp
-				temp := temp.next
+				temp := current_element
+				current_element := temp.next
 			end
 		ensure
 			(Result /= Void) implies Result.value = a_value
@@ -103,21 +126,22 @@ feature
 		end
 
 	insert_after (new, target: INTEGER)
-			-- Insert `new' after `target' if present otherwise add `new' at the end
+			-- Inserisce `new' dopo la prima occorrenza di `target' se presente
+			-- Altrimenti inserisce `new' alla fine
 		local
-			target_element, new_element: like first_element
+			current_element, new_element: like first_element
 		do
 			create new_element.make (new)
 			from
-				target_element := first_element
+				current_element := first_element
 			until
-				target_element = Void or else target_element.value = target
+				current_element = Void or else current_element.value = target
 			loop
-				target_element := target_element.next
+				current_element := current_element.next
 			end
-			if target_element /= Void then
-				new_element.insert_after (target_element)
-				if last_element = target_element then
+			if current_element /= Void then
+				new_element.insert_after (current_element)
+				if last_element = current_element then
 					last_element := new_element
 				end
 			else -- list does not contain `target'
@@ -131,13 +155,14 @@ feature
 			end
 			count := count + 1
 		ensure
-			one_more: count = old count + 1
-			appended_if_not_present: not (old has (target)) implies last_element.value = new;
-			linked_if_present: old has (target) implies get_element (target).next.value = new;
+			uno_in_piu: count = old count + 1
+			accodato_se_non_presente: not (old has (target)) implies last_element.value = new;
+			collegato_se_presente: old has (target) implies get_element (target).next.value = new;
 		end
 
 	insert_before (new, target: INTEGER)
-			-- Insert `new' before `target' if present otherwise add `new' at the beginning
+			-- Inserisce `new' prima della prima occorrenza di `target' se esiste
+			-- Altrimenti inserisce `new' all'inizio
 		local
 			previous_element, new_element: like first_element
 		do
@@ -167,9 +192,9 @@ feature
 			end
 			count := count + 1
 		ensure
-			one_more: count = old count + 1
-			prepended_if_not_present: not (old has (target)) implies first_element.value = new;
-			linked_if_present: old has (target) implies get_element (new).next.value = target;
+			uno_in_piu: count = old count + 1
+			in_testa_se_non_presente: not (old has (target)) implies first_element.value = new;
+			collegato_se_presente: old has (target) implies value_follows (target, new);
 		end
 
 		--	insert_before (new, target: INTEGER)
@@ -208,6 +233,49 @@ feature
 		--			prepended_if_not_present: not (old has (target)) implies first_element.value = new;
 		--			linked_if_present: old has (target) implies get_item (new).next.value = target;
 		--		end
+
+	insert_multiple_after (new, target: INTEGER)
+			-- Inserisce `new' dopo ogni `target', se ne esistono
+			-- Altrimenti inserisce `new' alla fine
+		local
+			new_element, current_element: INT_LINKABLE
+			target_exist: BOOLEAN
+		do
+			if has(target) then
+				from
+					current_element := first_element
+				until
+					current_element = Void
+				loop
+					if current_element.value = target then
+						create new_element.make (new)
+						new_element.insert_after (current_element)
+						count := count + 1
+						if current_element = last_element then
+							last_element := new_element
+						end
+						-- salta elemento appena inserito
+						current_element := new_element.next
+					else
+						current_element := current_element.next
+					end
+				end
+			else -- la lista non contiene `target'
+				create new_element.make (new)
+				if count=0 then
+					first_element := new_element
+					last_element := new_element
+				else
+					new_element.insert_after (last_element)
+					last_element := new_element
+				end
+				count := count + 1
+			end
+		ensure
+			di_piu: count > old count
+			appeso_se_non_presente: not (old has(target)) implies last_element.value = new;
+			collegato_se_presente: old has(target) implies get_element(target).next.value = new;
+	end
 
 	invert
 			-- invert the entire list
@@ -276,10 +344,10 @@ feature
 		end
 
 invariant
-	count >= 0
-	last_element /= Void implies last_element.next = Void
-	count = 0 implies (first_element = last_element) and (first_element = Void)
-	count = 1 implies (first_element = last_element) and (first_element /= Void)
-	count > 1 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and then (first_element.next /= Void)
+	contatore_non_negativo: count >= 0
+	lista_termina_Void: last_element /= Void implies last_element.next = Void
+	consistenza_lista_vuota: count = 0 implies (first_element = last_element) and (first_element = Void)
+	consistenza_lista_mono_elemento: count = 1 implies (first_element = last_element) and (first_element /= Void)
+	consistenza_lista_pluri_elemento: count > 1 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and then (first_element.next /= Void)
 
 end

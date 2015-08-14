@@ -1,3 +1,17 @@
 
-Questa cartella linked_list contiene la versione dei test per le classi EIFFEL di gestione di liste di interi che ho creato come esempio dell'uso della funzione di AutoTest di Eiffel.
+Questa cartella
+  D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\linked_list
+contiene la versione più aggiornata dei test per le classi EIFFEL di gestione di liste di interi che ho creato come esempio dell'uso della funzione di AutoTest di Eiffel.
 
+E' replicata nel repository GIT
+  https://github.com/enriconardelli/Progetti-SW
+
+
+La prima versione era stata fatta nell'ambito delle lezioni di Fondamenti della Programmazione del 2013-14 (mantenuta la stessa nel 2014-15)
+  D:\ENRICO\DIDATTICA\Fondamenti-Programmazione-Metodi-Evoluti-EIFFEL\Eiffel-book-slides\Lecture-AND-Exercises-Slides-MIE-2014-15\Exercise-Projects\esercitazione-5\test_linked_list
+
+Successivamente Jacopo Astolfi ha realizzato la prima versione con Autotest disponibile in
+  D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\IPC-projects\Autotest\linked_list
+
+
+Tutte le modifiche/estensioni vanno apportate a questa versione
