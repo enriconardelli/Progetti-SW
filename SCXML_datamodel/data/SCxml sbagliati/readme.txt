@@ -63,11 +63,16 @@ Se un file scxml passa i nostri controlli noi assicuriamo le seguenti cose
 		
 
 
+file con errori
 
-
-
-
-
+versionedata            versione : 2.0    (d)ata    
+targeterrati	        raddoppiato<pippo  
+dataerrati		contatore<pippo
+assignlocation		name<location name<pippo
+datamodelinitial	datamodel doppio  initial_state<pippo
+eventcondtargetfinal	non c'e' evento cond e target     final_state<""
+xmlnsinitial            xmlns/="http://www.w3.org/2005/07/scxml" manaca initial
+statistessonome		2 stati con lo stesso nome
 
 
 

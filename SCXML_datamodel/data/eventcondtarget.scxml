@@ -15,7 +15,7 @@
 			<assign name="totale" expr="${totale + 1}" />
 			<assign name="contatore" expr="${contatore + 1}" />
 		</transition>
-		<transition event="meno" cond="${totale gt 0}" target="transient_state">
+		<transition >
 			<assign name="totale" expr="${totale  - 1}" />
 			<assign name="contatore" expr="${contatore + 1}" />
 		</transition>
@@ -36,7 +36,7 @@
 		<transition target="standby" />
 	</state>
 
-	<final id="final_state" />
+	<final />
 
 </scxml>
 
