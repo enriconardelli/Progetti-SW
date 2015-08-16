@@ -116,68 +116,48 @@ feature -- Cose che si possono fare
 		local
 			temp_stato: STATO
 			flag: BOOLEAN
-			first: XML_NODE
-			tempatt: detachable XML_ATTRIBUTE
-			lis_el: LIST [XML_ELEMENT]
-			lis_data: LIST [XML_ELEMENT]
 		do
-			first := albero.document.first
 			flag := false
-			if attached {XML_ELEMENT} first as f then
-				lis_el := f.elements
+			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
 				from
 					lis_el.start
 				until
 					lis_el.after
 				loop
-					if lis_el.item_for_iteration.name ~ "final" then
-						tempatt := lis_el.item_for_iteration.attribute_by_name ("id")
-						if attached tempatt as asd then
-							create temp_stato.make_with_id (asd.value)
-							stati.extend (temp_stato, asd.value)
-							temp_stato.set_final
-						end
-					end
-					if lis_el.item_for_iteration.name ~ "state" then
-						tempatt := lis_el.item_for_iteration.attribute_by_name ("id")
-						if attached tempatt as asd then
-							create temp_stato.make_with_id (asd.value)
-							stati.extend (temp_stato, asd.value)
-						end
-					elseif lis_el.item_for_iteration.name ~ "datamodel" then
-						lis_data := lis_el.item_for_iteration.elements
+					if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as tempattr then
+						create temp_stato.make_with_id (tempattr.value)
+						stati.extend (temp_stato, tempattr.value)
+						temp_stato.set_final
+					elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as asd then
+						create temp_stato.make_with_id (asd.value)
+						stati.extend (temp_stato, asd.value)
+					elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
 						from
 							lis_data.start
 						until
 							lis_data.after
 						loop
-							if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("id") as nome then
-								if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("expr") as valore then
-									condizioni.extend ( valore.value ~ "true", nome.value)
-								end
+							if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("id") as nome and then attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("expr") as valore then
+								condizioni.extend (valore.value ~ "true", nome.value)
 							end
 							lis_data.forth
 						end
 					end
 					lis_el.forth
 				end
-				--assegno chi è l'iniziale
-				if attached f.attribute_by_name ("initial") as primo_stato and then
-					attached stati.item (primo_stato.value) as valore_primo_stato then
-						stato_iniziale:=valore_primo_stato
+					--assegno chi è l'iniziale
+				if attached f.attribute_by_name ("initial") as primo_stato and then attached stati.item (primo_stato.value) as valore_primo_stato then
+					stato_iniziale := valore_primo_stato
 				end
 
-				--stati istanziati, ora li riempiamo
+					--stati istanziati, ora li riempiamo
 				from
 					lis_el.start
 				until
 					lis_el.after
 				loop
-					if lis_el.item_for_iteration.name ~ "state" then
-						tempatt := lis_el.item_for_iteration.attribute_by_name ("id")
-						if attached tempatt as asd then
-							riempi_stato (asd.value, lis_el.item_for_iteration)
-						end
+					if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as asd then
+						riempi_stato (asd.value, lis_el.item_for_iteration)
 					end
 					lis_el.forth
 				end
@@ -190,13 +170,8 @@ feature -- Cose che si possono fare
 			lis_el: LIST [XML_ELEMENT]
 			lis_el2: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
-			azione: detachable XML_ATTRIBUTE
-			event: detachable XML_ATTRIBUTE
-			con: detachable XML_ATTRIBUTE
-			target: detachable XML_ATTRIBUTE
 			assegn: ASSEGNAZIONE
 			finta: FITTIZIA
-			location: STRING
 			val: BOOLEAN
 		do
 			lis_el := element.elements
@@ -205,50 +180,44 @@ feature -- Cose che si possono fare
 			until
 				lis_el.after
 			loop
-				if lis_el.item_for_iteration.name ~ "transition" then
-					target := lis_el.item_for_iteration.attribute_by_name ("target")
-					if attached target then
-						if attached stati.item (target.value) as fabio then
-							create transizione.make_with_target (fabio)
-							event := lis_el.item_for_iteration.attribute_by_name ("event")
-							if attached event then
-								transizione.set_evento (event.value)
-							end
-							con := lis_el.item_for_iteration.attribute_by_name ("cond") -- non sappiamo come l'xml chiama le condizioni
-							if attached con then
-								transizione.set_condizione (con.value)
-							end
-							lis_el2 := lis_el.item_for_iteration.elements
-							from
-								lis_el2.start
-							until
-								lis_el2.after
-							loop
-								if lis_el2.item_for_iteration.name ~ "assign" then
-									if attached lis_el2.item_for_iteration.attribute_by_name ("location") as luogo then
-										if attached lis_el2.item_for_iteration.attribute_by_name ("expr") as expr then
-											if expr.value ~ "false"  then
-												create assegn.make_with_cond_and_value (luogo.value, FALSE)
-												transizione.set_azione (assegn)
-											end
-										end
+				if lis_el.item_for_iteration.name ~ "transition" and then attached lis_el.item_for_iteration.attribute_by_name ("target") as target then
+					if attached stati.item (target.value) as fabio then
+						create transizione.make_with_target (fabio)
+						if attached lis_el.item_for_iteration.attribute_by_name ("event") as event then
+							transizione.set_evento (event.value)
+						end
+						if attached lis_el.item_for_iteration.attribute_by_name ("cond") as con then
+							transizione.set_condizione (con.value)
+						end
+						lis_el2 := lis_el.item_for_iteration.elements
+						from
+							lis_el2.start
+						until
+							lis_el2.after
+						loop
+							if lis_el2.item_for_iteration.name ~ "assign" then
+								if attached lis_el2.item_for_iteration.attribute_by_name ("location") as luogo and then attached lis_el2.item_for_iteration.attribute_by_name ("expr") as expr then
+									if expr.value ~ "false" then
+										create assegn.make_with_cond_and_value (luogo.value, FALSE)
+										transizione.set_azione (assegn)
+									elseif expr.value ~ "true" then
+										create assegn.make_with_cond_and_value (luogo.value, TRUE)
+										transizione.set_azione (assegn)
 									end
 								end
-								if lis_el2.item_for_iteration.name ~ "log" then
-										if attached lis_el2.item_for_iteration.attribute_by_name ("name") as name then
-											create finta.make_with_id (name.value)
-											transizione.set_azione (finta)
-										end
-									end
-								lis_el2.forth
 							end
-							if attached stati.item (chiave) as si_c then
-								si_c.agg_trans (transizione)
+							if lis_el2.item_for_iteration.name ~ "log" and then attached lis_el2.item_for_iteration.attribute_by_name ("name") as name then
+								create finta.make_with_id (name.value)
+								transizione.set_azione (finta)
 							end
-						else
-							if attached stati.item (chiave) as si_c then
-								print ("lo stato" + si_c.id + "ha una transizione non valida %N")
-							end
+							lis_el2.forth
+						end
+						if attached stati.item (chiave) as si_c then
+							si_c.agg_trans (transizione)
+						end
+					else
+						if attached stati.item (chiave) as si_c then
+							print ("lo stato" + si_c.id + "ha una transizione non valida %N")
 						end
 					end
 				end
