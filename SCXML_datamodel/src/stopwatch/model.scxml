@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	 Never change this 'model' file!
+	 Modify the original one in Conf.data_dir.
+ -->
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="reset">
+	<datamodel>
+		<data id="running$value" expr="0" />
+		<data id="paused$value" expr="0" />
+		<data id="stopped$value" expr="0" />
+		<data id="reset$value" expr="0" />
+	</datamodel>
+	<state id="reset">
+		<transition event="watch_start" target="running" />
+	</state>
+	<state id="running">
+		<transition event="watch_split" target="paused" />
+		<transition event="watch_stop" target="stopped" />
+	</state>
+
+	<state id="paused">
+		<transition event="watch_unsplit" target="running" />
+		<transition event="watch_stop" target="stopped" />
+	</state>
+
+	<state id="stopped">
+		<transition event="watch_reset" target="reset" />
+	</state>
+
+</scxml>

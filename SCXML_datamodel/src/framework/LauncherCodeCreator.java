@@ -25,7 +25,7 @@ public class LauncherCodeCreator {
 		}
 	}
 
-	private static String writePreambleAndClass(String pSCName) throws IOException {
+	public static String writePreambleAndClass(String pSCName) throws IOException {
 		String result = "";
 		result += "/*" + Conf.linesep;
 		result += " * @generated" + Conf.linesep;
