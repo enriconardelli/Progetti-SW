@@ -1,4 +1,6 @@
-watch_reset
-25
-watch_start
-pippo
+circle
+minus
+star
+square
+plus
+star
