@@ -52,9 +52,11 @@ feature {NONE} -- Inizializzazione
 			create configuratore.make_with_condition (stato_iniziale, condizioni)
 			eventi := acquisisci_eventi
 			print ("cristiano è brutto")
+			evolvi_SC
 		end
 
 	start_new (un_file: STRING)
+	-- TODO finire di verificare se questa feature può diventare la nuova feature di start
 		local
 			parser: XML_PARSER
 			albero: XML_CALLBACKS_TREE
@@ -75,12 +77,13 @@ feature {NONE} -- Inizializzazione
 			create eventi.make_empty
 			create stati.make (1)
 			create condizioni.make (1)
-			create configuratore.make_with_condition (stato_iniziale, condizioni)
+--			create configuratore.make_with_condition (stato_iniziale, condizioni)
 			print ("INIZIO!%N")
 			crea_stati_e_cond (albero)
 			eventi := acquisisci_eventi
 			print ("acquisiti eventi")
 			create configuratore.make_with_condition (stato_iniziale, condizioni)
+			evolvi_SC
 		end
 
 feature -- Cose che si possono fare
@@ -90,6 +93,7 @@ feature -- Cose che si possono fare
 			evento_corrente: STRING
 			st: detachable STATO
 		do
+					print ("entrato in evolvi_SC: ")
 			FROM
 			UNTIL
 				configuratore.stato_corrente.finale or count_evento_corrente > eventi.count
@@ -102,6 +106,8 @@ feature -- Cose che si possono fare
 					st := configuratore.stato_corrente.target (evento_corrente, configuratore.condizioni)
 					if attached st as s then
 						configuratore.set_stato_corrente (s)
+					print ("nuovo stato corrente: ")
+					print (st.id)
 					end
 				end
 			end
@@ -119,19 +125,24 @@ feature -- Cose che si possono fare
 		do
 			flag := false
 			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
+				-- TODO gestire fallimento del test
 				from
 					lis_el.start
 				until
 					lis_el.after
 				loop
 					if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as tempattr then
+						-- TODO gestire fallimento del test
 						create temp_stato.make_with_id (tempattr.value)
 						stati.extend (temp_stato, tempattr.value)
 						temp_stato.set_final
 					elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as asd then
+						-- TODO gestire fallimento del test
 						create temp_stato.make_with_id (asd.value)
 						stati.extend (temp_stato, asd.value)
 					elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
+						-- TODO gestire fallimento del test
+						-- TODO separare creazione delle condizioni in feature a parte
 						from
 							lis_data.start
 						until
@@ -147,89 +158,94 @@ feature -- Cose che si possono fare
 				end
 					--assegno chi è l'iniziale
 				if attached f.attribute_by_name ("initial") as primo_stato and then attached stati.item (primo_stato.value) as valore_primo_stato then
+					-- TODO gestire fallimento del test
 					stato_iniziale := valore_primo_stato
 				end
 
 					--stati istanziati, ora li riempiamo
+					-- TODO separare in feature autonoma
 				from
 					lis_el.start
 				until
 					lis_el.after
 				loop
-					if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as asd then
-						riempi_stato (asd.value, lis_el.item_for_iteration)
+					if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato_xml then
+						riempi_stato (stato_xml.value, lis_el.item_for_iteration)
 					end
 					lis_el.forth
 				end
 			end
 		end
 
-	riempi_stato (chiave: STRING; element: XML_ELEMENT)
+	riempi_stato (id_stato: STRING; element: XML_ELEMENT)
 		local
 			temp_stato: DETACHABLE STATO
-			lis_el: LIST [XML_ELEMENT]
-			lis_el2: LIST [XML_ELEMENT]
+			transition_list: LIST [XML_ELEMENT]
+			assign_list: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
-			assegn: ASSEGNAZIONE
+			assegnazione: ASSEGNAZIONE
 			finta: FITTIZIA
 			val: BOOLEAN
 		do
-			lis_el := element.elements
+			transition_list := element.elements
 			from
-				lis_el.start
+				transition_list.start
 			until
-				lis_el.after
+				transition_list.after
 			loop
-				if lis_el.item_for_iteration.name ~ "transition" and then attached lis_el.item_for_iteration.attribute_by_name ("target") as target then
-					if attached stati.item (target.value) as fabio then
-						create transizione.make_with_target (fabio)
-						if attached lis_el.item_for_iteration.attribute_by_name ("event") as event then
+				-- TODO gestire separatamente feature di creazione transizione che torna o transizione o errore
+				if transition_list.item_for_iteration.name ~ "transition" and then attached transition_list.item_for_iteration.attribute_by_name ("target") as target then
+					-- TODO gestire fallimento del test per assenza clausola target
+					if attached stati.item (target.value) as target_state then
+						create transizione.make_with_target (target_state)
+						if attached transition_list.item_for_iteration.attribute_by_name ("event") as event then
 							transizione.set_evento (event.value)
 						end
-						if attached lis_el.item_for_iteration.attribute_by_name ("cond") as con then
-							transizione.set_condizione (con.value)
+						if attached transition_list.item_for_iteration.attribute_by_name ("cond") as cond then
+							transizione.set_condizione (cond.value)
 						end
-						lis_el2 := lis_el.item_for_iteration.elements
+						assign_list := transition_list.item_for_iteration.elements
+						-- TODO gestire assegnazione di azioni alla transizione corrente in feature separata
 						from
-							lis_el2.start
+							assign_list.start
 						until
-							lis_el2.after
+							assign_list.after
 						loop
-							if lis_el2.item_for_iteration.name ~ "assign" then
-								if attached lis_el2.item_for_iteration.attribute_by_name ("location") as luogo and then attached lis_el2.item_for_iteration.attribute_by_name ("expr") as expr then
+							if assign_list.item_for_iteration.name ~ "assign" then
+								if attached assign_list.item_for_iteration.attribute_by_name ("location") as luogo and then attached assign_list.item_for_iteration.attribute_by_name ("expr") as expr then
 									if expr.value ~ "false" then
-										create assegn.make_with_cond_and_value (luogo.value, FALSE)
-										transizione.set_azione (assegn)
+										create assegnazione.make_with_cond_and_value (luogo.value, FALSE)
+										transizione.set_azione (assegnazione)
 									elseif expr.value ~ "true" then
-										create assegn.make_with_cond_and_value (luogo.value, TRUE)
-										transizione.set_azione (assegn)
+										create assegnazione.make_with_cond_and_value (luogo.value, TRUE)
+										transizione.set_azione (assegnazione)
 									end
 								end
 							end
-							if lis_el2.item_for_iteration.name ~ "log" and then attached lis_el2.item_for_iteration.attribute_by_name ("name") as name then
+							if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
 								create finta.make_with_id (name.value)
 								transizione.set_azione (finta)
 							end
-							lis_el2.forth
+							assign_list.forth
 						end
-						if attached stati.item (chiave) as si_c then
+						if attached stati.item (id_stato) as si_c then
 							si_c.agg_trans (transizione)
 						end
 					else
-						if attached stati.item (chiave) as si_c then
+						if attached stati.item (id_stato) as si_c then
 							print ("lo stato" + si_c.id + "ha una transizione non valida %N")
 						end
 					end
 				end
-				lis_el.forth
+				transition_list.forth
 			end
 		end
 
-		-- Aggiungere 'feature' per tracciare quanto accade scrivendo su file model_out.txt:
-		--la SC costruita dal programma (cioè il file model.xml letto)
-		--la configurazione iniziale in termini di stato e nomi-valori delle condizioni
-		--l'evoluzione della SC in termini di sequenza di quintuple:
-		--stato, evento, condizione, azione, target
+	-- Aggiungere 'feature' per tracciare quanto accade scrivendo su file model_out.txt:
+	--la SC costruita dal programma (cioè il file model.xml letto)
+	--la configurazione iniziale in termini di stato e nomi-valori delle condizioni
+	--l'evoluzione della SC in termini di sequenza di quintuple:
+	--stato, evento, condizione, azione, target
 
 feature --eventi
 
