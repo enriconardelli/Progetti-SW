@@ -24,7 +24,7 @@ import org.jdom.input.SAXBuilder;
 public class Generator {
 	public static List<String> stati = new ArrayList<String>();
 	public static List<String> targets = new ArrayList<String>();
-	public static List<String> data = new ArrayList<String>();
+	public static List<String> data_ids = new ArrayList<String>();
 	public static List<String> data_assign = new ArrayList<String>();
 	// To pass arguments in Eclipse: "Run Configurations...", "Arguments", "Program Arguments"
 	public static void main(String[] args) throws Exception {
@@ -79,24 +79,31 @@ public class Generator {
 			}
 		}
 		checkOK= scxml_control_scxml(pDocumentRoot);
+		return checkOK;
+		
+		
+	}
+
+	private static boolean check_initial(Element pDocumentRoot) {
+		boolean check=true;
 		if (pDocumentRoot.getAttribute("initial")==null){
 			System.err.println("ERROR: initial not found");
-			checkOK = false;
+			check = false;
 		}
 		else
 			if (!(stati.contains(pDocumentRoot.getAttribute("initial").getValue()))){
 				System.err.println("ERROR lo stato identificato come iniziale non esiste");
-				checkOK=false;
+				check=false;
 			}
-		return checkOK;
-		
-		
+		return check;
 	}
 	
 	private static boolean scxml_control_scxml(Element pDocumentRoot) {
 
 		boolean check=true;
 		// controllo indirizzo e versione e deve avere almeno uno state oppure un parallel o un final
+		check = check_initial(pDocumentRoot);
+
 		if (pDocumentRoot.getAttribute("version")!=null){
 			if (!pDocumentRoot.getAttribute("version").getValue().equals("1.0")) {
 				System.err.println("ERROR version");
@@ -144,9 +151,9 @@ public class Generator {
 			check=stati.containsAll(targets);
 		}
 		// TODO controllare assign con iterazione per individuare i data element mancanti nel datamodel
-		if (!(data.containsAll(data_assign))){
+		if (!(data_ids.containsAll(data_assign))){
 			System.err.println("ERROR ci sono assegnazioni a elementi data non presenti in datamodel");
-			check=data.containsAll(data_assign);
+			check=data_ids.containsAll(data_assign);
 		}
 		return check;
 	}
@@ -233,23 +240,48 @@ public class Generator {
 		return flag;
 	}	
 	private static boolean check_data(Element dato){
-		boolean flag=true;
-		if (dato.getAttribute("id")==null){
-			System.err.println("ERROR un data non ha id");
-			flag=false;}
-		else 
-			if (data.contains(dato.getAttributeValue("id"))){
-				System.err.println("ERROR piu data hanno nome"+dato.getAttributeValue("id"));
-				flag=false;
-			}
-			else
-			data.add(dato.getAttribute("id").getValue());
+		boolean check_data_flag=true;
+		
+		check_data_flag = check_data_id_single(dato) && check_data_id(dato) ;
+		
+		check_data_flag = check_data_flag & check_data_src_expr(dato);
+		
+		data_ids.add(dato.getAttribute("id").getValue());
+		
+		return check_data_flag;
+	}
+
+	private static boolean check_data_src_expr(Element dato) {
 		if (dato.getAttribute("src")!=null & dato.getAttribute("expr")!=null){
 			System.err.println("ERROR un data non puo avere src E expr");
-			flag=false;
-		}
-		return flag;
+			return false;}
+		else
+			return true;
 	}
+	
+	private static boolean check_data_id(Element dato) {
+	if (dato.getAttribute("id")==null){
+		System.err.println("ERROR un data non ha id");
+		return false;}
+	else
+		if (dato.getAttribute("id").getValue() == "") {
+			System.err.println("ERROR: 'data' element with id = '" + dato.getAttribute("id").getValue()
+					+ "' has no value for the attribute");
+			return false;
+		}
+			else
+				return true;
+	} 
+
+	private static boolean check_data_id_single(Element dato) {
+		if (data_ids.contains(dato.getAttributeValue("id"))){
+			System.err.println("ERROR piu data hanno nome"+dato.getAttributeValue("id"));
+			return false;
+		}
+			else
+				return true;
+	}
+	
 	private static boolean check_trans(Element trans) {
 		//   SE VOGLIAMO ESSERE PIU CHIARI BISOGNA PASSARE ANCHE IL PADRE
 		boolean flag=true;
