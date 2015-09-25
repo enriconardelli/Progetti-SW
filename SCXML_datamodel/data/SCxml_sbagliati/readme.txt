@@ -15,8 +15,6 @@ Se un file scxml passa i nostri controlli noi assicuriamo le seguenti cose
 		C'è xmlns="http://www.w3.org/2005/07/scxml".
 		C'è version="1.0".
 		C'è initial, ed è uguale ad uno degli stati.
-	
-	
 
 	FIGLI
 		C'è almeno uno tra state parallel e final.
@@ -42,20 +40,14 @@ Se un file scxml passa i nostri controlli noi assicuriamo le seguenti cose
 		C'è l'id ed è unico
 
 
-6) <final> (controlliamo solo quelli che sono figli di state parallel o scxml)
-	
-	ATTRIBUTI
-		C'è l'id ed è unico
-
-
-7) <transition> (controlliamo solo quelli che sono figli di state o parallel)
+6) <transition> (controlliamo solo quelli che sono figli di state o parallel)
 
 	ATTRIBUTI
 		C'è almeno uno tra evento condizione e target
 		Se c'è il target, allora è uno stato valido (cioè esiste), se non c'è si intende che è una transizione interna		
 
 
-8) <assign>	(controlliamo solo quelli che sono figli di transition, onentry o onexit)	
+7) <assign>	(controlliamo solo quelli che sono figli di transition, onentry o onexit)	
 	
 	ATTRIBUTI
 		ATTENZIONE:  a differenza di quanto scritto sul manuale scxml, l'attributo "location" è stato sostituito con "name".
@@ -66,13 +58,13 @@ Se un file scxml passa i nostri controlli noi assicuriamo le seguenti cose
 file con errori
 
 versionedata            versione : 2.0    (d)ata    
-targeterrati	        raddoppiato<pippo  
-dataerrati		contatore<pippo
-assignlocation		name<location name<pippo
-datamodelinitial	datamodel doppio  initial_state<pippo
-eventcondtargetfinal	non c'e' evento cond e target     final_state<""
-xmlnsinitial            xmlns/="http://www.w3.org/2005/07/scxml" manaca initial
-statistessonome		2 stati con lo stesso nome
+targeterrati	        doppio -> pippo (non esiste)
+dataerrati		        pippo (non esiste)
+assignlocation		    totale e contatore non hanno attributo name
+datamodelinitial		datamodel doppio  initial_state<pippo
+eventcondtarget			non c'e' evento cond e target 
+xmlnsinitial            xmlns/="http://www.w3.org/2005/07/scxml" manca initial
+statistessonome		    2 volte lo stato standby con lo stesso nome
 
 
 
