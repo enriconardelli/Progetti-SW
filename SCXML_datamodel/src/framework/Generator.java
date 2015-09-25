@@ -108,7 +108,7 @@ public class Generator {
 			check=false;
 		}
 		if (!pDocumentRoot.getNamespace().getURI().equals("http://www.w3.org/2005/07/scxml")){
-				System.err.println("ERROR xmlns");
+				System.err.println("ERROR errato valore per xmlns");
 				check=false;
 		}
 		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty() & 
@@ -139,11 +139,13 @@ public class Generator {
 			check=check & check_final(finals.next());
 		}
 		if (!(stati.containsAll(targets))){
-			System.err.println("ERROR esistono target non validi");
+			// TODO controllare targets con iterazione per individuare gli stato mancanti nel model
+			System.err.println("ERROR esistono transizioni con stati target non presenti nel model");
 			check=stati.containsAll(targets);
 		}
+		// TODO controllare assign con iterazione per individuare i data element mancanti nel datamodel
 		if (!(data.containsAll(data_assign))){
-			System.err.println("ERROR ci sono assegnazioni a dati non esistenti");
+			System.err.println("ERROR ci sono assegnazioni a elementi data non presenti in datamodel");
 			check=data.containsAll(data_assign);
 		}
 		return check;
@@ -153,7 +155,7 @@ public class Generator {
 		List<String> figli = new ArrayList<String>();
 		boolean flag=true;
 		if (state.getAttribute("id")== null){
-			System.err.println("ERROR stato senza nome");
+			System.err.println("ERROR stato senza attributo id");
 			flag=false;
 		}
 		else{
@@ -252,7 +254,8 @@ public class Generator {
 		//   SE VOGLIAMO ESSERE PIU CHIARI BISOGNA PASSARE ANCHE IL PADRE
 		boolean flag=true;
 		if (trans.getAttribute("event")==null & trans.getAttribute("cond")==null & trans.getAttribute("target")==null){
-			System.err.println("ERROR una transizione non ha ne target ne event ne cond");
+			// TODO migliorare feedback sull'errore
+			System.err.println("ERROR una transizione non ha né target né event né cond");
 			flag=false;
 		}
 		if (trans.getAttribute("target")!=null){
@@ -322,7 +325,9 @@ public class Generator {
 	private static boolean check_assign(Element assegna) {
 		boolean flag=true;
 		if (assegna.getAttribute("name")==null){
-			System.err.println("ERROR assegnazione senza nome");
+			// TODO migliorare l'identificazione dell'errore, forse il genitore della assign
+			// usare il metodo org.jdom.output.XMLOutputter.outputString ??
+			System.err.println("ERROR assegnazione senza attributo name" + assegna.toString());
 			flag=false;
 		}else{
 			data_assign.add(assegna.getAttribute("name").getValue());
