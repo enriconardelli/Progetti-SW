@@ -21,6 +21,7 @@ import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 import org.jdom.input.SAXBuilder;
 
+
 public class Generator {
 	public static List<String> stati = new ArrayList<String>();
 	public static List<String> targets = new ArrayList<String>();
@@ -47,7 +48,7 @@ public class Generator {
 				else
 					System.out.println("Modifying the existing package of the StateChart for model '" + SCXMLModel + "'");
 //				Element documentRoot = getDocumentRoot(inputFile.getAbsolutePath());
-				Element documentRoot = getDocumentRoot(inputFile);
+				Element documentRoot = Common.getDocumentRoot(inputFile);
 				if (!(SCXMLDocumentSyntaxOK(documentRoot))){
 					System.err.println("Syntax error(s) in file " + inputFile.getAbsolutePath());
 					System.err.println("The creation of this StateChart is interrupted.\n");
@@ -390,23 +391,6 @@ public class Generator {
 		} catch (IOException an_IOException) {
 			an_IOException.printStackTrace();
 		}
-	}
-
-	private static Element getDocumentRoot(File SCXMLFile) {
-//		System.out.println("SAXBuilder parsing file " + SCXMLFile.getAbsolutePath() );
-		Element returnElement = null;
-		try {
-			SAXBuilder aSAXBuilder = new SAXBuilder();
-//			System.out.println("SAXBuilder istanziato ");
-			Document doc = aSAXBuilder.build(SCXMLFile);
-//			System.out.println("SAXBuilder costruito sul file ");
-			returnElement = doc.getRootElement();
-		} catch (JDOMException a_JDOMException) {
-			a_JDOMException.printStackTrace();
-		} catch (IOException an_IOException) {
-			an_IOException.printStackTrace();
-		}
-		return returnElement;
 	}
 
 	private static List<String> getStateNames(String SCXMLName, Element documentRoot) throws JDOMException {
