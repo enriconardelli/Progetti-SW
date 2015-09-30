@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="External Libraries/jdom/build/jdom.jar" sourcepath="External Libraries/jdom/src">
 		<attributes>
-			<attribute name="javadoc_location" value="file:/D:/ENRICO/DIDATTICA/INTERAZIONE-UOMO-CALCOLATORE/Progetti-SW/SCXML_datamodel/External Libraries/jdom/build/apidocs/"/>
+			<attribute name="javadoc_location" value="file:./External Libraries/jdom/build/apidocs/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="External Libraries/commons-lang-2.6/commons-lang-2.6.jar"/>
