@@ -6,6 +6,7 @@ public class Conf {
 	public static final String protocol = "file:";
 	public static final String source_dir = "src";
 	public static final String data_dir = "data";
+	public static final String param_dir = "xml_conf";
 	public static final String model_name = "model";
 	public static final String scxml_extension = ".scxml";
 	public static final String xml_conf_extension="_conf.xml";
