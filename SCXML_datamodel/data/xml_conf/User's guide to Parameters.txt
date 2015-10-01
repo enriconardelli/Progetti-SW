@@ -1,0 +1,44 @@
+1. Bisogna creare un file dei parametri col nome 'nome_modello_conf.xml'
+2. Il file deve essere strutturato con una radice <parameters> e poi dentro 
+			-un figlio <frame>
+			-un figlio <buttons>
+			-un figlio <defaultb>
+
+3.Il <frame> deve avere due figli siffatti
+					<width> valore </width>
+					<heigth> valore </heigth>
+	non necessariamente in questo ordine
+					
+4.Il <buttons> ha n figli dove n è il numero di eventi riportati nell'ordine di apparizione nella state chart
+  e strutturati nel seguente modo
+  				<button id="nome_evento">
+  					<color expr="nome_colore" />
+  					<tooltip expr="il tooltip" />
+					</button>
+	I parametri possono mancare, ad esempio <color expr=""> va bene ma devono essere scritti entrambi anche se vuoti
+	
+5.Il <defaultb> rappresenta i valori di default per i buttons e deve avere un dcolor e un dtooltip come sopra.
+
+ESEMPIO DI FILE PARAMETRI
+
+<parameters>
+	<frame>
+		<width> n </width>
+		<heigth> m </heigth>
+	</frame>
+	
+	<buttons>
+		<button id="evento_prova">
+			<color expr="red" />
+			<tooltip expr="evento di prova" />
+		</button>
+	</buttons>
+	
+	<defaultb>
+		<dcolor expr="white" />
+		<dtooltip expr="default" />
+	</defaultb>
+
+</parameters>
+
+ATTENZIONE: Se una di queste cose non viee rispettata il programma non va!(per ora)
