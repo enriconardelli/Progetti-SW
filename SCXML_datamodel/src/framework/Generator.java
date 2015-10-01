@@ -62,7 +62,6 @@ public class Generator {
 
 	private static boolean SCXMLDocumentSyntaxOK(Element pDocumentRoot) {
 		boolean checkOK = true;
-		//checking initial state
 		
 		// checking "data" node in the document
 		Iterator<Element> anElement = pDocumentRoot.getDescendants(new ElementFilter("data"));
@@ -81,8 +80,6 @@ public class Generator {
 		}
 		checkOK= scxml_control_scxml(pDocumentRoot);
 		return checkOK;
-		
-		
 	}
 
 	private static boolean check_initial(Element pDocumentRoot) {
@@ -103,8 +100,7 @@ public class Generator {
 
 		boolean check=true;
 		// controllo indirizzo e versione e deve avere almeno uno state oppure un parallel o un final
-		check = check_initial(pDocumentRoot);
-
+		
 		if (pDocumentRoot.getAttribute("version")!=null){
 			if (!pDocumentRoot.getAttribute("version").getValue().equals("1.0")) {
 				System.err.println("ERROR version");
@@ -156,23 +152,14 @@ public class Generator {
 			System.err.println("ERROR ci sono assegnazioni a elementi data non presenti in datamodel");
 			check=data_ids.containsAll(data_assign);
 		}
+		check = check_initial(pDocumentRoot);
 		return check;
 	}
 	
 	private static boolean check_state(Element state) {
 		List<String> figli = new ArrayList<String>();
 		boolean flag=true;
-		if (state.getAttribute("id")== null){
-			System.err.println("ERROR stato senza attributo id");
-			flag=false;
-		}
-		else{
-			if (stati.contains(state.getAttribute("id").getValue())){
-				flag=false;
-				System.err.println("ERROR esistono più stati chiamati "+state.getAttribute("id").getValue());
-			}
-			stati.add(state.getAttribute("id").getValue());
-		}
+		flag=check_state_id(state);
 		Iterator<Element> onentry =state.getContent(new ElementFilter("onentry")).iterator();
 		while (onentry.hasNext()) 
 			flag=flag & check_onentry(onentry.next());		
@@ -200,6 +187,39 @@ public class Generator {
 		}
 		return flag;
 	}	
+	private static boolean check_state_id(Element state){
+		boolean flag=true;
+		Element padre;
+		if (state.getAttribute("id")== null){
+			padre=state.getParentElement();
+			if (padre.getAttribute("id")==null)
+				System.err.println("ERROR esiste uno stato senza attributo id, con padre senza attributo id");		
+			else
+				System.err.println("ERROR esiste uno stato figlio di " + padre.getAttribute("id").getValue() + "senza attributo id");	
+			flag=false;
+		}
+		else{
+			if (stati.contains(state.getAttribute("id").getValue())){
+				flag=false;
+				System.err.println("ERROR esistono più stati chiamati "+state.getAttribute("id").getValue());
+			}
+			stati.add(state.getAttribute("id").getValue());
+		}	
+		return flag;
+	}
+	
+	private static boolean check_targets(){
+		boolean flag=true;
+		Iterator<String> targets_iter= targets.iterator();
+		while (targets_iter.hasNext()){
+			
+			if (!stati.contains(targets_iter.next())){
+				System.err.println("ERROR manca lo stato "  + "che è target di almeno una transizione");
+			}
+			
+		}
+		return flag;
+	}
 	
 	private static boolean check_parallel(Element state) {
 		//fantasma della check parallel
