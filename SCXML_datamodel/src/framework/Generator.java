@@ -62,7 +62,6 @@ public class Generator {
 
 	private static boolean SCXMLDocumentSyntaxOK(Element pDocumentRoot) {
 		boolean checkOK = true;
-		
 		// checking "data" node in the document
 		Iterator<Element> anElement = pDocumentRoot.getDescendants(new ElementFilter("data"));
 		while (anElement.hasNext()) {
@@ -142,16 +141,8 @@ public class Generator {
 		while (finals.hasNext()) {
 			check=check & check_final(finals.next());
 		}
-		if (!(stati.containsAll(targets))){
-			// TODO controllare targets con iterazione per individuare gli stato mancanti nel model
-			System.err.println("ERROR esistono transizioni con stati target non presenti nel model");
-			check=stati.containsAll(targets);
-		}
-		// TODO controllare assign con iterazione per individuare i data element mancanti nel datamodel
-		if (!(data_ids.containsAll(data_assign))){
-			System.err.println("ERROR ci sono assegnazioni a elementi data non presenti in datamodel");
-			check=data_ids.containsAll(data_assign);
-		}
+		check=check_targets();
+		check=check_assign_in_data();
 		check = check_initial(pDocumentRoot);
 		return check;
 	}
@@ -207,51 +198,73 @@ public class Generator {
 		}	
 		return flag;
 	}
-	
+	private static boolean check_assign_in_data(){
+		boolean flag=true;
+		data_assign.removeAll(data_ids);	
+		if (!(data_assign.isEmpty())){
+			Iterator<String> elenco=data_assign.iterator();
+			while (elenco.hasNext()){
+			System.err.println("ERROR c'è un assegnazione al data " + elenco.next() + " che però non esiste");
+			flag=false;
+			}
+		}
+		data_assign.addAll(data_ids);
+		return flag;
+	}
 	private static boolean check_targets(){
 		boolean flag=true;
-		Iterator<String> targets_iter= targets.iterator();
-		while (targets_iter.hasNext()){
-			
-			if (!stati.contains(targets_iter.next())){
-				System.err.println("ERROR manca lo stato "  + "che è target di almeno una transizione");
+		targets.removeAll(stati);
+		if (!(targets.isEmpty())){
+			Iterator<String> elenco=targets.iterator();
+			while (elenco.hasNext()){
+			System.err.println("ERROR il target" + elenco.next() + " non è nessuno degli stati");
+			flag=false;
 			}
-			
 		}
+		targets.addAll(stati);
 		return flag;
 	}
 	
-	private static boolean check_parallel(Element state) {
-		//fantasma della check parallel
+	private static boolean check_parallel(Element parallel) {
 		boolean flag=true;
-		if (state.getAttribute("id")== null){
-			System.err.println("ERROR stato senza nome");
-			flag=false;
-		}
-		else{
-			if (stati.contains(state.getAttribute("id").getValue())){
-				flag=false;
-				System.err.println("ERROR esistono più stati chiamati "+state.getAttribute("id").getValue());
-			}
-			stati.add(state.getAttribute("id").getValue());
-		}
-		Iterator<Element> onentry =state.getContent(new ElementFilter("onentry")).iterator();
+		flag=check_parallel_id(parallel);
+		Iterator<Element> onentry =parallel.getContent(new ElementFilter("onentry")).iterator();
 		while (onentry.hasNext())
 			flag=flag & check_onentry(onentry.next());
-		Iterator<Element> onexit =state.getContent(new ElementFilter("onexit")).iterator();
+		Iterator<Element> onexit =parallel.getContent(new ElementFilter("onexit")).iterator();
 		while (onexit.hasNext()) 
 			flag=flag & check_onexit(onexit.next());		
-		Iterator<Element> children =state.getContent(new ElementFilter("state")).iterator();
+		Iterator<Element> children =parallel.getContent(new ElementFilter("state")).iterator();
 		while (children.hasNext())
 			flag=flag & check_state(children.next());
-		Iterator<Element> childrenp =state.getContent(new ElementFilter("parallel")).iterator();
+		Iterator<Element> childrenp =parallel.getContent(new ElementFilter("parallel")).iterator();
 		while (childrenp.hasNext())
 			flag=flag & check_parallel(childrenp.next());
-		Iterator<Element> childrent =state.getContent(new ElementFilter("transition")).iterator();
+		Iterator<Element> childrent =parallel.getContent(new ElementFilter("transition")).iterator();
 		while (childrent.hasNext())
 			flag=flag & check_trans(childrent.next());
 		return flag;
 	}	
+	private static boolean check_parallel_id(Element parallel){
+		boolean flag=true;
+		Element padre;
+		if (parallel.getAttribute("id")== null){
+			padre=parallel.getParentElement();
+			if (padre.getAttribute("id")==null)
+				System.err.println("ERROR esiste uno stato (parallel) senza attributo id, con padre senza attributo id");		
+			else
+				System.err.println("ERROR esiste uno stato (parallel) figlio di " + padre.getAttribute("id").getValue() + "senza attributo id");	
+			flag=false;
+		}
+		else{
+			if (stati.contains(parallel.getAttribute("id").getValue())){
+				flag=false;
+				System.err.println("ERROR esistono più stati chiamati "+parallel.getAttribute("id").getValue());
+			}
+			stati.add(parallel.getAttribute("id").getValue());
+		}	
+		return flag;
+	}
 	
 	private static boolean check_datamodel(Element datamodel) {
 		boolean flag=true;
@@ -271,7 +284,6 @@ public class Generator {
 		
 		return check_data_flag;
 	}
-
 	private static boolean check_data_src_expr(Element dato) {
 		if (dato.getAttribute("src")!=null & dato.getAttribute("expr")!=null){
 			System.err.println("ERROR un data non puo avere src E expr");
@@ -279,7 +291,6 @@ public class Generator {
 		else
 			return true;
 	}
-	
 	private static boolean check_data_id(Element dato) {
 	if (dato.getAttribute("id")==null){
 		System.err.println("ERROR un data non ha id");
@@ -293,7 +304,6 @@ public class Generator {
 			else
 				return true;
 	} 
-
 	private static boolean check_data_id_single(Element dato) {
 		if (data_ids.contains(dato.getAttributeValue("id"))){
 			System.err.println("ERROR piu data hanno nome"+dato.getAttributeValue("id"));
@@ -304,11 +314,14 @@ public class Generator {
 	}
 	
 	private static boolean check_trans(Element trans) {
-		//   SE VOGLIAMO ESSERE PIU CHIARI BISOGNA PASSARE ANCHE IL PADRE
 		boolean flag=true;
+		Element padre;
 		if (trans.getAttribute("event")==null & trans.getAttribute("cond")==null & trans.getAttribute("target")==null){
-			// TODO migliorare feedback sull'errore
-			System.err.println("ERROR una transizione non ha né target né event né cond");
+			padre=trans.getParentElement();
+			if (padre.getAttribute("id")==null)
+				System.err.println("ERROR una transizione di uno stato senza nome non ha né target né event né cond");
+			else
+				System.err.println("ERROR una transizione dello stato " + padre.getAttributeValue("id")+ " non ha né target né event né cond");	
 			flag=false;
 		}
 		if (trans.getAttribute("target")!=null){
@@ -327,19 +340,8 @@ public class Generator {
 	}	
 	
 	private static boolean check_final(Element finale) {
-		//fantasma della check final
 		boolean flag=true;
-		if (finale.getAttribute("id")== null){
-			System.err.println("ERROR stato senza nome");
-			flag=false;
-		}
-		else{
-			if (stati.contains(finale.getAttribute("id").getValue())){
-				flag=false;
-				System.err.println("ERROR esistono più stati chiamati "+finale.getAttribute("id").getValue());
-			}
-			stati.add(finale.getAttribute("id").getValue());
-		}
+		stati.add(finale.getAttribute("id").getValue());
 		Iterator<Element> onentry =finale.getContent(new ElementFilter("onentry")).iterator();
 		while (onentry.hasNext()) {
 			flag=flag & check_onentry(onentry.next());
@@ -377,10 +379,14 @@ public class Generator {
 	
 	private static boolean check_assign(Element assegna) {
 		boolean flag=true;
+		Element padre;
 		if (assegna.getAttribute("name")==null){
-			// TODO migliorare l'identificazione dell'errore, forse il genitore della assign
 			// usare il metodo org.jdom.output.XMLOutputter.outputString ??
-			System.err.println("ERROR assegnazione senza attributo name" + assegna.toString());
+			padre=assegna.getParentElement().getParentElement();
+			if (padre.getAttribute("id")==null)
+				System.err.println("ERROR assegnazione relativa a uno stato senza id non ha l'attributo name");	
+			else
+				System.err.println("ERROR Assegnazione relativa allo stato " + padre.getAttribute("id").getValue() + "non ha l'attributo name");	
 			flag=false;
 		}else{
 			data_assign.add(assegna.getAttribute("name").getValue());
