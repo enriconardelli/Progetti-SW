@@ -1,4 +1,4 @@
-
+Ciao
 L'esempio OneTwoThree e' un esempio con condizioni sugli eventi: non va incontro ad errori
 
 -----------------------------------------------------
