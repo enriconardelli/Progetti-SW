@@ -15,21 +15,16 @@
 			<color expr="RED" />
 		</button>
 		
-		<button id="split">
+		<button id="watch_split">
 			<tooltip expr="split" />
 		</button>
-		
-		<button id="stop">
-			<tooltip expr="Stop" />
-			<color expr="YELLOW" />
-		</button>
-		
-		<button id="unsplit">
+				
+		<button id="watch_unsplit">
 			<tooltip expr="" />
 			<color expr="WHITE" />
 		</button>
 		
-		<button id="reset">
+		<button id="watch_reset">
 			<tooltip expr="reset" />
 			<color expr="" />
 		</button>

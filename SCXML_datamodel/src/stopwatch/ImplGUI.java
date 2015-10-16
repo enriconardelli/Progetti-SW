@@ -19,9 +19,9 @@ import core.AbstractGUI;
 
 public class ImplGUI extends AbstractGUI {
 
-	private String[] eventList = { "watch_start", "split", "stop", "unsplit", "reset" };
-	private Color[] eventColorValue = { Color.RED, Color.WHITE, Color.YELLOW, Color.WHITE, Color.WHITE };
-	private String[] eventTTValue = { "start", "split", "Stop", "This is an event", "reset" };
+	private String[] eventList = { "watch_start", "watch_split", "watch_unsplit", "watch_reset", "watch_stop" };
+	private Color[] eventColorValue = { Color.RED, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE };
+	private String[] eventTTValue = { "start", "split", "This is an event", "reset", "This is an event" };
 	public ImplGUI(String pSCName) {
 
 		HashMap<String,Integer> frameParameters = new HashMap<String,Integer>();

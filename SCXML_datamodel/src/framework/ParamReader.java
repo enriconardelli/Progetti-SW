@@ -21,16 +21,16 @@ import org.jdom.filter.ElementFilter;
 public class ParamReader {
 	
 	public static Element Parameters;
-	
 
-	public static Element readConfFile(String file_name){
+	public static Element readConfFile(String file_name, List<String> eventNames){
 		//Legge il file dei parametri e lo salva in Parameters, una variabile della classe
 		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.param_dir + Conf.filesep + file_name + Conf.xml_conf_extension);
 		Element documentRoot = Common.getDocumentRoot(inputFile);
 		
-		//Riempio i parametri mancanti - E SE MANCASSE TUTTO IL BUTTON?
-		//Iterator<Element> anElement = documentRoot.getDescendants(new ElementFilter("button"));
+		//Riempie eventuali bottoni mancanti
+		ParamReader.fillEvents(eventNames, ParamReader.getEventNames(documentRoot), documentRoot);
 		
+		//Riempie figli dei bottoni
 		List<Element> lista = new CopyOnWriteArrayList<Element>(documentRoot.getChild("buttons").getChildren("button"));
 		Iterator<Element> anElement = lista.iterator();
 		
@@ -58,10 +58,10 @@ public class ParamReader {
 		}
 
 	
-	public static ArrayList<String> getEventNames(){
+	public static ArrayList<String> getEventNames(Element doc){
 		//Trova i nomi degli eventi, mi servirà per il caso in cui manca tutto il button nei parametri
 		ArrayList<String> eventListNames= new ArrayList<String>();
-		Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("button"));
+		Iterator<Element> anElement = doc.getDescendants(new ElementFilter("button"));
 		while (anElement.hasNext()) {
 			Element currentElement = anElement.next();
 			eventListNames.add(currentElement.getAttributeValue("id"));
@@ -188,6 +188,26 @@ public class ParamReader {
 		
 		
 		return params;
+	}
+	
+	public static void fillEvents(List<String> eventNames, List<String> buttonNames, Element doc){
+		//CONTROLLA che nel file dei parametri non manchino bottoni e se mancano li inserisce con la lista degli eventi
+		Boolean flag;
+		
+		for(String event : eventNames){
+			flag=false;
+			for(String button : buttonNames){
+				if(button.equals(event)){
+					flag=true;
+				}
+			}
+			
+			if(!flag){
+				Element newE = new Element("button");
+				newE.setAttribute("id", event.toString());
+				doc.getChild("buttons").addContent(newE);
+			}
+		}
 	}
 	
 }

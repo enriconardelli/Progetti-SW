@@ -65,4 +65,16 @@ dichiarare anche un defaultf come uno qui sotto:
 		<heigth> 300 </heigth>
 	</defaultf>
 	
-	
+
+##############################
+AGGIORNAMENTO 2
+##############################
+Ho insebolito ancora le richieste sul file,
+
+1. Possono NON essere dichiarati i bottoni, ossia può mancare totalmente il blocco <button>....</button> e questo non crea problemi
+
+					********************	MA		**************
+					
+					TUTTI I BOTTONI DEVONO CHIAMARSI ESATTAMENTE COME 
+					LE TRANSIZIONI, ALTRIMENTI AVRETE IL DOPPIO DEI
+					BOTTONI.

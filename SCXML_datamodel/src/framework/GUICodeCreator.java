@@ -20,15 +20,15 @@ public class GUICodeCreator {
 
 	public static void create(String pSCName, List<String> variableNames, List<String> eventNames) throws IOException {
 		//LEGGO I PARAMETRI
-		ParamReader.Parameters=ParamReader.readConfFile(pSCName);
+		ParamReader.Parameters=ParamReader.readConfFile(pSCName, eventNames);
 		
 		//LEGGO IL DEFAULT
 		String[] Def = ParamReader.getDefaultButton();
 		
 		//SALVO I NOMI
-		ArrayList<String> buttonNames= ParamReader.getEventNames();   //PROBLEMA: ATTRIBUTI MANCANTI E DEFAULT
+		ArrayList<String> buttonNames= ParamReader.getEventNames(ParamReader.Parameters);
 		//PRENDO I COLORI
-		ArrayList<String> colorsList= ParamReader.getcolors(Def[0]); //LI HO MESSI IN UPPERCASE
+		ArrayList<String> colorsList= ParamReader.getcolors(Def[0]);
 		//PRENDO I TOOLTIPS
 		ArrayList<String> tooltipList=ParamReader.getTTList(Def[1]);
 		//PARAMETRI DI FRAME
