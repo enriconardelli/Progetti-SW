@@ -20,11 +20,12 @@ public class GUICodeCreator {
 
 	public static void create(String pSCName, List<String> variableNames, List<String> eventNames) throws IOException {
 		//LEGGO I PARAMETRI
-		ParamReader.Parameters=ParamReader.readConfFile(pSCName, eventNames);
+		ParamReader.Parameters=ParamReader.readConfFile(pSCName, eventNames, variableNames);
 		
+		
+		//***************BOTTONI E FRAME************************
 		//LEGGO IL DEFAULT
 		String[] Def = ParamReader.getDefaultButton();
-		
 		//SALVO I NOMI
 		ArrayList<String> buttonNames= ParamReader.getEventNames(ParamReader.Parameters);
 		//PRENDO I COLORI
@@ -35,8 +36,16 @@ public class GUICodeCreator {
 		String[] frameParam = new String[2];
 		frameParam=ParamReader.getFrameParam();
 		
-
+		//*****************PANEL****************************
 		
+		//LEGGO IL DEFAULT
+		String[] Defp = ParamReader.getDefaultPanel();
+		//SALVO I NOMI
+		ArrayList<String> panelNames= ParamReader.getPanelNames(ParamReader.Parameters);
+		//PRENDO I COLORI
+		ArrayList<String> colorsPList= ParamReader.getPanelColor(Defp[0]);
+		//PRENDO I TOOLTIPS
+		ArrayList<String> tooltipPList=ParamReader.getTTPList(Defp[1]);
 		
 		
 		
@@ -44,10 +53,13 @@ public class GUICodeCreator {
 		String classContent = "";
 		classContent = writePreambleAndImports(pSCName);
 		classContent += Conf.linesep;
-		classContent += writeSignatureAndConstructor(frameParam, buttonNames, colorsList, tooltipList); //HO DOVUTO AGGIUNGERE I PARAMETRO PER EVITARE DI CREARE  ATTRIBUTI 
-																 //PER OGNI LISTA
+		classContent += writeSignature();
+		classContent += writeBLists(buttonNames, colorsList, tooltipList);
+		classContent += writePLists(panelNames, colorsPList, tooltipPList);
+		classContent += writeConstructor(frameParam);
+																 
 		classContent += writeButtons(); //QUI POSSO TOGLIERE IL PARAMETRO
-		classContent += writePanelsAndFields(variableNames);
+		classContent += writePanelsAndFields();//ANCHE QUI
 		classContent += writeTextArea();
 		classContent += writeGUIstartAndClassClosure();
 		out.write(classContent);
@@ -79,16 +91,15 @@ public class GUICodeCreator {
 		return result;
 	}
 
-		private static String writeSignatureAndConstructor(String[] frameParam, ArrayList<String> buttonNames, ArrayList<String> colorsList, ArrayList<String> tooltipList) {
+		private static String writeSignature() {
 		String result = "";
 		// writing class signature
 		result += "public class ImplGUI extends AbstractGUI {" + Conf.linesep + Conf.linesep;
+		return result;
+		}
 		
-		//INSERISCO LA STAMPA DELLE LISTE TROVATE
-		result += ParamReader.writeButtonList(buttonNames);
-		result += ParamReader.writeColorList(colorsList);
-		result += ParamReader.writeTTList(tooltipList);
-		
+		private static String writeConstructor(String[] frameParam){
+			String result = "";
 		
 		// writing constructor
 		result += "\tpublic ImplGUI(String pSCName) {" + Conf.linesep + Conf.linesep;
@@ -108,19 +119,26 @@ public class GUICodeCreator {
 		result += "\t\tmyFrame.setLayout(new FlowLayout());" + Conf.linesep + Conf.linesep;
 		return result;
 	}
+		//AGGIUNTA DA ME, SCRIVE LE LISTE DEI PARAMETRI PER BOTTONI
+		private static String writeBLists(ArrayList<String> buttonNames, ArrayList<String> colorsList, ArrayList<String> tooltipList){
+			String result = "";
+			result += ParamReader.writeButtonList(buttonNames);
+			result += ParamReader.writeColorList(colorsList);
+			result += ParamReader.writeTTList(tooltipList);
+			return result;
+		}
+		
+		//SCRIVE LE LISTE PARAM DEI PANEL
+		private static String writePLists(ArrayList<String> panelNames, ArrayList<String> colorsPList, ArrayList<String> tooltipPList){
+			String result = "";
+			result += ParamReader.writePanelList(panelNames);
+			result += ParamReader.writeColorPList(colorsPList);
+			result += ParamReader.writeTTPList(tooltipPList);
+			return result;
+		}
 
 		private static String writeButtons() {
 		String result = "";
-		// writing buttons launching events labeling transitions
-//		result += "\t\tString[] eventList = { ";
-//		for (int j = 0; j < eventNames.size(); j++) {
-//			result += "\"" + eventNames.get(j) + "\"";
-//			if (j != eventNames.size() - 1)
-//				result += ", ";
-//		}
-		
-		
-//		result += " };" + Conf.linesep;
 		result += "\t\tfor (int i=0 ; i<eventList.length ; i++) {" + Conf.linesep;
 		result += "\t\t\tJButton aButton = new JButton(\"LAUNCH \" + eventList[i]);" + Conf.linesep;
 		result += "\t\t\taButton.setActionCommand(eventList[i]);" + Conf.linesep;
@@ -133,27 +151,32 @@ public class GUICodeCreator {
 		return result;
 	}
 
-		private static String writePanelsAndFields(List<String> variableNames) {
+		private static String writePanelsAndFields() {
 		String result = "";
 		// writing panels with labels and fields to display and change state values
-		result += "\t\tString[] variableList = { ";
-		for (int j = 0; j < variableNames.size(); j++) {
-			result += "\"" + variableNames.get(j) + "\"";
-			if (j != variableNames.size() - 1)
-				result += ", ";
-		}
-		result += " };" + Conf.linesep;
-		result += "\t\tfor (String variable : variableList) {" + Conf.linesep;
+		
+		
+//		result += "\t\tString[] variableList = { ";
+//		for (int j = 0; j < variableNames.size(); j++) {
+//			result += "\"" + variableNames.get(j) + "\"";
+//			if (j != variableNames.size() - 1)
+//				result += ", ";
+//		}
+		
+//		result += " };" + Conf.linesep;
+		result += "\t\tfor (int i=0 ; i<panelList.length ; i++) {" + Conf.linesep;
+//		result += "\t\tfor (String variable : variableList) {" + Conf.linesep;
 		result += "\t\t\tJPanel panel = new JPanel();" + Conf.linesep;
-		result += "\t\t\tpanel.setBackground(Color.LIGHT_GRAY);" + Conf.linesep;
+		result += "\t\t\tpanel.setBackground(panelColorValue[i]);" + Conf.linesep;
+		result += "\t\t\tpanel.setToolTipText(panelTTValue[i]);" + Conf.linesep;
 		result += "\t\t\tpanel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));" + Conf.linesep;
-		result += "\t\t\tpanel.add(new JLabel(variable));" + Conf.linesep;
+		result += "\t\t\tpanel.add(new JLabel(panelList[i]));" + Conf.linesep;
 		result += "\t\t\tJTextField textField = new JTextField(\"\", 5);" + Conf.linesep;
-		result += "\t\t\ttextField.setActionCommand(variable);" + Conf.linesep;
+		result += "\t\t\ttextField.setActionCommand(panelList[i]);" + Conf.linesep;
 		result += "\t\t\ttextField.addActionListener(this);" + Conf.linesep;
 		result += "\t\t\tpanel.add(textField);" + Conf.linesep;
 		result += "\t\t\tmyFrame.getContentPane().add(panel);" + Conf.linesep;
-		result += "\t\t\tvariableFields.put(variable, textField);" + Conf.linesep;
+		result += "\t\t\tvariableFields.put(panelList[i], textField);" + Conf.linesep;
 		result += "\t\t}" + Conf.linesep;
 		return result;
 	}

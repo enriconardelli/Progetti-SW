@@ -22,6 +22,9 @@ public class ImplGUI extends AbstractGUI {
 	private String[] eventList = { "watch_start", "watch_split", "watch_unsplit", "watch_reset", "watch_stop" };
 	private Color[] eventColorValue = { Color.RED, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE };
 	private String[] eventTTValue = { "start", "split", "This is an event", "reset", "This is an event" };
+	private String[] panelList = { "running$value", "paused$value", "stopped$value", "reset$value" };
+	private Color[] panelColorValue = { Color.RED, Color.LIGHT_GRAY, Color.YELLOW, Color.LIGHT_GRAY };
+	private String[] panelTTValue = { "This is a variable", "paused value", "stopped value", "This is a variable" };
 	public ImplGUI(String pSCName) {
 
 		HashMap<String,Integer> frameParameters = new HashMap<String,Integer>();
@@ -47,18 +50,18 @@ public class ImplGUI extends AbstractGUI {
 			eventButtons.put(eventList[i], aButton);
 		}
 
-		String[] variableList = { "running$value", "paused$value", "stopped$value", "reset$value" };
-		for (String variable : variableList) {
+		for (int i=0 ; i<panelList.length ; i++) {
 			JPanel panel = new JPanel();
-			panel.setBackground(Color.LIGHT_GRAY);
+			panel.setBackground(panelColorValue[i]);
+			panel.setToolTipText(panelTTValue[i]);
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-			panel.add(new JLabel(variable));
+			panel.add(new JLabel(panelList[i]));
 			JTextField textField = new JTextField("", 5);
-			textField.setActionCommand(variable);
+			textField.setActionCommand(panelList[i]);
 			textField.addActionListener(this);
 			panel.add(textField);
 			myFrame.getContentPane().add(panel);
-			variableFields.put(variable, textField);
+			variableFields.put(panelList[i], textField);
 		}
 		statechartTrace = new JTextArea(40,40);
 		statechartTrace.setLineWrap(false);

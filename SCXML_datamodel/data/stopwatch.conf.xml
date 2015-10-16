@@ -36,5 +36,28 @@
 		<dcolor expr="WHITE" />
 	</defaultb>
 	
+	
+	<panels>
+		<panel id="running$value">
+			<pcolor expr="RED" />
+		</panel>
+		
+		<panel id="paused$value">
+			<pcolor expr="" />
+			<ptooltip expr="paused value" />
+		</panel>
+		
+		<panel id="stopped$value">
+			<pcolor expr="YELLOW" />
+			<ptooltip expr="stopped value" />
+		</panel>
+	
+	</panels>
+	
+	<defaultp>
+		<dcolor expr="LIGHT_GRAY"/>
+		<dtooltip expr="This is a variable" />
+	</defaultp>
+	
 
 </parameters>

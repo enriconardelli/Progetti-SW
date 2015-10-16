@@ -78,3 +78,38 @@ Ho insebolito ancora le richieste sul file,
 					TUTTI I BOTTONI DEVONO CHIAMARSI ESATTAMENTE COME 
 					LE TRANSIZIONI, ALTRIMENTI AVRETE IL DOPPIO DEI
 					BOTTONI.
+					
+###############################
+AGGIORNAMENTO 3
+###############################
+Ora anche i pannelli che riprtano i nomi delle variabili sono parametrici! Vanno pertanto specificati un colore ed un tooltip. Anche qui è ESSENZIALE
+indicare ALMENO il default, il resto si può evitare. Come nell'aggiornamento 2 BISOGNA dare, nel file dei parametri, lo stesso nome ai panel delle variabili
+(si può anche non darlo ma nel caso decideste di parametrizzare un panel dovrete rispettare il nome).
+
+NOTE:
+i parametri di colore e tooltip per i Panel devono chiamarsi pcolor e ptooltip, come si vede anche sotto.
+Per il default invece è come button, ossia basta dcolor e dtooltip.
+
+Nel file dei parametri, vanno quindi aggiunti(dove vi pare e non in questo ordine, ma come figli diretti di parameters) [RICORDA solo il Default è obbligaotrio]
+
+	<panels>
+		<panel id = "nome_var">
+			<pcolor  expr= "COLORE" />
+			<ptooltip ecpr="tooltip che si vuole" />
+		</panel>
+	</panels>
+	
+	<defaultp>
+		<dcolor expr="COLORE_DEFAULT" />
+		<dtooltip expr="tooltip di default per panels" />
+	</defaultp>
+	
+RICORDO anche che tutto questo è funzionante col model stopwatch e trovate già un file di configurazione che ho creato io nella cartella del progetto
+
+##############################
+AGGIORNAMENTO 3.5
+##############################
+ATTENIONE, la user's guide è ora in docs (so che è inutile perché è questo file ma mi serve per tenere traccia del progresso).
+ATTENZONE, il file di configurazione dei parametri va ora posizionato in data e con estensione data da nome_file.conf.xml
+
+Anche in questo caso si può ancora prendere a modello stopwatch che ho verificato essere funzionante.
