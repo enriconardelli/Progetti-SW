@@ -1,3 +1,5 @@
+Guida per configurare la GUI     (In fondo riporto gli aggiornamenti)
+
 1. Bisogna creare un file dei parametri col nome 'nome_modello_conf.xml'
 2. Il file deve essere strutturato con una radice <parameters> e poi dentro 
 			-un figlio <frame>
@@ -41,4 +43,26 @@ ESEMPIO DI FILE PARAMETRI
 
 </parameters>
 
-ATTENZIONE: Se una di queste cose non viee rispettata il programma non va!(per ora)
+con n e m interi (sono i pixel!!!)
+
+ATTENZIONE: Se una di queste cose non viee rispettata il programma non va!(per ora -> LEGGERE SOTTO)
+
+
+
+################################
+AGGIORNAMENTO 1
+################################
+Il programma gira anche nelle seguenti eventualità
+
+1. Il frame non viene dichiarato, viene dichiarato con parti mancanti o valori mancanti
+2. I buttons vengono dichiarati con parti mancanti o valori assenti, per ora però tutti i buttons devono essere ancora dichiarati
+
+Quello che è invece consigliato dichiarare (a meno che non si dichiari il resto nei MINIMI dettagli) sono i default, ora oltre al defaultb è consigliato
+dichiarare anche un defaultf come uno qui sotto:
+
+	<defaultf>
+		<width> 300 </width>
+		<heigth> 300 </heigth>
+	</defaultf>
+	
+	

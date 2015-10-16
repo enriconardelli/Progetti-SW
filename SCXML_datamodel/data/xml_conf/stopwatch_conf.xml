@@ -4,6 +4,11 @@
 		<height> 800 </height>
 	</frame>
 	
+	<defaultf>
+		<width> 300 </width>
+		<height> 300 </height>
+	</defaultf>
+	
 	<buttons>	
 		<button id="watch_start">
 			<tooltip expr="start" />
@@ -12,7 +17,6 @@
 		
 		<button id="split">
 			<tooltip expr="split" />
-			<color expr="BLUE" />
 		</button>
 		
 		<button id="stop">

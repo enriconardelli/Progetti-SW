@@ -3,6 +3,7 @@
  */
 package stopwatch;
 
+import java.util.HashMap;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
@@ -15,23 +16,35 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextArea;
 import core.AbstractGUI;
+
 public class ImplGUI extends AbstractGUI {
 
+	private String[] eventList = { "watch_start", "split", "stop", "unsplit", "reset" };
+	private Color[] eventColorValue = { Color.RED, Color.WHITE, Color.YELLOW, Color.WHITE, Color.WHITE };
+	private String[] eventTTValue = { "start", "split", "Stop", "This is an event", "reset" };
 	public ImplGUI(String pSCName) {
+
+		HashMap<String,Integer> frameParameters = new HashMap<String,Integer>();
+		String[] paramList = {"width", "height"};
+		Integer[] valueList = { 500 ,  800 };
+		for (int i=0; i<paramList.length; i++) {
+			 frameParameters.put(paramList[i], valueList[i]);
+		}
 
 		JFrame myFrame = new JFrame();
 		myFrame.setTitle(pSCName);
 		myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		myFrame.setSize(500, 800);
+		myFrame.setSize(frameParameters.get("width"), frameParameters.get("height"));
 		myFrame.setLayout(new FlowLayout());
 
-		String[] eventList = { "watch_start", "watch_split", "watch_stop", "watch_unsplit", "watch_reset" };
-		for (String event : eventList) {
-			JButton aButton = new JButton("LAUNCH " + event);
-			aButton.setActionCommand(event);
+		for (int i=0 ; i<eventList.length ; i++) {
+			JButton aButton = new JButton("LAUNCH " + eventList[i]);
+			aButton.setActionCommand(eventList[i]);
+			aButton.setBackground(eventColorValue[i]);
+			 aButton.setToolTipText(eventTTValue[i]);
 			aButton.addActionListener(this);
 			myFrame.getContentPane().add(aButton);
-			eventButtons.put(event, aButton);
+			eventButtons.put(eventList[i], aButton);
 		}
 
 		String[] variableList = { "running$value", "paused$value", "stopped$value", "reset$value" };

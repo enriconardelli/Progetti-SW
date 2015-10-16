@@ -1,32 +1,16 @@
 package framework;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.filter.ElementFilter;
-import org.jdom.filter.Filter;
-import org.jdom.input.SAXBuilder;
-import org.jdom.Element;
+
+
+
 
 public class GUICodeCreator {
 
-	private static Element Parameters;
 	
 	private GUICodeCreator() {
 		// with a private constructor instances of this class cannot be created,
@@ -36,21 +20,20 @@ public class GUICodeCreator {
 
 	public static void create(String pSCName, List<String> variableNames, List<String> eventNames) throws IOException {
 		//LEGGO I PARAMETRI
-		Parameters=readConfFile(pSCName);
+		ParamReader.Parameters=ParamReader.readConfFile(pSCName);
 		
 		//LEGGO IL DEFAULT
-		String[] Def = getDefaultButton();
+		String[] Def = ParamReader.getDefaultButton();
 		
-		//SALVO I NOMI, RICORDARE DEFAULT
-		ArrayList<String> buttonNames= getEventNames();   //PROBLEMA: ATTRIBUTI MANCANTI E DEFAULT
+		//SALVO I NOMI
+		ArrayList<String> buttonNames= ParamReader.getEventNames();   //PROBLEMA: ATTRIBUTI MANCANTI E DEFAULT
 		//PRENDO I COLORI
-		ArrayList<String> colorsList= getcolors(Def[0]); //LI HO MESSI IN UPPERCASE
+		ArrayList<String> colorsList= ParamReader.getcolors(Def[0]); //LI HO MESSI IN UPPERCASE
 		//PRENDO I TOOLTIPS
-		ArrayList<String> tooltipList=getTTList(Def[1]);
+		ArrayList<String> tooltipList=ParamReader.getTTList(Def[1]);
 		//PARAMETRI DI FRAME
 		String[] frameParam = new String[2];
-		frameParam[0]=Parameters.getChild("frame").getChild("width").getValue();
-		frameParam[1]=Parameters.getChild("frame").getChild("height").getValue();//QUESTI LI DEVO LEGGERE COME STRINGHE MA TANTO GLIELI DEVO SOLO FAR STAMPARE
+		frameParam=ParamReader.getFrameParam();
 		
 
 		
@@ -102,9 +85,9 @@ public class GUICodeCreator {
 		result += "public class ImplGUI extends AbstractGUI {" + Conf.linesep + Conf.linesep;
 		
 		//INSERISCO LA STAMPA DELLE LISTE TROVATE
-		result += writeButtonList(buttonNames);
-		result += writeColorList(colorsList);
-		result += writeTTList(tooltipList);
+		result += ParamReader.writeButtonList(buttonNames);
+		result += ParamReader.writeColorList(colorsList);
+		result += ParamReader.writeTTList(tooltipList);
 		
 		
 		// writing constructor
@@ -199,114 +182,6 @@ public class GUICodeCreator {
 	}
 		
 		
-		//DA QUI IN GIU' HO CREATO IO
-		private static Element readConfFile(String file_name){
-			//Legge il file dei parametri e lo salva in Parameters una variabile della classe
-			File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.param_dir + Conf.filesep + file_name + Conf.xml_conf_extension);
-			Element documentRoot = Common.getDocumentRoot(inputFile);
-			return documentRoot;	
-			}
-		
-		private static ArrayList<String> getEventNames(){
-			//Trova i nomi degli eventi, forse si può togliere dato che ce li ho in input
-			//ma così è più facile generalizzare credo
-			ArrayList<String> eventListNames= new ArrayList<String>();
-			Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("button"));
-			while (anElement.hasNext()) {
-				Element currentElement = anElement.next();
-				eventListNames.add(currentElement.getAttributeValue("id"));
-			}
-			return eventListNames;
-		}
-			
-		private static ArrayList<String> getcolors(String dcolor){
-			//Trova la lista dei colori completando col default quando mancanti
-			ArrayList<String> colorsList= new ArrayList<String>();
-			Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("color"));
-			while (anElement.hasNext()) {
-				Element currentElement = anElement.next();
-				if (!currentElement.getAttributeValue("expr").isEmpty()){
-					colorsList.add(currentElement.getAttributeValue("expr").toUpperCase());
-				}else{
-					colorsList.add(dcolor.toUpperCase());
-				}
-			}
-			return colorsList;
-		}
-		
-		private static ArrayList<String> getTTList(String dtooltip){
-			//Trova la lista dei tooltip completando col default quando mancanti
-			ArrayList<String> TTList= new ArrayList<String>();
-			Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("tooltip"));
-			while (anElement.hasNext()) {
-				Element currentElement = anElement.next();
-				if (!currentElement.getAttributeValue("expr").isEmpty()){
-					TTList.add(currentElement.getAttributeValue("expr"));
-				}else{
-					TTList.add(dtooltip);
-				}
-				
-			}
-			return TTList;
-		}
-		
-		private static String[] getDefaultButton(){
-			//Trova i parametri di default dei button
-			Element Default = Parameters.getChild("defaultb");
-			Iterator<Element> col =Default.getDescendants(new ElementFilter("dcolor") );
-			Element Col = col.next();
-			String dcolor=Col.getAttributeValue("expr");
-			
-			Iterator<Element> tol =Default.getDescendants(new ElementFilter("dtooltip") );
-			Element Tol = tol.next();
-			String dtooltip = Tol.getAttributeValue("expr");
-			String[] Ris = new String[2];
-			Ris[0]=dcolor;
-			Ris[1]=dtooltip;
-			return Ris;
-			
-		}
-		
-		private static String writeButtonList(List<String> eventNames) {
-			//Stampa sul file la lista dei bottoni
-			String result = "";
-			// writing the list of all buttons' names including the default 
-			result += "\tprivate String[] eventList = { ";
-			for (int j = 0; j < eventNames.size(); j++) {
-				result += "\"" + eventNames.get(j) + "\"";
-				if (j != eventNames.size() - 1)
-					result += ", ";
-			}
-			result += " };" + Conf.linesep;
-			return result;
-		}
-		
-		private static String writeColorList(List<String> colorNames) {
-			String result = "";
-			// writing the list of all colors names  
-			result += "\tprivate Color[] eventColorValue = { ";
-			for (int j = 0; j < colorNames.size(); j++) {
-				result +="Color." + colorNames.get(j);
-				if (j != colorNames.size() - 1)
-					result += ", ";
-			}
-			result += " };" + Conf.linesep;
-			return result;
-		}
-		
-		
-		private static String writeTTList(List<String> toolTips) {
-			String result = "";
-			// writing the list of all tooltips 
-			result += "\tprivate String[] eventTTValue = { ";
-			for (int j = 0; j < toolTips.size(); j++) {
-				result += "\"" + toolTips.get(j) + "\"";
-				if (j != toolTips.size() - 1)
-					result += ", ";
-			}
-			result += " };" + Conf.linesep;
-			return result;
-		}
-		
+	
 		
 }
