@@ -47,6 +47,20 @@ public class GUICodeCreator {
 		//PRENDO I TOOLTIPS
 		ArrayList<String> tooltipPList=ParamReader.getTTPList(Defp[1]);
 		
+		//*************TFIELD********************************
+		
+		//LEGGO IL DEFAULT
+		String[] Deftf = ParamReader.getDefaultTField();
+		//PRENDO I COLORI
+		ArrayList<String> colorsTFList= ParamReader.getTFieldColor(Deftf[0]);
+		//PRENDO I TOOLTIPS
+		ArrayList<String> tooltipTFList=ParamReader.getTTTFList(Deftf[1]);
+		
+		
+		//**************FONT********************************
+		String[] Deff = ParamReader.getDefaultFont(ParamReader.Parameters);
+		ArrayList<String[]> fonts = ParamReader.getFont(ParamReader.Parameters, Deff); //QUI LI HO MESSI ORDINATI IN BUTTONS; PANLES; FIELDS
+		
 		
 		
  		BufferedWriter out = new BufferedWriter(new FileWriter(Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "ImplGUI.java"));
@@ -55,8 +69,15 @@ public class GUICodeCreator {
 		classContent += Conf.linesep;
 		classContent += writeSignature();
 		classContent += writeBLists(buttonNames, colorsList, tooltipList);
+		classContent += Conf.linesep;
 		classContent += writePLists(panelNames, colorsPList, tooltipPList);
+		classContent += Conf.linesep;
+		classContent += writeTFLists(colorsTFList,tooltipTFList);
+		classContent += Conf.linesep;
+		classContent += ParamReader.writeFont(fonts);
+		classContent += Conf.linesep;
 		classContent += writeConstructor(frameParam);
+		classContent += Conf.linesep;
 																 
 		classContent += writeButtons(); //QUI POSSO TOGLIERE IL PARAMETRO
 		classContent += writePanelsAndFields();//ANCHE QUI
@@ -88,6 +109,7 @@ public class GUICodeCreator {
 		result += "import javax.swing.ScrollPaneConstants;" + Conf.linesep;
 		result += "import javax.swing.JTextArea;" + Conf.linesep;
 		result += "import core.AbstractGUI;" + Conf.linesep;
+		result += "import java.awt.Font;" + Conf.linesep; //SERVE PER TRATTARE IL FONT
 		return result;
 	}
 
@@ -136,6 +158,15 @@ public class GUICodeCreator {
 			result += ParamReader.writeTTPList(tooltipPList);
 			return result;
 		}
+		
+		//SCRIVE LE LISTE PARAM DEI FIELD
+		private static String writeTFLists( ArrayList<String> colorTFList, ArrayList<String> tooltipTFList){
+			String result = "";
+			result += ParamReader.writeColorTFList(colorTFList);
+			result += ParamReader.writeTTTFList(tooltipTFList);
+			return result;
+					
+		}
 
 		private static String writeButtons() {
 		String result = "";
@@ -143,7 +174,8 @@ public class GUICodeCreator {
 		result += "\t\t\tJButton aButton = new JButton(\"LAUNCH \" + eventList[i]);" + Conf.linesep;
 		result += "\t\t\taButton.setActionCommand(eventList[i]);" + Conf.linesep;
 		result += "\t\t\taButton.setBackground(eventColorValue[i]);" + Conf.linesep;
-		result += "\t\t\t aButton.setToolTipText(eventTTValue[i]);" + Conf.linesep;
+		result += "\t\t\taButton.setToolTipText(eventTTValue[i]);" + Conf.linesep;
+		result += "\t\t\taButton.setFont(buttfont);" + Conf.linesep;
 		result += "\t\t\taButton.addActionListener(this);" + Conf.linesep;
 		result += "\t\t\tmyFrame.getContentPane().add(aButton);" + Conf.linesep;
 		result += "\t\t\teventButtons.put(eventList[i], aButton);" + Conf.linesep;
@@ -154,25 +186,19 @@ public class GUICodeCreator {
 		private static String writePanelsAndFields() {
 		String result = "";
 		// writing panels with labels and fields to display and change state values
-		
-		
-//		result += "\t\tString[] variableList = { ";
-//		for (int j = 0; j < variableNames.size(); j++) {
-//			result += "\"" + variableNames.get(j) + "\"";
-//			if (j != variableNames.size() - 1)
-//				result += ", ";
-//		}
-		
-//		result += " };" + Conf.linesep;
+
 		result += "\t\tfor (int i=0 ; i<panelList.length ; i++) {" + Conf.linesep;
-//		result += "\t\tfor (String variable : variableList) {" + Conf.linesep;
 		result += "\t\t\tJPanel panel = new JPanel();" + Conf.linesep;
 		result += "\t\t\tpanel.setBackground(panelColorValue[i]);" + Conf.linesep;
 		result += "\t\t\tpanel.setToolTipText(panelTTValue[i]);" + Conf.linesep;
+		result += "\t\t\tpanel.setFont(panelfont);" + Conf.linesep;
 		result += "\t\t\tpanel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));" + Conf.linesep;
 		result += "\t\t\tpanel.add(new JLabel(panelList[i]));" + Conf.linesep;
 		result += "\t\t\tJTextField textField = new JTextField(\"\", 5);" + Conf.linesep;
 		result += "\t\t\ttextField.setActionCommand(panelList[i]);" + Conf.linesep;
+		result += "\t\t\ttextField.setBackground(tFieldColorValue[i]);" + Conf.linesep;
+		result += "\t\t\ttextField.setToolTipText(tFieldTTValue[i]);" + Conf.linesep;
+		result += "\t\t\ttextField.setFont(fieldfont);" + Conf.linesep;
 		result += "\t\t\ttextField.addActionListener(this);" + Conf.linesep;
 		result += "\t\t\tpanel.add(textField);" + Conf.linesep;
 		result += "\t\t\tmyFrame.getContentPane().add(panel);" + Conf.linesep;

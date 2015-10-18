@@ -113,3 +113,71 @@ ATTENIONE, la user's guide è ora in docs (so che è inutile perché è questo file 
 ATTENZONE, il file di configurazione dei parametri va ora posizionato in data e con estensione data da nome_file.conf.xml
 
 Anche in questo caso si può ancora prendere a modello stopwatch che ho verificato essere funzionante.
+
+##############################
+AGGIORNAMENTO 4
+##############################
+SONO DIVENTATI PARAMETRICI I TEXTFIELD ED I FONT
+
+Cosa sono i textfield? Sono quei riquadri bianchi dove vengono riportati i valori delle variabili. Sono personalizzabili in temrini di colore dello sfondo e tooltip
+Il font invece è unico per ogni classe di oggetti nella GUI quindi in particolare avremo tre font, uno per i bottoni uno per i panel e uno per i fiel.
+
+PARAMETRIZZAZIONE DEI FIELD (Come riferimento c'è il solito file stopwatch.conf.xml
+	I parametri dei field vanno inseriti sotto a quelli dei panel (dato che ogni field è collegato ad un panel ho ritenuto che questa fosse la soluzione migliore)
+	In particolare adesso si avrà una cosa del genere:
+	
+	
+		<panel id="stopped$value">
+			<pcolor expr="YELLOW" />
+			<ptooltip expr="stopped value" />
+			<tfcolor expr="PINK" />
+			<tftooltip expr="stopped" />
+		</panel>
+		
+	ed il default dei panel invece è diventato qualcosa del genere:
+	
+	<defaultp>
+		<dcolor expr="LIGHT_GRAY"/>
+		<dtooltip expr="This is a variable" />
+		<dtfcolor expr="WHITE"/>
+		<dtftooltip expr="variable" />
+	</defaultp>
+	
+	notare che il colore riferito ai panel è pcolor quello riferito ai textfield è tfcolor e lo stesso per il tooltip. Per il default basta aggiungere una d davanti.
+	
+	
+NOTA: Per uniformità ho modificato anche la aprametrizzazione dei bottoni, adesso i parametri sono bcolor e btooltip
+
+
+Per quanto riguarda i FONT adesso la radice parameters può avere un figio fonts che può avere dei figli font. Ognuno di questi figli ha un id come attributo che 
+può essere scelto tra buttons, panels e fields col significato che uno immagina.
+
+Ogni font ha tre figli type, mode e dimension. type rappresenta il tipo di carattere (TimesRoman, Helvetica ed altri [basta cercare su internet]). Mode rappresenta la scelta 
+PLAIN, BOLD, ITALIC ed infine dimension la grandezza del carattere.
+
+Un font tipico sarà quindi:
+	
+	<fonts>
+		<font id = "nome_oggetto">
+			<type expr="tipo"/>
+			<mode expr="modo" />
+			<dimension expr="n" />
+		</font>
+	</fonts>
+	
+Va chiaramente aggiunto un default, figlio diretto di parameters, con questa forma:
+
+	<defaultcar>
+		<dtype expr="tipo" />
+		<dmode expr="modo" />
+		<ddimension expr="m" />
+	</defaultcar>
+
+NOTA: car sta per carattere.
+
+Sia con i field che con i font, a patto di aver specificato un default, c'è libertà di scrivere expr="", di togliere comletamente uno dei figli (ad esempio type) o di eliminare del tutto
+un oggetto (ad esempio uno dei font). Errori nello scrivere il file xml invece interromperanno l'esecuzione dell'intero programma.
+
+
+
+OSSERVAZIONE IMPORTANTE: Il default va specificato in OGNI caso per evitare di incorrere in errori di esecuzione.

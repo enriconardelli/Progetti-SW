@@ -1,5 +1,6 @@
 package framework;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,11 +35,16 @@ public class ParamReader {
 		ParamReader.buttonChildFill(documentRoot);
 		
 		//GESTISCO I PANEL***********************
-		
 		//inserisce eventuali panel mancanti e figli
 		ParamReader.fillPanels(variableNames, ParamReader.getPanelNames(documentRoot), documentRoot);
 		ParamReader.panelChildFill(documentRoot);
 		
+		//GESTISCO I TFIELD (LI DEVO ORDINARE COME I PANEL!!!)
+		ParamReader.tFieldChildFill(documentRoot);
+		
+		//GESTICO I FONT 
+		ParamReader.fillFonts(documentRoot);
+		ParamReader.fillChildFont(documentRoot);
 		
 		return documentRoot;	
 		}
@@ -59,7 +65,7 @@ public class ParamReader {
 	public static ArrayList<String> getcolors(String dcolor){
 		//Trova la lista dei colori completando col default quando mancanti
 		ArrayList<String> colorsList= new ArrayList<String>();
-		Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("color"));
+		Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("bcolor"));
 		while (anElement.hasNext()) {
 			Element currentElement = anElement.next();
 			if (!currentElement.getAttributeValue("expr").isEmpty()){
@@ -74,7 +80,7 @@ public class ParamReader {
 	public static ArrayList<String> getTTList(String dtooltip){
 		//Trova la lista dei tooltip completando col default quando mancanti
 		ArrayList<String> TTList= new ArrayList<String>();
-		Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("tooltip"));
+		Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("btooltip"));
 		while (anElement.hasNext()) {
 			Element currentElement = anElement.next();
 			if (!currentElement.getAttributeValue("expr").isEmpty()){
@@ -205,18 +211,18 @@ public class ParamReader {
 				while(anElement.hasNext()){
 					Element currentElement = anElement.next();
 					
-					Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("color"));
+					Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("bcolor"));
 					
 					if(!bla.hasNext()){
-						Element newC = new Element("color");
+						Element newC = new Element("bcolor");
 						newC.setAttribute("expr", "");
 						currentElement.addContent(newC);
 						}
 				
 					
-					Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("tooltip"));
+					Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("btooltip"));
 					if(!blo.hasNext()){
-						Element newT = new Element("tooltip");
+						Element newT = new Element("btooltip");
 						newT.setAttribute("expr", "");
 						currentElement.addContent(newT);
 						}
@@ -376,5 +382,295 @@ public class ParamReader {
 						}
 					
 					}
+	}
+	
+//DA QUI I TEXTFIELD*****************************************************************************************************
+	
+	public static ArrayList<String> getTFieldColor(String dcolor){
+		//Trova la lista dei colori completando col default quando mancanti (DEI PANELS)
+				ArrayList<String> colorsList= new ArrayList<String>();
+				Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("tfcolor"));
+				while (anElement.hasNext()) {
+					Element currentElement = anElement.next();
+					if (!currentElement.getAttributeValue("expr").isEmpty()){
+						colorsList.add(currentElement.getAttributeValue("expr").toUpperCase());
+					}else{
+						colorsList.add(dcolor.toUpperCase());
+					}
+				}
+				return colorsList;
+			}
+	
+	
+	public static String[] getDefaultTField(){
+		//Trova i parametri di default dei button
+		Element Default = Parameters.getChild("defaultp");
+		Iterator<Element> col = Default.getDescendants(new ElementFilter("dtfcolor") );
+		Element Col = col.next();
+		String dcolor=Col.getAttributeValue("expr");
+		
+		Iterator<Element> tol =Default.getDescendants(new ElementFilter("dtftooltip") );
+		Element Tol = tol.next();
+		String dtooltip = Tol.getAttributeValue("expr");
+		
+		String[] Ris = new String[2];
+		Ris[0]=dcolor;
+		Ris[1]=dtooltip;
+		return Ris;
+		
+	}
+	
+	public static ArrayList<String> getTTTFList(String dtooltip){
+		//Trova la lista dei tooltip dei panel completando col default quando mancanti
+		ArrayList<String> TTList= new ArrayList<String>();
+		Iterator<Element> anElement = Parameters.getDescendants(new ElementFilter("tftooltip"));
+		while (anElement.hasNext()) {
+			Element currentElement = anElement.next();
+			if (!currentElement.getAttributeValue("expr").isEmpty()){
+				TTList.add(currentElement.getAttributeValue("expr"));
+			}else{
+				TTList.add(dtooltip);
+			}
+			
+		}
+		return TTList;
+	}
+
+	
+	public static String writeColorTFList(List<String> colorTFNames) {
+		String result = "";
+		// writing the list of all colors names  
+		result += "\tprivate Color[] tFieldColorValue = { ";
+		for (int j = 0; j < colorTFNames.size(); j++) {
+			result +="Color." + colorTFNames.get(j);
+			if (j != colorTFNames.size() - 1)
+				result += ", ";
+		}
+		result += " };" + Conf.linesep;
+		return result;
+	}
+	
+	
+	public static String writeTTTFList(List<String> toolTFTips) {
+		String result = "";
+		// writing the list of all tooltips 
+		result += "\tprivate String[] tFieldTTValue = { ";
+		for (int j = 0; j < toolTFTips.size(); j++) {
+			result += "\"" + toolTFTips.get(j) + "\"";
+			if (j != toolTFTips.size() - 1)
+				result += ", ";
+		}
+		result += " };" + Conf.linesep;
+		return result;
+	}
+	
+	public static void tFieldChildFill(Element doc){
+		//Riempie figli dei panel
+				List<Element> lista = new CopyOnWriteArrayList<Element>(doc.getChild("panels").getChildren("panel"));
+				Iterator<Element> anElement = lista.iterator();
+				
+				while(anElement.hasNext()){
+					Element currentElement = anElement.next();
+					
+					Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("tfcolor"));
+					
+					if(!bla.hasNext()){
+						Element newC = new Element("tfcolor");
+						newC.setAttribute("expr", "");
+						currentElement.addContent(newC);
+						}
+				
+					
+					Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("tftooltip"));
+					if(!blo.hasNext()){
+						Element newT = new Element("tftooltip");
+						newT.setAttribute("expr", "");
+						currentElement.addContent(newT);
+						}
+					
+					}
+	}
+	
+//QUI TRATTO I FONT*************************
+	
+	
+	public static ArrayList<String[]> getFont(Element doc, String[] Default){
+		//METTE I FONT ORDINATI E RIEMPIENDO COL DEFAULT
+		
+		ArrayList<String[]> Ris = new ArrayList<String[]>();
+		
+		List<Element> fonts = doc.getChild("fonts").getChildren("font");
+		
+		
+		for(Element font : fonts){
+			if(font.getAttributeValue("id").equals("buttons")){
+				String[] ris = new String[3];
+				if (!font.getChild("type").getAttributeValue("expr").isEmpty()){
+					ris[0]=font.getChild("type").getAttributeValue("expr");
+				}else{
+					ris[0]=Default[0];
+				}
+				if (!font.getChild("mode").getAttributeValue("expr").isEmpty()){
+					ris[1]=font.getChild("mode").getAttributeValue("expr");
+				}else{
+					ris[1]=Default[1];
+				}
+				if (!font.getChild("dimension").getAttributeValue("expr").isEmpty()){
+					ris[2]=font.getChild("dimension").getAttributeValue("expr");
+				}else{
+					ris[2]=Default[2];
+				}
+				Ris.add(ris);
+			}
+		}
+		for(Element font : fonts){
+			if(font.getAttributeValue("id").equals("panels")){
+				String[] ris = new String[3];
+				if (!font.getChild("type").getAttributeValue("expr").isEmpty()){
+					ris[0]=font.getChild("type").getAttributeValue("expr");
+				}else{
+					ris[0]=Default[0];
+				}
+				if (!font.getChild("mode").getAttributeValue("expr").isEmpty()){
+					ris[1]=font.getChild("mode").getAttributeValue("expr");
+				}else{
+					ris[1]=Default[1];
+				}
+				if (!font.getChild("dimension").getAttributeValue("expr").isEmpty()){
+					ris[2]=font.getChild("dimension").getAttributeValue("expr");
+				}else{
+					ris[2]=Default[2];
+				}
+				Ris.add(ris);
+			}
+		}
+		for(Element font : fonts){
+			if(font.getAttributeValue("id").equals("fields")){
+				String[] ris = new String[3];
+				if (!font.getChild("type").getAttributeValue("expr").isEmpty()){
+					ris[0]=font.getChild("type").getAttributeValue("expr");
+				}else{
+					ris[0]=Default[0];
+				}
+				if (!font.getChild("mode").getAttributeValue("expr").isEmpty()){
+					ris[1]=font.getChild("mode").getAttributeValue("expr");
+				}else{
+					ris[1]=Default[1];
+				}
+				if (!font.getChild("dimension").getAttributeValue("expr").isEmpty()){
+					ris[2]=font.getChild("dimension").getAttributeValue("expr");
+				}else{
+					ris[2]=Default[2];
+				}
+				Ris.add(ris);
+			}
+		}
+		
+		return Ris;
+	}
+	
+	public static String[] getDefaultFont(Element doc){
+		String[] deff = new String[3]; //TYPE MODE DIM
+		//Trova i parametri di default dei font
+		Element Default = Parameters.getChild("defaultcar");
+		Iterator<Element> col = Default.getDescendants(new ElementFilter("dtype") );
+		Element Col = col.next();
+		String dtype=Col.getAttributeValue("expr");
+				
+		Iterator<Element> tol =Default.getDescendants(new ElementFilter("dmode") );
+		Element Tol = tol.next();
+		String dmode = Tol.getAttributeValue("expr");
+				
+		Iterator<Element> dim =Default.getDescendants(new ElementFilter("ddimension") );
+		Element Dim = dim.next();
+		String ddim = Dim.getAttributeValue("expr");
+				
+		deff[0]=dtype;
+		deff[1]=dmode;
+		deff[2]=ddim;
+		return deff;
+	}
+	
+	public static void fillChildFont(Element doc){
+		//Riempie figli dei font
+		List<Element> lista = new CopyOnWriteArrayList<Element>(doc.getChild("fonts").getChildren("font"));
+		Iterator<Element> anElement = lista.iterator();
+		
+		while(anElement.hasNext()){
+			Element currentElement = anElement.next();
+			
+			Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("type"));
+			
+			if(!bla.hasNext()){
+				Element newT = new Element("type");
+				newT.setAttribute("expr", "");
+				currentElement.addContent(newT);
+				}
+		
+			
+			Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("mode"));
+			if(!blo.hasNext()){
+				Element newM = new Element("mode");
+				newM.setAttribute("expr", "");
+				currentElement.addContent(newM);
+				}
+			
+		
+		Iterator<Element> ble = currentElement.getDescendants(new ElementFilter("dimension"));
+		if(!ble.hasNext()){
+			Element newD = new Element("dimension");
+			newD.setAttribute("expr", "");
+			currentElement.addContent(newD);
+			}
+		
+		}
+	}
+	
+	public static void fillFonts(Element doc){
+		//CONTROLLA che nel file dei parametri non manchino Fonts e se mancano li inserisce 
+		//I font devono essere 3 alla fine, uno per buttons uno per panels e uno per fields
+		Boolean flagb,flagp,flagf;
+		flagb=false;
+		flagp=false;
+		flagf=false;
+		
+		List<Element> fonts = doc.getChild("fonts").getChildren("font");
+		for(Element font : fonts){
+			if(font.getAttributeValue("id").equals("buttons")){
+				flagb = true;
+			}else if(font.getAttributeValue("id").equals("panels")){
+				flagp = true;
+			}else if(font.getAttributeValue("id").equals("fields")){
+				flagf = true;
+			}
+		}
+		if(!flagb){
+			Element newF = new Element("font");
+			newF.setAttribute("id", "buttons");
+			doc.getChild("fonts").addContent(newF);
+		}
+		
+		if(!flagp){
+			Element newF = new Element("font");
+			newF.setAttribute("id", "panels");
+			doc.getChild("fonts").addContent(newF);
+		}
+		
+		if(!flagf){
+			Element newF = new Element("font");
+			newF.setAttribute("id", "fields");
+			doc.getChild("fonts").addContent(newF);
+		}
+	}
+	
+	public static String writeFont(ArrayList<String[]> font){
+		String result = "";
+		result += "\tprivate Font buttfont = new Font( \"" + font.get(0)[0] + "\", Font." + font.get(0)[1].toUpperCase() + ", " + font.get(0)[2] + ");";
+		result += Conf.linesep;
+		result += "\tprivate Font panelfont = new Font( \"" + font.get(1)[0] + "\", Font." + font.get(1)[1].toUpperCase() + ", " + font.get(1)[2] + ");";
+		result += Conf.linesep;
+		result += "\tprivate Font fieldfont = new Font( \"" + font.get(2)[0] + "\", Font." + font.get(2)[1].toUpperCase() + ", " + font.get(2)[2] + ");";
+		result += Conf.linesep;
+		return result;
 	}
 }

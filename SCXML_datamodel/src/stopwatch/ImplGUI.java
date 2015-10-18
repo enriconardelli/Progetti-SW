@@ -16,15 +16,25 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTextArea;
 import core.AbstractGUI;
+import java.awt.Font;
 
 public class ImplGUI extends AbstractGUI {
 
 	private String[] eventList = { "watch_start", "watch_split", "watch_unsplit", "watch_reset", "watch_stop" };
-	private Color[] eventColorValue = { Color.RED, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE };
+	private Color[] eventColorValue = { Color.RED, Color.LIGHT_GRAY, Color.WHITE, Color.LIGHT_GRAY, Color.LIGHT_GRAY };
 	private String[] eventTTValue = { "start", "split", "This is an event", "reset", "This is an event" };
+
 	private String[] panelList = { "running$value", "paused$value", "stopped$value", "reset$value" };
 	private Color[] panelColorValue = { Color.RED, Color.LIGHT_GRAY, Color.YELLOW, Color.LIGHT_GRAY };
 	private String[] panelTTValue = { "This is a variable", "paused value", "stopped value", "This is a variable" };
+
+	private Color[] tFieldColorValue = { Color.GREEN, Color.GRAY, Color.WHITE, Color.WHITE };
+	private String[] tFieldTTValue = { "running", "paused", "stopped", "variable" };
+
+	private Font buttfont = new Font( "Helevetica", Font.BOLD, 18);
+	private Font panelfont = new Font( "TimesRoman", Font.PLAIN, 14);
+	private Font fieldfont = new Font( "TimesRoman", Font.PLAIN, 16);
+
 	public ImplGUI(String pSCName) {
 
 		HashMap<String,Integer> frameParameters = new HashMap<String,Integer>();
@@ -40,11 +50,13 @@ public class ImplGUI extends AbstractGUI {
 		myFrame.setSize(frameParameters.get("width"), frameParameters.get("height"));
 		myFrame.setLayout(new FlowLayout());
 
+
 		for (int i=0 ; i<eventList.length ; i++) {
 			JButton aButton = new JButton("LAUNCH " + eventList[i]);
 			aButton.setActionCommand(eventList[i]);
 			aButton.setBackground(eventColorValue[i]);
-			 aButton.setToolTipText(eventTTValue[i]);
+			aButton.setToolTipText(eventTTValue[i]);
+			aButton.setFont(buttfont);
 			aButton.addActionListener(this);
 			myFrame.getContentPane().add(aButton);
 			eventButtons.put(eventList[i], aButton);
@@ -54,10 +66,14 @@ public class ImplGUI extends AbstractGUI {
 			JPanel panel = new JPanel();
 			panel.setBackground(panelColorValue[i]);
 			panel.setToolTipText(panelTTValue[i]);
+			panel.setFont(panelfont);
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 			panel.add(new JLabel(panelList[i]));
 			JTextField textField = new JTextField("", 5);
 			textField.setActionCommand(panelList[i]);
+			textField.setBackground(tFieldColorValue[i]);
+			textField.setToolTipText(tFieldTTValue[i]);
+			textField.setFont(fieldfont);
 			textField.addActionListener(this);
 			panel.add(textField);
 			myFrame.getContentPane().add(panel);
