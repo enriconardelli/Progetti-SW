@@ -28,9 +28,6 @@ public class ParamReader {
 		//Legge il file dei parametri e lo salva in Parameters, una variabile della classe
 		File inputFile = new File(Conf.data_dir + Conf.filesep + file_name + Conf.xml_conf_extension);
 		Element documentRoot = Common.getDocumentRoot(inputFile);
-		
-		//Riempi eventuale mancanza dei figli diretti di parameters, esclusi i default
-		ParamReader.fillBigChild(documentRoot);
 
 		//Riempie eventuali bottoni mancanti e figli
 		ParamReader.fillEvents(eventNames, ParamReader.getEventNames(documentRoot), documentRoot);

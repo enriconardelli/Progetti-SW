@@ -11,7 +11,7 @@ Guida per configurare la GUI  (NUOVA VERSIONE)
 			-un figlio <fonts>
 			-un figlio <font_default>
 			
-Solo i default DEVONO essere creati, se non create questi figli (diretti) o anche i discendenti successivi, il software provvederà a riempire i buchi.
+Tranne i default, questi figli possono essere lasciati tutti vuoti, ma bisogna almeno scriverli.
 Per completare i default leggere sotto.
 
 3.Il <frame> può avere due figli siffatti

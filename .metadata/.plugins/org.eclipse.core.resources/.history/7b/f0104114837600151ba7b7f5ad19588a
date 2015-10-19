@@ -28,9 +28,6 @@ public class ParamReader {
 		//Legge il file dei parametri e lo salva in Parameters, una variabile della classe
 		File inputFile = new File(Conf.data_dir + Conf.filesep + file_name + Conf.xml_conf_extension);
 		Element documentRoot = Common.getDocumentRoot(inputFile);
-		
-		//Riempi eventuale mancanza dei figli diretti di parameters, esclusi i default
-		ParamReader.fillBigChild(documentRoot);
 
 		//Riempie eventuali bottoni mancanti e figli
 		ParamReader.fillEvents(eventNames, ParamReader.getEventNames(documentRoot), documentRoot);
@@ -48,27 +45,6 @@ public class ParamReader {
 		
 		return documentRoot;	
 		}
-	
-	
-//FIGLI DIRETTI DI PARAMETERS************************************************************************************
-	public static void fillBigChild(Element doc){
-		Iterator<Element> buttons = doc.getDescendants(new ElementFilter("buttons"));
-		if(!buttons.hasNext()){
-			doc.addContent(new Element("buttons"));
-		}
-		Iterator<Element> panels = doc.getDescendants(new ElementFilter("panels"));
-		if(!buttons.hasNext()){
-			doc.addContent(new Element("panels"));
-		}
-		Iterator<Element> fields = doc.getDescendants(new ElementFilter("fields"));
-		if(!buttons.hasNext()){
-			doc.addContent(new Element("fields"));
-		}
-		Iterator<Element> fonts = doc.getDescendants(new ElementFilter("fonts"));
-		if(!buttons.hasNext()){
-			doc.addContent(new Element("fonts"));
-		}
-	}
 
 //FRAME E BOTTONI**************************************************************************************************
 	
