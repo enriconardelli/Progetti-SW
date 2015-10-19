@@ -23,6 +23,47 @@ public class GUICodeCreator {
 		//LEGGO I PARAMETRI
 		ParamReader.Parameters=ParamReader.readConfFile(pSCName, eventNames, variableNames);
 		
+		
+//		//***************BOTTONI E FRAME************************
+//		//LEGGO IL DEFAULT
+//		String[] Def = ParamReader.getDefaultButton();
+//		//SALVO I NOMI
+//		ArrayList<String> buttonNames= ParamReader.getEventNames(ParamReader.Parameters);
+//		//PRENDO I COLORI
+//		ArrayList<String> colorsList= ParamReader.getColors(Def[0]);
+//		//PRENDO I TOOLTIPS
+//		ArrayList<String> tooltipList=ParamReader.getToolTipList(Def[1]);
+		//PARAMETRI DI FRAME
+//		String[] frameParam = new String[2];
+//		frameParam=ParamReader.getFrameParam();
+//		
+//		//*****************PANEL****************************
+//		
+//		//LEGGO IL DEFAULT
+//		String[] Defp = ParamReader.getDefaultPanel();
+//		//SALVO I NOMI
+//		ArrayList<String> panelNames= ParamReader.getPanelNames(ParamReader.Parameters);
+//		//PRENDO I COLORI
+//		ArrayList<String> colorsPList= ParamReader.getPanelColor(Defp[0]);
+//		//PRENDO I TOOLTIPS
+//		ArrayList<String> tooltipPList=ParamReader.getToolTipPanelList(Defp[1]);
+//		
+//		//*************TFIELD********************************
+//		
+//		//LEGGO IL DEFAULT
+//		String[] Deftf = ParamReader.getDefaultTextField();
+//		//PRENDO I COLORI
+//		ArrayList<String> colorsTFList= ParamReader.getTextFieldColor(Deftf[0]);
+//		//PRENDO I TOOLTIPS
+//		ArrayList<String> tooltipTFList=ParamReader.getToolTipTextFieldList(Deftf[1]);
+//		
+//		
+//		//**************FONT********************************
+//		String[] Deff = ParamReader.getDefaultFont(ParamReader.Parameters);
+//		ArrayList<String[]> fonts = ParamReader.getFont(ParamReader.Parameters, Deff); //QUI LI HO MESSI ORDINATI IN BUTTONS; PANLES; FIELDS
+//		
+//		
+		
  		BufferedWriter out = new BufferedWriter(new FileWriter(Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "ImplGUI.java"));
 		String classContent = "";
 		classContent = writePreambleAndImports(pSCName);
