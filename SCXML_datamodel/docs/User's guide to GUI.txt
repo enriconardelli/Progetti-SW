@@ -1,0 +1,91 @@
+Guida per configurare la GUI  (NUOVA VERSIONE)
+
+1. Bisogna creare un file dei parametri col nome 'nome_modello.conf.xml'
+2. Il file deve essere strutturato con una radice <parameters> e poi dentro 
+			-un figlio <frame>
+			-un figlio <frame_default>
+			-un figlio <buttons>
+			-un figlio <button_default>
+			-un figlio <panels>
+			-un figlio <panel_default>
+			-un figlio <fonts>
+			-un figlio <font_default>
+			
+Tranne i default, questi figli possono essere lasciati tutti vuoti, ma bisogna almeno scriverli.
+Per completare i default leggere sotto.
+
+3.Il <frame> può avere due figli siffatti
+					<width> valore </width>
+					<heigth> valore </heigth>
+	non necessariamente in questo ordine.
+	Può anche avere valori mancanti o figli mancanti.
+	
+3.A Il <frame_default> DEVE avere una struttura identica a quella di sopra riempita in ogni dettaglio.
+					
+4.Il <buttons> ha n figli dove n è minore o uguale al numero di eventi della state chart
+  e strutturati nel seguente modo
+  				<button id="nome_evento">
+  					<color expr="nome_colore" />
+  					<tooltip expr="il tooltip" />
+					</button>
+	anche qui i figli non devono essere ordinati necessariamente così, non devono essere completi nè presenti.
+	
+4.A Il <button_default> sarà della forma
+
+	<button_default>
+		<dtooltip expr=tooltip_default />
+		<dcolor expr=colore_default />
+	</button_default> 
+	
+	e dovrà essere scritto in tutti i dettagli.
+	
+5. Il figlio Panels avrà m figli panel con m minore o uguale
+   al numero di variabili contenute nella state chart. Essi racchiudono in sé le informazioni realitve ai panel e ai text, 
+   avranno quindi una struttura di questo tipo.
+
+		<panel id=nome_variabile>
+			<color expr=colore_panel />
+			<tooltip expr=tooltip_panel />
+			<text_field_color expr=colore_text_field />
+			<text_field_tooltip expr=tooltip_text_field />
+		</panel>
+		
+		chiaramente i primi due parametri sono riferiti ai panel, gli ultimi ai text_field. 
+		Come prima l'ordine non conta, i figli possono non avere informazioni o mancare del tutto.
+
+5.A Il panel_default avrà la seguente forma
+
+		<panel_default>
+			<dcolor expr=colore_panel_default/>
+			<dtooltip expr=tooltip_panel_default />
+			<dtext_field_color expr=colore_text_field_default/>
+			<dtext_field_tooltip expr=tooltip_text_field_default />
+	</panel_default>	
+	
+	e anche questo deve essere compilato nei minimi dettagli.
+	
+
+6. I font sono solo 3, relativi a Buttons, Panels e Fields e sono figli di fonts
+	Possono essere assenti o incompleti, un esempio è il seguente
+	
+	<font id = nome_oggetto>
+			<type expr=tipo/>
+			<mode expr=modo />
+			<dimension expr=dim />
+		</font>
+		
+	dove, come detto sopra, nome_oggetto è uno a scelta tra buttons, panels e fields.
+	Il type è uno a scelta tra "TimesRoman" , "Helvetica" ...(cercare su internet)
+	Il modo è uno a scelta tra bold, plain e italic
+	dim è  la dimensione.
+	
+6.A Il font_default deve essere compilato al dettaglio e sarà quindi
+
+	<font_default>
+		<dtype expr=tipo />
+		<dmode expr=modo />
+		<ddimension expr=dim />
+	</font_default>
+	
+
+NOTA: Un esempio concreto è stato già scritto col model stopwatch. Riferirsi a quello.

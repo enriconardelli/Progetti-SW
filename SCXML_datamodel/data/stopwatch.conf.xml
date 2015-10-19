@@ -4,68 +4,68 @@
 		<height> 800 </height>
 	</frame>
 	
-	<defaultf>
+	<frame_default>
 		<width> 300 </width>
 		<height> 300 </height>
-	</defaultf>
+	</frame_default>
 	
 	<buttons>	
 		<button id="watch_start">
-			<btooltip expr="start" />
-			<bcolor expr="RED" />
+			<tooltip expr="start" />
+			<color expr="RED" />
 		</button>
 		
 		<button id="watch_split">
-			<btooltip expr="split" />
+			<tooltip expr="split" />
 		</button>
 				
 		<button id="watch_unsplit">
-			<btooltip expr="" />
-			<bcolor expr="WHITE" />
+			<tooltip expr="" />
+			<color expr="WHITE" />
 		</button>
 		
 		<button id="watch_reset">
-			<btooltip expr="reset" />
-			<bcolor expr="" />
+			<tooltip expr="reset" />
+			<color expr="" />
 		</button>
 		
 
 	</buttons>
 	
-	<defaultb>
+	<button_default>
 		<dtooltip expr="This is an event" />
 		<dcolor expr="LIGHT_GRAY" />
-	</defaultb>
+	</button_default>
 	
 	
 	<panels>
 		<panel id="running$value">
-			<pcolor expr="RED" />
-			<tfcolor expr="GREEN" />
-			<tftooltip expr="running" />
+			<color expr="RED" />
+			<text_field_color expr="GREEN" />
+			<text_field_tooltip expr="running" />
 		</panel>
 		
 		<panel id="paused$value">
-			<pcolor expr="" />
-			<ptooltip expr="paused value" />
-			<tfcolor expr="GRAY" />
-			<tftooltip expr="paused" />
+			<color expr="" />
+			<tooltip expr="paused value" />
+			<text_field_color expr="GRAY" />
+			<text_field_tooltip expr="paused" />
 		</panel>
 		
 		<panel id="stopped$value">
-			<pcolor expr="YELLOW" />
-			<ptooltip expr="stopped value" />
-			<tftooltip expr="stopped" />
+			<color expr="YELLOW" />
+			<tooltip expr="stopped value" />
+			<text_field_tooltip expr="stopped" />
 		</panel>
 		
 	</panels>
 	
-	<defaultp>
+	<panel_default>
 		<dcolor expr="LIGHT_GRAY"/>
 		<dtooltip expr="This is a variable" />
-		<dtfcolor expr="WHITE"/>
-		<dtftooltip expr="variable" />
-	</defaultp>
+		<dtext_field_color expr="WHITE"/>
+		<dtext_field_tooltip expr="variable" />
+	</panel_default>
 	
 	<fonts>
 		<font id = "buttons">
@@ -81,11 +81,11 @@
 	</fonts>
 	
 	
-	<defaultcar>
+	<font_default>
 		<dtype expr="TimesRoman" />
 		<dmode expr="PLAIN" />
 		<ddimension expr="14" />
-	</defaultcar>
+	</font_default>
 
 	
 	

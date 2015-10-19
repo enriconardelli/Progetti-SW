@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,60 +24,70 @@ public class GUICodeCreator {
 		ParamReader.Parameters=ParamReader.readConfFile(pSCName, eventNames, variableNames);
 		
 		
-		//***************BOTTONI E FRAME************************
-		//LEGGO IL DEFAULT
-		String[] Def = ParamReader.getDefaultButton();
-		//SALVO I NOMI
-		ArrayList<String> buttonNames= ParamReader.getEventNames(ParamReader.Parameters);
-		//PRENDO I COLORI
-		ArrayList<String> colorsList= ParamReader.getcolors(Def[0]);
-		//PRENDO I TOOLTIPS
-		ArrayList<String> tooltipList=ParamReader.getTTList(Def[1]);
+//		//***************BOTTONI E FRAME************************
+//		//LEGGO IL DEFAULT
+//		String[] Def = ParamReader.getDefaultButton();
+//		//SALVO I NOMI
+//		ArrayList<String> buttonNames= ParamReader.getEventNames(ParamReader.Parameters);
+//		//PRENDO I COLORI
+//		ArrayList<String> colorsList= ParamReader.getColors(Def[0]);
+//		//PRENDO I TOOLTIPS
+//		ArrayList<String> tooltipList=ParamReader.getToolTipList(Def[1]);
 		//PARAMETRI DI FRAME
-		String[] frameParam = new String[2];
-		frameParam=ParamReader.getFrameParam();
-		
-		//*****************PANEL****************************
-		
-		//LEGGO IL DEFAULT
-		String[] Defp = ParamReader.getDefaultPanel();
-		//SALVO I NOMI
-		ArrayList<String> panelNames= ParamReader.getPanelNames(ParamReader.Parameters);
-		//PRENDO I COLORI
-		ArrayList<String> colorsPList= ParamReader.getPanelColor(Defp[0]);
-		//PRENDO I TOOLTIPS
-		ArrayList<String> tooltipPList=ParamReader.getTTPList(Defp[1]);
-		
-		//*************TFIELD********************************
-		
-		//LEGGO IL DEFAULT
-		String[] Deftf = ParamReader.getDefaultTField();
-		//PRENDO I COLORI
-		ArrayList<String> colorsTFList= ParamReader.getTFieldColor(Deftf[0]);
-		//PRENDO I TOOLTIPS
-		ArrayList<String> tooltipTFList=ParamReader.getTTTFList(Deftf[1]);
-		
-		
-		//**************FONT********************************
-		String[] Deff = ParamReader.getDefaultFont(ParamReader.Parameters);
-		ArrayList<String[]> fonts = ParamReader.getFont(ParamReader.Parameters, Deff); //QUI LI HO MESSI ORDINATI IN BUTTONS; PANLES; FIELDS
-		
-		
+//		String[] frameParam = new String[2];
+//		frameParam=ParamReader.getFrameParam();
+//		
+//		//*****************PANEL****************************
+//		
+//		//LEGGO IL DEFAULT
+//		String[] Defp = ParamReader.getDefaultPanel();
+//		//SALVO I NOMI
+//		ArrayList<String> panelNames= ParamReader.getPanelNames(ParamReader.Parameters);
+//		//PRENDO I COLORI
+//		ArrayList<String> colorsPList= ParamReader.getPanelColor(Defp[0]);
+//		//PRENDO I TOOLTIPS
+//		ArrayList<String> tooltipPList=ParamReader.getToolTipPanelList(Defp[1]);
+//		
+//		//*************TFIELD********************************
+//		
+//		//LEGGO IL DEFAULT
+//		String[] Deftf = ParamReader.getDefaultTextField();
+//		//PRENDO I COLORI
+//		ArrayList<String> colorsTFList= ParamReader.getTextFieldColor(Deftf[0]);
+//		//PRENDO I TOOLTIPS
+//		ArrayList<String> tooltipTFList=ParamReader.getToolTipTextFieldList(Deftf[1]);
+//		
+//		
+//		//**************FONT********************************
+//		String[] Deff = ParamReader.getDefaultFont(ParamReader.Parameters);
+//		ArrayList<String[]> fonts = ParamReader.getFont(ParamReader.Parameters, Deff); //QUI LI HO MESSI ORDINATI IN BUTTONS; PANLES; FIELDS
+//		
+//		
 		
  		BufferedWriter out = new BufferedWriter(new FileWriter(Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "ImplGUI.java"));
 		String classContent = "";
 		classContent = writePreambleAndImports(pSCName);
 		classContent += Conf.linesep;
 		classContent += writeSignature();
-		classContent += writeBLists(buttonNames, colorsList, tooltipList);
+		classContent += writeButtonLists(
+				ParamReader.getEventNames(ParamReader.Parameters),
+				ParamReader.getColors(ParamReader.getDefaultButton().get("color")),
+				ParamReader.getToolTipList(ParamReader.getDefaultButton().get("tooltip")));
 		classContent += Conf.linesep;
-		classContent += writePLists(panelNames, colorsPList, tooltipPList);
+		classContent += writePanelLists(
+				ParamReader.getPanelNames(ParamReader.Parameters),
+				ParamReader.getPanelColor(ParamReader.getDefaultPanel().get("color")),
+				ParamReader.getToolTipPanelList(ParamReader.getDefaultPanel().get("tooltip")));
 		classContent += Conf.linesep;
-		classContent += writeTFLists(colorsTFList,tooltipTFList);
+		classContent += writeTextFieldLists(
+				ParamReader.getTextFieldColor(ParamReader.getDefaultTextField().get("color")),
+				ParamReader.getToolTipTextFieldList(ParamReader.getDefaultTextField().get("tooltip")));
 		classContent += Conf.linesep;
-		classContent += ParamReader.writeFont(fonts);
+		classContent += ParamReader.writeFont(ParamReader.getFont(
+				ParamReader.Parameters,
+				ParamReader.getDefaultFont(ParamReader.Parameters)));
 		classContent += Conf.linesep;
-		classContent += writeConstructor(frameParam);
+		classContent += writeConstructor(ParamReader.getFrameParam());
 		classContent += Conf.linesep;
 																 
 		classContent += writeButtons(); //QUI POSSO TOGLIERE IL PARAMETRO
@@ -120,7 +131,7 @@ public class GUICodeCreator {
 		return result;
 		}
 		
-		private static String writeConstructor(String[] frameParam){
+		private static String writeConstructor(HashMap<String,String> frameParam){
 			String result = "";
 		
 		// writing constructor
@@ -129,7 +140,7 @@ public class GUICodeCreator {
 		//INSERISCO LA HASH MAP DEL JFRAME
 		result += "\t\tHashMap<String,Integer> frameParameters = new HashMap<String,Integer>();" + Conf.linesep;
 		result += "\t\tString[] paramList = {" + "\"width\"" + ", " + "\"height\"" + "};" + Conf.linesep;
-		result += "\t\tInteger[] valueList = {" + frameParam[0] + ", " + frameParam[1] + "};" + Conf.linesep;
+		result += "\t\tInteger[] valueList = {" + frameParam.get("width") + ", " + frameParam.get("height") + "};" + Conf.linesep;
 		result += "\t\tfor (int i=0; i<paramList.length; i++) {" + Conf.linesep;
 		result += "\t\t\t frameParameters.put(paramList[i], valueList[i]);" + Conf.linesep;
 		result += "\t\t}" + Conf.linesep + Conf.linesep;
@@ -142,28 +153,28 @@ public class GUICodeCreator {
 		return result;
 	}
 		//AGGIUNTA DA ME, SCRIVE LE LISTE DEI PARAMETRI PER BOTTONI
-		private static String writeBLists(ArrayList<String> buttonNames, ArrayList<String> colorsList, ArrayList<String> tooltipList){
+		private static String writeButtonLists(ArrayList<String> buttonNames, ArrayList<String> colorsList, ArrayList<String> tooltipList){
 			String result = "";
 			result += ParamReader.writeButtonList(buttonNames);
 			result += ParamReader.writeColorList(colorsList);
-			result += ParamReader.writeTTList(tooltipList);
+			result += ParamReader.writeToolTipList(tooltipList);
 			return result;
 		}
 		
 		//SCRIVE LE LISTE PARAM DEI PANEL
-		private static String writePLists(ArrayList<String> panelNames, ArrayList<String> colorsPList, ArrayList<String> tooltipPList){
+		private static String writePanelLists(ArrayList<String> panelNames, ArrayList<String> colorsPList, ArrayList<String> tooltipPList){
 			String result = "";
 			result += ParamReader.writePanelList(panelNames);
 			result += ParamReader.writeColorPList(colorsPList);
-			result += ParamReader.writeTTPList(tooltipPList);
+			result += ParamReader.writeToolTipPanelList(tooltipPList);
 			return result;
 		}
 		
 		//SCRIVE LE LISTE PARAM DEI FIELD
-		private static String writeTFLists( ArrayList<String> colorTFList, ArrayList<String> tooltipTFList){
+		private static String writeTextFieldLists( ArrayList<String> colorTFList, ArrayList<String> tooltipTFList){
 			String result = "";
-			result += ParamReader.writeColorTFList(colorTFList);
-			result += ParamReader.writeTTTFList(tooltipTFList);
+			result += ParamReader.writeColorTextFieldList(colorTFList);
+			result += ParamReader.writeToolTipTextFieldList(tooltipTFList);
 			return result;
 					
 		}
