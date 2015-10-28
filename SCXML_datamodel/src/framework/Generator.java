@@ -21,17 +21,17 @@ import org.jdom.filter.ElementFilter;
 import org.jdom.filter.Filter;
 import org.jdom.input.SAXBuilder;
 
+
 public class Generator {
 	public static List<String> stati = new ArrayList<String>();
 	public static List<String> targets = new ArrayList<String>();
 	public static List<String> data_ids = new ArrayList<String>();
 	public static List<String> data_assign = new ArrayList<String>();
-	
 	// To pass arguments in Eclipse: "Run Configurations...", "Arguments", "Program Arguments"
 	public static void main(String[] args) throws Exception {
 		// checking input file name(s)
 		if (args.length <= 0) {
-			System.err.println("No args! Please provide the NAME(s) of the file(s) NAME.scxml containing the StateChart specification(s)");
+			System.err.println("No args! Give the NAME(s) of the file(s) NAME.scxml containing the StateChart specification(s)");
 			return;
 		}
 		for (String SCXMLModel : args) {
@@ -77,7 +77,7 @@ public class Generator {
 				}
 			}
 		}
-		checkOK = scxml_control_scxml(pDocumentRoot);
+		checkOK= scxml_control_scxml(pDocumentRoot);
 		return checkOK;
 	}
 
@@ -102,7 +102,7 @@ public class Generator {
 		
 		if (pDocumentRoot.getAttribute("version")!=null){
 			if (!pDocumentRoot.getAttribute("version").getValue().equals("1.0")) {
-				System.err.println("ERROR: wrong version number");
+				System.err.println("ERROR version");
 				check=false;
 			}
 		}
@@ -111,13 +111,13 @@ public class Generator {
 			check=false;
 		}
 		if (!pDocumentRoot.getNamespace().getURI().equals("http://www.w3.org/2005/07/scxml")){
-				System.err.println("ERROR: errato valore per xmlns");
+				System.err.println("ERROR errato valore per xmlns");
 				check=false;
 		}
 		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty() & 
 				pDocumentRoot.getContent(new ElementFilter("parallel")).isEmpty() & 
 				pDocumentRoot.getContent(new ElementFilter("final")).isEmpty()){
-					System.err.println("ERROR: non è presente nessuno tra state, parallel, final");
+					System.err.println("ERROR non è presente nè uno state ne un parallel ne un final");
 					check=false;
 		}
 		//Ora controlleremo i figli chiamando funzioni ricorsive
