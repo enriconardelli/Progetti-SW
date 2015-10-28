@@ -71,6 +71,7 @@ public class ParamReader {
 	}
 
 //FRAME E BOTTONI**************************************************************************************************
+	
 	public static ArrayList<String> getEventNames(Element doc){
 		//Trova i nomi degli eventi, mi servirà per il caso in cui manca tutto il button nei parametri
 		ArrayList<String> eventListNames= new ArrayList<String>();
@@ -215,25 +216,25 @@ public class ParamReader {
 		}
 	}
 	
-	public static void buttonChildFill(Element doc) {
-		// Riempie figli dei bottoni
-		List<Element> lista = new CopyOnWriteArrayList<Element>(doc.getChild("buttons").getChildren("button"));
-		Iterator<Element> anElement = lista.iterator();
-		while (anElement.hasNext()) {
-			Element currentElement = anElement.next();
-			Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("color"));
-			if (!bla.hasNext()) {
-				Element newC = new Element("color");
-				newC.setAttribute("expr", "");
-				currentElement.addContent(newC);
-			}
-			Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("tooltip"));
-			if (!blo.hasNext()) {
-				Element newT = new Element("tooltip");
-				newT.setAttribute("expr", "");
-				currentElement.addContent(newT);
-			}
-		}
+	public static void buttonChildFill(Element doc){
+		//Riempie figli dei bottoni
+				List<Element> lista = new CopyOnWriteArrayList<Element>(doc.getChild("buttons").getChildren("button"));
+				Iterator<Element> anElement = lista.iterator();
+				while(anElement.hasNext()){
+					Element currentElement = anElement.next();
+					Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("color"));
+					if(!bla.hasNext()){
+						Element newC = new Element("color");
+						newC.setAttribute("expr", "");
+						currentElement.addContent(newC);
+						}
+					Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("tooltip"));
+					if(!blo.hasNext()){
+						Element newT = new Element("tooltip");
+						newT.setAttribute("expr", "");
+						currentElement.addContent(newT);
+						}
+					}
 	}
 	
 //DA QUI PARTONO I PANEL********************************************************************************************
@@ -357,45 +358,43 @@ public class ParamReader {
 		}
 	}
 	
-	public static void panelChildFill(Element doc) {
-		// Riempie figli dei panel
-		List<Element> lista = new CopyOnWriteArrayList<Element>(doc.getChild("panels").getChildren("panel"));
-		Iterator<Element> anElement = lista.iterator();
-		while (anElement.hasNext()) {
-			Element currentElement = anElement.next();
-			Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("color"));
-			if (!bla.hasNext()) {
-				Element newC = new Element("color");
-				newC.setAttribute("expr", "");
-				currentElement.addContent(newC);
-			}
-			Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("tooltip"));
-			if (!blo.hasNext()) {
-				Element newT = new Element("tooltip");
-				newT.setAttribute("expr", "");
-				currentElement.addContent(newT);
-			}
-		}
+	public static void panelChildFill(Element doc){
+		//Riempie figli dei panel
+				List<Element> lista = new CopyOnWriteArrayList<Element>(doc.getChild("panels").getChildren("panel"));
+				Iterator<Element> anElement = lista.iterator();			
+				while(anElement.hasNext()){
+					Element currentElement = anElement.next();
+					Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("color"));
+					if(!bla.hasNext()){
+						Element newC = new Element("color");
+						newC.setAttribute("expr", "");
+						currentElement.addContent(newC);
+						}
+					Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("tooltip"));
+					if(!blo.hasNext()){
+						Element newT = new Element("tooltip");
+						newT.setAttribute("expr", "");
+						currentElement.addContent(newT);
+						}
+					}
 	}
 	
 //DA QUI I TEXTFIELD*****************************************************************************************************
 	
-	public static ArrayList<String> getTextFieldColor(String dcolor) {
-		// Trova la lista dei colori completando col default quando mancanti
-		// (DEI PANELS)
-		ArrayList<String> colorsList = new ArrayList<String>();
-		Iterator<Element> anElement = Parameters.getChild("panels").getDescendants(new ElementFilter("text_field_color"));
-		while (anElement.hasNext()) {
-			Element currentElement = anElement.next();
-			if (!currentElement.getAttributeValue("expr").isEmpty()) {
-				colorsList.add(currentElement.getAttributeValue("expr")
-						.toUpperCase());
-			} else {
-				colorsList.add(dcolor.toUpperCase());
+	public static ArrayList<String> getTextFieldColor(String dcolor){
+		//Trova la lista dei colori completando col default quando mancanti (DEI PANELS)
+				ArrayList<String> colorsList= new ArrayList<String>();
+				Iterator<Element> anElement = Parameters.getChild("panels").getDescendants(new ElementFilter("text_field_color"));
+				while (anElement.hasNext()) {
+					Element currentElement = anElement.next();
+					if (!currentElement.getAttributeValue("expr").isEmpty()){
+						colorsList.add(currentElement.getAttributeValue("expr").toUpperCase());
+					}else{
+						colorsList.add(dcolor.toUpperCase());
+					}
+				}
+				return colorsList;
 			}
-		}
-		return colorsList;
-	}
 		
 	public static HashMap<String,String> getDefaultTextField(){
 		//Trova i parametri di default dei button
@@ -456,25 +455,25 @@ public class ParamReader {
 		return result;
 	}
 	
-	public static void textFieldChildFill(Element doc) {
-		// Riempie figli dei panel
-		List<Element> lista = new CopyOnWriteArrayList<Element>(doc.getChild("panels").getChildren("panel"));
-		Iterator<Element> anElement = lista.iterator();
-		while (anElement.hasNext()) {
-			Element currentElement = anElement.next();
-			Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("text_field_color"));
-			if (!bla.hasNext()) {
-				Element newC = new Element("text_field_color");
-				newC.setAttribute("expr", "");
-				currentElement.addContent(newC);
-			}
-			Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("text_field_tooltip"));
-			if (!blo.hasNext()) {
-				Element newT = new Element("text_field_tooltip");
-				newT.setAttribute("expr", "");
-				currentElement.addContent(newT);
-			}
-		}
+	public static void textFieldChildFill(Element doc){
+		//Riempie figli dei panel
+				List<Element> lista = new CopyOnWriteArrayList<Element>(doc.getChild("panels").getChildren("panel"));
+				Iterator<Element> anElement = lista.iterator();
+				while(anElement.hasNext()){
+					Element currentElement = anElement.next();
+					Iterator<Element> bla = currentElement.getDescendants(new ElementFilter("text_field_color"));
+					if(!bla.hasNext()){
+						Element newC = new Element("text_field_color");
+						newC.setAttribute("expr", "");
+						currentElement.addContent(newC);
+						}	
+					Iterator<Element> blo = currentElement.getDescendants(new ElementFilter("text_field_tooltip"));
+					if(!blo.hasNext()){
+						Element newT = new Element("text_field_tooltip");
+						newT.setAttribute("expr", "");
+						currentElement.addContent(newT);
+						}				
+					}
 	}
 	
 //QUI TRATTO I FONT*************************
