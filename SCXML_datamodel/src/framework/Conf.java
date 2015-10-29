@@ -12,4 +12,15 @@ public class Conf {
 	public static final String placeholder_for_code = "// here can be added code to specialize the behavior of this method";
 	public static final String warning_for_initial_state = "// but CANNOT be added any code interacting with the GUI - delete manually this comment when changing the initial state!";
 	public static final String endASMcurrentMethods = "// everything above this comment will be kept if this code is updated by ASMCodeCreator";
+	public static final String default_frame_width = "300";
+	public static final String default_frame_height = "300";
+	public static final String default_button_color = "WHITE";
+	public static final String default_panel_color = "WHITE";
+	public static final String default_text_field_color = "WHITE";
+	public static final String default_button_tooltip = "Event";
+	public static final String default_panel_tooltip = "Variable";
+	public static final String default_text_field_tooltip = "Numeric Variable";
+	public static final String default_font_type = "TimesRoman";
+	public static final String default_font_mode = "PLAIN";
+	public static final String default_font_dimension = "16";
 }
