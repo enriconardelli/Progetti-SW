@@ -24,7 +24,7 @@
 			<assign name="contatore" expr="${contatore + 1}" />
 		</transition>
 		
-		<transition event="stop" target="final_state">
+		<transition event="stop" target="final">
 		</transition>
 	</state>
 
