@@ -12,6 +12,7 @@ import java.util.List;
 
 public class GUICodeCreator {
 
+	private static SC_Element Parameters;
 	
 	private GUICodeCreator() {
 		// with a private constructor instances of this class cannot be created,
@@ -21,7 +22,9 @@ public class GUICodeCreator {
 
 	public static void create(String pSCName, List<String> variableNames, List<String> eventNames) throws IOException {
 		//LEGGO I PARAMETRI
-		ParamReader.Parameters=ParamReader.readConfFile(pSCName, eventNames, variableNames);
+		Parameters = new SC_Element(pSCName);
+		Parameters.addFile();
+		Parameters.checkAll(eventNames, variableNames);
 		
  		BufferedWriter out = new BufferedWriter(new FileWriter(Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "ImplGUI.java"));
 		String classContent = "";
@@ -29,24 +32,22 @@ public class GUICodeCreator {
 		classContent += Conf.linesep;
 		classContent += writeSignature();
 		classContent += writeButtonLists(
-				ParamReader.getEventNames(ParamReader.Parameters),
-				ParamReader.getColors(ParamReader.getDefaultButton().get("color")),
-				ParamReader.getToolTipList(ParamReader.getDefaultButton().get("tooltip")));
+				Parameters.getEventNames(),
+				Parameters.getButtonColors(),
+				Parameters.getButtonToolTipList());
 		classContent += Conf.linesep;
 		classContent += writePanelLists(
-				ParamReader.getPanelNames(ParamReader.Parameters),
-				ParamReader.getPanelColor(ParamReader.getDefaultPanel().get("color")),
-				ParamReader.getToolTipPanelList(ParamReader.getDefaultPanel().get("tooltip")));
+				Parameters.getPanelNames(),
+				Parameters.getPanelColor(),   
+				Parameters.getPanelToolTipList());
 		classContent += Conf.linesep;
 		classContent += writeTextFieldLists(
-				ParamReader.getTextFieldColor(ParamReader.getDefaultTextField().get("color")),
-				ParamReader.getToolTipTextFieldList(ParamReader.getDefaultTextField().get("tooltip")));
+				Parameters.getTextFieldColor(),
+				Parameters.getToolTipTextFieldList());
 		classContent += Conf.linesep;
-		classContent += ParamReader.writeFont(ParamReader.getFont(
-				ParamReader.Parameters,
-				ParamReader.getDefaultFont(ParamReader.Parameters)));
+		classContent += Parameters.writeFont();
 		classContent += Conf.linesep;
-		classContent += writeConstructor(ParamReader.getFrameParam());
+		classContent += writeConstructor(Parameters.getFrameParam());
 		classContent += Conf.linesep;
 																 
 		classContent += writeButtons(); //QUI POSSO TOGLIERE IL PARAMETRO
@@ -114,26 +115,26 @@ public class GUICodeCreator {
 		//AGGIUNTA DA ME, SCRIVE LE LISTE DEI PARAMETRI PER BOTTONI
 		private static String writeButtonLists(ArrayList<String> buttonNames, ArrayList<String> colorsList, ArrayList<String> tooltipList){
 			String result = "";
-			result += ParamReader.writeButtonList(buttonNames);
-			result += ParamReader.writeColorList(colorsList);
-			result += ParamReader.writeToolTipList(tooltipList);
+			result += Parameters.writeButtonList(buttonNames);
+			result += Parameters.writeButtonColorList(colorsList);
+			result += Parameters.writeButtonToolTipList(tooltipList);
 			return result;
 		}
 		
 		//SCRIVE LE LISTE PARAM DEI PANEL
 		private static String writePanelLists(ArrayList<String> panelNames, ArrayList<String> colorsPList, ArrayList<String> tooltipPList){
 			String result = "";
-			result += ParamReader.writePanelList(panelNames);
-			result += ParamReader.writeColorPList(colorsPList);
-			result += ParamReader.writeToolTipPanelList(tooltipPList);
+			result += Parameters.writePanelList(panelNames);
+			result += Parameters.writePanelColorList(colorsPList);
+			result += Parameters.writePanelToolTipList(tooltipPList);
 			return result;
 		}
 		
 		//SCRIVE LE LISTE PARAM DEI FIELD
 		private static String writeTextFieldLists( ArrayList<String> colorTFList, ArrayList<String> tooltipTFList){
 			String result = "";
-			result += ParamReader.writeColorTextFieldList(colorTFList);
-			result += ParamReader.writeToolTipTextFieldList(tooltipTFList);
+			result += Parameters.writeTextFieldColorList(colorTFList);
+			result += Parameters.writeTextFieldToolTipList(tooltipTFList);
 			return result;
 					
 		}

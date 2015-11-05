@@ -1,6 +1,9 @@
 Guida per configurare la GUI  (NUOVA VERSIONE)
 
-1. Bisogna creare un file dei parametri col nome 'nome_modello.conf.xml'
+
+0.NON è necessario creare un file di configurazione ma se si vuole farlo, leggere sotto le modalità.
+
+1. Bisogna creare un file dei parametri col nome 'nome_modello.conf.xml' che va messo nella cartella data (dove si trova anche il model della SC)
 2. Il file deve essere strutturato con una radice <parameters> e poi dentro 
 			-un figlio <frame>
 			-un figlio <frame_default>
@@ -11,8 +14,10 @@ Guida per configurare la GUI  (NUOVA VERSIONE)
 			-un figlio <fonts>
 			-un figlio <font_default>
 			
-Solo i default DEVONO essere creati, se non create questi figli (diretti) o anche i discendenti successivi, il software provvederà a riempire i buchi.
-Per completare i default leggere sotto.
+Tutti i figli possono essere dichiarati o meno con più o meno informazioni a seconda del vostro livello di personalizzazione (perfino i default possono essere non dichiarati
+o dichiarati incompleti). L'unica cosa importante è cercare di evitare di nidificare gli oggetti qui sopra (le cose nidificate incorrettamente verranno ignorate e
+tutto sarà di default) e, se volete creare il file, questo DEVE avere <parameters></parameters>.
+ Se questo non comprare, o avrete scritto male il nome di questo elemento, otterrete un errore ed il parsing verrà interrotto.
 
 3.Il <frame> può avere due figli siffatti
 					<width> valore </width>
@@ -20,7 +25,7 @@ Per completare i default leggere sotto.
 	non necessariamente in questo ordine.
 	Può anche avere valori mancanti o figli mancanti.
 	
-3.A Il <frame_default> DEVE avere una struttura identica a quella di sopra riempita in ogni dettaglio.
+3.A Il <frame_default> ha una struttura identica a quella di sopra.
 					
 4.Il <buttons> ha n figli dove n è minore o uguale al numero di eventi della state chart
   e strutturati nel seguente modo
@@ -37,7 +42,6 @@ Per completare i default leggere sotto.
 		<dcolor expr=colore_default />
 	</button_default> 
 	
-	e dovrà essere scritto in tutti i dettagli.
 	
 5. Il figlio Panels avrà m figli panel con m minore o uguale
    al numero di variabili contenute nella state chart. Essi racchiudono in sé le informazioni realitve ai panel e ai text, 
@@ -62,7 +66,6 @@ Per completare i default leggere sotto.
 			<dtext_field_tooltip expr=tooltip_text_field_default />
 	</panel_default>	
 	
-	e anche questo deve essere compilato nei minimi dettagli.
 	
 
 6. I font sono solo 3, relativi a Buttons, Panels e Fields e sono figli di fonts
@@ -79,7 +82,7 @@ Per completare i default leggere sotto.
 	Il modo è uno a scelta tra bold, plain e italic
 	dim è  la dimensione.
 	
-6.A Il font_default deve essere compilato al dettaglio e sarà quindi
+6.A Il font_default sarà del tipo
 
 	<font_default>
 		<dtype expr=tipo />

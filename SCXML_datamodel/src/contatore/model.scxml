@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
+<!--
+	 Never change this 'model' file!
+	 Modify the original one in Conf.data_dir.
+ -->
 <scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:my="http://my.custom-actions.domain/CUSTOM"
 	version="1.0" exmode="strict" initial="initial_state">
 	<datamodel>
@@ -15,7 +19,7 @@
 			<assign name="totale" expr="${totale + 1}" />
 			<assign name="contatore" expr="${contatore + 1}" />
 		</transition>
-		<transition >
+		<transition event="meno" cond="${totale gt 0}" target="transient_state">
 			<assign name="totale" expr="${totale  - 1}" />
 			<assign name="contatore" expr="${contatore + 1}" />
 		</transition>
@@ -24,7 +28,7 @@
 			<assign name="contatore" expr="${contatore + 1}" />
 		</transition>
 		
-		<transition event="stop" target="final">
+		<transition event="stop" target="final_state">
 		</transition>
 	</state>
 
@@ -36,7 +40,7 @@
 		<transition target="standby" />
 	</state>
 
-	<final />
+	<final id="final_state" />
 
 </scxml>
 
