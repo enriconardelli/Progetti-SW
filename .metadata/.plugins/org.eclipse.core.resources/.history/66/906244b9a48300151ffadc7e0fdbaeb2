@@ -32,7 +32,7 @@ public class SC_Element extends Element {
 		//Controlla che ci sia parameters, il resto può anche mancare
 		checkParameters(documentRoot);
 		documentRoot.detach();
-		addContent(documentRoot); 
+		addContent(documentRoot);  //NON POSSO AGGIUNGERLO A NULLA PERCHé NULLA ANCORA ESISTE!!!!!!!!!!!!
 	}
 	
 	//RIEMPIMENTO DI TUTTO SE SERVE
