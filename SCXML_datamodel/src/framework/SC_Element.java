@@ -16,23 +16,15 @@ public class SC_Element extends Element {
 		super(file_name);
 	}
 	
-		public void addFile(){
-		
-		//Legge il file dei parametri se esiste altrimenti crea un element vuoto di nome parameters
-		//Poi controlla che ci sia effettivamente il figlio chiamato parameters
-		//in tal caso lo aggiunge come figlio dell'oggetto che viene creato
+		public void prepareContent() {
 		String file_name = getName();
 		File inputFile = new File(Conf.data_dir + Conf.filesep + file_name + Conf.xml_conf_extension);
-		Element documentRoot;
-		if(inputFile.exists())
-			 documentRoot = Common.getDocumentRoot(inputFile);
-			else{
-				 documentRoot = new Element("parameters");
-			}
-		//Controlla che ci sia parameters, il resto può anche mancare
-		checkParameters(documentRoot);
-		documentRoot.detach();
-		addContent(documentRoot); 
+		if (inputFile.exists()) {
+			addContent(Common.getDocumentRoot(inputFile).detach());
+			checkParameters(this);
+		} else {
+			addContent(new Element("parameters"));
+		}
 	}
 	
 	//RIEMPIMENTO DI TUTTO SE SERVE
@@ -43,10 +35,13 @@ public class SC_Element extends Element {
 		//Riempi eventuale mancanza di default col default in conf
 		fillDefaults();
 
-		//Riempie eventuali bottoni mancanti e figli
+		//Rimuove bottoni superflui e riempie eventuali bottoni mancanti e figli
+		removeButtons(eventNames);
 		fillEvents(eventNames, getEventNames());
 		fillButtonChild();
-		//inserisce eventuali panel mancanti e figli
+
+		//Rimuove panel superflui e inserisce eventuali panel mancanti e figli
+		removePanels(variableNames);
 		fillPanels(variableNames, getPanelNames());
 		fillPanelChild();
 		
@@ -58,13 +53,13 @@ public class SC_Element extends Element {
 		fillChildFont();
 	}
 	
-	
 	//ESISTENZA DI PARAMETERS****************************************************************************************
 		public static void checkParameters(Element doc) {
-		if (!doc.getName().equals("parameters")) {
-			System.err.println("The xml configuration file does not contain the root parameters."
-							+ " Check it! Parsing will be interrupted");
-		}
+			if (doc.getChild("parameters") == null) {
+				System.err.println("The xml configuration file does not contain the root parameters."
+								+ " Check it! Parsing will not be executed and the Generator is halted");
+				System.exit(0);
+			}
 	}
 
 	//FIGLI DIRETTI DI PARAMETERS************************************************************************************
@@ -260,7 +255,7 @@ public class SC_Element extends Element {
 			return colorsList;
 		}
 		
-		public  ArrayList<String> getButtonToolTipList(){
+		public ArrayList<String> getButtonToolTipList(){
 			//Trova la lista dei tooltip completando col default quando mancanti
 			String dtooltip = getDefaultButton().get("tooltip");
 			ArrayList<String> TTList= new ArrayList<String>();
@@ -293,7 +288,7 @@ public class SC_Element extends Element {
 			return Res;		
 		}
 		
-		public  String writeButtonList(List<String> eventNames) {
+		public String writeButtonList(List<String> eventNames) {
 			//Stampa sul file la lista dei bottoni
 			String result = "";
 			// writing the list of all buttons' names 
@@ -307,7 +302,7 @@ public class SC_Element extends Element {
 			return result;
 		}
 		
-		public  String writeButtonColorList(List<String> colorNames) {
+		public String writeButtonColorList(List<String> colorNames) {
 			String result = "";
 			// writing the list of all colors names  
 			result += "\tprivate Color[] eventColorValue = { ";
@@ -360,6 +355,19 @@ public class SC_Element extends Element {
 			return ris;
 		}
 		
+		public void removeButtons(List<String> eventNames){
+			//RIMUOVE dal file dei parametri bottoni che non esistono tra gli eventi
+			List<Element> myButtons = new CopyOnWriteArrayList<Element>(getChild("parameters").getChild("buttons").getChildren("button"));
+			getChild("parameters").getChild("buttons").removeContent();
+			Iterator<Element> aButton = myButtons.iterator();
+			while (aButton.hasNext()) {
+				Element currentButton = aButton.next();
+				if (eventNames.contains(currentButton.getAttributeValue("id"))){
+					getChild("parameters").getChild("buttons").addContent(currentButton);
+				}
+			}
+		}
+
 		public void fillEvents(List<String> eventNames, List<String> buttonNames){
 			//CONTROLLA che nel file dei parametri non manchino bottoni e se mancano li inserisce con la lista degli eventi
 			Boolean flag;
@@ -378,7 +386,7 @@ public class SC_Element extends Element {
 				}
 			}
 		}
-		
+
 		public void fillButtonChild() {
 			// Riempie figli dei bottoni
 			List<Element> lista = new CopyOnWriteArrayList<Element>(getChild("parameters").getChild("buttons").getChildren("button"));
@@ -417,8 +425,7 @@ public class SC_Element extends Element {
 					}
 					return colorsList;
 				}
-		
-		
+			
 		public HashMap<String,String> getDefaultPanel(){
 			//Trova i parametri di default dei button
 			Element Default = getChild("parameters").getChild("panel_default");
@@ -504,6 +511,19 @@ public class SC_Element extends Element {
 			return result;
 		}
 		
+		public void removePanels(List<String> variableNames){
+			//RIMUOVE dal file dei parametri Panel che non esistono tra le variabili
+			List<Element> myPanels = new CopyOnWriteArrayList<Element>(getChild("parameters").getChild("panels").getChildren("panel"));
+			getChild("parameters").getChild("panels").removeContent();
+			Iterator<Element> aPanel = myPanels.iterator();
+			while (aPanel.hasNext()) {
+				Element currentPanel = aPanel.next();
+				if (variableNames.contains(currentPanel.getAttributeValue("id"))){
+					getChild("parameters").getChild("panels").addContent(currentPanel);
+				}
+			}
+		}
+
 		public void fillPanels(List<String> variableNames, List<String> panelNames){
 			//CONTROLLA che nel file dei parametri non manchino Panel e se mancano li inserisce con la lista delle variabili
 			Boolean flag;	
@@ -597,8 +617,7 @@ public class SC_Element extends Element {
 			return TTList;
 		}
 
-		
-		public  String writeTextFieldColorList(List<String> colorTFNames) {
+		public String writeTextFieldColorList(List<String> colorTFNames) {
 			String result = "";
 			// writing the list of all colors names  
 			result += "\tprivate Color[] tFieldColorValue = { ";

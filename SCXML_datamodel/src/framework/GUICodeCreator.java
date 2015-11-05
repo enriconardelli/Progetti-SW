@@ -23,7 +23,7 @@ public class GUICodeCreator {
 	public static void create(String pSCName, List<String> variableNames, List<String> eventNames) throws IOException {
 		//LEGGO I PARAMETRI
 		Parameters = new SC_Element(pSCName);
-		Parameters.addFile();
+		Parameters.prepareContent();
 		Parameters.checkAll(eventNames, variableNames);
 		
  		BufferedWriter out = new BufferedWriter(new FileWriter(Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "ImplGUI.java"));
@@ -84,27 +84,24 @@ public class GUICodeCreator {
 		return result;
 	}
 
-		private static String writeSignature() {
+	private static String writeSignature() {
 		String result = "";
 		// writing class signature
 		result += "public class ImplGUI extends AbstractGUI {" + Conf.linesep + Conf.linesep;
 		return result;
 		}
 		
-		private static String writeConstructor(HashMap<String,String> frameParam){
-			String result = "";
-		
+	private static String writeConstructor(HashMap<String, String> frameParam) {
+		String result = "";
 		// writing constructor
 		result += "\tpublic ImplGUI(String pSCName) {" + Conf.linesep + Conf.linesep;
-
-		//INSERISCO LA HASH MAP DEL JFRAME
+		// INSERISCO LA HASH MAP DEL JFRAME
 		result += "\t\tHashMap<String,Integer> frameParameters = new HashMap<String,Integer>();" + Conf.linesep;
 		result += "\t\tString[] paramList = {" + "\"width\"" + ", " + "\"height\"" + "};" + Conf.linesep;
 		result += "\t\tInteger[] valueList = {" + frameParam.get("width") + ", " + frameParam.get("height") + "};" + Conf.linesep;
 		result += "\t\tfor (int i=0; i<paramList.length; i++) {" + Conf.linesep;
 		result += "\t\t\t frameParameters.put(paramList[i], valueList[i]);" + Conf.linesep;
 		result += "\t\t}" + Conf.linesep + Conf.linesep;
-		
 		result += "\t\tJFrame myFrame = new JFrame();" + Conf.linesep;
 		result += "\t\tmyFrame.setTitle(pSCName);" + Conf.linesep;
 		result += "\t\tmyFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);" + Conf.linesep;
@@ -112,34 +109,31 @@ public class GUICodeCreator {
 		result += "\t\tmyFrame.setLayout(new FlowLayout());" + Conf.linesep + Conf.linesep;
 		return result;
 	}
-		//AGGIUNTA DA ME, SCRIVE LE LISTE DEI PARAMETRI PER BOTTONI
-		private static String writeButtonLists(ArrayList<String> buttonNames, ArrayList<String> colorsList, ArrayList<String> tooltipList){
-			String result = "";
-			result += Parameters.writeButtonList(buttonNames);
-			result += Parameters.writeButtonColorList(colorsList);
-			result += Parameters.writeButtonToolTipList(tooltipList);
-			return result;
-		}
-		
-		//SCRIVE LE LISTE PARAM DEI PANEL
-		private static String writePanelLists(ArrayList<String> panelNames, ArrayList<String> colorsPList, ArrayList<String> tooltipPList){
-			String result = "";
-			result += Parameters.writePanelList(panelNames);
-			result += Parameters.writePanelColorList(colorsPList);
-			result += Parameters.writePanelToolTipList(tooltipPList);
-			return result;
-		}
-		
-		//SCRIVE LE LISTE PARAM DEI FIELD
-		private static String writeTextFieldLists( ArrayList<String> colorTFList, ArrayList<String> tooltipTFList){
-			String result = "";
-			result += Parameters.writeTextFieldColorList(colorTFList);
-			result += Parameters.writeTextFieldToolTipList(tooltipTFList);
-			return result;
-					
-		}
 
-		private static String writeButtons() {
+	private static String writeButtonLists(ArrayList<String> buttonNames, ArrayList<String> colorsList, ArrayList<String> tooltipList) {
+		String result = "";
+		result += Parameters.writeButtonList(buttonNames);
+		result += Parameters.writeButtonColorList(colorsList);
+		result += Parameters.writeButtonToolTipList(tooltipList);
+		return result;
+	}
+		
+	private static String writePanelLists(ArrayList<String> panelNames, ArrayList<String> colorsPList, ArrayList<String> tooltipPList) {
+		String result = "";
+		result += Parameters.writePanelList(panelNames);
+		result += Parameters.writePanelColorList(colorsPList);
+		result += Parameters.writePanelToolTipList(tooltipPList);
+		return result;
+	}
+
+	private static String writeTextFieldLists(ArrayList<String> colorTFList, ArrayList<String> tooltipTFList) {
+		String result = "";
+		result += Parameters.writeTextFieldColorList(colorTFList);
+		result += Parameters.writeTextFieldToolTipList(tooltipTFList);
+		return result;
+	}
+
+	private static String writeButtons() {
 		String result = "";
 		result += "\t\tfor (int i=0 ; i<eventList.length ; i++) {" + Conf.linesep;
 		result += "\t\t\tJButton aButton = new JButton(\"LAUNCH \" + eventList[i]);" + Conf.linesep;
@@ -154,10 +148,9 @@ public class GUICodeCreator {
 		return result;
 	}
 
-		private static String writePanelsAndFields() {
+	private static String writePanelsAndFields() {
 		String result = "";
 		// writing panels with labels and fields to display and change state values
-
 		result += "\t\tfor (int i=0 ; i<panelList.length ; i++) {" + Conf.linesep;
 		result += "\t\t\tJPanel panel = new JPanel();" + Conf.linesep;
 		result += "\t\t\tpanel.setBackground(panelColorValue[i]);" + Conf.linesep;
@@ -178,7 +171,7 @@ public class GUICodeCreator {
 		return result;
 	}
 
-		private static String writeTextArea() {
+	private static String writeTextArea() {
 		String result = "";
 		// writing TextArea
 		result += "\t\tstatechartTrace = new JTextArea(40,40);" + Conf.linesep;
@@ -190,18 +183,14 @@ public class GUICodeCreator {
 		return result;
 	}
 
-		private static String writeGUIstartAndClassClosure() {
+	private static String writeGUIstartAndClassClosure() {
 		String result = "";
 		// writing GUI start
 		result += "\t\tmyFrame.setVisible(true);" + Conf.linesep;
-
 		// closing class definition
 		result += "\t}" + Conf.linesep + Conf.linesep;
 		result += "\t}" + Conf.linesep;
 		return result;
-	}
-		
-		
-	
+	}		
 		
 }
