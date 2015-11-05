@@ -141,9 +141,9 @@ public class Generator {
 		while (finals.hasNext()) {
 			check=check & check_final(finals.next());
 		}
-		check=check_targets();
-		check=check_assign_in_data();
-		check = check_initial(pDocumentRoot);
+		check=check & check_targets();
+		check=check & check_assign_in_data();
+		check = check & check_initial(pDocumentRoot);
 		return check;
 	}
 	
@@ -341,7 +341,10 @@ public class Generator {
 	
 	private static boolean check_final(Element finale) {
 		boolean flag=true;
-		stati.add(finale.getAttribute("id").getValue());
+		if (finale.getAttribute("id")!=null)
+			stati.add(finale.getAttribute("id").getValue());
+		else
+			stati.add("final");
 		Iterator<Element> onentry =finale.getContent(new ElementFilter("onentry")).iterator();
 		while (onentry.hasNext()) {
 			flag=flag & check_onentry(onentry.next());
@@ -398,8 +401,6 @@ public class Generator {
 		//fantasma della check log
 		return true;
 	}	
-	
-	
 
 	private static void stateChartGeneration(String pSCXMLModel, Element pDocumentRoot, File pInputFile) {
 		try {
