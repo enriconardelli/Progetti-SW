@@ -141,8 +141,8 @@ public class Generator {
 		while (finals.hasNext()) {
 			check=check & check_final(finals.next());
 		}
-		check=check & check_targets();
-		check=check & check_assign_in_data();
+		check =check & check_targets();
+		check =check & check_assign_in_data();
 		check = check & check_initial(pDocumentRoot);
 		return check;
 	}
