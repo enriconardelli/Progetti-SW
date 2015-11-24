@@ -20,26 +20,26 @@ import java.awt.Font;
 
 public class ImplGUI extends AbstractGUI {
 
-	private String[] eventList = { "start", "piu", "meno", "doppio", "stop", "back_to_standby" };
-	private Color[] eventColorValue = { Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE };
-	private String[] eventTTValue = { "Event", "Event", "Event", "Event", "Event", "Event" };
+	private String[] eventList = { "start", "meno", "piu", "doppio", "stop", "back_to_standby" };
+	private Color[] eventColorValue = { Color.RED, Color.LIGHT_GRAY, Color.WHITE, Color.LIGHT_GRAY, Color.LIGHT_GRAY, Color.LIGHT_GRAY };
+	private String[] eventTTValue = { "lancia evento START", "lancia evento MENO", "This is an event", "This is an event", "This is an event", "This is an event" };
 
 	private String[] panelList = { "totale", "contatore" };
-	private Color[] panelColorValue = { Color.WHITE, Color.WHITE };
-	private String[] panelTTValue = { "Variable", "Variable" };
+	private Color[] panelColorValue = { Color.RED, Color.LIGHT_GRAY };
+	private String[] panelTTValue = { "This is a variable", "This is a variable" };
 
-	private Color[] tFieldColorValue = { Color.WHITE, Color.WHITE };
-	private String[] tFieldTTValue = { "Numeric Variable", "Numeric Variable" };
+	private Color[] tFieldColorValue = { Color.GREEN, Color.WHITE };
+	private String[] tFieldTTValue = { "running", "variable" };
 
-	private Font buttfont = new Font( "TimesRoman", Font.PLAIN, 16);
-	private Font panelfont = new Font( "TimesRoman", Font.PLAIN, 16);
+	private Font buttfont = new Font( "Helvetica", Font.BOLD, 18);
+	private Font panelfont = new Font( "TimesRoman", Font.PLAIN, 14);
 	private Font fieldfont = new Font( "TimesRoman", Font.PLAIN, 16);
 
 	public ImplGUI(String pSCName) {
 
 		HashMap<String,Integer> frameParameters = new HashMap<String,Integer>();
 		String[] paramList = {"width", "height"};
-		Integer[] valueList = {300, 300};
+		Integer[] valueList = { 500 ,  800 };
 		for (int i=0; i<paramList.length; i++) {
 			 frameParameters.put(paramList[i], valueList[i]);
 		}

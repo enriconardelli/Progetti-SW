@@ -117,7 +117,7 @@ public class Generator {
 		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty() & 
 				pDocumentRoot.getContent(new ElementFilter("parallel")).isEmpty() & 
 				pDocumentRoot.getContent(new ElementFilter("final")).isEmpty()){
-					System.err.println("ERROR non è presente nè uno state ne un parallel ne un final");
+					System.err.println("ERROR non ï¿½ presente nï¿½ uno state ne un parallel ne un final");
 					check=false;
 		}
 		//Ora controlleremo i figli chiamando funzioni ricorsive
@@ -126,7 +126,7 @@ public class Generator {
 			check=check & check_datamodel(datamodel.next());
 		}
 		if (datamodel.hasNext()){
-			System.err.println("ERROR più di un datamodel");
+			System.err.println("ERROR piï¿½ di un datamodel");
 			check=false;
 		}
 		Iterator<Element> states =pDocumentRoot.getContent(new ElementFilter("state")).iterator();
@@ -174,7 +174,7 @@ public class Generator {
 			flag=flag & check_trans(childrent.next());
 		if ((state.getAttribute("id")!= null & state.getAttribute("initial")!=null) && !(figli.contains(state.getAttribute("initial").getValue()))){
 			flag=false;
-			System.err.println("ERROR lo stato "+ state.getAttributeValue("id") + "ha un initial="+state.getAttributeValue("initial")+" che non è un figlio");
+			System.err.println("ERROR lo stato "+ state.getAttributeValue("id") + "ha un initial="+state.getAttributeValue("initial")+" che non ï¿½ un figlio");
 		}
 		return flag;
 	}	
@@ -192,7 +192,7 @@ public class Generator {
 		else{
 			if (stati.contains(state.getAttribute("id").getValue())){
 				flag=false;
-				System.err.println("ERROR esistono più stati chiamati "+state.getAttribute("id").getValue());
+				System.err.println("ERROR esistono piï¿½ stati chiamati "+state.getAttribute("id").getValue());
 			}
 			stati.add(state.getAttribute("id").getValue());
 		}	
@@ -204,7 +204,7 @@ public class Generator {
 		if (!(data_assign.isEmpty())){
 			Iterator<String> elenco=data_assign.iterator();
 			while (elenco.hasNext()){
-			System.err.println("ERROR c'è un assegnazione al data " + elenco.next() + " che però non esiste");
+			System.err.println("ERROR c'ï¿½ un assegnazione al data " + elenco.next() + " che perï¿½ non esiste");
 			flag=false;
 			}
 		}
@@ -217,7 +217,7 @@ public class Generator {
 		if (!(targets.isEmpty())){
 			Iterator<String> elenco=targets.iterator();
 			while (elenco.hasNext()){
-			System.err.println("ERROR il target" + elenco.next() + " non è nessuno degli stati");
+			System.err.println("ERROR il target" + elenco.next() + " non ï¿½ nessuno degli stati");
 			flag=false;
 			}
 		}
@@ -259,7 +259,7 @@ public class Generator {
 		else{
 			if (stati.contains(parallel.getAttribute("id").getValue())){
 				flag=false;
-				System.err.println("ERROR esistono più stati chiamati "+parallel.getAttribute("id").getValue());
+				System.err.println("ERROR esistono piï¿½ stati chiamati "+parallel.getAttribute("id").getValue());
 			}
 			stati.add(parallel.getAttribute("id").getValue());
 		}	
@@ -319,9 +319,9 @@ public class Generator {
 		if (trans.getAttribute("event")==null & trans.getAttribute("cond")==null & trans.getAttribute("target")==null){
 			padre=trans.getParentElement();
 			if (padre.getAttribute("id")==null)
-				System.err.println("ERROR una transizione di uno stato senza nome non ha né target né event né cond");
+				System.err.println("ERROR una transizione di uno stato senza nome non ha nï¿½ target nï¿½ event nï¿½ cond");
 			else
-				System.err.println("ERROR una transizione dello stato " + padre.getAttributeValue("id")+ " non ha né target né event né cond");	
+				System.err.println("ERROR una transizione dello stato " + padre.getAttributeValue("id")+ " non ha nï¿½ target nï¿½ event nï¿½ cond");	
 			flag=false;
 		}
 		if (trans.getAttribute("target")!=null){
