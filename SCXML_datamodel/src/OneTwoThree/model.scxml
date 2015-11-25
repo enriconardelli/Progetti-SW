@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	 Never change this 'model' file!
+	 Modify the original one in Conf.data_dir.
+ -->
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="one">
+	<datamodel>
+		<data id="onevalue" expr="1" />
+		<data id="twovalue" expr="2" />
+		<data id="threevalue" expr="0" />
+	</datamodel>
+	<state id="one">
+		<transition event="two" cond="${twovalue eq 2}" target="two">
+			<assign name="twovalue" expr="${300}" />
+		</transition>
+		<transition event="two" cond="${twovalue eq 300}" target="three">
+			<assign name="twovalue" expr="${2}" />
+		</transition>
+	</state>
+	<state id="two">
+		<transition event="three" target="three">
+			<assign name="twovalue" expr="${300}" />
+		</transition>
+	</state>
+	<state id="three">
+		<transition event="one" target="one">
+			<assign name="onevalue" expr="${111}" />
+		</transition>
+		<transition event="two" target="one">
+			<assign name="twovalue" expr="${222}" />
+		</transition>
+	</state>
+</scxml>
