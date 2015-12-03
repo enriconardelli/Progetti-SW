@@ -23,7 +23,7 @@ public class TestFiles {
 	 */
 	@Test
 	public void testASMmethods() {
-		Method[] methods = ImplASM.class.getDeclaredMethods();
+//		Method[] methods = ImplASM.class.getDeclaredMethods();
 		ArrayList<String> methodNames = new ArrayList<String>(methods.length);
 		for (int i=0; i<methods.length; i++){
 			methodNames.add(methods[i].getName());
@@ -38,7 +38,7 @@ public class TestFiles {
 	 */
 	@Test
 	public void testGUIarrays() {
-		Field[] fields = ImplGUI.class.getDeclaredFields();
+//		Field[] fields = ImplGUI.class.getDeclaredFields();
 		ArrayList<String> fieldNames = new ArrayList<String>(fields.length);
 		for (int i=0; i<fields.length; i++){
 			fieldNames.add(fields[i].getName());

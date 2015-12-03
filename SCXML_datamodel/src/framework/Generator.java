@@ -11,6 +11,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -413,6 +415,38 @@ public class Generator {
 			LauncherCodeCreator.create(pSCXMLModel);
 			copyModelFile(pSCXMLModel, pInputFile);
 			System.out.println("End generation for model '" + pSCXMLModel + "', run the Launcher in its package to execute the StateChart.\n");
+			try {
+				System.out.println(pSCXMLModel + Conf.filesep + "Launcher");
+//				Class<?> classe = Class.forName(pSCXMLModel + Conf.filesep + "Launcher");
+				Class<?> classe = Class.forName(pSCXMLModel + "." + "Launcher");
+				String[] params = null;
+				Method metodo = classe.getMethod("main", String[].class);
+				Method[] metodi = classe.getMethods();
+				for (int i=0; i<metodi.length; i++)
+		        {System.out.println(metodi[i].getName());
+		        }	              
+//				Object[] args = {};
+//				metodo.invoke(null, args);
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+//			} catch (IllegalAccessException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (InvocationTargetException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+			}
+			System.out.println("Ha funzionato?\n");
 		} catch (JDOMException a_JDOMException) {
 			a_JDOMException.printStackTrace();
 		} catch (IOException an_IOException) {
