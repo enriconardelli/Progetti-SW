@@ -405,9 +405,9 @@ public class Generator {
 	private static void stateChartGeneration(String pSCXMLModel, Element pDocumentRoot, File pInputFile) {
 		try {
 			String initialState = pDocumentRoot.getAttribute("initial").getValue();
-			List<String> stateNames = getStateNames(pSCXMLModel, pDocumentRoot);
-			List<String> variableNames = getVariableNames(pSCXMLModel, pDocumentRoot);
-			List<String> eventNames = getEventNames(pSCXMLModel, pDocumentRoot);
+			List<String> stateNames = Common.getStateNames(pDocumentRoot);
+			List<String> variableNames = Common.getVariableNames(pDocumentRoot);
+			List<String> eventNames = Common.getEventNames(pDocumentRoot);
 			ASMCodeCreator.create(pSCXMLModel, stateNames, initialState);
 			GUICodeCreator.create(pSCXMLModel, variableNames, eventNames);
 			LauncherCodeCreator.create(pSCXMLModel);
@@ -418,34 +418,6 @@ public class Generator {
 		} catch (IOException an_IOException) {
 			an_IOException.printStackTrace();
 		}
-	}
-
-	private static List<String> getStateNames(String SCXMLName, Element documentRoot) throws JDOMException {
-		ArrayList<String> stateNames = new ArrayList<String>();
-		Iterator<Element> itrS = documentRoot.getDescendants(new ElementFilter("state").or(new ElementFilter("final")
-				.or(new ElementFilter("parallel"))));
-		while (itrS.hasNext())
-			stateNames.add(itrS.next().getAttributeValue("id"));
-		return stateNames;
-	}
-
-	private static List<String> getVariableNames(String SCXMLName, Element documentRoot) throws JDOMException {
-		ArrayList<String> variableNames = new ArrayList<String>();
-		Iterator<Element> itrD = documentRoot.getDescendants(new ElementFilter("data"));
-		while (itrD.hasNext())
-			variableNames.add(itrD.next().getAttributeValue("id"));
-		return variableNames;
-	}
-
-	private static List<String> getEventNames(String SCXMLName, Element documentRoot) throws JDOMException {
-		ArrayList<String> eventNames = new ArrayList<String>();
-		Iterator<Element> itrT = documentRoot.getDescendants(new ElementFilter("transition"));
-		while (itrT.hasNext()) {
-			Element aTransitionElement = (Element) itrT.next();
-			String eventValue = aTransitionElement.getAttributeValue("event");
-			if (!eventNames.contains(eventValue) && eventValue != null) eventNames.add(eventValue);
-		}
-		return eventNames;
 	}
 
 	private static void copyModelFile(String pSCXMLModel, File pInputFile) {
