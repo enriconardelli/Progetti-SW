@@ -82,20 +82,28 @@ public class TestFiles {
 		for(Field f : fieldList){
 			if(f.getName() == "eventList"){
 				f.setAccessible(true);
-				try {
-					eventList = new LinkedList<String>(Arrays.asList((String[]) f.get(gui)));
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					try {
+						eventList = new LinkedList<String>(Arrays.asList((String[]) f.get(gui)));
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
 			} else if(f.getName() == "eventColorValue"){
 				f.setAccessible(true);
-				try {
-					eventColor = new LinkedList<Color>(Arrays.asList((Color[]) f.get(gui)));
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					try {
+						eventColor = new LinkedList<Color>(Arrays.asList((Color[]) f.get(gui)));
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
 			}
 		}
 		assertTrue("L'array \"eventList\" non ha gli eventi corretti!", compareLists(eventList, events));
@@ -107,20 +115,30 @@ public class TestFiles {
 		for(Field f : fieldList){
 			if(f.getName() != null && f.getName() == "panelList"){
 				f.setAccessible(true);
-				try {
-					panelList = Arrays.asList((String[]) f.get(gui));
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			
+					try {
+						panelList = Arrays.asList((String[]) f.get(gui));
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
 			} else if(f.getName() == "panelColorValue"){
 				f.setAccessible(true);
-				try {
-					panelColor = new LinkedList<Color>(Arrays.asList((Color[]) f.get(gui)));
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			
+					try {
+						panelColor = new LinkedList<Color>(Arrays.asList((Color[]) f.get(gui)));
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
 			}
 		}
 		assertTrue("L'array \"panelList\" non ha le variabili corrette!", compareLists(panelList, variables));
