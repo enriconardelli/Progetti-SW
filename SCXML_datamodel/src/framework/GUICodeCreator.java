@@ -140,7 +140,7 @@ public class GUICodeCreator {
 		result += "\t\t\taButton.setActionCommand(eventList[i]);" + Conf.linesep;
 		result += "\t\t\taButton.setBackground(eventColorValue[i]);" + Conf.linesep;
 		result += "\t\t\taButton.setToolTipText(eventTTValue[i]);" + Conf.linesep;
-		result += "\t\t\taButton.setFont(buttfont);" + Conf.linesep;
+		result += "\t\t\taButton.setFont(" + Conf.button_font_key + ");" + Conf.linesep;
 		result += "\t\t\taButton.addActionListener(this);" + Conf.linesep;
 		result += "\t\t\tmyFrame.getContentPane().add(aButton);" + Conf.linesep;
 		result += "\t\t\teventButtons.put(eventList[i], aButton);" + Conf.linesep;
@@ -155,14 +155,14 @@ public class GUICodeCreator {
 		result += "\t\t\tJPanel panel = new JPanel();" + Conf.linesep;
 		result += "\t\t\tpanel.setBackground(panelColorValue[i]);" + Conf.linesep;
 		result += "\t\t\tpanel.setToolTipText(panelTTValue[i]);" + Conf.linesep;
-		result += "\t\t\tpanel.setFont(panelfont);" + Conf.linesep;
+		result += "\t\t\tpanel.setFont(" + Conf.panel_font_key + ");" + Conf.linesep;
 		result += "\t\t\tpanel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));" + Conf.linesep;
 		result += "\t\t\tpanel.add(new JLabel(panelList[i]));" + Conf.linesep;
 		result += "\t\t\tJTextField textField = new JTextField(\"\", 5);" + Conf.linesep;
 		result += "\t\t\ttextField.setActionCommand(panelList[i]);" + Conf.linesep;
 		result += "\t\t\ttextField.setBackground(tFieldColorValue[i]);" + Conf.linesep;
 		result += "\t\t\ttextField.setToolTipText(tFieldTTValue[i]);" + Conf.linesep;
-		result += "\t\t\ttextField.setFont(fieldfont);" + Conf.linesep;
+		result += "\t\t\ttextField.setFont(" + Conf.field_font_key + ");" + Conf.linesep;
 		result += "\t\t\ttextField.addActionListener(this);" + Conf.linesep;
 		result += "\t\t\tpanel.add(textField);" + Conf.linesep;
 		result += "\t\t\tmyFrame.getContentPane().add(panel);" + Conf.linesep;

@@ -12,6 +12,12 @@ public class Conf {
 	public static final String placeholder_for_code = "// here can be added code to specialize the behavior of this method";
 	public static final String warning_for_initial_state = "// but CANNOT be added any code interacting with the GUI - delete manually this comment when changing the initial state!";
 	public static final String endASMcurrentMethods = "// everything above this comment will be kept if this code is updated by ASMCodeCreator";
+
+	public static final String button_font_key = "button_font";
+	public static final String panel_font_key = "panel_font";
+	public static final String field_font_key = "field_font";
+				
+	// configuration for default values of the User Interface
 	public static final String default_frame_width = "500";
 	public static final String default_frame_height = "800";
 	public static final String default_button_color = "WHITE";

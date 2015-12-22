@@ -827,15 +827,15 @@ public class SC_Element extends Element {
 			HashMap<String,HashMap<String,String>> font = getFont();
 			
 			String result = "";
-			result += "\tprivate Font buttfont = new Font( \"" + font.get("buttons").get("type") +
+			result += "\tprivate Font " + Conf.button_font_key + " = new Font( \"" + font.get("buttons").get("type") +
 					"\", Font." + font.get("buttons").get("mode").toUpperCase() +
 					", " + font.get("buttons").get("dimension") + ");";
 			result += Conf.linesep;
-			result += "\tprivate Font panelfont = new Font( \"" + font.get("panels").get("type") +
+			result += "\tprivate Font " + Conf.panel_font_key + " = new Font( \"" + font.get("panels").get("type") +
 					"\", Font." + font.get("panels").get("mode").toUpperCase() +
 					", " + font.get("panels").get("dimension") + ");";
 			result += Conf.linesep;
-			result += "\tprivate Font fieldfont = new Font( \"" + font.get("fields").get("type") +
+			result += "\tprivate Font " + Conf.field_font_key + " = new Font( \"" + font.get("fields").get("type") +
 					"\", Font." + font.get("fields").get("mode").toUpperCase() +
 					", " + font.get("fields").get("dimension") + ");";
 			result += Conf.linesep;
