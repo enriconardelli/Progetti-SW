@@ -58,7 +58,7 @@ public class TestFiles {
 			assertTrue("Il metodo \"" + s + "\" non esiste!", methodNames.contains(s));
 		}
 	}
-	
+
 
 	/**
 	 * Checks if the generated GUI file contains all the right arrays.
@@ -80,6 +80,7 @@ public class TestFiles {
 		/*Checks if "eventList" contains all the events*/
 		List<String> eventList = null;
 		List<Color> eventColor = null;
+		List<String> eventTT = null;
 		for(Field f : fieldList){
 			if(f.getName() == "eventList"){
 				f.setAccessible(true);
@@ -105,14 +106,28 @@ public class TestFiles {
 					e.printStackTrace();
 				}
 
+			} else if(f.getName() == "eventTTValue"){
+				f.setAccessible(true);
+				try {
+					eventTT = new LinkedList<String>(Arrays.asList((String[]) f.get(gui)));
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		}
 		assertTrue("L'array \"eventList\" non ha gli eventi corretti!", compareLists(eventList, events));
 		assertTrue("Gli array \"eventList\" e \"eventColor\" non hanno lo stesso numero di elementi!", eventList.size() == eventColor.size());
-
+		assertTrue("Gli array \"eventList\" e \"eventTT\" non hanno lo stesso numero di elementi!", eventList.size() == eventTT.size());
+		
 		/*Checks if "panelList" contains all the variables*/
 		List<String> panelList = null;
 		List<Color> panelColor = null;
+		List<String> panelTT = null;
 		for(Field f : fieldList){
 			if(f.getName() != null && f.getName() == "panelList"){
 				f.setAccessible(true);
@@ -140,10 +155,24 @@ public class TestFiles {
 					e.printStackTrace();
 				}
 
+			} else if(f.getName() == "panelTTValue"){
+				f.setAccessible(true);
+
+				try {
+					panelTT = new LinkedList<String>(Arrays.asList((String[]) f.get(gui)));
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		}
 		assertTrue("L'array \"panelList\" non ha le variabili corrette!", compareLists(panelList, variables));
 		assertTrue("Gli array \"panelList\" e \"panelColor\" non hanno lo stesso numero di elementi!", panelList.size() == panelColor.size());
+		assertTrue("Gli array \"panelList\" e \"panelTT\" non hanno lo stesso numero di elementi!", panelList.size() == panelTT.size());
 	}
 
 	/**
