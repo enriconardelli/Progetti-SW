@@ -23,7 +23,7 @@ import framework.*;
 public class TestFiles {
 
 	public static String fileName = "contatore";
-	public static String[] fontArrays = {"buttfont", "panelfont", "fieldfont"};
+	public static String[] fontArrays = {Conf.button_font_key, Conf.panel_font_key, Conf.field_font_key};
 	public static List<String> states;
 	public static List<String> events;
 	public static List<String> variables;
@@ -44,7 +44,7 @@ public class TestFiles {
 	}
 
 	/**
-	 * Checks if the generated ASM file contains the methods that reflects the events.
+	 * Checks if the generated ASM file contains the methods corresponding to the states.
 	 **/
 	@Test
 	public void testASMmethods() {
@@ -58,6 +58,7 @@ public class TestFiles {
 			assertTrue("Il metodo \"" + s + "\" non esiste!", methodNames.contains(s));
 		}
 	}
+	
 
 	/**
 	 * Checks if the generated GUI file contains all the right arrays.
@@ -82,28 +83,28 @@ public class TestFiles {
 		for(Field f : fieldList){
 			if(f.getName() == "eventList"){
 				f.setAccessible(true);
-					try {
-						eventList = new LinkedList<String>(Arrays.asList((String[]) f.get(gui)));
-					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
+				try {
+					eventList = new LinkedList<String>(Arrays.asList((String[]) f.get(gui)));
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			} else if(f.getName() == "eventColorValue"){
 				f.setAccessible(true);
-					try {
-						eventColor = new LinkedList<Color>(Arrays.asList((Color[]) f.get(gui)));
-					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
+				try {
+					eventColor = new LinkedList<Color>(Arrays.asList((Color[]) f.get(gui)));
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		}
 		assertTrue("L'array \"eventList\" non ha gli eventi corretti!", compareLists(eventList, events));
@@ -115,30 +116,30 @@ public class TestFiles {
 		for(Field f : fieldList){
 			if(f.getName() != null && f.getName() == "panelList"){
 				f.setAccessible(true);
-			
-					try {
-						panelList = Arrays.asList((String[]) f.get(gui));
-					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
+
+				try {
+					panelList = Arrays.asList((String[]) f.get(gui));
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			} else if(f.getName() == "panelColorValue"){
 				f.setAccessible(true);
-			
-					try {
-						panelColor = new LinkedList<Color>(Arrays.asList((Color[]) f.get(gui)));
-					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
+
+				try {
+					panelColor = new LinkedList<Color>(Arrays.asList((Color[]) f.get(gui)));
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 			}
 		}
 		assertTrue("L'array \"panelList\" non ha le variabili corrette!", compareLists(panelList, variables));
