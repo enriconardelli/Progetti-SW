@@ -31,9 +31,9 @@ public class ImplGUI extends AbstractGUI {
 	private Color[] tFieldColorValue = { Color.WHITE, Color.WHITE, Color.WHITE };
 	private String[] tFieldTTValue = { "Numeric Variable", "Numeric Variable", "Numeric Variable" };
 
-	private Font buttfont = new Font( "TimesRoman", Font.PLAIN, 16);
-	private Font panelfont = new Font( "TimesRoman", Font.PLAIN, 16);
-	private Font fieldfont = new Font( "TimesRoman", Font.PLAIN, 16);
+	private Font button_font = new Font( "TimesRoman", Font.PLAIN, 16);
+	private Font panel_font = new Font( "TimesRoman", Font.PLAIN, 16);
+	private Font field_font = new Font( "TimesRoman", Font.PLAIN, 16);
 
 	public ImplGUI(String pSCName) {
 
@@ -56,7 +56,7 @@ public class ImplGUI extends AbstractGUI {
 			aButton.setActionCommand(eventList[i]);
 			aButton.setBackground(eventColorValue[i]);
 			aButton.setToolTipText(eventTTValue[i]);
-			aButton.setFont(buttfont);
+			aButton.setFont(button_font);
 			aButton.addActionListener(this);
 			myFrame.getContentPane().add(aButton);
 			eventButtons.put(eventList[i], aButton);
@@ -66,14 +66,14 @@ public class ImplGUI extends AbstractGUI {
 			JPanel panel = new JPanel();
 			panel.setBackground(panelColorValue[i]);
 			panel.setToolTipText(panelTTValue[i]);
-			panel.setFont(panelfont);
+			panel.setFont(panel_font);
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 			panel.add(new JLabel(panelList[i]));
 			JTextField textField = new JTextField("", 5);
 			textField.setActionCommand(panelList[i]);
 			textField.setBackground(tFieldColorValue[i]);
 			textField.setToolTipText(tFieldTTValue[i]);
-			textField.setFont(fieldfont);
+			textField.setFont(field_font);
 			textField.addActionListener(this);
 			panel.add(textField);
 			myFrame.getContentPane().add(panel);

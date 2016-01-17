@@ -3,7 +3,9 @@ package framework;
  * file per contenere funzioni comuni a più classi
  */
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -81,5 +83,28 @@ public class Common {
 		return eventNames;
 	}
 
+	/**
+	 * Read a file line by line
+	 * @param file
+	 * @return the file lines in a list
+	 */
+	public static ArrayList<String[]> read(File file) {
+	      ArrayList<String[]> lines = new ArrayList<String[]>();
+	      try {
+	         if (file.canRead()) {
+	            lines.clear();
+	            BufferedReader reader = new BufferedReader(new FileReader(file));
+	            String line;
+	            while ((line = reader.readLine()) != null) {
+	            	String[] l = {line};
+	               lines.add(l);
+	            }
+	            reader.close();
+	         }
+	      } catch (IOException exc) {
+	         //
+	      }
+	      return lines;
+	   }
 
 }
