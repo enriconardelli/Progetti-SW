@@ -6,24 +6,35 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.Before;
 
-import contatore.ImplASM;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
 import framework.Common;
 import framework.Conf;
 
+@RunWith(Parameterized.class)
 public class TestASMCreation {
 	
-	public static String fileName = "contatore";
+	public static String fileName;
 	public static List<String> states;
+	public static File ASM;
 	
-	@BeforeClass
-	public static void importArrays(){
+	public TestASMCreation(String fileToTest) {
+	      fileName = fileToTest;
+	   }
+	
+	@Before
+	public void importArrays(){
+		ASM = new File(Conf.source_dir + Conf.filesep + fileName + Conf.filesep + "ImplASM.java");
+		System.out.println("Testing: " + ASM.getPath());
 		File inputFile = new File(Conf.data_dir + Conf.filesep + fileName + Conf.scxml_extension);
 		Element documentRoot = Common.getDocumentRoot(inputFile);
 		try {
@@ -39,15 +50,21 @@ public class TestASMCreation {
 	 **/
 	@Test
 	public void testASMmethods() {
-
-		ArrayList<Method> methodList = new ArrayList<Method>(Arrays.asList(ImplASM.class.getDeclaredMethods()));
+		Class AsmClass = ASM.getClass(); //Il getClass non va bene.
+		ArrayList<Method> methodList = new ArrayList<Method>(Arrays.asList(AsmClass.getDeclaredMethods()));
 		ArrayList<String> methodNames = new ArrayList<String>(methodList.size());
 		for (Method m : methodList){
 			methodNames.add(m.getName());
 		}
 		for (String s : states){
-			assertTrue("Il metodo \"" + s + "\" non esiste!", methodNames.contains(s));
+			assertTrue("Il metodo \"" + s + "\" per \'" + fileName + "\' non esiste!", methodNames.contains(s));
 		}
 	}
 
+	@Parameterized.Parameters
+	   public static Collection filesToTest() {
+		File inputFile = new File(Conf.data_dir + Conf.filesep + "FilesToTest.txt");
+		ArrayList<String[]> input = Common.read(inputFile);
+		return input;
+	   }
 }

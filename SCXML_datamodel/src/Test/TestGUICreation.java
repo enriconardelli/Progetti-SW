@@ -7,18 +7,23 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import contatore.ImplGUI;
 import framework.Common;
 import framework.Conf;
 
+@RunWith(Parameterized.class)
 public class TestGUICreation {
 
 	public static String fileName = "contatore";
@@ -27,11 +32,17 @@ public class TestGUICreation {
 	public static List<String> variables;
 	public static ArrayList<Field> fieldList;
 	public static ArrayList<String> fieldNames;
+	public static File GUI;
 	public static ImplGUI gui;
 
 
-	@BeforeClass
-	public static void importArrays(){
+	public TestGUICreation(String fileToTest) {
+	      fileName = fileToTest;
+	   }
+	
+	@Before
+	public void importArrays(){
+		GUI = new File(Conf.source_dir + Conf.filesep + fileName + Conf.filesep + "ImplGUI.java");
 		File inputFile = new File(Conf.data_dir + Conf.filesep + fileName + Conf.scxml_extension);
 		Element documentRoot = Common.getDocumentRoot(inputFile);
 		try {
@@ -42,7 +53,7 @@ public class TestGUICreation {
 			e.printStackTrace();
 		}
 		gui = new ImplGUI("test");
-		fieldList = new ArrayList<Field>(Arrays.asList(ImplGUI.class.getDeclaredFields()));
+		fieldList = new ArrayList<Field>(Arrays.asList(GUI.getClass().getDeclaredFields()));
 		fieldNames = new ArrayList<String>(fieldList.size());
 		for (Field f : fieldList){
 			fieldNames.add(f.getName());
@@ -213,4 +224,11 @@ public class TestGUICreation {
 		}
 		return false;
 	}
+	
+	@Parameterized.Parameters
+	   public static Collection filesToTest() {
+		File inputFile = new File(Conf.data_dir + Conf.filesep + "FilesToTest.txt");
+		ArrayList<String[]> input = Common.read(inputFile);
+		return input;
+	   }
 }

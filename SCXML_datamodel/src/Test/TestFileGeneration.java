@@ -63,12 +63,8 @@ public class TestFileGeneration {
 	
 	@Parameterized.Parameters
 	   public static Collection filesToTest() {
-//		File inputFile = new File(Conf.data_dir + Conf.filesep + "FilesToTest.txt");
-//		ArrayList<String[]> input = Common.read(inputFile);
-//		return input;
-	      return Arrays.asList(new Object[][] {
-	         {"contatore"},
-	         {"OneTwoThree"}
-	      });
+		File inputFile = new File(Conf.data_dir + Conf.filesep + "FilesToTest.txt");
+		ArrayList<String[]> input = Common.read(inputFile);
+		return input;
 	   }
 }
