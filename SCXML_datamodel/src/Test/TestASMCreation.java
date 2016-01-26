@@ -22,19 +22,24 @@ import framework.Conf;
 
 @RunWith(Parameterized.class)
 public class TestASMCreation {
-	
+
 	public static String fileName;
 	public static List<String> states;
-	public static File ASM;
-	
+	public static Class<?> ASM;
+
 	public TestASMCreation(String fileToTest) {
-	      fileName = fileToTest;
-	   }
-	
+		fileName = fileToTest;
+	}
+
 	@Before
 	public void importArrays(){
-		ASM = new File(Conf.source_dir + Conf.filesep + fileName + Conf.filesep + "ImplASM.java");
-		System.out.println("Testing: " + ASM.getPath());
+		try {
+			ASM = Class.forName(fileName + ".ImplASM");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//System.out.println("Testing: " + ASM.getPath());
 		File inputFile = new File(Conf.data_dir + Conf.filesep + fileName + Conf.scxml_extension);
 		Element documentRoot = Common.getDocumentRoot(inputFile);
 		try {
@@ -49,9 +54,8 @@ public class TestASMCreation {
 	 * Checks if the generated ASM file contains the methods corresponding to the states.
 	 **/
 	@Test
-	public void testASMmethods() {
-		Class AsmClass = ASM.getClass(); //Il getClass non va bene.
-		ArrayList<Method> methodList = new ArrayList<Method>(Arrays.asList(AsmClass.getDeclaredMethods()));
+	public void testASMmethods() { 
+		ArrayList<Method> methodList = new ArrayList<Method>(Arrays.asList(ASM.getDeclaredMethods()));
 		ArrayList<String> methodNames = new ArrayList<String>(methodList.size());
 		for (Method m : methodList){
 			methodNames.add(m.getName());
@@ -62,9 +66,9 @@ public class TestASMCreation {
 	}
 
 	@Parameterized.Parameters
-	   public static Collection filesToTest() {
+	public static Collection<String[]> filesToTest() {
 		File inputFile = new File(Conf.data_dir + Conf.filesep + "FilesToTest.txt");
 		ArrayList<String[]> input = Common.read(inputFile);
 		return input;
-	   }
+	}
 }

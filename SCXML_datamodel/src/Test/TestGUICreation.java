@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.awt.Color;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,35 +15,38 @@ import java.util.List;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import contatore.ImplGUI;
 import framework.Common;
 import framework.Conf;
 
 @RunWith(Parameterized.class)
 public class TestGUICreation {
 
-	public static String fileName = "contatore";
+	public static String fileName;
 	public static String[] fontArrays = {Conf.button_font_key, Conf.panel_font_key, Conf.field_font_key};
 	public static List<String> events;
 	public static List<String> variables;
 	public static ArrayList<Field> fieldList;
 	public static ArrayList<String> fieldNames;
-	public static File GUI;
-	public static ImplGUI gui;
+	public static Class<?> GUI;
+	public static Object gui;
 
 
 	public TestGUICreation(String fileToTest) {
-	      fileName = fileToTest;
-	   }
-	
+		fileName = fileToTest;
+	}
+
 	@Before
 	public void importArrays(){
-		GUI = new File(Conf.source_dir + Conf.filesep + fileName + Conf.filesep + "ImplGUI.java");
+		try {
+			GUI = Class.forName(fileName + ".ImplGUI");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		File inputFile = new File(Conf.data_dir + Conf.filesep + fileName + Conf.scxml_extension);
 		Element documentRoot = Common.getDocumentRoot(inputFile);
 		try {
@@ -52,8 +56,28 @@ public class TestGUICreation {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		gui = new ImplGUI("test");
-		fieldList = new ArrayList<Field>(Arrays.asList(GUI.getClass().getDeclaredFields()));
+		try {
+			gui = GUI.getConstructor(String.class).newInstance("test");
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		fieldList = new ArrayList<Field>(Arrays.asList(GUI.getDeclaredFields()));
 		fieldNames = new ArrayList<String>(fieldList.size());
 		for (Field f : fieldList){
 			fieldNames.add(f.getName());
@@ -69,7 +93,7 @@ public class TestGUICreation {
 			assertTrue("Il vettore \"" + fontArrays[i] + "\" non esiste!", fieldNames.contains(fontArrays[i]));
 		}
 	}
-	
+
 	/**
 	 * Checks if "eventList" contains all the events
 	 */
@@ -121,7 +145,7 @@ public class TestGUICreation {
 		assertTrue("Gli array \"eventList\" e \"eventColor\" non hanno lo stesso numero di elementi!", eventList.size() == eventColor.size());
 		assertTrue("Gli array \"eventList\" e \"eventTT\" non hanno lo stesso numero di elementi!", eventList.size() == eventTT.size());
 	}
-	
+
 	/**
 	 * Checks if "panelList" contains all the variables
 	 */
@@ -206,8 +230,8 @@ public class TestGUICreation {
 		assertTrue("Gli array \"panelList\" e \"tFieldColor\" non hanno lo stesso numero di elementi!", panelList.size() == tFieldColor.size());
 		assertTrue("Gli array \"panelList\" e \"tFieldTT\" non hanno lo stesso numero di elementi!", panelList.size() == tFieldTT.size());
 	}
-	
-	
+
+
 	/**
 	 * Compare two lists and check if they contains the same elements
 	 * @param a
@@ -215,8 +239,8 @@ public class TestGUICreation {
 	 * @return true if the lists contain the same elements
 	 */
 	public static boolean compareLists (List<?> a, List<?> b) {
-		List list1 = new ArrayList(a);
-		List list2 = new ArrayList(b);
+		List<?> list1 = new ArrayList<Object>(a);
+		List<?> list2 = new ArrayList<Object>(b);
 		list1.removeAll(b);
 		list2.removeAll(a);
 		if (list1.isEmpty() && list2.isEmpty()){
@@ -224,11 +248,11 @@ public class TestGUICreation {
 		}
 		return false;
 	}
-	
+
 	@Parameterized.Parameters
-	   public static Collection filesToTest() {
+	public static Collection<String[]> filesToTest() {
 		File inputFile = new File(Conf.data_dir + Conf.filesep + "FilesToTest.txt");
 		ArrayList<String[]> input = Common.read(inputFile);
 		return input;
-	   }
+	}
 }
