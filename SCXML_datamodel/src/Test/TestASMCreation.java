@@ -22,6 +22,9 @@ import framework.Conf;
 
 @RunWith(Parameterized.class)
 public class TestASMCreation {
+	// for each model(s) whose name(s) are in Conf.input_file_for_testing
+	//   assumes that ImplASM.java exists in the proper package
+	//   checks that it has a method for each state declared in model.scxml
 
 	public static String fileName;
 	public static List<String> states;
@@ -67,7 +70,7 @@ public class TestASMCreation {
 
 	@Parameterized.Parameters
 	public static Collection<String[]> filesToTest() {
-		File inputFile = new File(Conf.data_dir + Conf.filesep + "FilesToTest.txt");
+		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.input_file_for_testing);
 		ArrayList<String[]> input = Common.read(inputFile);
 		return input;
 	}

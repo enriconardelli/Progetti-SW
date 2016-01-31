@@ -29,4 +29,8 @@ public class Conf {
 	public static final String default_font_type = "TimesRoman";
 	public static final String default_font_mode = "PLAIN";
 	public static final String default_font_dimension = "16";
+	
+	// configuration for testing
+	public static final String input_file_for_testing = "FilesToTest.txt";
+	
 }

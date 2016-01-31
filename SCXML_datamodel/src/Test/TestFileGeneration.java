@@ -15,6 +15,9 @@ import framework.*;
 
 @RunWith(Parameterized.class)
 public class TestFileGeneration {
+	// checks that for the model(s) whose name(s) are in Conf.input_file_for_testing
+	// the Generator is able to create the files ImplASM.java, ImplGUI.java, Launcher.java,
+	// model.scxml in the proper package
 
 	public static String fileName;
 
@@ -22,7 +25,7 @@ public class TestFileGeneration {
 		fileName = fileToTest;
 	}
 
-	@Before
+	//@Before
 	public void fileGeneration() {
 		System.out.println("Testing file : \'" + fileName + Conf.scxml_extension + "\'");
 		String[] arg = {fileName};
@@ -54,7 +57,7 @@ public class TestFileGeneration {
 
 	@Parameterized.Parameters
 	public static Collection<String[]> filesToTest() {
-		File inputFile = new File(Conf.data_dir + Conf.filesep + "FilesToTest.txt");
+		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.input_file_for_testing);
 		ArrayList<String[]> input = Common.read(inputFile);
 		return input;
 	}

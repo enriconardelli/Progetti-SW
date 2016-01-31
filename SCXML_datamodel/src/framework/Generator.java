@@ -416,7 +416,8 @@ public class Generator {
 			copyModelFile(pSCXMLModel, pInputFile);
 			System.out.println("End generation for model '" + pSCXMLModel + "', run the Launcher in its package to execute the StateChart.\n");
 			try {
-				System.out.println(pSCXMLModel + Conf.filesep + "Launcher");
+				Thread.sleep(100); // 
+				System.out.println(pSCXMLModel + "." + "Launcher");
 //				Class<?> classe = Class.forName(pSCXMLModel + Conf.filesep + "Launcher");
 				Class<?> classe = Class.forName(pSCXMLModel + "." + "Launcher");
 				String[] params = null;
@@ -445,6 +446,9 @@ public class Generator {
 //			} catch (InvocationTargetException e) {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			System.out.println("Ha funzionato?\n");
 		} catch (JDOMException a_JDOMException) {

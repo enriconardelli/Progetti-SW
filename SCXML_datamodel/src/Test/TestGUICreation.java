@@ -24,6 +24,13 @@ import framework.Conf;
 
 @RunWith(Parameterized.class)
 public class TestGUICreation {
+	// for each model(s) whose name(s) are in Conf.input_file_for_testing
+	//   assumes that ImplGUI.java exists in the proper package
+	//   creates an instance
+	//   checks that it has all fields needed to manage events, panels, and their interface properties
+	//   checks that each field has the correct size
+	//   checks that field "eventList" contains all events present in model.scxml
+	//   checks that field "panelList" contains all variables present in model.scxml
 
 	public static String fileName;
 	public static String[] fontArrays = {Conf.button_font_key, Conf.panel_font_key, Conf.field_font_key};
@@ -251,7 +258,7 @@ public class TestGUICreation {
 
 	@Parameterized.Parameters
 	public static Collection<String[]> filesToTest() {
-		File inputFile = new File(Conf.data_dir + Conf.filesep + "FilesToTest.txt");
+		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.input_file_for_testing);
 		ArrayList<String[]> input = Common.read(inputFile);
 		return input;
 	}
