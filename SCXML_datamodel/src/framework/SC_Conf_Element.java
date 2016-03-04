@@ -10,9 +10,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.jdom.Element;
 import org.jdom.filter.ElementFilter;
 
-public class SC_Element extends Element {
+public class SC_Conf_Element extends Element {
 
-		public SC_Element(String file_name){
+		public SC_Conf_Element(String file_name){
 		super(file_name);
 	}
 	

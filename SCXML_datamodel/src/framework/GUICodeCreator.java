@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GUICodeCreator {
 
-	private static SC_Element Parameters;
+	private static SC_Conf_Element Parameters;
 	
 	private GUICodeCreator() {
 		// with a private constructor instances of this class cannot be created,
@@ -22,7 +22,7 @@ public class GUICodeCreator {
 
 	public static void create(String pSCName, List<String> variableNames, List<String> eventNames) throws IOException {
 		//LEGGO I PARAMETRI
-		Parameters = new SC_Element(pSCName);
+		Parameters = new SC_Conf_Element(pSCName);
 		Parameters.prepareContent();
 		Parameters.checkAll(eventNames, variableNames);
 		
