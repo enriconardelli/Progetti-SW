@@ -25,7 +25,12 @@ public class TestFileGeneration {
 		fileName = fileToTest;
 	}
 
-	//@Before
+
+	/*
+	 * Comment @Before if Generator has been already invoked and files have been created
+	 * Use @Before to launch Generator to create the files before the test.
+	 */
+	@Before
 	public void fileGeneration() {
 		System.out.println("Testing file : \'" + fileName + Conf.scxml_extension + "\'");
 		String[] arg = {fileName};
