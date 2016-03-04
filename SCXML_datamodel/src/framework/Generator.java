@@ -418,15 +418,17 @@ public class Generator {
 			try {
 				Thread.sleep(100); // 
 				System.out.println(pSCXMLModel + "." + "Launcher");
+// questa parte non funziona, dovrebbe lanciare dinamicamente la classe Launcher nel package generato
 //				Class<?> classe = Class.forName(pSCXMLModel + Conf.filesep + "Launcher");
-				Class<?> classe = Class.forName(pSCXMLModel + "." + "Launcher");
-				String[] params = null;
-				Method metodo = classe.getMethod("main", String[].class);
+				Class<?> classe = Class.forName(pSCXMLModel + "/" + "Launcher");
+//				Class<?> classe = Class.forName(pSCXMLModel + "." + "Launcher");
 				Method[] metodi = classe.getMethods();
 				for (int i=0; i<metodi.length; i++)
 		        {System.out.println(metodi[i].getName());
 		        }	              
+				Method metodo = classe.getMethod("main", String[].class);
 //				Object[] args = {};
+//				String[] params = null;
 //				metodo.invoke(null, args);
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
