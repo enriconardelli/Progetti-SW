@@ -416,43 +416,37 @@ public class Generator {
 			copyModelFile(pSCXMLModel, pInputFile);
 			System.out.println("End generation for model '" + pSCXMLModel + "', run the Launcher in its package to execute the StateChart.\n");
 			try {
-				Thread.sleep(100); // 
-				System.out.println(pSCXMLModel + "." + "Launcher");
-// questa parte non funziona, dovrebbe lanciare dinamicamente la classe Launcher nel package generato
-//				Class<?> classe = Class.forName(pSCXMLModel + Conf.filesep + "Launcher");
-				Class<?> classe = Class.forName(pSCXMLModel + "/" + "Launcher");
-//				Class<?> classe = Class.forName(pSCXMLModel + "." + "Launcher");
-				Method[] metodi = classe.getMethods();
-				for (int i=0; i<metodi.length; i++)
-		        {System.out.println(metodi[i].getName());
-		        }	              
-				Method metodo = classe.getMethod("main", String[].class);
-//				Object[] args = {};
-//				String[] params = null;
-//				metodo.invoke(null, args);
-			} catch (SecurityException e) {
+				// non serve attendere il file c'è
+				System.out.println("Invoking the launcher '" +pSCXMLModel + Conf.packagesep + "Launcher'" + " for the model in " + pSCXMLModel + Conf.scxml_extension);
+				Class<?> classe = Class.forName(pSCXMLModel + Conf.packagesep + "Launcher");
+//				System.out.println("classe.getName() = " + classe.getName());
+			    Object istanza_classe = classe.newInstance();
+//				System.out.println("istanza_classe.getName() = " + istanza_classe.toString());
+			    Method metodo = classe.getMethod("main", String[].class);
+//				System.out.println("metodo.getName() = " + metodo.getName());
+				Object args = new String[0];
+//				System.out.println("args = " + args.toString());
+			    metodo.invoke(istanza_classe, args);
+			    
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-//			} catch (IllegalAccessException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (InvocationTargetException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-			} catch (InterruptedException e) {
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Ha funzionato?\n");
 		} catch (JDOMException a_JDOMException) {
 			a_JDOMException.printStackTrace();
 		} catch (IOException an_IOException) {

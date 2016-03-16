@@ -1,8 +1,12 @@
 package framework;
 
+import org.apache.commons.lang.ClassUtils;
+
 public class Conf {
 	public static final String filesep = System.getProperty("file.separator");
 	public static final String linesep = System.getProperty("line.separator");
+	public static final String classsep = System.getProperty ( "path.separator");
+	public static final String packagesep = ClassUtils.PACKAGE_SEPARATOR;
 	public static final String protocol = "file:";
 	public static final String source_dir = "src";
 	public static final String data_dir = "data";
