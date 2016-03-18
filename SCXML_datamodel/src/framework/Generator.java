@@ -37,41 +37,30 @@ public class Generator {
 			return;
 		}
 		for (String SCXMLModel : args) {
-//			File inputFile = new File(Conf.data_dir + Conf.filesep + SCXMLModel + Conf.scxml_extension);
-////			System.out.println("inputFile absolutePath: " + inputFile.getAbsolutePath());
-//			if (!inputFile.exists()) {
-//				System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + SCXMLModel + " does not exist.");
-//				System.err.println("The Generator is halted.");
-//				return;
-//			} else { // working on file
-//				System.out.println("Start generation of StateChart for model '" + SCXMLModel + "' specified in the file " + inputFile.getAbsolutePath());
-//				if (new File(Conf.source_dir + Conf.filesep + SCXMLModel).mkdir())
-//					System.out.println("First time for this StateChart, the package is created");
-//				else
-//					System.out.println("Modifying the existing package of the StateChart for model '" + SCXMLModel + "'");
-////				Element documentRoot = getDocumentRoot(inputFile.getAbsolutePath());
-//				Element documentRoot = Common.getDocumentRoot(inputFile);
-
-				SC_Model_Element SCXMLDocument = new SC_Model_Element(SCXMLModel);
-				SCXMLDocument.set_documentRoot();
-
-				if (!(SCXMLDocument.syntax_OK())){
-					System.err.println("Syntax error(s) in file " + SCXMLDocument.get_inputFile().getAbsolutePath());
+			File inputFile = new File(Conf.data_dir + Conf.filesep + SCXMLModel + Conf.scxml_extension);
+//			System.out.println("inputFile absolutePath: " + inputFile.getAbsolutePath());
+			if (!inputFile.exists()) {
+				System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + SCXMLModel + " does not exist.");
+				System.err.println("The Generator is halted.");
+				return;
+			} else { // working on file
+				System.out.println("Start generation of StateChart for model '" + SCXMLModel + "' specified in the file " + inputFile.getAbsolutePath());
+				if (new File(Conf.source_dir + Conf.filesep + SCXMLModel).mkdir())
+					System.out.println("First time for this StateChart, the package is created");
+				else
+					System.out.println("Modifying the existing package of the StateChart for model '" + SCXMLModel + "'");
+//				Element documentRoot = getDocumentRoot(inputFile.getAbsolutePath());
+				Element documentRoot = Common.getDocumentRoot(inputFile);
+				if (!(SCXMLDocumentSyntaxOK(documentRoot))){
+					System.err.println("Syntax error(s) in file " + inputFile.getAbsolutePath());
 					System.err.println("The creation of this StateChart is interrupted.\n");
 				}
 				else
-					stateChartGeneration(SCXMLDocument);
-
-//				if (!(SCXMLDocumentSyntaxOK(documentRoot))){
-//					System.err.println("Syntax error(s) in file " + inputFile.getAbsolutePath());
-//					System.err.println("The creation of this StateChart is interrupted.\n");
-//				}
-//				else
-//					stateChartGeneration(SCXMLModel, documentRoot, inputFile);
+					stateChartGeneration(SCXMLModel, documentRoot, inputFile);
 			Thread.sleep(100); // to avoid mixing printouts
 			}
 		}
-
+	}
 
 	private static boolean SCXMLDocumentSyntaxOK(Element pDocumentRoot) {
 		boolean checkOK = true;
@@ -415,13 +404,8 @@ public class Generator {
 		return true;
 	}	
 
-//	private static void stateChartGeneration(String pSCXMLModel, Element pDocumentRoot, File pInputFile) {
-	private static void stateChartGeneration(SC_Model_Element pSCXMLDocument) {
+	private static void stateChartGeneration(String pSCXMLModel, Element pDocumentRoot, File pInputFile) {
 		try {
-			String pSCXMLModel = pSCXMLDocument.getName();
-			Element pDocumentRoot = pSCXMLDocument.get_documentRoot();
-			File pInputFile = pSCXMLDocument.get_inputFile();
-			// TODO: sbarazzarsi delle 3 variabili di sopra, lasciate al momento per evidenziare i cambiamenti
 			String initialState = pDocumentRoot.getAttribute("initial").getValue();
 			List<String> stateNames = Common.getStateNames(pDocumentRoot);
 			List<String> variableNames = Common.getVariableNames(pDocumentRoot);
@@ -433,16 +417,15 @@ public class Generator {
 			System.out.println("End generation for model '" + pSCXMLModel + "', run the Launcher in its package to execute the StateChart.\n");
 			try {
 				// non serve attendere il file c'è
-				Thread.sleep(1000); // to avoid mixing printouts
-				System.out.println("Invoking the launcher '" + pSCXMLModel + Conf.packagesep + "Launcher'" + " for the model in " + pSCXMLModel + Conf.scxml_extension);
+				System.out.println("Invoking the launcher '" +pSCXMLModel + Conf.packagesep + "Launcher'" + " for the model in " + pSCXMLModel + Conf.scxml_extension);
 				Class<?> classe = Class.forName(pSCXMLModel + Conf.packagesep + "Launcher");
-				System.out.println("classe.getName() = " + classe.getName());
+//				System.out.println("classe.getName() = " + classe.getName());
 			    Object istanza_classe = classe.newInstance();
-				System.out.println("istanza_classe.getName() = " + istanza_classe.toString());
+//				System.out.println("istanza_classe.getName() = " + istanza_classe.toString());
 			    Method metodo = classe.getMethod("main", String[].class);
-				System.out.println("metodo.getName() = " + metodo.getName());
+//				System.out.println("metodo.getName() = " + metodo.getName());
 				Object args = new String[0];
-				System.out.println("args = " + args.toString());
+//				System.out.println("args = " + args.toString());
 			    metodo.invoke(istanza_classe, args);
 			    
 			} catch (ClassNotFoundException e) {
@@ -461,9 +444,6 @@ public class Generator {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
