@@ -1,6 +1,6 @@
 package framework;
 
-import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,8 +26,7 @@ public class GUICodeCreator {
 		Parameters.prepareContent();
 		Parameters.checkAll(eventNames, variableNames);
 		
- 		BufferedWriter out = new BufferedWriter(new FileWriter(Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "ImplGUI.java"));
-		String classContent = "";
+ 		String classContent = "";
 		classContent = writePreambleAndImports(pSCName);
 		classContent += Conf.linesep;
 		classContent += writeSignature();
@@ -54,8 +53,14 @@ public class GUICodeCreator {
 		classContent += writePanelsAndFields();//ANCHE QUI
 		classContent += writeTextArea();
 		classContent += writeGUIstartAndClassClosure();
+		// a BufferedWriter is not needed since the class content is written all at once
+		// use a FileOutputStream so as to force the explicit synchronization with file system
+		FileOutputStream fos = new FileOutputStream (Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "ImplGUI.java");
+		FileWriter out = new FileWriter(fos.getFD());
 		out.write(classContent);
+		fos.getFD().sync();
 		out.close();
+		fos.close();
 	}
 
 	private static String writePreambleAndImports(String pSCName) {

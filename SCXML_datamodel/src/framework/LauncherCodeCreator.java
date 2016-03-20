@@ -2,13 +2,12 @@ package framework;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import org.jdom.JDOMException;
 
 public class LauncherCodeCreator {
-
 	private LauncherCodeCreator() {
 		// with a private constructor instances of this class cannot be created,
 		// which is what we want since the actual generation of code is made
@@ -19,9 +18,14 @@ public class LauncherCodeCreator {
 		File file = new File(Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "Launcher.java");
 		if (!file.exists()) {
 			String classContent = writePreambleAndClass(pSCName);
-			BufferedWriter out = new BufferedWriter(new FileWriter("src" + Conf.filesep + pSCName + Conf.filesep + "Launcher.java"));
+			// a BufferedWriter is not needed since the class content is written all at once
+			// use a FileOutputStream so as to force the explicit synchronization with file system
+			FileOutputStream fos = new FileOutputStream (Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "Launcher.java");
+			FileWriter out = new FileWriter(fos.getFD());
 			out.write(classContent);
+			fos.getFD().sync();
 			out.close();
+			fos.close();
 		}
 	}
 

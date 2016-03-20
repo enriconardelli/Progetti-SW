@@ -3,6 +3,7 @@ package framework;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,9 +34,14 @@ public class ASMCodeCreator {
 		List<String> stateMethodsToAdd = subtractStates(allStateNames, existingStateMethods);
 		checkPossiblyDeletedStates(allStateNames, existingStateMethods);
 		classContent = appendStateMethods(pSCName, classContent, stateMethodsToAdd, pInitialState);
-		BufferedWriter out = new BufferedWriter(new FileWriter(Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "ImplASM.java"));
+		// a BufferedWriter is not needed since the class content is written all at once
+		// use a FileOutputStream so as to force the explicit synchronization with file system
+		FileOutputStream fos = new FileOutputStream (Conf.source_dir + Conf.filesep + pSCName + Conf.filesep + "ImplASM.java");
+		FileWriter out = new FileWriter(fos.getFD());
 		out.write(classContent);
+		fos.getFD().sync();
 		out.close();
+		fos.close();
 	}
 
 	private static String readFile(String file) throws IOException {
