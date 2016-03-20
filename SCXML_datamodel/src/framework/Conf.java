@@ -8,9 +8,12 @@ public class Conf {
 	public static final String classsep = System.getProperty ( "path.separator");
 	public static final String packagesep = ClassUtils.PACKAGE_SEPARATOR;
 	public static final String protocol = "file:";
-	public static final String source_dir = "src";
+	public static final String source_dir = "support";
+	public static final String class_code_dir = "bin";
 	public static final String data_dir = "data";
 	public static final String model_name = "model";
+	public static final String source_extension = ".java";
+	public static final String class_code_extension = ".class";
 	public static final String scxml_extension = ".scxml";
 	public static final String xml_conf_extension=".conf.xml";
 	public static final String placeholder_for_code = "// here can be added code to specialize the behavior of this method";
