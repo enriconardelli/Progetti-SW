@@ -21,7 +21,7 @@
 				<exclude>/.svn$</exclude>
 				<exclude>/test_classes$</exclude>
 			</file_rule>
-			<tests name="test_classes" location="D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\IPC-projects\Autotest\linked_list\test_classes\"/>
+			<tests name="test_classes" location="D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\linked_list\test_classes\"/>
 		</cluster>
 	</target>
 </system>
