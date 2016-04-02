@@ -20,10 +20,17 @@ import org.jdom.JDOMException;
 import org.jdom.filter.ElementFilter;
 
 public class Generator {
+	
+	/* MOVED
+	
 	public static List<String> stati = new ArrayList<String>();
 	public static List<String> targets = new ArrayList<String>();
 	public static List<String> data_ids = new ArrayList<String>();
 	public static List<String> data_assign = new ArrayList<String>();
+	
+	*/
+	
+	
 	// To pass arguments in Eclipse: "Run Configurations...", "Arguments", "Program Arguments"
 	public static void main(String[] args) throws Exception {
 		// the current document must be created dynamically
@@ -56,7 +63,7 @@ public class Generator {
 			SCXMLDocument.set_documentRoot();
 			// TODO (Gabriele): spostare il seguente metodo statico del main in un metodo di istanza per la classe SC_Model_element 
 			// che verrà invocato nel main per l'istanza SCXMLDocument. Bisognerà spostare conseguentemente tutti i metodi da esso invocati
-			if (!(SCXMLDocumentSyntaxOK(SCXMLDocument.get_documentRoot()))) {
+			if (!(SCXMLDocument.SCXMLDocumentSyntaxOK(SCXMLDocument.get_documentRoot()))) {
 				Thread.sleep(100); // to avoid mixing printouts
 				System.err.println("Syntax error(s) in file " + SCXMLDocument.get_inputFile().getAbsolutePath());
 				System.err.println("--ERROR-- The generation of this StateChart is interrupted.\n");
@@ -93,7 +100,8 @@ public class Generator {
 		}
 	}
 
-
+	/* MOVED 
+	
 	private static boolean SCXMLDocumentSyntaxOK(Element pDocumentRoot) {
 		boolean checkOK = true;
 		// checking "data" node in the document
@@ -114,6 +122,10 @@ public class Generator {
 		checkOK = scxml_control_scxml(pDocumentRoot);
 		return checkOK;
 	}
+	
+	*/
+	
+	/* MOVED 
 
 	private static boolean check_initial(Element pDocumentRoot) {
 		boolean check = true;
@@ -127,7 +139,11 @@ public class Generator {
 			}
 		return check;
 	}
+	
+	*/
 
+	/* MOVED 
+	
 	private static boolean scxml_control_scxml(Element pDocumentRoot) {
 		boolean check = true;
 		// controllo indirizzo e versione e deve avere almeno uno state oppure un parallel o un final
@@ -175,7 +191,11 @@ public class Generator {
 		check = check & check_initial(pDocumentRoot);
 		return check;
 	}
+	
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_state(Element state) {
 		List<String> figli = new ArrayList<String>();
 		boolean flag = true;
@@ -209,6 +229,10 @@ public class Generator {
 		return flag;
 	}
 
+	*/
+
+	/* MOVED 
+	
 	private static boolean check_state_id(Element state) {
 		boolean flag = true;
 		Element padre;
@@ -228,7 +252,11 @@ public class Generator {
 		}
 		return flag;
 	}
+	
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_assign_in_data() {
 		boolean flag = true;
 		data_assign.removeAll(data_ids);
@@ -242,7 +270,12 @@ public class Generator {
 		data_assign.addAll(data_ids);
 		return flag;
 	}
+	
+	
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_targets() {
 		boolean flag = true;
 		targets.removeAll(stati);
@@ -257,6 +290,10 @@ public class Generator {
 		return flag;
 	}
 
+	*/
+
+	/* MOVED 
+	
 	private static boolean check_parallel(Element parallel) {
 		boolean flag = true;
 		flag = check_parallel_id(parallel);
@@ -277,7 +314,11 @@ public class Generator {
 			flag = flag & check_trans(childrent.next());
 		return flag;
 	}
+	
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_parallel_id(Element parallel) {
 		boolean flag = true;
 		Element padre;
@@ -297,7 +338,11 @@ public class Generator {
 		}
 		return flag;
 	}
+	
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_datamodel(Element datamodel) {
 		boolean flag = true;
 		Iterator<Element> datas = datamodel.getContent(new ElementFilter("data")).iterator();
@@ -305,6 +350,10 @@ public class Generator {
 			flag = flag & check_data(datas.next());
 		return flag;
 	}
+	
+	*/
+	
+	/* MOVED 
 
 	private static boolean check_data(Element dato) {
 		boolean check_data_flag = true;
@@ -313,7 +362,11 @@ public class Generator {
 		data_ids.add(dato.getAttribute("id").getValue());
 		return check_data_flag;
 	}
+	
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_data_src_expr(Element dato) {
 		if (dato.getAttribute("src") != null & dato.getAttribute("expr") != null) {
 			System.err.println("ERROR un data non puo avere src E expr");
@@ -321,7 +374,10 @@ public class Generator {
 		} else
 			return true;
 	}
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_data_id(Element dato) {
 		if (dato.getAttribute("id") == null) {
 			System.err.println("ERROR un data non ha id");
@@ -333,6 +389,11 @@ public class Generator {
 			} else
 				return true;
 	}
+	
+	*/
+
+	
+	/* MOVED 
 
 	private static boolean check_data_id_single(Element dato) {
 		if (data_ids.contains(dato.getAttributeValue("id"))) {
@@ -341,7 +402,11 @@ public class Generator {
 		} else
 			return true;
 	}
-
+	
+	*/
+	
+	
+	/* MOVED 
 	private static boolean check_trans(Element trans) {
 		boolean flag = true;
 		Element padre;
@@ -366,7 +431,10 @@ public class Generator {
 		}
 		return flag;
 	}
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_final(Element finale) {
 		boolean flag = true;
 		if (finale.getAttribute("id") != null)
@@ -383,7 +451,11 @@ public class Generator {
 		}
 		return flag;
 	}
+	
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_onentry(Element onentry) {
 		boolean flag = true;
 		Iterator<Element> assigns = onentry.getContent(new ElementFilter("assign")).iterator();
@@ -397,6 +469,10 @@ public class Generator {
 		return flag;
 	}
 
+	*/
+	
+	/* MOVED 
+	
 	private static boolean check_onexit(Element onexit) {
 		boolean flag = true;
 		Iterator<Element> assigns = onexit.getContent(new ElementFilter("assign")).iterator();
@@ -409,6 +485,10 @@ public class Generator {
 		}
 		return flag;
 	}
+	
+	*/
+	
+	/* MOVED 
 
 	private static boolean check_assign(Element assegna) {
 		boolean flag = true;
@@ -426,17 +506,24 @@ public class Generator {
 		}
 		return flag;
 	}
+	
+	*/
 
+	/* MOVED 
+	
 	private static boolean check_log(Element log) {
 		// fantasma della check log
 		return true;
 	}
+	
+	*/
 
 	/*
 	 * Changed architecture: source code is generated in Conf.source_dir and then explicitly compiled. Generating in "src" did not
 	 * allow executing the StateChart programatically, due to the delay Eclipse has in synchronizing with the file system. The
 	 * alternative solution of using Eclipse API would have make this code Eclipse dependent.
 	 */
+	
 	private static void stateChartGeneration(String pSCXMLModel, Element pDocumentRoot) {
 		try {
 			String initialState = pDocumentRoot.getAttribute("initial").getValue();
