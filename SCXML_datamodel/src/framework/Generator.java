@@ -61,16 +61,12 @@ public class Generator {
 					+ Conf.scxml_extension + "'");
 			SCXMLDocument.setName(SCXMLModel);
 			SCXMLDocument.set_documentRoot();
-			// TODO (Gabriele): spostare il seguente metodo statico del main in un metodo di istanza per la classe SC_Model_element 
-			// che verrà invocato nel main per l'istanza SCXMLDocument. Bisognerà spostare conseguentemente tutti i metodi da esso invocati
 			if (!(SCXMLDocument.SCXMLDocumentSyntaxOK(SCXMLDocument.get_documentRoot()))) {
 				Thread.sleep(100); // to avoid mixing printouts
 				System.err.println("Syntax error(s) in file " + SCXMLDocument.get_inputFile().getAbsolutePath());
 				System.err.println("--ERROR-- The generation of this StateChart is interrupted.\n");
 			} else {
-				// TODO (Gabriele): spostare il seguente metodo statico del main in un metodo di istanza per la classe SC_Model_element 
-				// che verrà invocato nel main per l'istanza SCXMLDocument. Bisognerà spostare conseguentemente tutti i metodi da esso invocati
-				stateChartGeneration(SCXMLModel, SCXMLDocument.get_documentRoot());
+				SCXMLDocument.stateChartGeneration(SCXMLModel, SCXMLDocument.get_documentRoot());
 				System.out.println("--FINISH-- generation of StateChart source code for model specified in file '" + Conf.data_dir + Conf.filesep
 						+ SCXMLModel + Conf.scxml_extension + "'\n");
 				System.out.println("PRESS <S> + <<Return>> to compile and execute NOW this StateChart, others to skip");
@@ -524,6 +520,9 @@ public class Generator {
 	 * alternative solution of using Eclipse API would have make this code Eclipse dependent.
 	 */
 	
+	
+	/* MOVED
+	
 	private static void stateChartGeneration(String pSCXMLModel, Element pDocumentRoot) {
 		try {
 			String initialState = pDocumentRoot.getAttribute("initial").getValue();
@@ -544,6 +543,8 @@ public class Generator {
 			an_IOException.printStackTrace();
 		}
 	}
+	
+	*/
 
 	private static void compileSCfile(String pSCXMLModel, String pModelFileName) {
 		String cmd = "javac";
@@ -639,6 +640,8 @@ public class Generator {
 		}
 	}
 
+	
+	/* MOVED
 	private static void copyModelFile(String pSCXMLModel) {
 		File modelInputFile = new File(Conf.data_dir + Conf.filesep + pSCXMLModel + Conf.scxml_extension);
 		try {
@@ -662,4 +665,7 @@ public class Generator {
 			an_IOException.printStackTrace();
 		}
 	}
+	*/
+	
+	
 }

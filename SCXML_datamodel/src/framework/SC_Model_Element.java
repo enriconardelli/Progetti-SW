@@ -1,15 +1,19 @@
 package framework;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.lang.model.util.ElementFilter;
-
 import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.filter.ElementFilter;
 
 
 public class SC_Model_Element extends Element implements Runnable {
@@ -102,9 +106,6 @@ public class SC_Model_Element extends Element implements Runnable {
 		}
 	}
 	
-	
-
-	 
 	
 	public boolean SCXMLDocumentSyntaxOK(Element pDocumentRoot) {
 		boolean checkOK = true;
@@ -477,6 +478,54 @@ public class SC_Model_Element extends Element implements Runnable {
 		return true;
 	}
 	
+	
+	
+	public void stateChartGeneration(String pSCXMLModel, Element pDocumentRoot) {
+		try {
+			String initialState = pDocumentRoot.getAttribute("initial").getValue();
+			List<String> stateNames = Common.getStateNames(pDocumentRoot);
+			List<String> variableNames = Common.getVariableNames(pDocumentRoot);
+			List<String> eventNames = Common.getEventNames(pDocumentRoot);
+			ASMCodeCreator.create(pSCXMLModel, stateNames, initialState);
+			GUICodeCreator.create(pSCXMLModel, variableNames, eventNames);
+			LauncherCodeCreator.create(pSCXMLModel);
+			copyModelFile(pSCXMLModel);
+			System.out.println("Source code for model '" + pSCXMLModel + "' is now ready in directory '" + Conf.source_dir + Conf.filesep
+					+ pSCXMLModel + "'");
+			System.out.println("After compilation, the StateChart can be executed by running the Launcher in directory '" + Conf.class_code_dir
+					+ Conf.filesep + pSCXMLModel + "'");
+		} catch (JDOMException a_JDOMException) {
+			a_JDOMException.printStackTrace();
+		} catch (IOException an_IOException) {
+			an_IOException.printStackTrace();
+		}
+	}
+	
+	
+	
+	private static void copyModelFile(String pSCXMLModel) {
+		File modelInputFile = new File(Conf.data_dir + Conf.filesep + pSCXMLModel + Conf.scxml_extension);
+		try {
+			BufferedReader bufferedInput = new BufferedReader(new FileReader(modelInputFile));
+			BufferedWriter bufferedOutput = new BufferedWriter(new FileWriter(new File(Conf.source_dir + Conf.filesep + pSCXMLModel + Conf.filesep
+					+ "model.scxml")));
+			String inputLine = "";
+			inputLine = bufferedInput.readLine();
+			// copying the first line and writing the warning
+			bufferedOutput.write(inputLine + Conf.linesep);
+			bufferedOutput.write("<!--\n\t Never change this 'model' file!\n\t Modify the original one in Conf.data_dir.\n -->" + Conf.linesep);
+			// copying the rest of the file
+			inputLine = bufferedInput.readLine();
+			while (inputLine != null) {
+				bufferedOutput.write(inputLine + Conf.linesep);
+				inputLine = bufferedInput.readLine();
+			}
+			bufferedInput.close();
+			bufferedOutput.close();
+		} catch (IOException an_IOException) {
+			an_IOException.printStackTrace();
+		}
+	}
 	
 	
 	
