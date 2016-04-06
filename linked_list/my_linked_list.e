@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	INT_LINKED_LIST
+	MY_LINKED_LIST
 
 feature
 
