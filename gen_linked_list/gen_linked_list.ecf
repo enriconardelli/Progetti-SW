@@ -12,7 +12,7 @@
 		<precompile name="base_pre" location="$ISE_PRECOMP\base-safe.ecf"/>
 		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<library name="testing" location="$ISE_LIBRARY\library\testing\testing-safe.ecf"/>
-		<cluster name="linked_list" location=".\" recursive="true">
+		<cluster name="gen_linked_list" location=".\" recursive="true">
 			<option cat_call_detection="none" is_attached_by_default="false" void_safety="initialization">
 			</option>
 			<file_rule>
