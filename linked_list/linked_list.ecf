@@ -16,12 +16,12 @@
 			<option cat_call_detection="false" is_attached_by_default="false" void_safety="initialization">
 			</option>
 			<file_rule>
+				<exclude>/test_classes$</exclude>
 				<exclude>/EIFGENs$</exclude>
 				<exclude>/CVS$</exclude>
 				<exclude>/.svn$</exclude>
-				<exclude>/test_classes$</exclude>
 			</file_rule>
-			<tests name="test_classes" location="D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\linked_list\test_classes\"/>
+			<tests name="test_classes" location="test_classes\"/>
 		</cluster>
 	</target>
 </system>
