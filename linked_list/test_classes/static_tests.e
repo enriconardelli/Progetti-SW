@@ -44,7 +44,7 @@ feature -- Test routines
 		assert ("errore: has su lista_uno", lista_uno.has(ok) and (not lista_uno.has (ko)))
 		assert ("errore: get_element su lista_uno", lista_uno.get_element(ok) /= Void)
 		-- negli ensure di get_element ho già che Result /= Void implies Result.value = a_value
-		assert ("errore: sum_of_positive su lista_uno", lista_uno.sum_of_positive = ok)
+--		assert ("errore: sum_of_positive su lista_uno", lista_uno.sum_of_positive = ok)
 		assert ("errore: valore di first_element e last_element su lista_uno", lista_uno.first_element.value = ok)
     	assert ("errore: append non aggiorna count su lista_uno", lista_uno.count = 1)
 	end
@@ -67,7 +67,7 @@ feature -- Test routines
 		assert ("errore: first_element su lista due", lista_due.first_element = lista_due.get_element(ok1))
 		assert ("errore: last_element su lista_due", lista_due.last_element = lista_due.get_element(ok2))
 		assert ("errore: last_element su lista_due", lista_due.get_element(ok1).next = lista_due.last_element)
-		assert ("errore: sum_of_positive su lista_due", lista_due.sum_of_positive = ok1)
+--		assert ("errore: sum_of_positive su lista_due", lista_due.sum_of_positive = ok1)
 		assert ("errore: append non aggiorna count su lista_due", lista_due.count = 2)
 	end
 
@@ -92,7 +92,7 @@ feature -- Test routines
 		assert ("errore: first_element su lista_n", lista_n.first_element = lista_n.get_element(ok1))
 		assert ("errore: last_element su lista_n", lista_n.last_element = lista_n.get_element(ok3))
 		assert ("errore: last_element su lista_n", lista_n.get_element(ok1).next.next = lista_n.last_element)
-		assert ("errore: sum_of_positive su lista_n", lista_n.sum_of_positive = ok1)
+--		assert ("errore: sum_of_positive su lista_n", lista_n.sum_of_positive = ok1)
 	end
 
 end
