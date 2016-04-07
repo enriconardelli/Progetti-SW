@@ -15,6 +15,3 @@ Successivamente Jacopo Astolfi ha realizzato la prima versione con Autotest disp
 
 
 Tutte le modifiche/estensioni vanno apportate a questa versione
-
-
-Per corso di Progettazione-Sistemi-Informatici aggiungere ogni volta una nuova feature in modalità TDD???

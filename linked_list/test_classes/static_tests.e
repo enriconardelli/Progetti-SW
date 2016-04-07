@@ -18,7 +18,7 @@ feature -- Test routines
 	t_lista_vuota
 			-- Verifica che alcune feature ritornino valore corretto quando la lista è vuota
 	local
-		lista_zero: MY_LINKED_LIST[INTEGER]
+		lista_zero: INT_LINKED_LIST
 		ok: INTEGER
 	do
 		create lista_zero
@@ -33,7 +33,7 @@ feature -- Test routines
 	t_lista_uno
 			-- Verifica che alcune feature ritornino valore corretto quando la lista ha un solo elemento
 	local
-		lista_uno: MY_LINKED_LIST[INTEGER]
+		lista_uno: INT_LINKED_LIST
 		ok, ko: INTEGER
 	do
 		create lista_uno
@@ -44,7 +44,7 @@ feature -- Test routines
 		assert ("errore: has su lista_uno", lista_uno.has(ok) and (not lista_uno.has (ko)))
 		assert ("errore: get_element su lista_uno", lista_uno.get_element(ok) /= Void)
 		-- negli ensure di get_element ho già che Result /= Void implies Result.value = a_value
---		assert ("errore: sum_of_positive su lista_uno", lista_uno.sum_of_positive = ok)
+		assert ("errore: sum_of_positive su lista_uno", lista_uno.sum_of_positive = ok)
 		assert ("errore: valore di first_element e last_element su lista_uno", lista_uno.first_element.value = ok)
     	assert ("errore: append non aggiorna count su lista_uno", lista_uno.count = 1)
 	end
@@ -52,7 +52,7 @@ feature -- Test routines
 	t_lista_due
 			-- Verifica che alcune feature ritornino valore corretto quando la lista ha esattamente due elementi
 	local
-		lista_due: MY_LINKED_LIST[INTEGER]
+		lista_due: INT_LINKED_LIST
 		ok1, ok2, ko: INTEGER
 	do
 		create lista_due
@@ -67,14 +67,14 @@ feature -- Test routines
 		assert ("errore: first_element su lista due", lista_due.first_element = lista_due.get_element(ok1))
 		assert ("errore: last_element su lista_due", lista_due.last_element = lista_due.get_element(ok2))
 		assert ("errore: last_element su lista_due", lista_due.get_element(ok1).next = lista_due.last_element)
---		assert ("errore: sum_of_positive su lista_due", lista_due.sum_of_positive = ok1)
+		assert ("errore: sum_of_positive su lista_due", lista_due.sum_of_positive = ok1)
 		assert ("errore: append non aggiorna count su lista_due", lista_due.count = 2)
 	end
 
 	t_lista_n
 			-- Verifica che alcune feature ritornino valore corretto quando la lista ha più di due elementi
 	local
-		lista_n: MY_LINKED_LIST[INTEGER]
+		lista_n: INT_LINKED_LIST
 		ok1, ok2, ok3,  ko: INTEGER
 	do
 		create lista_n
@@ -92,7 +92,7 @@ feature -- Test routines
 		assert ("errore: first_element su lista_n", lista_n.first_element = lista_n.get_element(ok1))
 		assert ("errore: last_element su lista_n", lista_n.last_element = lista_n.get_element(ok3))
 		assert ("errore: last_element su lista_n", lista_n.get_element(ok1).next.next = lista_n.last_element)
---		assert ("errore: sum_of_positive su lista_n", lista_n.sum_of_positive = ok1)
+		assert ("errore: sum_of_positive su lista_n", lista_n.sum_of_positive = ok1)
 	end
 
 end

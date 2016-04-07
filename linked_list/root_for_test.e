@@ -17,8 +17,8 @@ feature {NONE} -- Initialization
 	make
 			-- Run application.
 		local
-			tr, t: detachable MY_LINKED_LIST[INTEGER]
-			target: detachable MY_LINKABLE[INTEGER]
+			tr, t: detachable INT_LINKED_LIST
+			target: detachable INT_LINKABLE
 		do
 			create t
 --			create {INT_LINKED_LIST} t
