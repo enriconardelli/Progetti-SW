@@ -1,0 +1,13 @@
+
+Questa cartella
+  D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\gen_linked_list
+contiene la versione generica delle classi EIFFEL di gestione di liste con l'uso della funzione di AutoTest di Eiffel.
+
+È stata generata a partire da
+  linked_list
+con l'introduzione della genericità nelle classi.
+
+È replicata nel repository GIT
+  https://github.com/enriconardelli/Progetti-SW
+
+Per corso di Progettazione-Sistemi-Informatici aggiungere ogni volta una nuova feature in modalità TDD???
