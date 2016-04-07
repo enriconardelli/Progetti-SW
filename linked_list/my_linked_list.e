@@ -5,14 +5,14 @@ note
 	revision: "$Revision$"
 
 class
-	MY_LINKED_LIST
+	MY_LINKED_LIST [G]
 
 feature
 
-	first_element: detachable INT_LINKABLE
+	first_element: detachable MY_LINKABLE[G]
 			-- First cell of the list
 
-	last_element: detachable INT_LINKABLE
+	last_element: detachable MY_LINKABLE[G]
 			-- Last cell of the list
 
 	count: INTEGER
@@ -21,7 +21,7 @@ feature
 	count_buffer: INTEGER
 			-- Buffer to store the number of elements in the list during test of class invariants
 
-	append (a_value: INTEGER)
+	append (a_value: G)
 			-- Add `a_value' to end.
 		local
 			new_element: like first_element
@@ -39,7 +39,7 @@ feature
 			count = old count + 1
 		end
 
-	has (a_value: INTEGER): BOOLEAN
+	has (a_value: G): BOOLEAN
 			-- La lista contiene `a_value'?
 		local
 			current_element, temp: like first_element
@@ -60,7 +60,7 @@ feature
 			end
 		end
 
-	value_follows (a_value, target: INTEGER): BOOLEAN
+	value_follows (a_value, target: G): BOOLEAN
 			-- La lista contiene `a_value' dopo la prima occorrenza di `target'?
 		require
 			esiste_bersaglio: has(target)
@@ -83,7 +83,7 @@ feature
 			end
 		end
 
-	get_element (a_value: INTEGER): detachable INT_LINKABLE
+	get_element (a_value: G): detachable MY_LINKABLE[G]
 			-- Ritorna il primo elemento contenente `a_value', se esiste
 		local
 			current_element, temp: like first_element
@@ -111,21 +111,21 @@ feature
 		local
 			temp: like first_element
 		do
-			from
-				temp := first_element
-			until
-				temp = Void
-			loop
-				if temp.value > 0 then
-					Result := Result + temp.value
-				end
-				temp := temp.next
-			end
+--			from
+--				temp := first_element
+--			until
+--				temp = Void
+--			loop
+--				if temp.value > 0 then
+--					Result := Result + temp.value
+--				end
+--				temp := temp.next
+--			end
 		ensure
 			Result >= 0
 		end
 
-	insert_after (new, target: INTEGER)
+	insert_after (new, target: G)
 			-- Inserisce `new' dopo la prima occorrenza di `target' se presente
 			-- Altrimenti inserisce `new' alla fine
 		local
@@ -160,7 +160,7 @@ feature
 			collegato_se_presente: old has (target) implies get_element (target).next.value = new;
 		end
 
-	insert_before (new, target: INTEGER)
+	insert_before (new, target: G)
 			-- Inserisce `new' prima della prima occorrenza di `target' se esiste
 			-- Altrimenti inserisce `new' all'inizio
 		local
@@ -234,11 +234,11 @@ feature
 		--			linked_if_present: old has (target) implies get_item (new).next.value = target;
 		--		end
 
-	insert_multiple_after (new, target: INTEGER)
+	insert_multiple_after (new, target: G)
 			-- Inserisce `new' dopo ogni `target', se ne esistono
 			-- Altrimenti inserisce `new' alla fine
 		local
-			new_element, current_element: INT_LINKABLE
+			new_element, current_element: like first_element
 			target_exist: BOOLEAN
 		do
 			if has(target) then
@@ -306,10 +306,8 @@ feature
 			-- print the entire list
 		local
 			temp: like first_element
-			dummy: like first_element
 		do
 			print ("%N La lista contiene: ")
-			dummy_do
 			from
 				temp := first_element
 			until
@@ -320,13 +318,8 @@ feature
 				temp := temp.next
 			end
 			print ("%N che sono in totale ")
-			dummy_reset
 			print (count)
 			print (" elementi.")
-			create dummy.make (0)
-			dummy_do
-			dummy.exec_nothing
-			dummy_reset
 			print ("%N")
 		end
 

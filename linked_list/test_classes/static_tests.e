@@ -18,7 +18,7 @@ feature -- Test routines
 	t_lista_vuota
 			-- Verifica che alcune feature ritornino valore corretto quando la lista è vuota
 	local
-		lista_zero: MY_LINKED_LIST
+		lista_zero: MY_LINKED_LIST[INTEGER]
 		ok: INTEGER
 	do
 		create lista_zero
@@ -33,7 +33,7 @@ feature -- Test routines
 	t_lista_uno
 			-- Verifica che alcune feature ritornino valore corretto quando la lista ha un solo elemento
 	local
-		lista_uno: MY_LINKED_LIST
+		lista_uno: MY_LINKED_LIST[INTEGER]
 		ok, ko: INTEGER
 	do
 		create lista_uno
@@ -52,7 +52,7 @@ feature -- Test routines
 	t_lista_due
 			-- Verifica che alcune feature ritornino valore corretto quando la lista ha esattamente due elementi
 	local
-		lista_due: MY_LINKED_LIST
+		lista_due: MY_LINKED_LIST[INTEGER]
 		ok1, ok2, ko: INTEGER
 	do
 		create lista_due
@@ -74,7 +74,7 @@ feature -- Test routines
 	t_lista_n
 			-- Verifica che alcune feature ritornino valore corretto quando la lista ha più di due elementi
 	local
-		lista_n: MY_LINKED_LIST
+		lista_n: MY_LINKED_LIST[INTEGER]
 		ok1, ok2, ok3,  ko: INTEGER
 	do
 		create lista_n

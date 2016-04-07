@@ -18,7 +18,7 @@ feature -- Test routines
 	t_insert_before
 			-- Verifica la corretta esecuzione degli inserimenti prima del target
 	local
-		lista_a , lista_b: MY_LINKED_LIST
+		lista_a , lista_b: MY_LINKED_LIST[INTEGER]
 	do
 		create lista_a
 		create lista_b
@@ -55,7 +55,7 @@ feature -- Test routines
 	t_insert_after
 			-- Verifica la corretta esecuzione degli inserimenti dopo il target
 	local
-		lista_a , lista_b: MY_LINKED_LIST
+		lista_a , lista_b: MY_LINKED_LIST[INTEGER]
 	do
 		create lista_a
 		create lista_b
@@ -92,8 +92,8 @@ feature -- Test routines
 	t_invert
 			-- Verifica la corretta esecuzione dell'inversione
 	local
-		lista, lista_copy: MY_LINKED_LIST
-		x,y : INT_LINKABLE
+		lista, lista_copy: MY_LINKED_LIST[INTEGER]
+		x,y : MY_LINKABLE[INTEGER]
 		c: INTEGER
 	do
 		create lista
