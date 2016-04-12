@@ -49,7 +49,7 @@ public class Generator {
 		for (String SCXMLModel : args) {
 			System.out.println("--BEGIN-- processing StateChart for model specified in file '" + Conf.data_dir + Conf.filesep + SCXMLModel
 					+ Conf.scxml_extension + "'");
-			SCXMLDocument.setName(SCXMLModel);
+			SCXMLDocument.set_Model(SCXMLModel);
 			SCXMLDocument.set_documentRoot();
 			if (!(SCXMLDocument.SCXMLDocumentSyntaxOK())) {
 				Thread.sleep(100); // to avoid mixing printouts
@@ -82,8 +82,10 @@ public class Generator {
 			if (console.hasNextLine())
 				read = console.next();
 			if (!read.equals("C"))
-				return;
+				break;
 		}
+		System.out.println("-- Generator has terminated --");
+	
 	}
 
 	

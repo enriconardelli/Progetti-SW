@@ -27,6 +27,25 @@ public class SC_Model_Element extends Element implements Runnable {
 
 	private File inputFile;
 	
+	/*
+	 * modelName is the full name of the SCXML model including directory
+	 */
+	private String modelName;
+	
+	/*
+	 * pathName is the possibly empty directory part of modelName
+	 */
+	private String pathName;
+	
+	public void set_Model(String p_modelName) {
+		modelName = p_modelName;
+		// controllo se modelName contiene uno o più separatori di directory
+		// stacco l'ultimo pezzo e lo assegno a "name"
+		// il pezzo prima, se non è vuoto, lo assegno a "pathName"
+		// in attesa di implementare quanto sopra
+		setName(modelName);
+	}
+	
 	public static List<String> stati = new ArrayList<String>();
 	public static List<String> targets = new ArrayList<String>();
 	public static List<String> data_ids = new ArrayList<String>();
@@ -43,27 +62,27 @@ public class SC_Model_Element extends Element implements Runnable {
 	}
 
 	public void set_documentRoot() throws InterruptedException {
-		inputFile = new File(Conf.data_dir + Conf.filesep + name + Conf.scxml_extension);
+		inputFile = new File(Conf.data_dir + Conf.filesep + modelName + Conf.scxml_extension);
 		if (!inputFile.exists()) {
 			Thread.sleep(100); // to avoid mixing printouts
-			System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + name + " does not exist.");
-			System.err.println("Generation for the model " + name + " is interrupted.");
+			System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + modelName + " does not exist.");
+			System.err.println("Generation for the model " + modelName + " is interrupted.");
 			return;
 		} else { // working on file for current model
-			System.out.println("--START-- generation of StateChart source code for model '" + name + "' specified in the file "
+			System.out.println("--START-- generation of StateChart source code for model '" + modelName + "' specified in the file "
 					+ inputFile.getAbsolutePath());
-			if (!new File(Conf.source_dir + Conf.filesep + name).exists()) {
+			if (!new File(Conf.source_dir + Conf.filesep + modelName).exists()) {
 				System.out.println("First time for this StateChart, the package is created");
-				if (!new File(Conf.source_dir + Conf.filesep + name).mkdir()) {
+				if (!new File(Conf.source_dir + Conf.filesep + modelName).mkdir()) {
 					Thread.sleep(100); // to avoid mixing printouts
-					System.err.println("Directory '" + Conf.source_dir + Conf.filesep + name + "' can NOT be created!");
+					System.err.println("Directory '" + Conf.source_dir + Conf.filesep + modelName + "' can NOT be created!");
 					System.err.println("The Generator is halted.");
 					System.exit(0);
 				} else
-					System.out.println("Directory '" + Conf.source_dir + Conf.filesep + name
+					System.out.println("Directory '" + Conf.source_dir + Conf.filesep + modelName
 							+ "' created. Program will continue generating the StateChart code ");
 			} else
-				System.out.println("Modifying the existing package of the StateChart for model '" + name + "'");
+				System.out.println("Modifying the existing package of the StateChart for model '" + modelName + "'");
 			documentRoot = Common.getDocumentRoot(inputFile);
 		}
 	}
@@ -74,9 +93,9 @@ public class SC_Model_Element extends Element implements Runnable {
 
 	public synchronized void startSC() {
 		System.out.println("Invoking the Launcher for the model specified in file '" + Conf.data_dir 
-				+ Conf.filesep + name + Conf.scxml_extension + "'");
+				+ Conf.filesep + modelName + Conf.scxml_extension + "'");
 		try {
-			Class<?> classe = Class.forName(name + Conf.packagesep + "Launcher");
+			Class<?> classe = Class.forName(modelName + Conf.packagesep + "Launcher");
 			// System.out.println("classe.getName() = " + classe.getName());
 			Object istanza_classe = classe.newInstance();
 			// System.out.println("istanza_classe.getName() = " + istanza_classe.toString());
