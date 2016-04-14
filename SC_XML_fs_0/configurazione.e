@@ -35,14 +35,15 @@ feature --routines
 			stato_corrente := uno_stato
 		end
 
-	chiusura
+	stato_stabile
+	-- assicura che stato_stabile sia uno stato stabile eseguendo tutte le transizioni
 		require
 			controllo_determinismo: stato_corrente.determinismo_senza_evento (condizioni)
 		do
 			if attached stato_corrente.target_senza_evento (condizioni) as sc_tse then
 				set_stato_corrente (sc_tse)
 				if stato_corrente.determinismo_senza_evento (condizioni) then
-					chiusura
+					stato_stabile
 				end
 			end
 		end
