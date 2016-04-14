@@ -51,7 +51,7 @@ feature {NONE} -- Inizializzazione
 			crea_stati_e_cond (albero)
 			create configuratore.make_with_condition (stato_iniziale, condizioni)
 			eventi := acquisisci_eventi
-			print ("cristiano è brutto")
+--			print ("cristiano è brutto")
 			evolvi_SC
 		end
 
@@ -98,7 +98,7 @@ feature -- Cose che si possono fare
 			UNTIL
 				configuratore.stato_corrente.finale or count_evento_corrente > eventi.count
 			LOOP
-				configuratore.chiusura
+				configuratore.stato_stabile
 				evento_corrente := current.leggi_prossimo_evento
 				IF NOT configuratore.stato_corrente.determinismo (evento_corrente, configuratore.condizioni) THEN
 					print ("ERRORE!!! Non c'è determinismo!!!")
@@ -112,7 +112,7 @@ feature -- Cose che si possono fare
 				end
 			end
 			if not configuratore.stato_corrente.finale then
-				configuratore.chiusura
+				configuratore.stato_stabile
 			end
 		end
 
