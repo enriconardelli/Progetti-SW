@@ -30,6 +30,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# SC_XML project
+test_out.xml
+
 # =========================
 # Operating System Files
 # =========================
