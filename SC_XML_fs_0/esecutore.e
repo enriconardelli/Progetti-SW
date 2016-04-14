@@ -100,14 +100,14 @@ feature -- Cose che si possono fare
 			LOOP
 				configuratore.stato_stabile
 				evento_corrente := current.leggi_prossimo_evento
+				print ("evento corrente = " + evento_corrente + "%N")
 				IF NOT configuratore.stato_corrente.determinismo (evento_corrente, configuratore.condizioni) THEN
 					print ("ERRORE!!! Non c'è determinismo!!!")
 				ELSE
 					st := configuratore.stato_corrente.target (evento_corrente, configuratore.condizioni)
 					if attached st as s then
 						configuratore.set_stato_corrente (s)
-					print ("nuovo stato corrente: ")
-					print (st.id)
+					print ("nuovo stato corrente = " + st.id + "%N")
 					end
 				end
 			end
