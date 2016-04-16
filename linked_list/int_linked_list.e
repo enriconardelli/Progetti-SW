@@ -12,14 +12,35 @@ feature
 	first_element: detachable INT_LINKABLE
 			-- First cell of the list
 
+	first: INTEGER
+			-- Return the value in the first cell of the list
+		do
+			check attached first_element as fe then
+				Result := fe.value
+			end
+		end
+
 	last_element: detachable INT_LINKABLE
 			-- Last cell of the list
 
+	last: INTEGER
+			-- Return the value in the last cell of the list
+		do
+			check attached last_element as le then
+				Result := le.value
+			end
+		end
+
+	attached_element (i: INTEGER): INT_LINKABLE
+			-- dummy cell of the list, always attached
+		do
+			create Result.make (i)
+		ensure
+			result_exists: Result /= Void
+		end
+
 	count: INTEGER
 			-- Number of elements in the list
-
-	count_buffer: INTEGER
-			-- Buffer to store the number of elements in the list during test of class invariants
 
 	append (a_value: INTEGER)
 			-- Add `a_value' to end.
@@ -30,12 +51,14 @@ feature
 			if first_element = Void then
 				first_element := new_element
 			else
-				last_element.link_to (new_element)
+				check attached last_element as le then
+					le.link_to (new_element)
+				end
 			end
 			last_element := new_element
 			count := count + 1
 		ensure
-			last_element.value = a_value
+			attached last_element as le implies le.value = a_value
 			count = old count + 1
 		end
 
@@ -140,7 +163,7 @@ feature
 				current_element := current_element.next
 			end
 			if current_element /= Void then
-				new_element.insert_after (current_element)
+				new_element.link_after (current_element)
 				if last_element = current_element then
 					last_element := new_element
 				end
@@ -149,97 +172,101 @@ feature
 					first_element := new_element
 					last_element := first_element
 				else
-					new_element.insert_after (last_element)
+					new_element.link_after (last_element)
 					last_element := new_element
 				end
 			end
 			count := count + 1
 		ensure
 			uno_in_piu: count = old count + 1
-			accodato_se_non_presente: not (old has (target)) implies last_element.value = new;
-			collegato_se_presente: old has (target) implies get_element (target).next.value = new;
+			accodato_se_non_presente: not (old has (target)) implies (attached last_element as le implies le.value = new)
+			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen implies gen.value = new))
 		end
 
-	insert_before (new, target: INTEGER)
-			-- Inserisce `new' prima della prima occorrenza di `target' se esiste
-			-- Altrimenti inserisce `new' all'inizio
-		local
-			previous_element, new_element: like first_element
-		do
-			create new_element.make (new)
-			if count = 0 then
-				first_element := new_element
-				last_element := first_element
-			else
-				if (target = first_element.value) then
-					new_element.link_to (first_element)
-					first_element := new_element
-				else -- list contains at least one element and the first element is not the target
-					from
-						previous_element := first_element
-					until
-						(previous_element.next = Void) or else (previous_element.next.value = target)
-					loop
-						previous_element := previous_element.next
+--	insert_before (new, target: INTEGER)
+--			-- Inserisce `new' prima della prima occorrenza di `target' se esiste
+--			-- Altrimenti inserisce `new' all'inizio
+--		local
+--			previous_element: like first_element
+--			new_element: like attached_element
+--		do
+--			create new_element.make (new)
+--			if count = 0 then
+--				first_element := new_element
+--				last_element := first_element
+--			else
+--				if (target = first) then
+--					new_element.link_to (first_element)
+--					first_element := new_element
+--				else -- list contains at least one element and the first element is not the target
+--					from
+--						previous_element := first_element
+--					until
+--						attached previous_element as pe implies ((pe.next = Void) or else (attached pe.next as pen implies pen.value = target))
+--					loop
+--						previous_element := previous_element.next
+--					end
+--					check attached previous_element as pe then
+--						if pe.next /= Void then
+--							new_element.insert_after (pe)
+--						else -- list does not contain `target'
+--							new_element.link_to (first_element)
+--							first_element := new_element
+--						end
+--					end
+--				end
+--			end
+--			count := count + 1
+--		ensure
+--			uno_in_piu: count = old count + 1
+--			in_testa_se_non_presente: not (old has (target)) implies (attached first_element as fe implies fe.value = new)
+--			collegato_se_presente: old has (target) implies (attached get_element (new) as ge implies (attached ge.next as gen implies gen.value = target))
+--		end
+
+			insert_before (new, target: INTEGER)
+					-- Insert `new' before `target' if present otherwise add `new' at the end
+					-- Alternative (less efficient) implementation using feature `has'
+				local
+					previous_element: like first_element
+					new_element: like attached_element
+				do
+					create new_element.make (new)
+					if has (target) then
+						if target = first then
+							new_element.link_to (first_element)
+							first_element := new_element
+						else -- list has at least 2 elements and contains target from second position on
+							from
+								previous_element := first_element
+							until
+								attached previous_element as pe implies (attached pe.next as pen implies (pen.value = target))
+							loop
+								previous_element := previous_element.next
+							end
+							new_element.link_after (previous_element)
+						end
+					else -- list does not contain target
+						if count = 0 then
+							first_element := new_element
+							last_element := first_element
+						else
+							new_element.link_to (first_element)
+							first_element := new_element
+						end
 					end
-					if previous_element.next /= Void then
-						new_element.insert_after (previous_element)
-					else -- list does not contain `target'
-						new_element.link_to (first_element)
-						first_element := new_element
-					end
+					count := count + 1
+				ensure
+					uno_in_piu: count = old count + 1
+					in_testa_se_non_presente: not (old has (target)) implies (attached first_element as fe implies fe.value = new)
+					collegato_se_presente: old has (target) implies (attached get_element (new) as ge implies (attached ge.next as gen implies gen.value = target))
 				end
-			end
-			count := count + 1
-		ensure
-			uno_in_piu: count = old count + 1
-			in_testa_se_non_presente: not (old has (target)) implies first_element.value = new;
-			collegato_se_presente: old has (target) implies value_follows (target, new);
-		end
-
-		--	insert_before (new, target: INTEGER)
-		--			-- Insert `new' before `target' if present otherwise add `new' at the end
-		--			-- Alternative (less efficient) implementation using feature `has'
-		--		local
-		--			previous_element, new_element: INT_LINKABLE
-		--		do
-		--			create new_element.make (new)
-		--			if has (target) then
-		--				if target = first_element.value then
-		--					new_element.link_to (first_element)
-		--					first_element := new_element
-		--				else -- list has at least 2 elements and contains target from second position on
-		--					from
-		--						previous_element := first_element
-		--					until
-		--						previous_element.next.value = target
-		--					loop
-		--						previous_element := previous_element.next
-		--					end
-		--					new_element.insert_after (previous_element)
-		--				end
-		--			else -- list does not contain target
-		--				if count = 0 then
-		--					first_element := new_element
-		--					last_element := first_element
-		--				else
-		--					new_element.link_to (first_element)
-		--					first_element := new_element
-		--				end
-		--			end
-		--			count := count + 1
-		--		ensure
-		--			one_more: count = old count + 1
-		--			prepended_if_not_present: not (old has (target)) implies first_element.value = new;
-		--			linked_if_present: old has (target) implies get_item (new).next.value = target;
-		--		end
 
 	insert_multiple_after (new, target: INTEGER)
 			-- Inserisce `new' dopo ogni `target', se ne esistono
 			-- Altrimenti inserisce `new' alla fine
 		local
-			new_element, current_element: INT_LINKABLE
-			target_exist: BOOLEAN
+			new_element: like attached_element
+			current_element: like first_element
 		do
 			if has(target) then
 				from
@@ -249,7 +276,7 @@ feature
 				loop
 					if current_element.value = target then
 						create new_element.make (new)
-						new_element.insert_after (current_element)
+						new_element.link_after (current_element)
 						count := count + 1
 						if current_element = last_element then
 							last_element := new_element
@@ -266,15 +293,15 @@ feature
 					first_element := new_element
 					last_element := new_element
 				else
-					new_element.insert_after (last_element)
+					new_element.link_after (last_element)
 					last_element := new_element
 				end
 				count := count + 1
 			end
 		ensure
 			di_piu: count > old count
-			appeso_se_non_presente: not (old has(target)) implies last_element.value = new;
-			collegato_se_presente: old has(target) implies get_element(target).next.value = new;
+			appeso_se_non_presente: not (old has(target)) implies (attached last_element as le implies le.value = new)
+			collegato_se_presente: old has(target) implies (attached get_element(target) as ge implies (attached ge.next as gen implies gen.value = new))
 	end
 
 	invert
@@ -306,10 +333,8 @@ feature
 			-- print the entire list
 		local
 			temp: like first_element
-			dummy: like first_element
 		do
 			print ("%N La lista contiene: ")
-			dummy_do
 			from
 				temp := first_element
 			until
@@ -320,34 +345,16 @@ feature
 				temp := temp.next
 			end
 			print ("%N che sono in totale ")
-			dummy_reset
 			print (count)
 			print (" elementi.")
-			create dummy.make (0)
-			dummy_do
-			dummy.exec_nothing
-			dummy_reset
 			print ("%N")
-		end
-
-	dummy_do
-			-- dummy feature to test class invariants
-		do
-			count_buffer := count
-			count := 0
-		end
-
-	dummy_reset
-			-- dummy feature to test class invariants
-		do
-			count := count_buffer
 		end
 
 invariant
 	contatore_non_negativo: count >= 0
-	lista_termina_Void: last_element /= Void implies last_element.next = Void
+	lista_termina_Void: attached last_element as le implies le.next = Void
 	consistenza_lista_vuota: count = 0 implies (first_element = last_element) and (first_element = Void)
 	consistenza_lista_mono_elemento: count = 1 implies (first_element = last_element) and (first_element /= Void)
-	consistenza_lista_pluri_elemento: count > 1 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and then (first_element.next /= Void)
+	consistenza_lista_pluri_elemento: count > 1 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and then (attached first_element as fe implies fe.next /= Void)
 
 end

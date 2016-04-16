@@ -35,20 +35,20 @@ feature -- Test routines
 		lista_b.insert_before (9,-7)
 		-- stato liste: a = [-2,1], b = [9,3]
 
-		assert ("errore: insert_before modifica last_element", (lista_a.last_element.value = 1) and (lista_b.last_element.value = 3))
-		assert ("errore: insert_before non aggiorna first_element quando il target è first_element", lista_a.first_element.value = -2)
+		assert ("errore: insert_before modifica last_element", (attached lista_a.last_element as l_al implies l_al.value = 1) and (attached lista_b.last_element as l_bl implies l_bl.value = 3))
+		assert ("errore: insert_before non aggiorna first_element quando il target è first_element", attached lista_a.first_element as l_af implies l_af.value = -2)
 
 		lista_a.insert_before (3,1)
 		lista_b.insert_before (-2,9)
 		-- stato liste: a = [-2,3,1], b = [-2,9,3]
 
-		assert ("errore: insert_before non lega il precedente del target all'elemento inserito", lista_a.get_element(-2).next.value = 3)
+		assert ("errore: insert_before non lega il precedente del target all'elemento inserito", attached lista_a.get_element(-2) as l_ag implies (attached l_ag.next as l_agn implies l_agn.value = 3))
 		-- il legame tra elemento inserito e target è verificato dall'ensure della feature
-		assert ("errore: insert_before distrugge il legame tra target e successivo", lista_b.get_element(-2).next.next.value = 3)
+		assert ("errore: insert_before distrugge il legame tra target e successivo", attached lista_b.get_element(-2) as l_bg implies (attached l_bg.next as l_bgn implies (attached l_bgn.next as l_bgnn implies l_bgnn.value = 3)))
 
 		lista_a.insert_before (7,0)
-		assert ("errore: insert_before fallisce inserimento con target inesistente su lista non vuota", lista_a.first_element.value = 7)
-		assert ("errore: insert_before con target inesistente su lista non vuota non lega il primo elemento", lista_a.first_element.next.value = -2)
+		assert ("errore: insert_before fallisce inserimento con target inesistente su lista non vuota", attached lista_a.first_element as l_af implies l_af.value = 7)
+		assert ("errore: insert_before con target inesistente su lista non vuota non lega il primo elemento", attached lista_a.first_element as l_af implies (attached l_af.next as l_afn implies l_afn.value = -2))
 	end
 
 
@@ -72,20 +72,20 @@ feature -- Test routines
 		lista_b.insert_after (2,-8)
 		-- stato liste: a = [3,-1], b = [0,2]
 
-		assert ("errore: insert_after modifica first_element", (lista_a.first_element.value = 3) and (lista_b.first_element.value = 0))
-		assert ("errore: insert_after non aggiorna last_element quando il target è last_element", lista_a.last_element.value = -1)
+		assert ("errore: insert_after modifica first_element", (attached lista_a.first_element as l_af implies l_af.value = 3) and (attached lista_b.first_element as l_bf implies l_bf.value = 0))
+		assert ("errore: insert_after non aggiorna last_element quando il target è last_element", attached lista_a.last_element as l_al implies l_al.value = -1)
 
 		lista_a.insert_after (5,3)
 		lista_b.insert_after (8,2)
 		-- stato liste: a = [3,5,-1], b = [0,2,8]
 
-		assert ("errore: insert_after non lega il successivo del target all'elemento inserito", lista_a.get_element(5).next.value = -1)
+		assert ("errore: insert_after non lega il successivo del target all'elemento inserito", attached lista_a.get_element(5) as l_ag implies (attached l_ag.next as l_agn implies l_agn.value = -1))
 		-- il legame tra target e elemento_inserito è verificato dall'ensure della feature
-		assert ("errore: insert_after distrugge il legame tra target e precedente", lista_b.get_element(0).next.next.value = 8)
+		assert ("errore: insert_after distrugge il legame tra target e precedente", attached lista_b.get_element(0) as l_bg implies (attached l_bg.next as l_bgn implies (attached l_bgn.next as l_bgnn implies l_bgnn.value = 8)))
 
 		lista_a.insert_after (7,6)
-		assert ("errore: insert_after fallisce inserimento con target inesistente su lista non vuota", lista_a.last_element.value = 7)
-		assert ("errore: insert_after con target inesistente su lista non vuota non lega il vecchio last_element", lista_a.get_element(-1).next.value = 7)
+		assert ("errore: insert_after fallisce inserimento con target inesistente su lista non vuota", attached lista_a.last_element as l_al implies l_al.value = 7)
+		assert ("errore: insert_after con target inesistente su lista non vuota non lega il vecchio last_element", attached lista_a.get_element(-1) as l_ag implies (attached l_ag.next as l_agnn implies l_agnn.value = 7))
 	end
 
 
@@ -93,7 +93,7 @@ feature -- Test routines
 			-- Verifica la corretta esecuzione dell'inversione
 	local
 		lista, lista_copy: INT_LINKED_LIST
-		x,y : INT_LINKABLE
+		x,y : detachable INT_LINKABLE
 		c: INTEGER
 	do
 		create lista
@@ -119,8 +119,8 @@ feature -- Test routines
 			x := x.next
 		end
 		assert ("errore: invert non mantiene count", (lista.count = c) and (lista.count = lista_copy.count))
-		assert ("errore: invert non aggiorna first_element e last_element", (lista.first_element.value = 4) and (lista.last_element.value = 1))
-		assert ("errore: invert non inverte correttamente", (lista.first_element.next.value = 3) and (lista.first_element.next.next.value = 2))
+		assert ("errore: invert non aggiorna first_element e last_element", (attached lista.first_element as lf implies lf.value = 4) and (attached lista.last_element as ll implies ll.value = 1))
+		assert ("errore: invert non inverte correttamente", (attached lista.first_element as lf implies (attached lf.next as lfn implies lfn.value = 3)) and (attached lista.first_element as lf implies (attached lf.next as lfn implies (attached lfn.next as lfnn implies lfnn.value = 2))))
 
 		lista.invert
 		-- stato liste: lista = [1,2,3,4],  lista_copy = [1,2,3,4]

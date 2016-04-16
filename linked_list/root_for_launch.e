@@ -4,7 +4,7 @@ note
 	revision    : "$Revision$"
 
 class
-	ROOT_FOR_TEST
+	ROOT_FOR_LAUNCH
 
 inherit
 	ARGUMENTS
@@ -17,7 +17,7 @@ feature {NONE} -- Initialization
 	make
 			-- Run application.
 		local
-			tr, t: detachable INT_LINKED_LIST
+			t: INT_LINKED_LIST
 			target: detachable INT_LINKABLE
 		do
 			create t

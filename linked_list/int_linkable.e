@@ -40,22 +40,19 @@ feature
 			next = other
 		end
 
-	insert_after (other: detachable INT_LINKABLE)
+	link_after (other: detachable INT_LINKABLE)
 			-- insert this cell after `other' preserving what was after it
 		require
 			other /= Void
 		do
-			link_to (other.next)
-			other.link_to (Current)
+			check attached other as o then
+				link_to (o.next)
+				o.link_to (Current)
+			end
 		ensure
+			other /= Void
 			other.next = Current
-			other.next.next = old other.next
-		end
-
-	exec_nothing
-			-- do nothing
-		do
-			print ("%N instance of INT_LINKABLE doing nothing - to test class invariants")
+			attached other.next as on implies (on.next = old other.next)
 		end
 
 end
