@@ -17,6 +17,9 @@ import org.jdom.filter.ElementFilter;
 
 
 public class SC_Model_Element extends Element implements Runnable {
+	
+	//constructors
+	
 	public SC_Model_Element() {
 		super();
 	}
@@ -25,6 +28,8 @@ public class SC_Model_Element extends Element implements Runnable {
 		super(model_name);
 	}
 
+	//private fields
+	
 	private File inputFile;
 	
 	/*
@@ -36,6 +41,15 @@ public class SC_Model_Element extends Element implements Runnable {
 	 * pathName is the possibly empty directory part of modelName
 	 */
 	private String pathName;
+
+	private static List<String> stati = new ArrayList<String>();
+	private static List<String> targets = new ArrayList<String>();
+	private static List<String> data_ids = new ArrayList<String>();
+	private static List<String> data_assign = new ArrayList<String>();
+	
+	private Element documentRoot;
+
+	//public methods
 	
 	public void set_Model(String p_modelName) {
 		modelName = p_modelName;
@@ -46,19 +60,8 @@ public class SC_Model_Element extends Element implements Runnable {
 		setName(modelName);
 	}
 	
-	public static List<String> stati = new ArrayList<String>();
-	public static List<String> targets = new ArrayList<String>();
-	public static List<String> data_ids = new ArrayList<String>();
-	public static List<String> data_assign = new ArrayList<String>();
-
 	public File get_inputFile() {
 		return inputFile;
-	}
-
-	private Element documentRoot;
-
-	public Element get_documentRoot() {
-		return documentRoot;
 	}
 
 	public void set_documentRoot() throws InterruptedException {
@@ -125,7 +128,6 @@ public class SC_Model_Element extends Element implements Runnable {
 		}
 	}
 	
-	
 	public boolean SCXMLDocumentSyntaxOK() {
 		Element pDocumentRoot = this.get_documentRoot();
 		boolean checkOK = true;
@@ -148,9 +150,37 @@ public class SC_Model_Element extends Element implements Runnable {
 		return checkOK;
 	}
 	
+	public void stateChartGeneration(String pSCXMLModel) {
+		
+		Element pDocumentRoot = this.get_documentRoot();
 
+		try {
+			String initialState = pDocumentRoot.getAttribute("initial").getValue();
+			List<String> stateNames = Common.getStateNames(pDocumentRoot);
+			List<String> variableNames = Common.getVariableNames(pDocumentRoot);
+			List<String> eventNames = Common.getEventNames(pDocumentRoot);
+			ASMCodeCreator.create(pSCXMLModel, stateNames, initialState);
+			GUICodeCreator.create(pSCXMLModel, variableNames, eventNames);
+			LauncherCodeCreator.create(pSCXMLModel);
+			copyModelFile(pSCXMLModel);
+			System.out.println("Source code for model '" + pSCXMLModel + "' is now ready in directory '" + Conf.source_dir + Conf.filesep
+					+ pSCXMLModel + "'");
+			System.out.println("After compilation, the StateChart can be executed by running the Launcher in directory '" + Conf.class_code_dir
+					+ Conf.filesep + pSCXMLModel + "'");
+		} catch (JDOMException a_JDOMException) {
+			a_JDOMException.printStackTrace();
+		} catch (IOException an_IOException) {
+			an_IOException.printStackTrace();
+		}
+	}
+	
+	//private methods
+	
+	private Element get_documentRoot() {
+		return documentRoot;
+	}
 
-	private static boolean check_initial(Element pDocumentRoot) {
+	private boolean check_initial(Element pDocumentRoot) {
 		boolean check = true;
 		if (pDocumentRoot.getAttribute("initial") == null) {
 			System.err.println("ERROR: initial not found");
@@ -162,10 +192,8 @@ public class SC_Model_Element extends Element implements Runnable {
 			}
 		return check;
 	}
-	
-	
-	
-	private static boolean scxml_control_scxml(Element pDocumentRoot) {
+
+	private boolean scxml_control_scxml(Element pDocumentRoot) {
 		boolean check = true;
 		// controllo indirizzo e versione e deve avere almeno uno state oppure un parallel o un final
 		if (pDocumentRoot.getAttribute("version") != null) {
@@ -212,10 +240,8 @@ public class SC_Model_Element extends Element implements Runnable {
 		check = check & check_initial(pDocumentRoot);
 		return check;
 	}
-	
- 
-	
-	private static boolean check_state(Element state) {
+
+	private boolean check_state(Element state) {
 		List<String> figli = new ArrayList<String>();
 		boolean flag = true;
 		flag = check_state_id(state);
@@ -248,9 +274,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 
-	 
-	
-	private static boolean check_state_id(Element state) {
+	private boolean check_state_id(Element state) {
 		boolean flag = true;
 		Element padre;
 		if (state.getAttribute("id") == null) {
@@ -269,10 +293,8 @@ public class SC_Model_Element extends Element implements Runnable {
 		}
 		return flag;
 	}
-	
- 
-	
-	private static boolean check_assign_in_data() {
+
+	private boolean check_assign_in_data() {
 		boolean flag = true;
 		data_assign.removeAll(data_ids);
 		if (!(data_assign.isEmpty())) {
@@ -286,10 +308,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 	
-	
-	
-	
-	private static boolean check_targets() {
+	private boolean check_targets() {
 		boolean flag = true;
 		targets.removeAll(stati);
 		if (!(targets.isEmpty())) {
@@ -303,8 +322,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 
-	
-	private static boolean check_parallel(Element parallel) {
+	private boolean check_parallel(Element parallel) {
 		boolean flag = true;
 		flag = check_parallel_id(parallel);
 		Iterator<Element> onentry = parallel.getContent(new ElementFilter("onentry")).iterator();
@@ -325,9 +343,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 	
-
-	
-	private static boolean check_parallel_id(Element parallel) {
+	private boolean check_parallel_id(Element parallel) {
 		boolean flag = true;
 		Element padre;
 		if (parallel.getAttribute("id") == null) {
@@ -347,9 +363,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 	
-	
-	
-	private static boolean check_datamodel(Element datamodel) {
+	private boolean check_datamodel(Element datamodel) {
 		boolean flag = true;
 		Iterator<Element> datas = datamodel.getContent(new ElementFilter("data")).iterator();
 		while (datas.hasNext())
@@ -357,19 +371,15 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 	
-	
-
-	private static boolean check_data(Element dato) {
+	private boolean check_data(Element dato) {
 		boolean check_data_flag = true;
 		check_data_flag = check_data_id_single(dato) && check_data_id(dato);
 		check_data_flag = check_data_flag & check_data_src_expr(dato);
 		data_ids.add(dato.getAttribute("id").getValue());
 		return check_data_flag;
 	}
-	
-	
-	
-	private static boolean check_data_src_expr(Element dato) {
+
+	private boolean check_data_src_expr(Element dato) {
 		if (dato.getAttribute("src") != null & dato.getAttribute("expr") != null) {
 			System.err.println("ERROR un data non puo avere src E expr");
 			return false;
@@ -377,8 +387,7 @@ public class SC_Model_Element extends Element implements Runnable {
 			return true;
 	}
 	
-	
-	private static boolean check_data_id(Element dato) {
+	private boolean check_data_id(Element dato) {
 		if (dato.getAttribute("id") == null) {
 			System.err.println("ERROR un data non ha id");
 			return false;
@@ -390,8 +399,7 @@ public class SC_Model_Element extends Element implements Runnable {
 				return true;
 	}
 	
-	
-	private static boolean check_data_id_single(Element dato) {
+	private boolean check_data_id_single(Element dato) {
 		if (data_ids.contains(dato.getAttributeValue("id"))) {
 			System.err.println("ERROR piu data hanno nome" + dato.getAttributeValue("id"));
 			return false;
@@ -399,8 +407,7 @@ public class SC_Model_Element extends Element implements Runnable {
 			return true;
 	}
 	
-	
-	private static boolean check_trans(Element trans) {
+	private boolean check_trans(Element trans) {
 		boolean flag = true;
 		Element padre;
 		if (trans.getAttribute("event") == null & trans.getAttribute("cond") == null & trans.getAttribute("target") == null) {
@@ -425,8 +432,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 	 
-	
-	private static boolean check_final(Element finale) {
+	private boolean check_final(Element finale) {
 		boolean flag = true;
 		if (finale.getAttribute("id") != null)
 			stati.add(finale.getAttribute("id").getValue());
@@ -443,9 +449,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 	
-	
-	
-	private static boolean check_onentry(Element onentry) {
+	private boolean check_onentry(Element onentry) {
 		boolean flag = true;
 		Iterator<Element> assigns = onentry.getContent(new ElementFilter("assign")).iterator();
 		while (assigns.hasNext()) {
@@ -457,10 +461,8 @@ public class SC_Model_Element extends Element implements Runnable {
 		}
 		return flag;
 	}
-
-	 
-	
-	private static boolean check_onexit(Element onexit) {
+ 
+	private boolean check_onexit(Element onexit) {
 		boolean flag = true;
 		Iterator<Element> assigns = onexit.getContent(new ElementFilter("assign")).iterator();
 		while (assigns.hasNext()) {
@@ -473,8 +475,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 	
-	
-	private static boolean check_assign(Element assegna) {
+	private boolean check_assign(Element assegna) {
 		boolean flag = true;
 		Element padre;
 		if (assegna.getAttribute("name") == null) {
@@ -491,42 +492,12 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 	
-	
-	
-	private static boolean check_log(Element log) {
+	private boolean check_log(Element log) {
 		// fantasma della check log
 		return true;
 	}
 	
-	
-	
-	public void stateChartGeneration(String pSCXMLModel) {
-		
-		Element pDocumentRoot = this.get_documentRoot();
-
-		try {
-			String initialState = pDocumentRoot.getAttribute("initial").getValue();
-			List<String> stateNames = Common.getStateNames(pDocumentRoot);
-			List<String> variableNames = Common.getVariableNames(pDocumentRoot);
-			List<String> eventNames = Common.getEventNames(pDocumentRoot);
-			ASMCodeCreator.create(pSCXMLModel, stateNames, initialState);
-			GUICodeCreator.create(pSCXMLModel, variableNames, eventNames);
-			LauncherCodeCreator.create(pSCXMLModel);
-			copyModelFile(pSCXMLModel);
-			System.out.println("Source code for model '" + pSCXMLModel + "' is now ready in directory '" + Conf.source_dir + Conf.filesep
-					+ pSCXMLModel + "'");
-			System.out.println("After compilation, the StateChart can be executed by running the Launcher in directory '" + Conf.class_code_dir
-					+ Conf.filesep + pSCXMLModel + "'");
-		} catch (JDOMException a_JDOMException) {
-			a_JDOMException.printStackTrace();
-		} catch (IOException an_IOException) {
-			an_IOException.printStackTrace();
-		}
-	}
-	
-	
-	
-	private static void copyModelFile(String pSCXMLModel) {
+	private void copyModelFile(String pSCXMLModel) {
 		File modelInputFile = new File(Conf.data_dir + Conf.filesep + pSCXMLModel + Conf.scxml_extension);
 		try {
 			BufferedReader bufferedInput = new BufferedReader(new FileReader(modelInputFile));
@@ -549,7 +520,5 @@ public class SC_Model_Element extends Element implements Runnable {
 			an_IOException.printStackTrace();
 		}
 	}
-	
-	
 	
 }
