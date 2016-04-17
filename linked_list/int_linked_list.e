@@ -65,20 +65,20 @@ feature
 	has (a_value: INTEGER): BOOLEAN
 			-- La lista contiene `a_value'?
 		local
-			current_element, temp: like first_element
+			current_element, pre_current: like first_element
 		do
 			from
 				current_element := first_element;
-				temp := Void
+				pre_current := Void
 			invariant
-				not Result implies (temp /= Void implies temp.value /= a_value)
+				not Result implies (pre_current /= Void implies pre_current.value /= a_value)
 			until
 				(current_element = Void) or Result
 			loop
 				if current_element.value = a_value then
 					Result := True
 				end
-				temp := current_element
+				pre_current := current_element
 				current_element := current_element.next
 			end
 		end
@@ -88,20 +88,20 @@ feature
 		require
 			esiste_bersaglio: has(target)
 		local
-			current_element, temp: like first_element
+			current_element, pre_current: like first_element
 		do
 			from
 				current_element := get_element(target)
-				temp := Void
+				pre_current := Void
 			invariant
-				not Result implies (temp /= Void implies temp.value /= a_value)
+				not Result implies (pre_current /= Void implies pre_current.value /= a_value)
 			until
 				(current_element = Void) or Result
 			loop
 				if current_element.value = a_value then
 					Result := True
 				end
-				temp := current_element
+				pre_current := current_element
 				current_element := current_element.next
 			end
 		end
@@ -109,21 +109,21 @@ feature
 	get_element (a_value: INTEGER): detachable INT_LINKABLE
 			-- Ritorna il primo elemento contenente `a_value', se esiste
 		local
-			current_element, temp: like first_element
+			current_element, pre_current: like first_element
 		do
 			from
 				current_element := first_element;
-				temp := Void
+				pre_current := Void
 			invariant
-				Result = Void implies (temp /= Void implies temp.value /= a_value)
+				Result = Void implies (pre_current /= Void implies pre_current.value /= a_value)
 			until
 				(current_element = Void) or (Result /= Void)
 			loop
 				if current_element.value = a_value then
 					Result := current_element
 				end
-				temp := current_element
-				current_element := temp.next
+				pre_current := current_element
+				current_element := current_element.next
 			end
 		ensure
 			(Result /= Void) implies Result.value = a_value
@@ -132,17 +132,17 @@ feature
 	sum_of_positive: INTEGER
 			-- La somma dei valori positivi nella lista
 		local
-			temp: like first_element
+			current_element: like first_element
 		do
 			from
-				temp := first_element
+				current_element := first_element
 			until
-				temp = Void
+				current_element = Void
 			loop
-				if temp.value > 0 then
-					Result := Result + temp.value
+				if current_element.value > 0 then
+					Result := Result + current_element.value
 				end
-				temp := temp.next
+				current_element := current_element.next
 			end
 		ensure
 			Result >= 0
@@ -334,17 +334,17 @@ feature
 	stampa
 			-- Stampa tutta la lista
 		local
-			temp: like first_element
+			current_element: like first_element
 		do
 			print ("%N La lista contiene: ")
 			from
-				temp := first_element
+				current_element := first_element
 			until
-				temp = Void
+				current_element = Void
 			loop
-				print (temp.value)
+				print (current_element.value)
 				print (", ")
-				temp := temp.next
+				current_element := current_element.next
 			end
 			print ("%N che sono in totale ")
 			print (count)
