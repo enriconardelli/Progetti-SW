@@ -49,16 +49,16 @@ feature {NONE} -- Initialization
 			t.invert
 			t.stampa
 
-			print ("%N invoco insert 15 before 10 che non c'e'")
-			t.insert_before (15, 10)
+			print ("%N invoco insert 15 using has before 10 che non c'e'")
+			t.insert_using_has_before (15, 10)
 			t.stampa
 
 			print ("%N invoco insert 25 before 15 che e' il primo")
 			t.insert_before (25, 15)
 			t.stampa
 
-			print ("%N invoco insert 9 before -5 che sta alla fine")
-			t.insert_before (9, -5)
+			print ("%N invoco insert 9 using has before -5 che sta alla fine")
+			t.insert_using_has_before (9, -5)
 			t.stampa
 
 			print ("%N estendo con 5")

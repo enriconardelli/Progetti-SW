@@ -10,10 +10,10 @@ class
 feature
 
 	first_element: detachable INT_LINKABLE
-			-- First cell of the list
+			-- Il primo elemento della lista
 
 	first: INTEGER
-			-- Return the value in the first cell of the list
+			-- Il valore nel primo elemento della lista
 		do
 			check attached first_element as fe then
 				Result := fe.value
@@ -21,10 +21,10 @@ feature
 		end
 
 	last_element: detachable INT_LINKABLE
-			-- Last cell of the list
+			-- L'ultimo elemento della lista
 
 	last: INTEGER
-			-- Return the value in the last cell of the list
+			-- Il valore nell'ultimo elemento della lista
 		do
 			check attached last_element as le then
 				Result := le.value
@@ -32,22 +32,22 @@ feature
 		end
 
 	attached_element (i: INTEGER): INT_LINKABLE
-			-- dummy cell of the list, always attached
+			-- Elemento sempre attached usato per creazione di nuovi elementi da aggiungere
 		do
 			create Result.make (i)
 		ensure
-			result_exists: Result /= Void
+			esiste_result: Result /= Void
 		end
 
 	count: INTEGER
-			-- Number of elements in the list
+			-- Numero di elementi nella lista
 
-	append (a_value: INTEGER)
-			-- Add `a_value' to end.
+	append (new: INTEGER)
+			-- Aggiunge alla fine elemento con valore `new'
 		local
-			new_element: like first_element
+			new_element: like attached_element
 		do
-			create new_element.make (a_value)
+			new_element := attached_element (new)
 			if first_element = Void then
 				first_element := new_element
 			else
@@ -58,7 +58,7 @@ feature
 			last_element := new_element
 			count := count + 1
 		ensure
-			attached last_element as le implies le.value = a_value
+			attached last_element as le implies le.value = new
 			count = old count + 1
 		end
 
@@ -130,7 +130,7 @@ feature
 		end
 
 	sum_of_positive: INTEGER
-			-- The sum of positive elements
+			-- La somma dei valori positivi nella lista
 		local
 			temp: like first_element
 		do
@@ -152,9 +152,10 @@ feature
 			-- Inserisce `new' dopo la prima occorrenza di `target' se presente
 			-- Altrimenti inserisce `new' alla fine
 		local
-			current_element, new_element: like first_element
+			current_element: like first_element
+			new_element: like attached_element
 		do
-			create new_element.make (new)
+			new_element := attached_element (new)
 			from
 				current_element := first_element
 			until
@@ -183,59 +184,60 @@ feature
 			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen implies gen.value = new))
 		end
 
---	insert_before (new, target: INTEGER)
---			-- Inserisce `new' prima della prima occorrenza di `target' se esiste
---			-- Altrimenti inserisce `new' all'inizio
---		local
---			previous_element: like first_element
---			new_element: like attached_element
---		do
---			create new_element.make (new)
---			if count = 0 then
---				first_element := new_element
---				last_element := first_element
---			else
---				if (target = first) then
---					new_element.link_to (first_element)
---					first_element := new_element
---				else -- list contains at least one element and the first element is not the target
---					from
---						previous_element := first_element
---					until
---						attached previous_element as pe implies ((pe.next = Void) or else (attached pe.next as pen implies pen.value = target))
---					loop
---						previous_element := previous_element.next
---					end
---					check attached previous_element as pe then
---						if pe.next /= Void then
---							new_element.insert_after (pe)
---						else -- list does not contain `target'
---							new_element.link_to (first_element)
---							first_element := new_element
---						end
---					end
---				end
---			end
---			count := count + 1
---		ensure
---			uno_in_piu: count = old count + 1
---			in_testa_se_non_presente: not (old has (target)) implies (attached first_element as fe implies fe.value = new)
---			collegato_se_presente: old has (target) implies (attached get_element (new) as ge implies (attached ge.next as gen implies gen.value = target))
---		end
+	insert_before (new, target: INTEGER)
+			-- Inserisce `new' prima della prima occorrenza di `target' se esiste
+			-- Altrimenti inserisce `new' all'inizio
+		local
+			previous_element: like first_element
+			new_element: like attached_element
+		do
+			new_element := attached_element (new)
+			if count = 0 then
+				first_element := new_element
+				last_element := first_element
+			else
+				if (target = first) then
+					new_element.link_to (first_element)
+					first_element := new_element
+				else -- la lista contiene almento un elemento e il primo elemento non e' il target
+					from
+						previous_element := first_element
+					until
+						attached previous_element as pe implies ((pe.next = Void) or else (attached pe.next as pen implies pen.value = target))
+					loop
+						previous_element := previous_element.next
+					end
+					check attached previous_element as pe then
+						if pe.next /= Void then
+							new_element.link_after (pe)
+						else -- list does not contain `target'
+							new_element.link_to (first_element)
+							first_element := new_element
+						end
+					end
+				end
+			end
+			count := count + 1
+		ensure
+			uno_in_piu: count = old count + 1
+			in_testa_se_non_presente: not (old has (target)) implies (attached first_element as fe implies fe.value = new)
+			collegato_se_presente: old has (target) implies (attached get_element (new) as ge implies (attached ge.next as gen implies gen.value = target))
+		end
 
-			insert_before (new, target: INTEGER)
-					-- Insert `new' before `target' if present otherwise add `new' at the end
-					-- Alternative (less efficient) implementation using feature `has'
+			insert_using_has_before (new, target: INTEGER)
+					-- Inserisce `new' prima della prima occorrenza di `target' se esiste
+					-- Altrimenti inserisce `new' all'inizio
+					-- Implementazione alternativa (e meno efficiente) che usa `has'
 				local
 					previous_element: like first_element
 					new_element: like attached_element
 				do
-					create new_element.make (new)
+					new_element := attached_element (new)
 					if has (target) then
 						if target = first then
 							new_element.link_to (first_element)
 							first_element := new_element
-						else -- list has at least 2 elements and contains target from second position on
+						else -- la lista ha almeno 2 elementi e contiene il target dalla seconda posizione in avanti
 							from
 								previous_element := first_element
 							until
@@ -245,7 +247,7 @@ feature
 							end
 							new_element.link_after (previous_element)
 						end
-					else -- list does not contain target
+					else -- la lista non contiene il target
 						if count = 0 then
 							first_element := new_element
 							last_element := first_element
@@ -265,8 +267,8 @@ feature
 			-- Inserisce `new' dopo ogni `target', se ne esistono
 			-- Altrimenti inserisce `new' alla fine
 		local
-			new_element: like attached_element
 			current_element: like first_element
+			new_element: like attached_element
 		do
 			if has(target) then
 				from
@@ -275,7 +277,7 @@ feature
 					current_element = Void
 				loop
 					if current_element.value = target then
-						create new_element.make (new)
+						new_element := attached_element (new)
 						new_element.link_after (current_element)
 						count := count + 1
 						if current_element = last_element then
@@ -305,7 +307,7 @@ feature
 	end
 
 	invert
-			-- invert the entire list
+			-- Inverte tutta la lista
 		local
 			curr: like first_element
 			perno: like first_element
@@ -330,7 +332,7 @@ feature
 		end
 
 	stampa
-			-- print the entire list
+			-- Stampa tutta la lista
 		local
 			temp: like first_element
 		do
