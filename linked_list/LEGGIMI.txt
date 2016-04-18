@@ -15,3 +15,5 @@ Successivamente Jacopo Astolfi ha realizzato la prima versione con Autotest disp
 
 
 Tutte le modifiche/estensioni vanno apportate a questa versione
+
+Bisogna aggiungere ai test statici e ai test dinamici gli opportuni controlli per le nuove feature aggiunte.
