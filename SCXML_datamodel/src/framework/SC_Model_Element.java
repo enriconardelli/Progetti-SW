@@ -129,7 +129,7 @@ public class SC_Model_Element extends Element implements Runnable {
 	}
 	
 	public boolean SCXMLDocumentSyntaxOK() {
-		Element pDocumentRoot = this.get_documentRoot();
+		Element pDocumentRoot = documentRoot;
 		boolean checkOK = true;
 		// checking "data" node in the document
 		Iterator<Element> anElement = pDocumentRoot.getDescendants(new ElementFilter("data"));
@@ -152,7 +152,7 @@ public class SC_Model_Element extends Element implements Runnable {
 	
 	public void stateChartGeneration(String pSCXMLModel) {
 		
-		Element pDocumentRoot = this.get_documentRoot();
+		Element pDocumentRoot = documentRoot;
 
 		try {
 			String initialState = pDocumentRoot.getAttribute("initial").getValue();
@@ -176,10 +176,6 @@ public class SC_Model_Element extends Element implements Runnable {
 	
 	//private methods
 	
-	private Element get_documentRoot() {
-		return documentRoot;
-	}
-
 	private boolean check_initial(Element pDocumentRoot) {
 		boolean check = true;
 		if (pDocumentRoot.getAttribute("initial") == null) {
