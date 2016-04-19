@@ -42,10 +42,10 @@ public class SC_Model_Element extends Element implements Runnable {
 	 */
 	private String pathName;
 
-	private static List<String> stati = new ArrayList<String>();
-	private static List<String> targets = new ArrayList<String>();
-	private static List<String> data_ids = new ArrayList<String>();
-	private static List<String> data_assign = new ArrayList<String>();
+	private List<String> stati = new ArrayList<String>();
+	private List<String> targets = new ArrayList<String>();
+	private List<String> data_ids = new ArrayList<String>();
+	private List<String> data_assign = new ArrayList<String>();
 	
 	private Element documentRoot;
 
