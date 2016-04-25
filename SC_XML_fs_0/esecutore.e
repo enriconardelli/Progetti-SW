@@ -153,6 +153,8 @@ feature -- Cose che si possono fare
 							end
 							lis_data.forth
 						end
+						condizioni.extend (true, "condizione_vuota")
+--						condizione_vuota è una condizione sempre true che si applica alle transizioni che hanno condizione void (cfr riempi_stato)
 					end
 					lis_el.forth
 				end
@@ -203,6 +205,7 @@ feature -- Cose che si possono fare
 						end
 						if attached transition_list.item_for_iteration.attribute_by_name ("cond") as cond then
 							transizione.set_condizione (cond.value)
+							else	transizione.set_condizione ("condizione_vuota")
 						end
 						assign_list := transition_list.item_for_iteration.elements
 						-- TODO gestire assegnazione di azioni alla transizione corrente in feature separata
