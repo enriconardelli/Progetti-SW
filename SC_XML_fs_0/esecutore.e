@@ -13,23 +13,23 @@ create
 feature --Attributi
 	--	conf: CONFIGURAZIONE
 
+	state_chart: CONFIGURAZIONE
+
 	stato_iniziale: STATO
 
 	stati: HASH_TABLE [STATO, STRING]
-
-	configuratore: CONFIGURAZIONE
+			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
+			-- una volta che è terminata non serve più
 
 	condizioni: HASH_TABLE [BOOLEAN, STRING]
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
 			-- una volta che è terminata non serve più
-			--	condizioni: HASH_TABLE [STRING, STRING]
-			--eventi: ARRAY[STRING]
-			-- serve durante la lettura degli eventi dal file
 
 	count_evento_corrente: INTEGER --tiene il conto del numero di eventi già processati,
 			--serve per la leggi_prossimo_evento
 
 	eventi: ARRAY [STRING]
+			-- serve durante la lettura degli eventi dal file
 
 feature {NONE} -- Inizializzazione
 
@@ -48,8 +48,8 @@ feature {NONE} -- Inizializzazione
 			create s_orig.make
 			print ("FINE!%N")
 			albero := s_orig.tree
-			crea_stati_e_cond (albero)
-			create configuratore.make_with_condition (stato_iniziale, condizioni)
+			crea_stati_e_condizioni (albero)
+			create state_chart.make_with_condition (stato_iniziale, condizioni)
 			eventi := acquisisci_eventi
 --			print ("cristiano è brutto")
 			evolvi_SC
@@ -79,10 +79,10 @@ feature {NONE} -- Inizializzazione
 			create condizioni.make (1)
 --			create configuratore.make_with_condition (stato_iniziale, condizioni)
 			print ("INIZIO!%N")
-			crea_stati_e_cond (albero)
+			crea_stati_e_condizioni (albero)
 			eventi := acquisisci_eventi
 			print ("acquisiti eventi")
-			create configuratore.make_with_condition (stato_iniziale, condizioni)
+			create state_chart.make_with_condition (stato_iniziale, condizioni)
 			evolvi_SC
 		end
 
@@ -96,27 +96,27 @@ feature -- Cose che si possono fare
 					print ("entrato in evolvi_SC: ")
 			FROM
 			UNTIL
-				configuratore.stato_corrente.finale or count_evento_corrente > eventi.count
+				state_chart.stato_corrente.finale or count_evento_corrente > eventi.count
 			LOOP
-				configuratore.stato_stabile
+				state_chart.stato_stabile
 				evento_corrente := current.leggi_prossimo_evento
 				print ("evento corrente = " + evento_corrente + "%N")
-				IF NOT configuratore.stato_corrente.determinismo (evento_corrente, configuratore.condizioni) THEN
+				IF NOT state_chart.stato_corrente.determinismo (evento_corrente, state_chart.condizioni) THEN
 					print ("ERRORE!!! Non c'è determinismo!!!")
 				ELSE
-					st := configuratore.stato_corrente.target (evento_corrente, configuratore.condizioni)
+					st := state_chart.stato_corrente.target (evento_corrente, state_chart.condizioni)
 					if attached st as s then
-						configuratore.set_stato_corrente (s)
+						state_chart.set_stato_corrente (s)
 					print ("nuovo stato corrente = " + st.id + "%N")
 					end
 				end
 			end
-			if not configuratore.stato_corrente.finale then
-				configuratore.stato_stabile
+			if not state_chart.stato_corrente.finale then
+				state_chart.stato_stabile
 			end
 		end
 
-	crea_stati_e_cond (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+	crea_stati_e_condizioni (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
 			--				questa feature dovra creare l'hashtable con gli stati istanziati e le transizioni,
 			--				anche garantendo che le transizioni hanno target leciti
 		local
