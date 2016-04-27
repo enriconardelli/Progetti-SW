@@ -23,7 +23,8 @@ a: ESECUTORE
 			-- <Precursor>
 		do
 			create e.start
-			create a.start_new("esempio.xml")
+--			create a.start_new("esempio.xml")
+			create a.start_new
 		end
 
 feature -- Test routines

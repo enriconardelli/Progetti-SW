@@ -55,17 +55,19 @@ feature {NONE} -- Inizializzazione
 			evolvi_SC
 		end
 
-	start_new (un_file: STRING)
+	start_new
 	-- TODO finire di verificare se questa feature può diventare la nuova feature di start
 		local
 			parser: XML_PARSER
 			albero: XML_CALLBACKS_TREE
+			un_file: STRING
 		do
 				--| Instantiate parser
 			create {XML_STANDARD_PARSER} parser.make
 				--| Build tree callbacks
 			create albero.make_null
 			parser.set_callbacks (albero)
+			un_file := "esempio.xml"
 				--| Parse the `file_name' content
 			parser.parse_from_filename (un_file)
 			if parser.error_occurred then
