@@ -25,8 +25,8 @@ feature --Attributi
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
 			-- una volta che è terminata non serve più
 
-	count_evento_corrente: INTEGER --tiene il conto del numero di eventi già processati,
-			--serve per la leggi_prossimo_evento
+--	count_evento_corrente: INTEGER --tiene il conto del numero di eventi già processati,
+--			--serve per la leggi_prossimo_evento
 
 	eventi: ARRAY [STRING]
 			-- serve durante la lettura degli eventi dal file
@@ -43,7 +43,7 @@ feature {NONE} -- Inizializzazione
 			stato_iniziale.set_final
 			create stati.make (1)
 			create condizioni.make (1)
-			count_evento_corrente := 1
+--			count_evento_corrente := 1
 			print ("INIZIO!%N")
 			create s_orig.make
 			print ("FINE!%N")
@@ -92,16 +92,19 @@ feature -- Cose che si possono fare
 
 	evolvi_SC
 		local
+			count_evento_corrente: INTEGER
 			evento_corrente: STRING
 			st: detachable STATO
 		do
 					print ("entrato in evolvi_SC: ")
 			FROM
+				count_evento_corrente := 1
 			UNTIL
 				state_chart.stato_corrente.finale or count_evento_corrente > eventi.count
 			LOOP
 				state_chart.stato_stabile
-				evento_corrente := current.leggi_prossimo_evento
+				evento_corrente := eventi [count_evento_corrente]
+				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "%N")
 				IF NOT state_chart.stato_corrente.determinismo (evento_corrente, state_chart.condizioni) THEN
 					print ("ERRORE!!! Non c'è determinismo!!!")
@@ -254,13 +257,13 @@ feature -- Cose che si possono fare
 
 feature --eventi
 
-	leggi_prossimo_evento: STRING
-			-- Questa serve a leggere l'evento corrente
+--	leggi_prossimo_evento: STRING
+--			-- Questa serve a leggere l'evento corrente
 
-		do
-			Result := eventi [count_evento_corrente]
-			count_evento_corrente := count_evento_corrente + 1
-		end
+--		do
+--			Result := eventi [count_evento_corrente]
+--			count_evento_corrente := count_evento_corrente + 1
+--		end
 
 	acquisisci_eventi: ARRAY [STRING]
 			-- Legge gli eventi dal file 'eventi.txt' e li inserisce in un vettore
