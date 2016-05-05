@@ -27,9 +27,6 @@ feature --attributi
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
 			-- una volta che è terminata non serve più
 
-		--	count_evento_corrente: INTEGER --tiene il conto del numero di eventi già processati,
-		--			--serve per la leggi_prossimo_evento
-
 feature --creazione
 
 	make_with_condition (gli_eventi: ARRAY [STRING]; albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
@@ -57,7 +54,7 @@ feature --routines
 		local
 			count_evento_corrente: INTEGER
 			evento_corrente: STRING
-			st: detachable STATO
+			nuovo_stato: detachable STATO
 		do
 			print ("%Nentrato in evolvi_SC:  %N %N")
 			print ("stato iniziale:  " + stato_corrente.id + " %N %N")
@@ -73,17 +70,34 @@ feature --routines
 				IF NOT stato_corrente.determinismo (evento_corrente, condizioni) THEN
 					print ("ERRORE!!! Non c'è determinismo!!!")
 				ELSE
-					st := stato_corrente.target (evento_corrente, condizioni)
-					if attached st as s then
-						set_stato_corrente (s)
-						print ("nuovo stato corrente = " + st.id + "%N")
-
+					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
+					if attached nuovo_stato as ns then
+						set_stato_corrente (ns)
+						print ("nuovo stato corrente = " + ns.id + "%N")
+							-- TODO inserire codice per eseguire azioni
 					end
 				end
 			end
 			if not stato_corrente.finale then
 				stato_stabile
 			end
+		end
+
+	istanzia_condizioni (lis_data: LIST [XML_ELEMENT])
+			-- istanzia nella SC le condizioni presenti in <datamodel>
+		do
+			from
+				lis_data.start
+			until
+				lis_data.after
+			loop
+				if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("id") as nome and then attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("expr") as valore then
+					condizioni.extend (valore.value ~ "true", nome.value)
+				end
+				lis_data.forth
+			end
+			condizioni.extend (true, "condizione_vuota")
+				--						condizione_vuota è una condizione sempre true che si applica alle transizioni che hanno condizione void (cfr riempi_stato)
 		end
 
 	crea_stati_e_condizioni (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
@@ -112,19 +126,7 @@ feature --routines
 						stati.extend (temp_stato, asd.value)
 					elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
 							-- TODO gestire fallimento del test
-							-- TODO separare creazione delle condizioni in feature a parte
-						from
-							lis_data.start
-						until
-							lis_data.after
-						loop
-							if attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("id") as nome and then attached {XML_ATTRIBUTE} lis_data.item_for_iteration.attribute_by_name ("expr") as valore then
-								condizioni.extend (valore.value ~ "true", nome.value)
-							end
-							lis_data.forth
-						end
-						condizioni.extend (true, "condizione_vuota")
-							--						condizione_vuota è una condizione sempre true che si applica alle transizioni che hanno condizione void (cfr riempi_stato)
+						istanzia_condizioni (lis_data)
 					end
 					lis_el.forth
 				end
