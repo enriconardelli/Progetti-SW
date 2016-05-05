@@ -213,8 +213,8 @@ feature --routines
 								end
 							end
 							if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
-								create finta.make_with_text (name.value)
-								transizione.set_azione (finta)
+								create stampa.make_with_text (name.value)
+								transizione.set_azione (stampa)
 							end
 							assign_list.forth
 						end
