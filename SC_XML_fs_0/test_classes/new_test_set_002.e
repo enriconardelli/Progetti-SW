@@ -22,7 +22,7 @@ feature -- Test routines
 
 	on_prepare
 		do
-			create e.start_new
+			create e.start
 		end
 
 	test_contenuto_eventi

@@ -8,7 +8,7 @@ class
 	ESECUTORE
 
 create
-	start_new
+	start
 
 feature --Attributi
 	--	conf: CONFIGURAZIONE
@@ -22,8 +22,8 @@ feature --Attributi
 
 feature {NONE} -- Inizializzazione
 
-	start_new
-			-- TODO finire di verificare se questa feature può diventare la nuova feature di start
+	start
+			-- prepara la SC e avvia la sua esecuzione
 		do
 			print ("INIZIO!%N")
 			crea_albero

@@ -87,7 +87,7 @@ feature -- Test routines
 			e: ESECUTORE
 			eventi: ARRAY [STRING]
 		do
-			create e.start_new
+			create e.start
 			if attached e.state_chart.stati.item ("reset") as reset then
 				eventi := reset.get_events
 				assert("Fatto male count",eventi.count=1)
