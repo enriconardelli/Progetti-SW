@@ -100,66 +100,74 @@ feature --routines
 				--						condizione_vuota è una condizione sempre true che si applica alle transizioni che hanno condizione void (cfr riempi_stato)
 		end
 
-	crea_stati_e_condizioni (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
-			--				questa feature dovra creare l'hashtable con gli stati istanziati e le transizioni,
-			--				anche garantendo che le transizioni hanno target leciti
+	istanzia_stati_e_condizioni (lis_el: LIST [XML_ELEMENT])
+			-- istanzia nella SC gli stati presenti in <state> e le condizioni presenti in <datamodel>
 		local
 			temp_stato: STATO
+		do
+			from
+				lis_el.start
+			until
+				lis_el.after
+			loop
+				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as tempattr then
+						-- TODO gestire fallimento del test
+					create temp_stato.make_with_id (tempattr.value)
+					stati.extend (temp_stato, tempattr.value)
+					temp_stato.set_final
+				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as asd then
+						-- TODO gestire fallimento del test
+					create temp_stato.make_with_id (asd.value)
+					stati.extend (temp_stato, asd.value)
+				elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
+						-- TODO gestire fallimento del test
+					istanzia_condizioni (lis_data)
+				end
+				lis_el.forth
+			end
+		end
+
+	inizializza_stati (lis_el: LIST [XML_ELEMENT])
+			-- assegna agli stati presenti nella SC le transizioni con eventi e azioni
+		do
+			from
+				lis_el.start
+			until
+				lis_el.after
+			loop
+				if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato_xml then
+					riempi_stato (stato_xml.value, lis_el.item_for_iteration)
+				end
+				lis_el.forth
+			end
+		end
+
+	crea_stati_e_condizioni (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+			--	crea le hashtable degli stati e delle condizioni
+			--	inizializza ogni stato con le sue transizioni con eventi ed azioni
+		local
 			flag: BOOLEAN
 		do
 			flag := false
 			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
 					-- TODO gestire fallimento del test
-				from
-					lis_el.start
-				until
-					lis_el.after
-				loop
-					if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as tempattr then
-							-- TODO gestire fallimento del test
-						create temp_stato.make_with_id (tempattr.value)
-						stati.extend (temp_stato, tempattr.value)
-						temp_stato.set_final
-					elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as asd then
-							-- TODO gestire fallimento del test
-						create temp_stato.make_with_id (asd.value)
-						stati.extend (temp_stato, asd.value)
-					elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
-							-- TODO gestire fallimento del test
-						istanzia_condizioni (lis_data)
-					end
-					lis_el.forth
-				end
+				istanzia_stati_e_condizioni (lis_el)
 					--assegno chi è l'iniziale
 				if attached f.attribute_by_name ("initial") as primo_stato and then attached stati.item (primo_stato.value) as valore_primo_stato then
 						-- TODO gestire fallimento del test
 					stato_iniziale := valore_primo_stato
 				end
-
-					--stati istanziati, ora li riempiamo
-					-- TODO separare in feature autonoma
-				from
-					lis_el.start
-				until
-					lis_el.after
-				loop
-					if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato_xml then
-						riempi_stato (stato_xml.value, lis_el.item_for_iteration)
-					end
-					lis_el.forth
-				end
+				inizializza_stati (lis_el)
 			end
 		end
 
 	riempi_stato (id_stato: STRING; element: XML_ELEMENT)
 		local
-			temp_stato: DETACHABLE STATO
 			transition_list: LIST [XML_ELEMENT]
 			assign_list: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
 			assegnazione: ASSEGNAZIONE
 			finta: FITTIZIA
-			val: BOOLEAN
 		do
 			transition_list := element.elements
 			from
