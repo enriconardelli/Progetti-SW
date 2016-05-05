@@ -173,7 +173,6 @@ feature --routines
 			assign_list: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
 			assegnazione: ASSEGNAZIONE
-			finta: FITTIZIA
 		do
 			transition_list := element.elements
 			from
@@ -213,7 +212,7 @@ feature --routines
 								end
 							end
 							if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
-								create finta.make_with_id (name.value)
+								create finta.make_with_text (name.value)
 								transizione.set_azione (finta)
 							end
 							assign_list.forth

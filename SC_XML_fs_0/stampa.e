@@ -5,25 +5,25 @@ note
 	revision: "0"
 
 class
-	FITTIZIA
+	STAMPA
 
 inherit
 
 	AZIONE
 
 create
-	make_with_id
+	make_with_text
 
 feature --attributi
 
-	id: STRING
+	testo: STRING
 
 feature--creazione
 
-	make_with_id (un_id: STRING)
+	make_with_text (una_stringa: STRING)
 
 		do
-			id := un_id
+			testo := una_stringa
 		end
 
 end
