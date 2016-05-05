@@ -61,7 +61,7 @@ feature -- Test routines
 			hash_di_prova.put (TRUE, "Pippo" )
 			hash_di_prova.put (FALSE, "Pluto" )
 			hash_di_prova.put (TRUE, "Minnie" )
-		
+
 
 			if attached stato_prova as sp then
 				assert ("non c'è determinismo, invece dovrebbe esserci!!!", sp.determinismo ("ti sfido a trovare uno stato con questo nome",hash_di_prova))
@@ -87,8 +87,8 @@ feature -- Test routines
 			e: ESECUTORE
 			eventi: ARRAY [STRING]
 		do
-			create e.start
-			if attached e.stati.item ("reset") as reset then
+			create e.start_new
+			if attached e.state_chart.stati.item ("reset") as reset then
 				eventi := reset.get_events
 				assert("Fatto male count",eventi.count=1)
 				assert("Fatto male contenuto",eventi[1]~"watch_start")

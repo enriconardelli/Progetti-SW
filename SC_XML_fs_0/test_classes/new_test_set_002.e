@@ -22,7 +22,7 @@ feature -- Test routines
 
 	on_prepare
 		do
-			create e.start
+			create e.start_new
 		end
 
 	test_contenuto_eventi
@@ -64,7 +64,7 @@ feature -- Test routines
 
 	test_crea_stati
 		local
-			
+
 		do
 
 		end

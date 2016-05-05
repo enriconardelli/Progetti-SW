@@ -21,10 +21,8 @@ feature -- Test routines
 			-- New test routine
 		do
 --			create esecutore_test.start_new ("test.xml")
-			create esecutore_test.start_new 
+			create esecutore_test.start_new
 			--assert ("not_implemented", False)
 		end
 
 end
-
-

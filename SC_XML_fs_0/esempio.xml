@@ -4,7 +4,7 @@
 		<data id="alfa" expr="true" />
 		<data id="beta" expr="true" />
 		<data id="gamma" expr="false" />
-	</datamodel>
+</datamodel>
 	<state id="one">
 		<transition event="star" cond="alfa" target="two">
 			<assign location="alfa" expr="false" />
