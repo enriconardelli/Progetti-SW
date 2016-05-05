@@ -35,7 +35,6 @@ feature --creazione
 			stato_iniziale.set_final
 			create stati.make (1)
 			create condizioni.make (1)
-			create stato_corrente.make_empty
 			crea_stati_e_condizioni (albero)
 			stato_corrente := stato_iniziale
 			eventi := gli_eventi
@@ -142,21 +141,28 @@ feature --routines
 			end
 		end
 
-	crea_stati_e_condizioni (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
-			--	crea le hashtable degli stati e delle condizioni
-			--	inizializza ogni stato con le sue transizioni con eventi ed azioni
-		local
-			flag: BOOLEAN
+	imposta_stato_iniziale (radice: XML_ELEMENT)
 		do
-			flag := false
+			if attached radice.attribute_by_name ("initial") as si then
+				if attached stati.item (si.value) as v then
+					stato_iniziale := v
+				else
+					print ("ERRORE: lo stato indicato come 'initial' non è uno degli stati in <state>")
+				end
+			else
+				print ("ERRORE: manca lo stato 'initial' nel file e non c'è la gestione della sua assenza")
+				-- TODO gestire la scelta dello stato iniziale in caso di assenza dell'attributo 'initial' nel file .xml
+			end
+		end
+
+	crea_stati_e_condizioni (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+			--	riempie le hashtable degli stati e delle condizioni
+			--	inizializza ogni stato con le sue transizioni con eventi ed azioni
+		do
 			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
 					-- TODO gestire fallimento del test
 				istanzia_stati_e_condizioni (lis_el)
-					--assegno chi è l'iniziale
-				if attached f.attribute_by_name ("initial") as primo_stato and then attached stati.item (primo_stato.value) as valore_primo_stato then
-						-- TODO gestire fallimento del test
-					stato_iniziale := valore_primo_stato
-				end
+				imposta_stato_iniziale (f)
 				inizializza_stati (lis_el)
 			end
 		end
