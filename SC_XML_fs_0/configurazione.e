@@ -173,6 +173,7 @@ feature --routines
 			assign_list: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
 			assegnazione: ASSEGNAZIONE
+			stampa: STAMPA
 		do
 			transition_list := element.elements
 			from
