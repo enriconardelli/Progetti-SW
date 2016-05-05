@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <system xmlns="http://www.eiffel.com/developers/xml/configuration-1-15-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-15-0 http://www.eiffel.com/developers/xml/configuration-1-15-0.xsd" name="sc_xml_fs_0" uuid="27A9860C-26CF-4EE6-9CE0-BA1F776E6092">
 	<target name="sc_xml_fs_0">
-		<root class="ESECUTORE" feature="start"/>
+		<root class="ESECUTORE" feature="start_new"/>
 		<option warning="true" is_obsolete_routine_type="true" void_safety="transitional">
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>

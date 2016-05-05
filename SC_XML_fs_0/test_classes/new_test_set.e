@@ -22,9 +22,9 @@ a: ESECUTORE
 	on_prepare
 			-- <Precursor>
 		do
-			create e.start
+			create e.start_new
 --			create a.start_new("esempio.xml")
-			create a.start
+			create a.start_new
 		end
 
 feature -- Test routines
