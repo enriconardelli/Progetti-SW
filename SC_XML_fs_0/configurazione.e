@@ -165,9 +165,6 @@ feature --routines
 
 	assegnazione_azioni (assign_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
 	--viene richiamata in riempi_stato; assegna le azioni alla transizione
-		local
-			assegnazione: ASSEGNAZIONE
-			stampa: STAMPA
 		do
 			from
 				assign_list.start
@@ -177,17 +174,14 @@ feature --routines
 				if assign_list.item_for_iteration.name ~ "assign" then
 					if attached assign_list.item_for_iteration.attribute_by_name ("location") as luogo and then attached assign_list.item_for_iteration.attribute_by_name ("expr") as expr then
 						if expr.value ~ "false" then
-							create assegnazione.make_with_cond_and_value (luogo.value, FALSE)
-							transizione.set_azione (assegnazione)
+							transizione.set_azione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE))
 						elseif expr.value ~ "true" then
-							create assegnazione.make_with_cond_and_value (luogo.value, TRUE)
-							transizione.set_azione (assegnazione)
+							transizione.set_azione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE))
 						end
 					end
 				end
 				if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
-					create stampa.make_with_text (name.value)
-					transizione.set_azione (stampa)
+					transizione.set_azione (create {STAMPA}.make_with_text (name.value))
 				end
 				assign_list.forth
 			end
