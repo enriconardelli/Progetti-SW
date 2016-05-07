@@ -14,3 +14,43 @@ ESECUTORE           root's creation        illegal opcode:
 
 sc_xml_fs_0: dumping core to generate debugging information...
 Catcall detected in {SPECIAL}.fill_with for arg#1: expected STRING_8 but got Void
+
+sc_xml_fs_0: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+ARRAY               item @3                valid_index:                 
+<0000000003B72248>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+STATO               get_transition @7                                   
+<0000000003B721B8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+CONFIGURAZIONE      evolvi_sc @11                                       
+<0000000003B70FA8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ESECUTORE           start @7                                            
+<0000000003B685E8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ESECUTORE           root's creation                                     
+<0000000003B685E8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+ARRAY               item @4                index_large_enough:          
+<0000000003B72248>                         Runtime check violated.       Exit
+-------------------------------------------------------------------------------
+ARRAY               item @4                                             
+<0000000003B72248>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+STATO               get_transition @7                                   
+<0000000003B721B8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+CONFIGURAZIONE      evolvi_sc @11                                       
+<0000000003B70FA8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+ESECUTORE           start @7                                            
+<0000000003B685E8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+ESECUTORE           root's creation                                     
+<0000000003B685E8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------

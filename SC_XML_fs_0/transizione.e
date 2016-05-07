@@ -15,7 +15,8 @@ feature --creazione
 	make_with_target(uno_stato: STATO)
 		do
 			target:= uno_stato
-			azione := Void
+			create stampa_log.make_with_text("no Log")
+			assegnazione:=Void
 			evento:= Void
 			condizione:= Void
 		end
@@ -26,7 +27,9 @@ feature --attributi
 
 	condizione: detachable STRING
 
-	azione: detachable AZIONE
+	stampa_log: STAMPA
+
+	assegnazione:detachable ASSEGNAZIONE
 
 	target: STATO
 
@@ -46,14 +49,34 @@ feature --setter
 			condizione := a_string
 		end
 
-	set_azione (un_azione: AZIONE)--da modificare: serve che si prenda in input una stringa e si istanzi un'azione
+
+	set_stampa_log (un_azione: STAMPA)--da modificare: serve che si prenda in input una stringa e si istanzi un'azione
 								  -- a partire da quella stringa. Prima bisogna capire come fare a distinguere se la transizione è
 								  --di tipo 'fittizia' o 'assegnazione' a partire dalla stringa passata.
 		require
 			not_void: un_azione /= Void
 		do
-			azione := un_azione
-		end
+			stampa_log := un_azione
+
+
+		ensure
+		azione_non_vuota:	stampa_log /= Void
+			end
+
+
+set_assegnazione(un_azione : ASSEGNAZIONE)
+
+		require
+			not_void: un_azione /= Void
+		do
+			assegnazione:= un_azione
+
+
+		ensure
+		azione_non_vuota:	assegnazione /= Void
+			end
+
+
 
 	set_target (uno_stato: STATO)
 		do

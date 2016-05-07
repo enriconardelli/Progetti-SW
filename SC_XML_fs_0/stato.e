@@ -66,7 +66,6 @@ feature --routines
 				-- ritorna falso se con evento_corrente sono attivabili nella configurazione corrente almeno 2 transizioni
 
 			result := TRUE
-
 			from
 				index_count := transizioni.lower --si parte a scorrere l'array di transizioni dal suo indice più piccolo
 				numero_di_transizioni_attivate_da_evento_corrente := 0
@@ -187,6 +186,28 @@ feature --routines
 		end
 
 feature --cose a parte
+
+	get_transition (evento_corrente: STRING): TRANSIZIONE
+		local
+			index_count: INTEGER
+			index: INTEGER
+		do
+
+			from
+				index_count := transizioni.lower
+			until
+				index_count = transizioni.upper + 1
+			loop
+				if attached transizioni [index_count].evento as ang then
+					if ang.is_equal (evento_corrente) then
+                        index := index_count
+					end
+				end
+				index_count := index_count + 1
+			end
+	        Result:=  transizioni[index]
+
+		end
 
 	get_events: ARRAY [STRING]
 		local

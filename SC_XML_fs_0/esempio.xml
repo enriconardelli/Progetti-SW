@@ -11,7 +11,7 @@
 			<assign location="beta" expr="false" />
 		</transition>
 		<transition event="circle" cond="beta" target="three">
-			<assign name="alfa" expr="true" />
+			<assign location="alfa" expr="true" />
 			<log name="una prima azione" />
 		</transition>
 	</state>
@@ -22,10 +22,10 @@
 	</state>
 	<state id="three">
 		<transition event="plus" target="one">
-			<assign name="alfa" expr="false" />
+			<assign location="alfa" expr="false" />
 		</transition>
 		<transition event="minus" target="one">
-			<assign name="alfa" expr="true" />
+			<assign location="alfa" expr="true" />
 		</transition>
 	</state>
 </scxml>

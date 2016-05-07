@@ -40,14 +40,7 @@ feature --creazione
 			eventi := gli_eventi
 		end
 
-feature --routines
-
-	set_stato_corrente (uno_stato: STATO)
-		require
-			stato_corrente_not_void: stato_corrente /= Void
-		do
-			stato_corrente := uno_stato
-		end
+feature --evoluzione SC
 
 	evolvi_SC
 		local
@@ -56,7 +49,7 @@ feature --routines
 			nuovo_stato: detachable STATO
 		do
 			print ("%Nentrato in evolvi_SC:  %N %N")
-			print ("stato iniziale:  " + stato_corrente.id + " %N %N")
+			print ("stato iniziale:  " + stato_corrente.id + "       %N")
 			FROM
 				count_evento_corrente := 1
 			UNTIL
@@ -65,14 +58,15 @@ feature --routines
 				stato_stabile
 				evento_corrente := eventi [count_evento_corrente]
 				count_evento_corrente := count_evento_corrente + 1
-				print ("evento corrente = " + evento_corrente + "%N")
+				print ("evento corrente = " + evento_corrente + "   %N")
 				IF NOT stato_corrente.determinismo (evento_corrente, condizioni) THEN
 					print ("ERRORE!!! Non c'è determinismo!!!")
 				ELSE
+			        esegui_azioni(evento_corrente)
 					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
 					if attached nuovo_stato as ns then
 						set_stato_corrente (ns)
-						print ("nuovo stato corrente = " + ns.id + "%N")
+						print ("%N %Nnuovo stato corrente = " + ns.id + "    %N")
 							-- TODO inserire codice per eseguire azioni
 					end
 				end
@@ -80,6 +74,40 @@ feature --routines
 			if not stato_corrente.finale then
 				stato_stabile
 			end
+			print ("%N%Nstato finale = " + stato_corrente.id + "%N")
+		end
+
+
+
+esegui_azioni(evento_corrente: STRING   )
+	local
+		boolean: STRING
+do
+
+	print ("Log = " +stato_corrente.get_transition (evento_corrente).stampa_log.testo + "    %N")
+		if attached stato_corrente.get_transition (evento_corrente).assegnazione as ass then
+			if ass.valore then
+				boolean := "true"
+			else
+				boolean := "false"
+			end
+			if attached stato_corrente.get_transition (evento_corrente).condizione as cond then
+				if attached condizioni.item (cond) as cond_in_hash then
+					if cond_in_hash = TRUE then
+						ass.modifica_condizioni (condizioni)
+						print ("Pongo " + ass.condizione + " =  " + boolean + "    %N")
+					end
+				end
+			end
+		end
+end
+feature -- inizializzazione SC
+
+	set_stato_corrente (uno_stato: STATO)
+		require
+			stato_corrente_not_void: stato_corrente /= Void
+		do
+			stato_corrente := uno_stato
 		end
 
 	istanzia_condizioni (lis_data: LIST [XML_ELEMENT])
@@ -167,9 +195,8 @@ feature --routines
 			end
 		end
 
-
 	assegnazione_azioni (assign_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
-	--viene richiamata in riempi_stato; assegna le azioni alla transizione
+			--viene richiamata in riempi_stato; assegna le azioni alla transizione
 		local
 			assegnazione: ASSEGNAZIONE
 			stampa: STAMPA
@@ -183,44 +210,42 @@ feature --routines
 					if attached assign_list.item_for_iteration.attribute_by_name ("location") as luogo and then attached assign_list.item_for_iteration.attribute_by_name ("expr") as expr then
 						if expr.value ~ "false" then
 							create assegnazione.make_with_cond_and_value (luogo.value, FALSE)
-							transizione.set_azione (assegnazione)
+							transizione.set_assegnazione (assegnazione)
 						elseif expr.value ~ "true" then
 							create assegnazione.make_with_cond_and_value (luogo.value, TRUE)
-							transizione.set_azione (assegnazione)
+							transizione.set_assegnazione (assegnazione)
 						end
 					end
+						--				else 	create assegnazione.make_with_cond_and_value (" ", TRUE)
+						--							transizione.set_assegnazione(assegnazione)
+
 				end
 				if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
-					create stampa.make_with_text (name.value)
-					transizione.set_azione (stampa)
+					if attached name.value then
+						create stampa.make_with_text (name.value)
+						transizione.set_stampa_log (stampa)
+					end
 				end
 				assign_list.forth
 			end
+				--TODO: creare vettore di azioni generiche
 		end
 
+	assegnazione_eventi (transition_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
+		do
+			if attached transition_list.item_for_iteration.attribute_by_name ("event") as event then
+				transizione.set_evento (event.value)
+			end
+		end
 
-
-assegnazione_eventi(transition_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
-do
-	if attached transition_list.item_for_iteration.attribute_by_name ("event") as event then
-							transizione.set_evento (event.value)
-						end
-end
-
-
-
-
-assegnazione_condizione(transition_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
-do
-	if attached transition_list.item_for_iteration.attribute_by_name ("cond") as cond then
-							transizione.set_condizione (cond.value)
-						else
-							transizione.set_condizione ("condizione_vuota")
-						end
-end
-
-
-
+	assegnazione_condizione (transition_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
+		do
+			if attached transition_list.item_for_iteration.attribute_by_name ("cond") as cond then
+				transizione.set_condizione (cond.value)
+			else
+				transizione.set_condizione ("condizione_vuota")
+			end
+		end
 
 	riempi_stato (id_stato: STRING; element: XML_ELEMENT)
 		local
@@ -240,22 +265,19 @@ end
 						-- TODO gestire fallimento del test per assenza clausola target
 					if attached stati.item (target.value) as target_state then
 						create transizione.make_with_target (target_state)
-						assegnazione_eventi(transition_list, transizione)
-				    	assegnazione_condizione(transition_list, transizione)
+						assegnazione_eventi (transition_list, transizione)
+						assegnazione_condizione (transition_list, transizione)
 						assign_list := transition_list.item_for_iteration.elements
 						assegnazione_azioni (assign_list, transizione)
 						if attached stati.item (id_stato) as si_c then
 							si_c.agg_trans (transizione)
 						end
-
-
 					else
 						if attached stati.item (id_stato) as si_c then
 							print ("lo stato" + si_c.id + "ha una transizione non valida %N")
 						end
 					end
 				end
-
 				transition_list.forth
 			end
 		end

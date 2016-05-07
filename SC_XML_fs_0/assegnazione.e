@@ -7,9 +7,6 @@ note
 class
 	ASSEGNAZIONE
 
-inherit
-
-	AZIONE
 
 create
 	make_with_cond_and_value
@@ -28,4 +25,8 @@ feature -- creazione
 			valore := un_valore
 		end
 
+    modifica_condizioni(condizioni:  HASH_TABLE [BOOLEAN, STRING])
+    do
+    	condizioni.replace (valore, condizione )
+    end
 end
