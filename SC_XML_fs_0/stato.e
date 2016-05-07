@@ -8,7 +8,7 @@ class
 	STATO
 
 create
-	make_with_id, make_final_with_id, make_empty
+	make_with_id, make_empty
 
 feature --creazione
 
@@ -18,17 +18,6 @@ feature --creazione
 		do
 			id := un_id
 			finale := FALSE
-			create transizioni.make_empty
-		ensure
-			attributo_assegnato: id = un_id
-		end
-
-	make_final_with_id (un_id: STRING)
-		require
-			non_e_una_stringa_vuota: un_id /= Void
-		do
-			id := un_id
-			finale := TRUE
 			create transizioni.make_empty
 		ensure
 			attributo_assegnato: id = un_id
