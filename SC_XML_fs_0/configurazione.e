@@ -151,7 +151,7 @@ feature --routines
 				end
 			else
 				print ("ERRORE: manca lo stato 'initial' nel file e non c'è la gestione della sua assenza")
-				-- TODO gestire la scelta dello stato iniziale in caso di assenza dell'attributo 'initial' nel file .xml
+					-- TODO gestire la scelta dello stato iniziale in caso di assenza dell'attributo 'initial' nel file .xml
 			end
 		end
 
@@ -167,13 +167,66 @@ feature --routines
 			end
 		end
 
+
+	assegnazione_azioni (assign_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
+	--viene richiamata in riempi_stato; assegna le azioni alla transizione
+		local
+			assegnazione: ASSEGNAZIONE
+			stampa: STAMPA
+		do
+			from
+				assign_list.start
+			until
+				assign_list.after
+			loop
+				if assign_list.item_for_iteration.name ~ "assign" then
+					if attached assign_list.item_for_iteration.attribute_by_name ("location") as luogo and then attached assign_list.item_for_iteration.attribute_by_name ("expr") as expr then
+						if expr.value ~ "false" then
+							create assegnazione.make_with_cond_and_value (luogo.value, FALSE)
+							transizione.set_azione (assegnazione)
+						elseif expr.value ~ "true" then
+							create assegnazione.make_with_cond_and_value (luogo.value, TRUE)
+							transizione.set_azione (assegnazione)
+						end
+					end
+				end
+				if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
+					create stampa.make_with_text (name.value)
+					transizione.set_azione (stampa)
+				end
+				assign_list.forth
+			end
+		end
+
+
+
+assegnazione_eventi(transition_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
+do
+	if attached transition_list.item_for_iteration.attribute_by_name ("event") as event then
+							transizione.set_evento (event.value)
+						end
+end
+
+
+
+
+assegnazione_condizione(transition_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
+do
+	if attached transition_list.item_for_iteration.attribute_by_name ("cond") as cond then
+							transizione.set_condizione (cond.value)
+						else
+							transizione.set_condizione ("condizione_vuota")
+						end
+end
+
+
+
+
 	riempi_stato (id_stato: STRING; element: XML_ELEMENT)
 		local
 			transition_list: LIST [XML_ELEMENT]
 			assign_list: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
-			assegnazione: ASSEGNAZIONE
-			stampa: STAMPA
 		do
 			transition_list := element.elements
 			from
@@ -181,52 +234,28 @@ feature --routines
 			until
 				transition_list.after
 			loop
+
 					-- TODO gestire separatamente feature di creazione transizione che torna o transizione o errore
 				if transition_list.item_for_iteration.name ~ "transition" and then attached transition_list.item_for_iteration.attribute_by_name ("target") as target then
 						-- TODO gestire fallimento del test per assenza clausola target
 					if attached stati.item (target.value) as target_state then
 						create transizione.make_with_target (target_state)
-						if attached transition_list.item_for_iteration.attribute_by_name ("event") as event then
-							transizione.set_evento (event.value)
-						end
-						if attached transition_list.item_for_iteration.attribute_by_name ("cond") as cond then
-							transizione.set_condizione (cond.value)
-						else
-							transizione.set_condizione ("condizione_vuota")
-						end
+						assegnazione_eventi(transition_list, transizione)
+				    	assegnazione_condizione(transition_list, transizione)
 						assign_list := transition_list.item_for_iteration.elements
-							-- TODO gestire assegnazione di azioni alla transizione corrente in feature separata
-						from
-							assign_list.start
-						until
-							assign_list.after
-						loop
-							if assign_list.item_for_iteration.name ~ "assign" then
-								if attached assign_list.item_for_iteration.attribute_by_name ("location") as luogo and then attached assign_list.item_for_iteration.attribute_by_name ("expr") as expr then
-									if expr.value ~ "false" then
-										create assegnazione.make_with_cond_and_value (luogo.value, FALSE)
-										transizione.set_azione (assegnazione)
-									elseif expr.value ~ "true" then
-										create assegnazione.make_with_cond_and_value (luogo.value, TRUE)
-										transizione.set_azione (assegnazione)
-									end
-								end
-							end
-							if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
-								create stampa.make_with_text (name.value)
-								transizione.set_azione (stampa)
-							end
-							assign_list.forth
-						end
+						assegnazione_azioni (assign_list, transizione)
 						if attached stati.item (id_stato) as si_c then
 							si_c.agg_trans (transizione)
 						end
+
+
 					else
 						if attached stati.item (id_stato) as si_c then
 							print ("lo stato" + si_c.id + "ha una transizione non valida %N")
 						end
 					end
 				end
+
 				transition_list.forth
 			end
 		end
