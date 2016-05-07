@@ -57,18 +57,18 @@ feature --routines
 		do
 			print ("%Nentrato in evolvi_SC:  %N %N")
 			print ("stato iniziale:  " + stato_corrente.id + " %N %N")
-			FROM
+			from
 				count_evento_corrente := 1
-			UNTIL
+			until
 				stato_corrente.finale or count_evento_corrente > eventi.count
-			LOOP
+			loop
 				stato_stabile
 				evento_corrente := eventi [count_evento_corrente]
 				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "%N")
-				IF NOT stato_corrente.determinismo (evento_corrente, condizioni) THEN
+				if not stato_corrente.determinismo (evento_corrente, condizioni) then
 					print ("ERRORE!!! Non c'è determinismo!!!")
-				ELSE
+				else
 					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
 					if attached nuovo_stato as ns then
 						set_stato_corrente (ns)
