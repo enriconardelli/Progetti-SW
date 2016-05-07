@@ -101,23 +101,18 @@ feature --routines
 
 	istanzia_stati_e_condizioni (lis_el: LIST [XML_ELEMENT])
 			-- istanzia nella SC gli stati presenti in <state> e le condizioni presenti in <datamodel>
-		local
-			temp_stato: STATO
 		do
 			from
 				lis_el.start
 			until
 				lis_el.after
 			loop
-				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as tempattr then
+				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 						-- TODO gestire fallimento del test
-					create temp_stato.make_with_id (tempattr.value)
-					stati.extend (temp_stato, tempattr.value)
-					temp_stato.set_final
-				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as asd then
+					stati.extend (create {STATO}.make_final_with_id(att.value), att.value)
+				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 						-- TODO gestire fallimento del test
-					create temp_stato.make_with_id (asd.value)
-					stati.extend (temp_stato, asd.value)
+					stati.extend (create {STATO}.make_final_with_id(att.value), att.value)
 				elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
 						-- TODO gestire fallimento del test
 					istanzia_condizioni (lis_data)
