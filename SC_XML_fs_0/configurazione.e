@@ -57,18 +57,18 @@ feature --routines
 		do
 			print ("%Nentrato in evolvi_SC:  %N %N")
 			print ("stato iniziale:  " + stato_corrente.id + " %N %N")
-			FROM
+			from
 				count_evento_corrente := 1
-			UNTIL
+			until
 				stato_corrente.finale or count_evento_corrente > eventi.count
-			LOOP
+			loop
 				stato_stabile
 				evento_corrente := eventi [count_evento_corrente]
 				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "%N")
-				IF NOT stato_corrente.determinismo (evento_corrente, condizioni) THEN
+				if not stato_corrente.determinismo (evento_corrente, condizioni) then
 					print ("ERRORE!!! Non c'è determinismo!!!")
-				ELSE
+				else
 					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
 					if attached nuovo_stato as ns then
 						set_stato_corrente (ns)
@@ -96,28 +96,23 @@ feature --routines
 				lis_data.forth
 			end
 			condizioni.extend (true, "condizione_vuota")
-				--						condizione_vuota è una condizione sempre true che si applica alle transizioni che hanno condizione void (cfr riempi_stato)
+				--	condizione_vuota è una condizione sempre true che si applica alle transizioni che hanno condizione void (cfr riempi_stato)
 		end
 
 	istanzia_stati_e_condizioni (lis_el: LIST [XML_ELEMENT])
 			-- istanzia nella SC gli stati presenti in <state> e le condizioni presenti in <datamodel>
-		local
-			temp_stato: STATO
 		do
 			from
 				lis_el.start
 			until
 				lis_el.after
 			loop
-				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as tempattr then
+				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 						-- TODO gestire fallimento del test
-					create temp_stato.make_with_id (tempattr.value)
-					stati.extend (temp_stato, tempattr.value)
-					temp_stato.set_final
-				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as asd then
+					stati.extend (create {STATO}.make_final_with_id (att.value), att.value)
+				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 						-- TODO gestire fallimento del test
-					create temp_stato.make_with_id (asd.value)
-					stati.extend (temp_stato, asd.value)
+					stati.extend (create {STATO}.make_with_id (att.value), att.value)
 				elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
 						-- TODO gestire fallimento del test
 					istanzia_condizioni (lis_data)
