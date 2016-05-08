@@ -9,6 +9,5 @@ deferred class
 
 feature
 
-	testo: STRING
-	
+
 end

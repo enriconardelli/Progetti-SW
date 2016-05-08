@@ -59,48 +59,49 @@ feature --evoluzione SC
 				evento_corrente := eventi [count_evento_corrente]
 				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "   %N")
-				IF NOT stato_corrente.determinismo (evento_corrente, condizioni) THEN
-					print ("ERRORE!!! Non c'è determinismo!!!")
-				ELSE
-			        esegui_azioni(evento_corrente)
-					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
-					if attached nuovo_stato as ns then
-						set_stato_corrente (ns)
-						print ("%N %Nnuovo stato corrente = " + ns.id + "    %N")
-							-- TODO inserire codice per eseguire azioni
+				if stato_corrente.has_transition(evento_corrente) then
+					IF NOT stato_corrente.determinismo (evento_corrente, condizioni) THEN
+						print ("ERRORE!!! Non c'è determinismo!!!")
+					ELSE
+						esegui_azioni (evento_corrente)
+						nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
+						if attached nuovo_stato as ns then
+							set_stato_corrente (ns)
+							print ("%N %Nnuovo stato corrente = " + ns.id + "    %N")
+						end
 					end
+					else
+						print("evento non valido, passo al prossimo evento:  %N")
 				end
-			end
-			if not stato_corrente.finale then
-				stato_stabile
+				if not stato_corrente.finale then
+					stato_stabile
+				end
 			end
 			print ("%N%Nstato finale = " + stato_corrente.id + "%N")
 		end
 
-
-
-esegui_azioni(evento_corrente: STRING   )
-	local
-		boolean: STRING
-do
-
-	print ("Log = " +stato_corrente.get_transition (evento_corrente).stampa_log.testo + "    %N")
-		if attached stato_corrente.get_transition (evento_corrente).assegnazione as ass then
-			if ass.valore then
-				boolean := "true"
-			else
-				boolean := "false"
-			end
-			if attached stato_corrente.get_transition (evento_corrente).condizione as cond then
-				if attached condizioni.item (cond) as cond_in_hash then
-					if cond_in_hash = TRUE then
-						ass.modifica_condizioni (condizioni)
-						print ("Pongo " + ass.condizione + " =  " + boolean + "    %N")
+	esegui_azioni (evento_corrente: STRING)
+		local
+			boolean: STRING
+		do
+			print ("Log = " + stato_corrente.get_transition (evento_corrente).stampa_log.testo + "    %N")
+			if attached stato_corrente.get_transition (evento_corrente).assegnazione as ass then
+				if ass.valore then
+					boolean := "true"
+				else
+					boolean := "false"
+				end
+				if attached stato_corrente.get_transition (evento_corrente).condizione as cond then
+					if attached condizioni.item (cond) as cond_in_hash then
+						if cond_in_hash = TRUE then
+							ass.modifica_condizioni (condizioni)
+							print ("Pongo " + ass.condizione + " =  " + boolean + "    %N")
+						end
 					end
 				end
 			end
 		end
-end
+
 feature -- inizializzazione SC
 
 	set_stato_corrente (uno_stato: STATO)
@@ -206,9 +207,9 @@ feature -- inizializzazione SC
 				if assign_list.item_for_iteration.name ~ "assign" then
 					if attached assign_list.item_for_iteration.attribute_by_name ("location") as luogo and then attached assign_list.item_for_iteration.attribute_by_name ("expr") as expr then
 						if expr.value ~ "false" then
-						transizione.set_assegnazione(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE))
+							transizione.set_assegnazione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE))
 						elseif expr.value ~ "true" then
-						transizione.set_assegnazione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE))
+							transizione.set_assegnazione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE))
 						end
 					end
 						--				else 	create assegnazione.make_with_cond_and_value (" ", TRUE)
@@ -217,7 +218,7 @@ feature -- inizializzazione SC
 				end
 				if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
 					if attached name.value then
-						transizione.set_stampa_log(create {STAMPA}.make_with_text (name.value))
+						transizione.set_stampa_log (create {STAMPA}.make_with_text (name.value))
 					end
 				end
 				assign_list.forth

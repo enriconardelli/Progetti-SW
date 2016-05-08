@@ -1,3 +1,4 @@
+star
 circle
 minus
 star

@@ -220,6 +220,31 @@ feature --cose a parte
 
 		end
 
+	has_transition (evento_corrente: STRING): BOOLEAN
+		local
+			index_count: INTEGER
+			has: BOOLEAN
+		do
+        has:= false
+			from
+				index_count := transizioni.lower
+			until
+				index_count = transizioni.upper + 1
+			loop
+				if attached transizioni [index_count].evento as ang then
+					if ang.is_equal (evento_corrente) then
+                        has := true
+					end
+				end
+				index_count := index_count + 1
+			end
+	        Result:=  has
+
+		end
+
+
+
+
 	get_events: ARRAY [STRING]
 		local
 			i: INTEGER

@@ -54,3 +54,78 @@ ESECUTORE           start @7
 ESECUTORE           root's creation                                     
 <0000000003B685E8>                         Routine failure.              Exit
 -------------------------------------------------------------------------------
+
+sc_xml_fs_0: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+ARRAY               item @3                valid_index:                 
+<0000000003BA6208>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+STATO               get_transition @7                                   
+<0000000003BA6178>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+CONFIGURAZIONE      esegui_azioni @1                                    
+<0000000003BA4F28>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+CONFIGURAZIONE      evolvi_sc @11                                       
+<0000000003BA4F28>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ESECUTORE           start @7                                            
+<0000000003B9A5E8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ESECUTORE           root's creation                                     
+<0000000003B9A5E8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+sc_xml_fs_0: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+ARRAY               item @3                valid_index:                 
+<0000000003B30568>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+STATO               get_transition @7                                   
+<0000000003B304D8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+CONFIGURAZIONE      esegui_azioni @1                                    
+<0000000003B2EF28>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+CONFIGURAZIONE      evolvi_sc @11                                       
+<0000000003B2EF28>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ESECUTORE           start @7                                            
+<0000000003B245E8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ESECUTORE           root's creation                                     
+<0000000003B245E8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+sc_xml_fs_0: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+ARRAY               item @3                valid_index:                 
+<00000000039D9568>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+STATO               get_transition @7                                   
+<00000000039D94D8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+CONFIGURAZIONE      esegui_azioni @1                                    
+<00000000039D7F28>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+CONFIGURAZIONE      evolvi_sc @12                                       
+<00000000039D7F28>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ESECUTORE           start @7                                            
+<00000000039CD5E8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ESECUTORE           root's creation                                     
+<00000000039CD5E8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
