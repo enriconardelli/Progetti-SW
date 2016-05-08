@@ -49,32 +49,20 @@ feature --evoluzione SC
 			nuovo_stato: detachable STATO
 		do
 			print ("%Nentrato in evolvi_SC:  %N %N")
-<<<<<<< HEAD
 			print ("stato iniziale:  " + stato_corrente.id + "       %N")
 			FROM
-=======
-			print ("stato iniziale:  " + stato_corrente.id + " %N %N")
-			from
->>>>>>> origin/master
 				count_evento_corrente := 1
-			until
+			UNTIL
 				stato_corrente.finale or count_evento_corrente > eventi.count
-			loop
+			LOOP
 				stato_stabile
 				evento_corrente := eventi [count_evento_corrente]
 				count_evento_corrente := count_evento_corrente + 1
-<<<<<<< HEAD
 				print ("evento corrente = " + evento_corrente + "   %N")
 				IF NOT stato_corrente.determinismo (evento_corrente, condizioni) THEN
 					print ("ERRORE!!! Non c'è determinismo!!!")
 				ELSE
 			        esegui_azioni(evento_corrente)
-=======
-				print ("evento corrente = " + evento_corrente + "%N")
-				if not stato_corrente.determinismo (evento_corrente, condizioni) then
-					print ("ERRORE!!! Non c'è determinismo!!!")
-				else
->>>>>>> origin/master
 					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
 					if attached nuovo_stato as ns then
 						set_stato_corrente (ns)
@@ -141,6 +129,8 @@ feature -- inizializzazione SC
 
 	istanzia_stati_e_condizioni (lis_el: LIST [XML_ELEMENT])
 			-- istanzia nella SC gli stati presenti in <state> e le condizioni presenti in <datamodel>
+		local
+			temp_stato: STATO
 		do
 			from
 				lis_el.start
@@ -149,10 +139,13 @@ feature -- inizializzazione SC
 			loop
 				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 						-- TODO gestire fallimento del test
-					stati.extend (create {STATO}.make_final_with_id(att.value), att.value)
-				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
+					create temp_stato.make_with_id (att.value)
+					stati.extend (temp_stato, att.value)
+					temp_stato.set_final
+				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as asd then
 						-- TODO gestire fallimento del test
-					stati.extend (create {STATO}.make_final_with_id(att.value), att.value)
+					create temp_stato.make_with_id (asd.value)
+					stati.extend (temp_stato, asd.value)
 				elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
 						-- TODO gestire fallimento del test
 					istanzia_condizioni (lis_data)
@@ -203,14 +196,7 @@ feature -- inizializzazione SC
 		end
 
 	assegnazione_azioni (assign_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
-<<<<<<< HEAD
 			--viene richiamata in riempi_stato; assegna le azioni alla transizione
-		local
-			assegnazione: ASSEGNAZIONE
-			stampa: STAMPA
-=======
-	--viene richiamata in riempi_stato; assegna le azioni alla transizione
->>>>>>> origin/master
 		do
 			from
 				assign_list.start
@@ -220,17 +206,9 @@ feature -- inizializzazione SC
 				if assign_list.item_for_iteration.name ~ "assign" then
 					if attached assign_list.item_for_iteration.attribute_by_name ("location") as luogo and then attached assign_list.item_for_iteration.attribute_by_name ("expr") as expr then
 						if expr.value ~ "false" then
-<<<<<<< HEAD
-							create assegnazione.make_with_cond_and_value (luogo.value, FALSE)
-							transizione.set_assegnazione (assegnazione)
+						transizione.set_assegnazione(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE))
 						elseif expr.value ~ "true" then
-							create assegnazione.make_with_cond_and_value (luogo.value, TRUE)
-							transizione.set_assegnazione (assegnazione)
-=======
-							transizione.set_azione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE))
-						elseif expr.value ~ "true" then
-							transizione.set_azione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE))
->>>>>>> origin/master
+						transizione.set_assegnazione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE))
 						end
 					end
 						--				else 	create assegnazione.make_with_cond_and_value (" ", TRUE)
@@ -238,14 +216,9 @@ feature -- inizializzazione SC
 
 				end
 				if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
-<<<<<<< HEAD
 					if attached name.value then
-						create stampa.make_with_text (name.value)
-						transizione.set_stampa_log (stampa)
+						transizione.set_stampa_log(create {STAMPA}.make_with_text (name.value))
 					end
-=======
-					transizione.set_azione (create {STAMPA}.make_with_text (name.value))
->>>>>>> origin/master
 				end
 				assign_list.forth
 			end
