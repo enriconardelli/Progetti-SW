@@ -203,9 +203,6 @@ feature -- inizializzazione SC
 							transizione.set_assegnazione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE))
 						end
 					end
-						--				else 	create assegnazione.make_with_cond_and_value (" ", TRUE)
-						--							transizione.set_assegnazione(assegnazione)
-
 				end
 				if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
 					if attached name.value then
@@ -217,7 +214,7 @@ feature -- inizializzazione SC
 				--TODO: creare vettore di azioni generiche
 		end
 
-	assegnazione_eventi (transition_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
+	assegnazione_evento (transition_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
 		do
 			if attached transition_list.item_for_iteration.attribute_by_name ("event") as event then
 				transizione.set_evento (event.value)
@@ -251,7 +248,7 @@ feature -- inizializzazione SC
 						-- TODO gestire fallimento del test per assenza clausola target
 					if attached stati.item (target.value) as target_state then
 						create transizione.make_with_target (target_state)
-						assegnazione_eventi (transition_list, transizione)
+						assegnazione_evento (transition_list, transizione)
 						assegnazione_condizione (transition_list, transizione)
 						assign_list := transition_list.item_for_iteration.elements
 						assegnazione_azioni (assign_list, transizione)
