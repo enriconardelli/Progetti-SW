@@ -59,25 +59,21 @@ feature --evoluzione SC
 				evento_corrente := eventi [count_evento_corrente]
 				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "   %N")
-				if stato_corrente.has_transition(evento_corrente) then
-					IF NOT stato_corrente.determinismo (evento_corrente, condizioni) THEN
-						print ("ERRORE!!! Non c'è determinismo!!!")
-					ELSE
-						esegui_azioni (evento_corrente)
-						nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
-						if attached nuovo_stato as ns then
-							set_stato_corrente (ns)
-							print ("%N %Nnuovo stato corrente = " + ns.id + "    %N")
-						end
+				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
+						print("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
+				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
+					esegui_azioni (evento_corrente)
+					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
+					if attached nuovo_stato as ns then
+						set_stato_corrente (ns)
+						print ("%N %Nnuovo stato corrente = " + ns.id + "    %N")
 					end
-					else
-						print("evento non valido, passo al prossimo evento:  %N")
+				else
+						print ("ERRORE!!! Non c'è determinismo!!!")
 				end
-				if not stato_corrente.finale then
-					stato_stabile
-				end
+
 			end
-			print ("%N%Nstato finale = " + stato_corrente.id + "%N")
+			print ("%N%N ho finito nello stato = " + stato_corrente.id + "%N")
 		end
 
 	esegui_azioni (evento_corrente: STRING)

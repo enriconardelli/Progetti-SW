@@ -67,45 +67,42 @@ feature --routines
 			transizioni.force (tr, transizioni.count + 1)
 		end
 
-	determinismo (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
+	numero_transizioni_abilitate (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): INTEGER
+			-- ritorna il numero di transizioni attivabili con evento_corrente nella configurazione corrente
 		local
 			index_count: INTEGER
-			numero_di_transizioni_attivate_da_evento_corrente: INTEGER -- questo conta il numero di transizioni nell'array che sono attivate dall'evento corrente
-
+			numero_di_transizioni_attivate_da_evento_corrente: INTEGER
 		do
-				-- ritorna vero se con evento_corrente è attivabile nella configurazione corrente al più 1 transizione
-				-- ritorna falso se con evento_corrente sono attivabili nella configurazione corrente almeno 2 transizioni
-
-			result := TRUE
 			from
-				index_count := transizioni.lower --si parte a scorrere l'array di transizioni dal suo indice più piccolo
+				index_count := transizioni.lower
 				numero_di_transizioni_attivate_da_evento_corrente := 0
 			until
 				index_count = transizioni.upper + 1 or numero_di_transizioni_attivate_da_evento_corrente > 1
 			loop
-				if attached transizioni [index_count].evento as ang then
-					if ang.is_equal (evento_corrente) then
-						if attached transizioni [index_count].condizione as cond then
-							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
-								if cond_in_hash = TRUE then
-									numero_di_transizioni_attivate_da_evento_corrente := numero_di_transizioni_attivate_da_evento_corrente + 1
-								end
-							end
+				if attivabile (index_count, evento_corrente, hash_delle_condizioni) then
+					numero_di_transizioni_attivate_da_evento_corrente := numero_di_transizioni_attivate_da_evento_corrente + 1
+				end
+				index_count := index_count + 1
+			end
+			Result := numero_di_transizioni_attivate_da_evento_corrente
+		end
+
+	attivabile (index_count: INTEGER; evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
+		do
+			if attached transizioni [index_count].evento as ang then
+				if ang.is_equal (evento_corrente) then
+					if attached transizioni [index_count].condizione as cond then
+						if hash_delle_condizioni.item (cond) = True then
+								Result := True
 						end
 					end
-					index_count := index_count + 1
-				end
-				if numero_di_transizioni_attivate_da_evento_corrente > 1 then
-					result := FALSE
-				else
-					result := TRUE
 				end
 			end
 		end
 
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
 		require
-			determinismo (evento_corrente, hash_delle_condizioni)
+			numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) > 0
 		local
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
@@ -203,7 +200,6 @@ feature --cose a parte
 			index_count: INTEGER
 			index: INTEGER
 		do
-
 			from
 				index_count := transizioni.lower
 			until
@@ -211,13 +207,12 @@ feature --cose a parte
 			loop
 				if attached transizioni [index_count].evento as ang then
 					if ang.is_equal (evento_corrente) then
-                        index := index_count
+						index := index_count
 					end
 				end
 				index_count := index_count + 1
 			end
-	        Result:=  transizioni[index]
-
+			Result := transizioni [index]
 		end
 
 	has_transition (evento_corrente: STRING): BOOLEAN
@@ -225,7 +220,7 @@ feature --cose a parte
 			index_count: INTEGER
 			has: BOOLEAN
 		do
-        has:= false
+			has := false
 			from
 				index_count := transizioni.lower
 			until
@@ -233,17 +228,13 @@ feature --cose a parte
 			loop
 				if attached transizioni [index_count].evento as ang then
 					if ang.is_equal (evento_corrente) then
-                        has := true
+						has := true
 					end
 				end
 				index_count := index_count + 1
 			end
-	        Result:=  has
-
+			Result := has
 		end
-
-
-
 
 	get_events: ARRAY [STRING]
 		local

@@ -64,7 +64,7 @@ feature -- Test routines
 
 
 			if attached stato_prova as sp then
-				assert ("non c'è determinismo, invece dovrebbe esserci!!!", sp.determinismo ("ti sfido a trovare uno stato con questo nome",hash_di_prova))
+				assert ("non c'è determinismo, invece dovrebbe esserci!!!", sp.numero_transizioni_abilitate ("ti sfido a trovare uno stato con questo nome",hash_di_prova)>0)
 			end
 		end
 
