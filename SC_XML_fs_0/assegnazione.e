@@ -7,6 +7,9 @@ note
 class
 	ASSEGNAZIONE
 
+inherit
+
+	AZIONE
 
 create
 	make_with_cond_and_value
@@ -25,8 +28,22 @@ feature -- creazione
 			valore := un_valore
 		end
 
-    modifica_condizioni(condizioni:  HASH_TABLE [BOOLEAN, STRING])
-    do
-    	condizioni.replace (valore, condizione )
-    end
+	modifica_condizioni (condizioni: HASH_TABLE [BOOLEAN, STRING])
+		do
+			condizioni.replace (valore, condizione)
+		end
+
+	action (condizioni: HASH_TABLE [BOOLEAN, STRING])
+		local
+			boolean: STRING
+		do
+			if valore then
+				boolean := "true"
+			else
+				boolean := "false"
+			end
+			print ("Pongo " + condizione + " = " + boolean + "%N")
+		   modifica_condizioni(condizioni)
+		end
+
 end

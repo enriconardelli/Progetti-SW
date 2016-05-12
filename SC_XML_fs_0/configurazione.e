@@ -16,8 +16,8 @@ feature --attributi
 
 	stato_iniziale: STATO
 
---	eventi: ARRAY [STRING]
---			-- serve durante la lettura degli eventi dal file
+		--	eventi: ARRAY [STRING]
+		--			-- serve durante la lettura degli eventi dal file
 
 	stati: HASH_TABLE [STATO, STRING]
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
@@ -29,7 +29,7 @@ feature --attributi
 
 feature --creazione
 
-	make ( albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+	make (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
 		do
 			create stato_iniziale.make_empty
 			stato_iniziale.set_final
@@ -41,7 +41,7 @@ feature --creazione
 
 feature --evoluzione SC
 
-	evolvi_SC(eventi: ARRAY [STRING])
+	evolvi_SC (eventi: ARRAY [STRING])
 		local
 			count_evento_corrente: INTEGER
 			evento_corrente: STRING
@@ -59,41 +59,36 @@ feature --evoluzione SC
 				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "   %N")
 				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
-						print("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
+					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
 				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
-					esegui_azioni (evento_corrente)
 					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
+					esegui_azioni (evento_corrente)
 					if attached nuovo_stato as ns then
 						set_stato_corrente (ns)
 						print ("%N %Nnuovo stato corrente = " + ns.id + "    %N")
 					end
 				else
-						print ("ERRORE!!! Non c'è determinismo!!!")
+					print ("ERRORE!!! Non c'è determinismo!!!")
 				end
-
 			end
-			print ("%N%N ho finito nello stato = " + stato_corrente.id + "%N")
+			print ("%N%NHo finito nello stato = " + stato_corrente.id + "%N")
 		end
+
 
 	esegui_azioni (evento_corrente: STRING)
 		local
 			boolean: STRING
+			transizione: TRANSIZIONE
+		    i: INTEGER
 		do
-			print ("Log = " + stato_corrente.get_transition (evento_corrente).stampa_log.testo + "    %N")
-			if attached stato_corrente.get_transition (evento_corrente).assegnazione as ass then
-				if ass.valore then
-					boolean := "true"
-				else
-					boolean := "false"
-				end
-				if attached stato_corrente.get_transition (evento_corrente).condizione as cond then
-					if attached condizioni.item (cond) as cond_in_hash then
-						if cond_in_hash = TRUE then
-							ass.modifica_condizioni (condizioni)
-							print ("Pongo " + ass.condizione + " =  " + boolean + "    %N")
-						end
-					end
-				end
+			transizione := stato_corrente.get_transition (evento_corrente)
+			from
+				i := 1
+			until
+				i = transizione.azioni.count + 1
+			loop
+			    transizione.azioni[i].action(condizioni)
+			    i:=i+1
 			end
 		end
 
@@ -133,10 +128,10 @@ feature -- inizializzazione SC
 			loop
 				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 						-- TODO gestire fallimento del test
-					stati.extend (create {STATO}.make_final_with_id(att.value), att.value)
+					stati.extend (create {STATO}.make_final_with_id (att.value), att.value)
 				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 						-- TODO gestire fallimento del test
-					stati.extend (create {STATO}.make_with_id(att.value), att.value)
+					stati.extend (create {STATO}.make_with_id (att.value), att.value)
 				elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
 						-- TODO gestire fallimento del test
 					istanzia_condizioni (lis_data)
@@ -188,7 +183,11 @@ feature -- inizializzazione SC
 
 	assegnazione_azioni (assign_list: LIST [XML_ELEMENT]; transizione: TRANSIZIONE)
 			--viene richiamata in riempi_stato; assegna le azioni alla transizione
+
+		local
+			i: INTEGER
 		do
+			i := 1
 			from
 				assign_list.start
 			until
@@ -197,17 +196,18 @@ feature -- inizializzazione SC
 				if assign_list.item_for_iteration.name ~ "assign" then
 					if attached assign_list.item_for_iteration.attribute_by_name ("location") as luogo and then attached assign_list.item_for_iteration.attribute_by_name ("expr") as expr then
 						if expr.value ~ "false" then
-							transizione.set_assegnazione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE))
+							transizione.azioni.force (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE), i)
 						elseif expr.value ~ "true" then
-							transizione.set_assegnazione (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE))
+							transizione.azioni.force (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE), i)
 						end
 					end
 				end
 				if assign_list.item_for_iteration.name ~ "log" and then attached assign_list.item_for_iteration.attribute_by_name ("name") as name then
 					if attached name.value then
-						transizione.set_stampa_log (create {STAMPA}.make_with_text (name.value))
+						transizione.azioni.force (create {STAMPA}.make_with_text (name.value), i)
 					end
 				end
+				i := i + 1
 				assign_list.forth
 			end
 				--TODO: creare vettore di azioni generiche

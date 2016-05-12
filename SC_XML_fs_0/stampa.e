@@ -7,6 +7,8 @@ note
 class
 	STAMPA
 
+inherit AZIONE
+
 create
 	make_with_text
 
@@ -25,5 +27,14 @@ feature --creazione
 		ensure
 			testo_non_void: testo /= Void
 		end
+
+
+feature
+    action(condizioni:  HASH_TABLE [BOOLEAN, STRING])
+	do
+		print("LOG:   "+testo+"%N")
+	end
+
+
 
 end

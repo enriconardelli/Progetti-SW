@@ -101,8 +101,8 @@ feature --routines
 		end
 
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
-		require
-			numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) > 0
+--		require
+--			numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) > 0
 		local
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
