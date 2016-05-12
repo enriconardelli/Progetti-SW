@@ -8,7 +8,7 @@ class
 	CONFIGURAZIONE
 
 create
-	make_with_condition
+	make
 
 feature --attributi
 
@@ -29,7 +29,7 @@ feature --attributi
 
 feature --creazione
 
-	make_with_condition ( albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+	make ( albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
 		do
 			create stato_iniziale.make_empty
 			stato_iniziale.set_final
