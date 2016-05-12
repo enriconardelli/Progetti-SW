@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {ESECUTORE}."
-	author: ""
+	description: "Classe radice del progetto"
+	author: " Daniele Fakhoury & Eloisa Scarsella "
 	date: "$Date$"
-	revision: "$Revision$"
+	revision: "  "
 
 class
 	ESECUTORE

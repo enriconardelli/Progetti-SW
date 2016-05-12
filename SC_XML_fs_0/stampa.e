@@ -1,6 +1,6 @@
 note
-	description: "Summary description for {FITTIZIA}."
-	author: "Gabriele Cacchioni & Davide Canalis"
+	description: "La classe che svolge l'azione di stampa"
+	author: "Gabriele Cacchioni & Davide Canalis & Daniele Fakhoury & Eloisa Scarsella"
 	date: "9-04-2015"
 	revision: "0"
 

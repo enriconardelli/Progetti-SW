@@ -1,6 +1,6 @@
 ﻿note
-	description: "Summary description for {STATO}."
-	author: "Gabriele Cacchioni & Davide Canalis"
+	description: "Clase che rappresenta lo stato della state chart"
+	author: "Gabriele Cacchioni & Davide Canalis "
 	date: "9-04-2015"
 	revision: "0.1"
 
@@ -93,7 +93,7 @@ feature --routines
 				if ang.is_equal (evento_corrente) then
 					if attached transizioni [index_count].condizione as cond then
 						if hash_delle_condizioni.item (cond) = True then
-								Result := True
+							Result := True
 						end
 					end
 				end
@@ -101,8 +101,8 @@ feature --routines
 		end
 
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
---		require
---			numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) > 0
+			--		require
+			--			numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) > 0
 		local
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
@@ -215,26 +215,26 @@ feature --cose a parte
 			Result := transizioni [index]
 		end
 
---	has_transition (evento_corrente: STRING): BOOLEAN
---		local
---			index_count: INTEGER
---			has: BOOLEAN
---		do
---			has := false
---			from
---				index_count := transizioni.lower
---			until
---				index_count = transizioni.upper + 1
---			loop
---				if attached transizioni [index_count].evento as ang then
---					if ang.is_equal (evento_corrente) then
---						has := true
---					end
---				end
---				index_count := index_count + 1
---			end
---			Result := has
---		end
+		--	has_transition (evento_corrente: STRING): BOOLEAN
+		--		local
+		--			index_count: INTEGER
+		--			has: BOOLEAN
+		--		do
+		--			has := false
+		--			from
+		--				index_count := transizioni.lower
+		--			until
+		--				index_count = transizioni.upper + 1
+		--			loop
+		--				if attached transizioni [index_count].evento as ang then
+		--					if ang.is_equal (evento_corrente) then
+		--						has := true
+		--					end
+		--				end
+		--				index_count := index_count + 1
+		--			end
+		--			Result := has
+		--		end
 
 	get_events: ARRAY [STRING]
 		local

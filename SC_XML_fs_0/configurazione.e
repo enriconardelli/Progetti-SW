@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {CONFIGURAZIONE}."
-	author: ""
+	description: "La classe che rappresenta la statechart"
+	author: "Daniele Fakhoury & Eloisa Scarsella"
 	date: "$Date$"
-	revision: "$Revision$"
+	revision: "$Revision $"
 
 class
 	CONFIGURAZIONE
@@ -77,7 +77,6 @@ feature --evoluzione SC
 
 	esegui_azioni (evento_corrente: STRING)
 		local
-			boolean: STRING
 			transizione: TRANSIZIONE
 		    i: INTEGER
 		do

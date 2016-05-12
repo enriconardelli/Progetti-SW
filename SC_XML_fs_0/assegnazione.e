@@ -1,6 +1,6 @@
 note
-	description: "Summary description for {ASSEGNAZIONE}."
-	author: "Gabriele Cacchioni & Davide Canalis"
+	description: "La classe che rappresenta l'azione di assegnazione"
+	author: "Gabriele Cacchioni & Davide Canalis & Daniele Fakhoury & Eloisa Scarsella"
 	date: "9-04-2015"
 	revision: "0"
 
