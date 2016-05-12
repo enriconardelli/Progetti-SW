@@ -50,9 +50,7 @@ feature --setter
 		end
 
 
-	set_stampa_log (un_azione: STAMPA)--da modificare: serve che si prenda in input una stringa e si istanzi un'azione
-								  -- a partire da quella stringa. Prima bisogna capire come fare a distinguere se la transizione è
-								  --di tipo 'fittizia' o 'assegnazione' a partire dalla stringa passata.
+	set_stampa_log (un_azione: STAMPA)
 		require
 			not_void: un_azione /= Void
 		do
@@ -64,7 +62,7 @@ feature --setter
 			end
 
 
-set_assegnazione(un_azione : ASSEGNAZIONE)
+    set_assegnazione(un_azione : ASSEGNAZIONE)
 
 		require
 			not_void: un_azione /= Void

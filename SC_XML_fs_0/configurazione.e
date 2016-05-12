@@ -16,8 +16,8 @@ feature --attributi
 
 	stato_iniziale: STATO
 
-	eventi: ARRAY [STRING]
-			-- serve durante la lettura degli eventi dal file
+--	eventi: ARRAY [STRING]
+--			-- serve durante la lettura degli eventi dal file
 
 	stati: HASH_TABLE [STATO, STRING]
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
@@ -29,7 +29,7 @@ feature --attributi
 
 feature --creazione
 
-	make_with_condition (gli_eventi: ARRAY [STRING]; albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+	make_with_condition ( albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
 		do
 			create stato_iniziale.make_empty
 			stato_iniziale.set_final
@@ -37,12 +37,11 @@ feature --creazione
 			create condizioni.make (1)
 			crea_stati_e_condizioni (albero)
 			stato_corrente := stato_iniziale
-			eventi := gli_eventi
 		end
 
 feature --evoluzione SC
 
-	evolvi_SC
+	evolvi_SC(eventi: ARRAY [STRING])
 		local
 			count_evento_corrente: INTEGER
 			evento_corrente: STRING

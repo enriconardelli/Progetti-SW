@@ -30,8 +30,8 @@ feature {NONE} -- Inizializzazione
 			create eventi.make_empty
 			eventi := acquisisci_eventi
 			print ("acquisiti eventi %N")
-			create state_chart.make_with_condition (eventi, albero)
-			state_chart.evolvi_SC
+			create state_chart.make_with_condition (albero)
+			state_chart.evolvi_SC(eventi)
 		end
 
 feature

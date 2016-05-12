@@ -4,4 +4,5 @@ minus
 star
 square
 plus
+cavallo
 star
