@@ -1,0 +1,94 @@
+<prova>
+
+	<parameters>
+		<frame>
+			<width> 500 </width>
+			<height> 800 </height>
+		</frame>
+
+		<frame_default>
+			<width> 300 </width>
+			<height> 300 </height>
+		</frame_default>
+
+		<buttons>
+			<button id="watch_start">
+				<tooltip expr="start" />
+				<color expr="RED" />
+			</button>
+
+			<button id="watch_split">
+				<tooltip expr="split" />
+			</button>
+
+			<button id="watch_unsplit">
+				<tooltip expr="" />
+				<color expr="WHITE" />
+			</button>
+
+			<button id="watch_reset">
+				<tooltip expr="reset" />
+				<color expr="" />
+			</button>
+
+
+		</buttons>
+
+		<button_default>
+			<dtooltip expr="This is an event" />
+			<dcolor expr="LIGHT_GRAY" />
+		</button_default>
+
+
+		<panels>
+			<panel id="running$value">
+				<color expr="RED" />
+				<text_field_color expr="GREEN" />
+				<text_field_tooltip expr="running" />
+			</panel>
+
+			<panel id="paused$value">
+				<color expr="" />
+				<tooltip expr="paused value" />
+				<text_field_color expr="GRAY" />
+				<text_field_tooltip expr="paused" />
+			</panel>
+
+			<panel id="stopped$value">
+				<color expr="YELLOW" />
+				<tooltip expr="stopped value" />
+				<text_field_tooltip expr="stopped" />
+			</panel>
+
+		</panels>
+
+		<panel_default>
+			<dcolor expr="LIGHT_GRAY" />
+			<dtooltip expr="This is a variable" />
+			<dtext_field_color expr="WHITE" />
+			<dtext_field_tooltip expr="variable" />
+		</panel_default>
+
+		<fonts>
+			<font id="buttons">
+				<type expr="Helevetica" />
+				<mode expr="BOLD" />
+				<dimension expr="18" />
+			</font>
+
+			<font id="fields">
+				<type expr="" />
+				<dimension expr="16" />
+			</font>
+		</fonts>
+
+
+		<font_default>
+			<dtype expr="TimesRoman" />
+			<dmode expr="PLAIN" />
+			<ddimension expr="14" />
+		</font_default>
+
+	</parameters>
+
+</prova>
