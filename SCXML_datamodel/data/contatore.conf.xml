@@ -21,7 +21,6 @@
 				
 		<button id="piu">
 			<tooltip expr="" />
-			<color expr="WHITE" />
 		</button>
 		
 		<button id="watch_reset">

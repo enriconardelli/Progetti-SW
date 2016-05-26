@@ -29,6 +29,10 @@
 	</state>
 
 	<state id="raddoppiato">
+		<transition event="go_to_intermedio" target="intermedio" />
+	</state>
+
+	<state id="intermedio">
 		<transition event="back_to_standby" target="standby" />
 	</state>
 
