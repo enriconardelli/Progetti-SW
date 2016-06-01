@@ -90,8 +90,7 @@ public class Generator {
 
 	
 	private static void compileSCfile(String pSCXMLModel, String pModelFileName) {
-		String cmd = "C:\\Program Files\\Java\\jdk1.8.0_60\\bin\\javac";
-		String cmd_EN = "javac";
+		String cmd = "javac";
 		String cpSeparator = "";
 		if (System.getProperty("os.name").startsWith("Mac OS") || System.getProperty("os.name").startsWith("Linux")) {
 			cpSeparator = ":";
