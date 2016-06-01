@@ -93,6 +93,7 @@ public class Generator {
 		String cmd = "C:\\Program Files\\Java\\jdk1.8.0_60\\bin\\javac";
 		String cmd_EN = "javac";
 		String cpSeparator = "";
+		String cpSeparatorpull = "";
 		if (System.getProperty("os.name").startsWith("Mac OS") || System.getProperty("os.name").startsWith("Linux")) {
 			cpSeparator = ":";
 		} else
