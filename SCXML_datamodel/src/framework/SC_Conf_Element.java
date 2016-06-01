@@ -56,7 +56,7 @@ public class SC_Conf_Element extends Element {
 	//ESISTENZA DI PARAMETERS****************************************************************************************
 		public static void checkParameters(Element doc) {
 			if (doc.getChild("parameters") == null) {
-				System.err.println("The xml configuration file does not contain the root parameters."
+				System.err.println("The GUI configuration file does not contain element <parameters> as root element."
 								+ " Check it! Parsing will not be executed and the Generator is halted");
 				System.exit(0);
 			}
