@@ -26,10 +26,12 @@ feature -- accesso
 	next: INT_LINKABLE
 			-- il successivo elemento della lista
 
-	make (i: INTEGER)
+	make (a_value: INTEGER)
 			-- crea l’elemento
 		do
-			value := i
+			value := a_value
+		ensure
+			value = a_value
 		end
 
 	link_to (other: INT_LINKABLE)
