@@ -34,8 +34,9 @@ feature -- operazioni fondamentali
 			last_element := new_element
 			count := count + 1
 		ensure
-			last_element.value = a_value
-			count = old count + 1
+			uno_in_piu: count = old count + 1
+			accodato: last_element.value = a_value
+			collegato: (old last_element /= Void) implies (old last_element).next = last_element
 		end
 
 	prepend (a_value: INTEGER)
@@ -52,8 +53,9 @@ feature -- operazioni fondamentali
 			first_element := new_element
 			count := count + 1
 		ensure
-			first_element.value = a_value
-			count = old count + 1
+			uno_in_piu: count = old count + 1
+			intestato: first_element.value = a_value
+			collegato: first_element.next = old first_element
 		end
 
 	has (a_value: INTEGER): BOOLEAN
