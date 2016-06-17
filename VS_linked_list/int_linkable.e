@@ -26,10 +26,12 @@ feature
 	next: detachable INT_LINKABLE
 			-- the next cell in the list
 
-	make (i: INTEGER)
+	make (a_value: INTEGER)
 			-- create this cell
 		do
-			value := i
+			value := a_value
+		ensure
+			value = a_value
 		end
 
 	link_to (other: detachable INT_LINKABLE)

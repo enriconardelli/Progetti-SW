@@ -23,12 +23,12 @@ feature
 	next: detachable MY_LINKABLE [G]
 			-- the next cell in the list
 
-	make (i: G)
+	make (a_value: G)
 			-- create this cell
 		do
-			value := i
+			value := a_value
 		ensure
-			value = i
+			value = a_value
 		end
 
 	link_to (other: detachable MY_LINKABLE [G])
