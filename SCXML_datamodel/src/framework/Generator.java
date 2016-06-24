@@ -22,6 +22,9 @@ import org.jdom.filter.ElementFilter;
 public class Generator {
 	
 	// To pass arguments in Eclipse: "Run Configurations...", "Arguments", "Program Arguments"
+	
+	
+	
 	public static void main(String[] args) throws Exception {
 		// the current document must be created dynamically
 		SC_Model_Element SCXMLDocument = new SC_Model_Element();
@@ -69,7 +72,7 @@ public class Generator {
 					SCXMLDocument.startSC();
 				}
 				// vorrei evitare che la nuova SC vada in esecuzione prima che finisca la precedente
-				// in altre parole vorrei sospendere questo thread fino a che quello lanciato con .startSC() non sia terminato
+	     		// in altre parole vorrei sospendere questo thread fino a che quello lanciato con .startSC() non sia terminato
 				// ma questa soluzione non funziona
 //				Thread startSC_thread = new Thread(SCXMLDocument);
 //				startSC_thread.start();
@@ -134,7 +137,7 @@ public class Generator {
 			while (!testFile.exists()) {
 				Thread.sleep(100); // waiting for file
 			}
-			// System.out.println("  found file " + testFile.getAbsolutePath());
+			 System.out.println("  found file " + testFile.getAbsolutePath());
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

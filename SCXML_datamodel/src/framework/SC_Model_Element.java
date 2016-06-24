@@ -64,10 +64,12 @@ public class SC_Model_Element extends Element implements Runnable {
 		return inputFile;
 	}
 
-	public void set_documentRoot() throws InterruptedException {
+	public void set_documentRoot() 
+			//throws InterruptedException 
+	{
 		inputFile = new File(Conf.data_dir + Conf.filesep + modelName + Conf.scxml_extension);
 		if (!inputFile.exists()) {
-			Thread.sleep(100); // to avoid mixing printouts
+	//		Thread.sleep(100); // to avoid mixing printouts
 			System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + modelName + " does not exist.");
 			System.err.println("Generation for the model " + modelName + " is interrupted.");
 			return;
@@ -77,7 +79,7 @@ public class SC_Model_Element extends Element implements Runnable {
 			if (!new File(Conf.source_dir + Conf.filesep + modelName).exists()) {
 				System.out.println("First time for this StateChart, the package is created");
 				if (!new File(Conf.source_dir + Conf.filesep + modelName).mkdir()) {
-					Thread.sleep(100); // to avoid mixing printouts
+		//			Thread.sleep(100); // to avoid mixing printouts
 					System.err.println("Directory '" + Conf.source_dir + Conf.filesep + modelName + "' can NOT be created!");
 					System.err.println("The Generator is halted.");
 					System.exit(0);
@@ -89,6 +91,35 @@ public class SC_Model_Element extends Element implements Runnable {
 			documentRoot = Common.getDocumentRoot(inputFile);
 		}
 	}
+	
+	
+	public void set_documentRoot2() 
+	//throws InterruptedException 
+{
+inputFile = new File(Conf.data_dir + Conf.filesep + "SCxml_sbagliati" + Conf.filesep + modelName + Conf.scxml_extension);
+if (!inputFile.exists()) {
+//		Thread.sleep(100); // to avoid mixing printouts
+	System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + modelName + " does not exist.");
+	System.err.println("Generation for the model " + modelName + " is interrupted.");
+	return;
+} else { // working on file for current model
+	System.out.println("--START-- generation of StateChart source code for model '" + modelName + "' specified in the file "
+			+ inputFile.getAbsolutePath());
+	if (!new File(Conf.source_dir + Conf.filesep + modelName).exists()) {
+		System.out.println("First time for this StateChart, the package is created");
+		if (!new File(Conf.source_dir + Conf.filesep + modelName).mkdir()) {
+//			Thread.sleep(100); // to avoid mixing printouts
+			System.err.println("Directory '" + Conf.source_dir + Conf.filesep + modelName + "' can NOT be created!");
+			System.err.println("The Generator is halted.");
+			System.exit(0);
+		} else
+			System.out.println("Directory '" + Conf.source_dir + Conf.filesep + modelName
+					+ "' created. Program will continue generating the StateChart code ");
+	} else
+		System.out.println("Modifying the existing package of the StateChart for model '" + modelName + "'");
+	documentRoot = Common.getDocumentRoot(inputFile);
+}
+}
 
 	public void run() {
 		startSC();
@@ -207,7 +238,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		}
 		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty() & pDocumentRoot.getContent(new ElementFilter("parallel")).isEmpty()
 				& pDocumentRoot.getContent(new ElementFilter("final")).isEmpty()) {
-			System.err.println("ERROR non ï¿½ presente nï¿½ uno state ne un parallel ne un final");
+			System.err.println("ERROR non è presente nè uno state ne un parallel ne un final");
 			check = false;
 		}
 		// Ora controlleremo i figli chiamando funzioni ricorsive
@@ -216,7 +247,7 @@ public class SC_Model_Element extends Element implements Runnable {
 			check = check & check_datamodel(datamodel.next());
 		}
 		if (datamodel.hasNext()) {
-			System.err.println("ERROR piï¿½ di un datamodel");
+			System.err.println("ERROR più di un datamodel");
 			check = false;
 		}
 		Iterator<Element> states = pDocumentRoot.getContent(new ElementFilter("state")).iterator();
@@ -283,7 +314,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		} else {
 			if (stati.contains(state.getAttribute("id").getValue())) {
 				flag = false;
-				System.err.println("ERROR esistono piï¿½ stati chiamati " + state.getAttribute("id").getValue());
+				System.err.println("ERROR esistono più stati chiamati " + state.getAttribute("id").getValue());
 			}
 			stati.add(state.getAttribute("id").getValue());
 		}
@@ -296,7 +327,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		if (!(data_assign.isEmpty())) {
 			Iterator<String> elenco = data_assign.iterator();
 			while (elenco.hasNext()) {
-				System.err.println("ERROR c'ï¿½ un assegnazione al data " + elenco.next() + " che perï¿½ non esiste");
+				System.err.println("ERROR c'è un assegnazione al data " + elenco.next() + " che però non esiste");
 				flag = false;
 			}
 		}
