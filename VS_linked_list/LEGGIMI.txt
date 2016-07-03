@@ -1,11 +1,10 @@
 
 Questa cartella
-  D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\linked_list
+  D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\VS_linked_list
 contiene la versione del progetto per la gestione di liste di interi che ho creato come esempio dell'uso della funzione di AutoTest di Eiffel.
 
-Si tratta della versione SENZA la Void Safety.
+E' stata modificata in modo da essere VOID SAFE.
 
-La uso per testare gli esercizi d'esame. Per questo motivo non c'è "detachable" davanti al tipo degli attributi.
 
 E' replicata nel repository GIT
   https://github.com/enriconardelli/Progetti-SW
@@ -20,4 +19,4 @@ Successivamente Jacopo Astolfi ha realizzato la prima versione con Autotest disp
 
 Tutte le modifiche/estensioni vanno apportate a questa versione
 
-Bisogna controllare che i test siano allineati alle nuove feature che vengono aggiunte
+Bisogna aggiungere ai test statici e ai test dinamici gli opportuni controlli per le nuove feature aggiunte.

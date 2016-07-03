@@ -39,8 +39,11 @@ public class TestASMCreation {
 		try {
 			ASM = Class.forName(fileName + ".ImplASM");
 		} catch (ClassNotFoundException e1) {
+			System.err.println("ERRORE: non esiste la classe compilata ImplASM per il model " + fileName);
+			System.out.println("\n  è necessario eseguire il Generatore oppure lanciare il test 'TestFileGeneration' su questo model");
+			System.exit(1);
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+//			e1.printStackTrace();
 		}
 		//System.out.println("Testing: " + ASM.getPath());
 		File inputFile = new File(Conf.data_dir + Conf.filesep + fileName + Conf.scxml_extension);
