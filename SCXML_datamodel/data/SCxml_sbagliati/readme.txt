@@ -1,10 +1,11 @@
 CONTROLLO DELLA SINTASSI SCxml
 
-I controlli non vengono eseguiti su tutti gli elementi del file xml, ma solo su quegli elementi che seguono le specifiche sottostanti. Questo vuol dire che se esiste un figlio di <scxml> chiamato "Anghelli",
-i nostri controlli ignoreranno lui e tutti i suoi discendenti, anche se questi fossero degli state delle transizioni ecc... Questo perche altrimenti non sarebbe possibile espandere il programma, e soprattutto 
-perche altrimenti dovremmo controllare anche molti costrutti dell'scxml che chiaramente esulano dagli scopi del corso (controllo della correttezza sintattica di una chiamata al database di un server!).
+I controlli non vengono eseguiti su tutti gli elementi del file xml, ma solo su quegli elementi che seguono le specifiche sottostanti. Questo vuol dire che se esiste un figlio di <scxml> chiamato "Anghelli", i nostri controlli ignoreranno lui e tutti i suoi discendenti, anche se questi fossero degli state delle transizioni ecc... Questo perche altrimenti non sarebbe possibile espandere il programma, e soprattutto perche altrimenti dovremmo controllare anche molti costrutti dell'scxml che chiaramente esulano dagli scopi del corso (controllo della correttezza sintattica di una chiamata al database di un server!).
+
 Se un file scxml passa i nostri controlli noi assicuriamo le seguenti cose
+
 1) <?xml>
+
 	ATTRIBUTI
 		C'è versione="1.0"
 
@@ -22,6 +23,7 @@ Se un file scxml passa i nostri controlli noi assicuriamo le seguenti cose
 
 
 3) <data> (controlliamo solo i data figli di datamodel, a sua volta figlio di scxml)
+
 	ATTRIBUTI
 		C'è l'id ed è unico (tra i data ovviamente)
 		C'è al massimo uno solo tra src e expr
