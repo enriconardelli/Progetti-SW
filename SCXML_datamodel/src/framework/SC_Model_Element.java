@@ -159,28 +159,6 @@ if (!inputFile.exists()) {
 		}
 	}
 	
-	public boolean SCXMLDocumentSyntaxOK() {
-		Element pDocumentRoot = documentRoot;
-		boolean checkOK = true;
-		// checking "data" node in the document
-		Iterator<Element> anElement = pDocumentRoot.getDescendants(new ElementFilter("data"));
-		while (anElement.hasNext()) {
-			Element currentElement = anElement.next();
-			if (currentElement.getAttribute("expr") == null) {
-				System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue() + "' has no 'expr' attribute");
-				checkOK = false;
-			} else {
-				if (currentElement.getAttribute("expr").getValue() == "") {
-					System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
-							+ "' has no value for the 'expr' attribute");
-					checkOK = false;
-				}
-			}
-		}
-		checkOK = scxml_control_scxml(pDocumentRoot);
-		return checkOK;
-	}
-	
 	public void stateChartGeneration(String pSCXMLModel) {
 		
 		Element pDocumentRoot = documentRoot;
@@ -203,6 +181,28 @@ if (!inputFile.exists()) {
 		} catch (IOException an_IOException) {
 			an_IOException.printStackTrace();
 		}
+	}
+	
+	public boolean SCXMLDocumentSyntaxOK() {
+		Element pDocumentRoot = documentRoot;
+		boolean checkOK = true;
+		// checking "data" node in the document
+		Iterator<Element> anElement = pDocumentRoot.getDescendants(new ElementFilter("data"));
+		while (anElement.hasNext()) {
+			Element currentElement = anElement.next();
+			if (currentElement.getAttribute("expr") == null) {
+				System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue() + "' has no 'expr' attribute");
+				checkOK = false;
+			} else {
+				if (currentElement.getAttribute("expr").getValue() == "") {
+					System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
+							+ "' has no value for the 'expr' attribute");
+					checkOK = false;
+				}
+			}
+		}
+		checkOK = scxml_control_scxml(pDocumentRoot);
+		return checkOK;
 	}
 	
 	//private methods
