@@ -14,6 +14,7 @@ feature
 
 	value: INTEGER
 			-- the integer stored in this cell
+			-- commento aggiunto per prova
 
 	set_value (new_value: INTEGER)
 			-- assign the integer stored in this cell
