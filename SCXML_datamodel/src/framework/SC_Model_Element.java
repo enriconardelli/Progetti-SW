@@ -186,7 +186,7 @@ if (!inputFile.exists()) {
 	public boolean SCXMLDocumentSyntaxOK() {
 		Element pDocumentRoot = documentRoot;
 		boolean checkOK = true;
-		// checking "data" node in the document
+		
 		Iterator<Element> anElement = pDocumentRoot.getDescendants(new ElementFilter("data"));
 		while (anElement.hasNext()) {
 			Element currentElement = anElement.next();
