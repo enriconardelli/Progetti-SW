@@ -53,7 +53,7 @@ public class Generator {
 			System.out.println("--BEGIN-- processing StateChart for model specified in file '" + Conf.data_dir + Conf.filesep + SCXMLModel
 					+ Conf.scxml_extension + "'");
 			SCXMLDocument.set_Model(SCXMLModel);
-			SCXMLDocument.set_documentRoot();
+			SCXMLDocument.set_documentRoot("");
 			if (!(SCXMLDocument.SCXMLDocumentSyntaxOK())) {
 				Thread.sleep(100); // to avoid mixing printouts
 				System.err.println("Syntax error(s) in file " + SCXMLDocument.get_inputFile().getAbsolutePath());

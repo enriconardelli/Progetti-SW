@@ -64,39 +64,13 @@ public class SC_Model_Element extends Element implements Runnable {
 		return inputFile;
 	}
 
-	public void set_documentRoot() 
-			//throws InterruptedException 
-	{
-		inputFile = new File(Conf.data_dir + Conf.filesep + modelName + Conf.scxml_extension);
-		if (!inputFile.exists()) {
-	//		Thread.sleep(100); // to avoid mixing printouts
-			System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + modelName + " does not exist.");
-			System.err.println("Generation for the model " + modelName + " is interrupted.");
-			return;
-		} else { // working on file for current model
-			System.out.println("--START-- generation of StateChart source code for model '" + modelName + "' specified in the file "
-					+ inputFile.getAbsolutePath());
-			if (!new File(Conf.source_dir + Conf.filesep + modelName).exists()) {
-				System.out.println("First time for this StateChart, the package is created");
-				if (!new File(Conf.source_dir + Conf.filesep + modelName).mkdir()) {
-		//			Thread.sleep(100); // to avoid mixing printouts
-					System.err.println("Directory '" + Conf.source_dir + Conf.filesep + modelName + "' can NOT be created!");
-					System.err.println("The Generator is halted.");
-					System.exit(0);
-				} else
-					System.out.println("Directory '" + Conf.source_dir + Conf.filesep + modelName
-							+ "' created. Program will continue generating the StateChart code ");
-			} else
-				System.out.println("Modifying the existing package of the StateChart for model '" + modelName + "'");
-			documentRoot = Common.getDocumentRoot(inputFile);
-		}
-	}
 	
 	
-	public void set_documentRoot2() 
+	
+	public void set_documentRoot(String nomeCartella) 
 	//throws InterruptedException 
 {
-inputFile = new File(Conf.data_dir + Conf.filesep + "SCxml_sbagliati" + Conf.filesep + modelName + Conf.scxml_extension);
+inputFile = new File(Conf.data_dir + Conf.filesep + nomeCartella + Conf.filesep + modelName + Conf.scxml_extension);
 if (!inputFile.exists()) {
 //		Thread.sleep(100); // to avoid mixing printouts
 	System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + modelName + " does not exist.");
@@ -204,6 +178,15 @@ if (!inputFile.exists()) {
 		checkOK = scxml_control_scxml(pDocumentRoot);
 		return checkOK;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//private methods
 	
