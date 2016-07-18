@@ -20,8 +20,8 @@
 			<assign name="contatore" expr="${contatore + 1}" />
 		</transition>
 		<transition event="doppio" target="raddoppiato">
-			<assign location="totale" expr="${totale * 2}" />
-			<assign pippo="contatore" expr="${contatore + 1}" />
+			<assign name="totale" expr="${totale * 2}" />
+			<assign cavallucciMarini="contatore" expr="${contatore + 1}" />
 		</transition>
 		
 		<transition event="stop" target="final_state">

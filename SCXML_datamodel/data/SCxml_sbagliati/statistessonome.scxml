@@ -19,7 +19,7 @@
 			<assign name="totale" expr="${totale  - 1}" />
 			<assign name="contatore" expr="${contatore + 1}" />
 		</transition>
-		<transition event="doppio" target="raddoppiato">
+		<transition event="doppio" target="initial_state">
 			<assign name="totale" expr="${totale * 2}" />
 			<assign name="contatore" expr="${contatore + 1}" />
 		</transition>
