@@ -32,7 +32,7 @@ Se un file scxml passa i nostri controlli noi assicuriamo le seguenti cose
 	FIGLI
 		
         C'è almeno uno tra state parallel e final.
-       NON VIENE CONTROLLATO	 cfr PROVA	
+    OK
         C'è al massimo un datamodel.
 
 

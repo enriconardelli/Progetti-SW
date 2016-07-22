@@ -108,12 +108,12 @@ public class TestSyntax {
 		assertTrue("SyntaxOk non funziona: un data id è doppio", !SCXMLDocument.SCXMLDocumentSyntaxOK());
 	}
 	
-	/*@Test
-	public void testFinal( ) {
+	@Test
+	public void testFinalStateParallel( ) {
 		SC_Model_Element SCXMLDocument = new SC_Model_Element();
-		SCXMLDocument.set_Model("PROVA");
+		SCXMLDocument.set_Model("mancastatoparallelfinal");
 		SCXMLDocument.set_documentRoot("SCxml_sbagliati");
-		assertTrue("SyntaxOk non funziona: un data id è doppio", !SCXMLDocument.SCXMLDocumentSyntaxOK());
-	}*/
+		assertTrue("SyntaxOk non funziona: non c'è ne uno stato ne un parallel ne un final ( manca anche initial)", !SCXMLDocument.SCXMLDocumentSyntaxOK());
+	}
 	
 }
