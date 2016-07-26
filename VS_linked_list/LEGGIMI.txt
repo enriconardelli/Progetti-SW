@@ -10,13 +10,6 @@ E' replicata nel repository GIT
   https://github.com/enriconardelli/Progetti-SW
 
 
-La prima versione era stata fatta nell'ambito delle lezioni di Fondamenti della Programmazione del 2013-14 (mantenuta la stessa nel 2014-15)
-  D:\ENRICO\DIDATTICA\Fondamenti-Programmazione-Metodi-Evoluti-EIFFEL\Eiffel-book-slides\Lecture-AND-Exercises-Slides-MIE-2014-15\Exercise-Projects\esercitazione-5\test_linked_list
-
-Successivamente Jacopo Astolfi ha realizzato la prima versione con Autotest disponibile in
-  D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\IPC-projects\Autotest-solo-per-archivio\linked_list
-
-
 Tutte le modifiche/estensioni vanno apportate a questa versione
 
 Bisogna aggiungere ai test statici e ai test dinamici gli opportuni controlli per le nuove feature aggiunte.
