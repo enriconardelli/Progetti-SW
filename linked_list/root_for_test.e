@@ -33,6 +33,26 @@ feature {NONE} -- Initialization
 				print("%N ERRORE: la lista e' vuota ma 'has' ritorna vero ")
 			end
 
+			print ("%N invoco get_element 3 su lista vuota: ")
+			target := t.get_element (3)
+			if target = Void then
+				print (False)
+			else
+				print (True)
+				print ("%N ERRORE ! ")
+			end
+			t.stampa
+
+			print ("%N Chiedo se 15 segue -5 nella lista vuota: ")
+			if t.value_follows (15, -5) then
+				print (True)
+				print ("%N ERRORE ! ")
+			else
+				print (False)
+			end
+			t.stampa
+
+--			per testare sia questo che il successivo devo implementare REMOVE
 --			print ("%N invoco insert -5 after 3 su lista vuota")
 --			t.insert_after (-5, 3)
 --			t.stampa
@@ -41,8 +61,46 @@ feature {NONE} -- Initialization
 			t.insert_before (-5, 3)
 			t.stampa
 
+			print ("%N invoco get_element 3 su lista di un solo elemento: ")
+			target := t.get_element (3)
+			if target = Void then
+				print (False)
+			else
+				print (True)
+				print ("%N ERRORE ! ")
+			end
+			t.stampa
+
+			print ("%N Chiedo se 15 segue -5 nella lista di un solo elemento che contiene -5 ed il risultato e': ")
+			if t.value_follows (15, -5) then
+				print (True)
+				print ("%N ERRORE ! ")
+			else
+				print (False)
+			end
+			t.stampa
+
+			print ("%N Chiedo se 15 segue 456 nella lista di un solo elemento che contiene -5 ed il risultato e': ")
+			if t.value_follows (15, 456) then
+				print (True)
+				print ("%N ERRORE ! ")
+			else
+				print (False)
+			end
+			t.stampa
+
 			print ("%N estendo in coda con 7777")
 			t.append (7777)
+			t.stampa
+
+			print ("%N invoco get_element 3 su lista di 2 elementi: ")
+			target := t.get_element (3)
+			if target = Void then
+				print (False)
+			else
+				print (True)
+				print ("%N ERRORE ! ")
+			end
 			t.stampa
 
 			print ("%N estendo in testa con 77")
@@ -130,6 +188,30 @@ feature {NONE} -- Initialization
 
 			print ("%N Inserisco 88 dopo 9 che sta all'inizio")
 			t.insert_after (88, 9)
+			t.stampa
+
+			print ("%N Chiedo se 15 segue 55 nella lista ed il risultato e': ")
+			if t.value_follows (15, 55) then
+				print (True)
+			else
+				print (False)
+			end
+			t.stampa
+
+			print ("%N Chiedo se 15 segue 66 nella lista ed il risultato e': ")
+			if t.value_follows (15, 66) then
+				print (True)
+			else
+				print (False)
+			end
+			t.stampa
+
+			print ("%N Chiedo se 55 segue 15 nella lista ed il risultato e': ")
+			if t.value_follows (55, 15) then
+				print (True)
+			else
+				print (False)
+			end
 			t.stampa
 
 			print ("%N La somma dei valori positivi e': ")
