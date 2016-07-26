@@ -100,28 +100,29 @@ feature -- operazioni fondamentali
 			end
 		end
 
-	value_follows (a_value, target: INTEGER): BOOLEAN
-			-- La lista contiene `a_value' dopo la prima occorrenza di `target'?
-		require
-			esiste_bersaglio: has(target)
-		local
-			current_element, temp: like first_element
-		do
-			from
-				current_element := get_element(target)
-				temp := Void
-			invariant
-				not Result implies (temp /= Void implies temp.value /= a_value)
-			until
-				(current_element = Void) or Result
-			loop
-				if current_element.value = a_value then
-					Result := True
-				end
-				temp := current_element
-				current_element := current_element.next
-			end
-		end
+--	get_element (a_value: INTEGER): INT_LINKABLE
+--			-- Ritorna il primo elemento contenente `a_value', se esiste
+--			-- Questa versione ha un invariante più semplice ma testa se trova l'elemento ad ogni iterazione
+--		local
+--			current_element, temp: like first_element
+--		do
+--			from
+--				current_element := first_element;
+--				temp := Void
+--			invariant
+--				Result = Void implies (temp /= Void implies temp.value /= a_value)
+--			until
+--				(current_element = Void) or (Result /= Void)
+--			loop
+--				if current_element.value = a_value then
+--					Result := current_element
+--				end
+--				temp := current_element
+--				current_element := temp.next
+--			end
+--		ensure
+--			(Result /= Void) implies Result.value = a_value
+--		end
 
 	get_element (a_value: INTEGER): INT_LINKABLE
 			-- Ritorna il primo elemento contenente `a_value', se esiste
@@ -132,18 +133,63 @@ feature -- operazioni fondamentali
 				current_element := first_element;
 				temp := Void
 			invariant
-				Result = Void implies (temp /= Void implies temp.value /= a_value)
+				current_element /= Void implies
+				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
 			until
-				(current_element = Void) or (Result /= Void)
+				(current_element = Void) or (current_element.value = a_value)
 			loop
-				if current_element.value = a_value then
-					Result := current_element
-				end
 				temp := current_element
 				current_element := temp.next
 			end
+			if (current_element /= Void and then current_element.value = a_value) then
+				Result := current_element
+			end
 		ensure
 			(Result /= Void) implies Result.value = a_value
+		end
+
+--	value_follows (a_value, target: INTEGER): BOOLEAN
+--			-- La lista contiene `a_value' dopo la prima occorrenza di `target'?
+--			-- Questa versione ha un invariante più semplice ma testa se trova l'elemento ad ogni iterazione
+--		local
+--			current_element, temp: like first_element
+--		do
+--			from
+--				current_element := get_element(target)
+--				temp := Void
+--			invariant
+--				not Result implies (temp /= Void implies temp.value /= a_value)
+--			until
+--				(current_element = Void) or Result
+--			loop
+--				if current_element.value = a_value then
+--					Result := True
+--				end
+--				temp := current_element
+--				current_element := current_element.next
+--			end
+--		end
+
+	value_follows (a_value, target: INTEGER): BOOLEAN
+			-- La lista contiene `a_value' dopo la prima occorrenza di `target'?
+		local
+			current_element, temp: like first_element
+		do
+			from
+				current_element := get_element(target)
+				temp := Void
+			invariant
+				current_element /= Void implies
+				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
+			until
+				(current_element = Void) or (current_element.value = a_value)
+			loop
+				temp := current_element
+				current_element := current_element.next
+			end
+			if (current_element /= Void and then current_element.value = a_value) then
+				Result := True
+			end
 		end
 
 	sum_of_positive: INTEGER
