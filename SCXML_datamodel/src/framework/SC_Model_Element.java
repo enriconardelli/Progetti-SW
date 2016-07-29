@@ -310,11 +310,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		flag = check_state_id(state);
 		Iterator<Element> onentry = state.getContent(new ElementFilter("onentry")).iterator();
 		// controllo dei set-up di ingresso e uscita
-		while (onentry.hasNext())
-			flag = flag & check_onentry(onentry.next());
-		Iterator<Element> onexit = state.getContent(new ElementFilter("onexit")).iterator();
-		while (onexit.hasNext())
-			flag = flag & check_onexit(onexit.next());
+		flag = check_on_entry_and_on_exit(state);
 		// controllo dei figli state, parallel e final
 		Iterator<Element> children = state.getContent(new ElementFilter("state")).iterator();
 		figli.addAll(state.getContent(new ElementFilter("state")));
@@ -369,12 +365,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		boolean flag = true;
 		flag = check_parallel_id(parallel);
 		// controllo dei set-up di ingresso e uscita
-		Iterator<Element> onentry = parallel.getContent(new ElementFilter("onentry")).iterator();
-		while (onentry.hasNext())
-			flag = flag & check_onentry(onentry.next());
-		Iterator<Element> onexit = parallel.getContent(new ElementFilter("onexit")).iterator();
-		while (onexit.hasNext())
-			flag = flag & check_onexit(onexit.next());
+		flag = check_on_entry_and_on_exit(parallel);
 		// controllo dei figli state e parallel
 		Iterator<Element> children = parallel.getContent(new ElementFilter("state")).iterator();
 		while (children.hasNext())
@@ -447,14 +438,6 @@ public class SC_Model_Element extends Element implements Runnable {
 			stati.add("final");
 		// controllo dei set-up di ingresso e uscita
 		flag = check_on_entry_and_on_exit(finale);
-//		Iterator<Element> onentry = finale.getContent(new ElementFilter("onentry")).iterator();
-//		while (onentry.hasNext()) {
-//			flag = flag & check_onentry(onentry.next());
-//		}
-//		Iterator<Element> onexit = finale.getContent(new ElementFilter("onexit")).iterator();
-//		while (onexit.hasNext()) {
-//			flag = flag & check_onexit(onexit.next());
-//		}
 		return flag;
 	}
 
