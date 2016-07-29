@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:my="http://my.custom-actions.domain/CUSTOM"
+	version="1.0" exmode="strict" initial="initial_state">
+	<datamodel>
+		<data id="totale" expr="0" />
+		<data id="contatore" expr="0" />
+	</datamodel>
+
+
+</scxml>
+
+
