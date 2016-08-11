@@ -159,6 +159,12 @@ public class SC_Model_Element extends Element implements Runnable {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
 	public boolean SCXMLDocumentSyntaxOK() {
 		Element pDocumentRoot = documentRoot;
 		boolean checkOK = true;
@@ -193,7 +199,8 @@ public class SC_Model_Element extends Element implements Runnable {
 			System.err.println("ERROR non è presente nè uno state ne un parallel ne un final");
 			check = false;
 		}
-		// Ora controlleremo i figli chiamando funzioni ricorsive
+		
+		// Ora controlleremo il datamodel
 		Iterator<Element> datamodel = pDocumentRoot.getContent(new ElementFilter("datamodel")).iterator();
 		if (datamodel.hasNext()) {
 			check = check & check_datamodel(pDocumentRoot); 
@@ -203,19 +210,16 @@ public class SC_Model_Element extends Element implements Runnable {
 			System.err.println("ERROR più di un datamodel");
 			check = false;
 		}
+		
+		
+		// Ora controlleremo i figli chiamando funzioni ricorsive
 		Iterator<Element> states = pDocumentRoot.getContent(new ElementFilter("state")).iterator();
-		while (states.hasNext()) {
-			check = check & check_state(states.next());
-		}
+		check = check & checkallStates(states);
 		Iterator<Element> parallels = pDocumentRoot.getContent(new ElementFilter("parallel")).iterator();
-		while (parallels.hasNext()) {
-			check = check & check_parallel(parallels.next());
-		}
+		check = check & checkallParallels(parallels);
 		Iterator<Element> finals = pDocumentRoot.getContent(new ElementFilter("final")).iterator();
-		while (finals.hasNext()) {
-			check = check & check_final(finals.next());
-		}
-
+		check = check & checkallFinals(finals);
+		
 		check = check & check_targets();
 		check = check & check_assign_in_data();
 		check = check & check_initial(pDocumentRoot);
@@ -223,7 +227,30 @@ public class SC_Model_Element extends Element implements Runnable {
 	}
 
 	
-
+	private boolean checkallStates (Iterator<Element> states){
+		boolean flag= true;
+		while (states.hasNext()) {
+			flag = flag & check_state(states.next());
+		}
+		return flag;
+	}
+	
+	private boolean checkallParallels(Iterator<Element> parallels){
+		boolean flag= true;
+		while (parallels.hasNext()) {
+			flag = flag & check_parallel(parallels.next());
+		}
+		return flag;
+	}
+	
+	private boolean checkallFinals(Iterator<Element> finals){
+		boolean flag= true;
+		while (finals.hasNext()) {
+			flag = flag & check_final(finals.next());
+		}
+		return flag;
+	}
+	
 	private boolean check_initial(Element pDocumentRoot) {
 		boolean check = true;
 		if (pDocumentRoot.getAttribute("initial") == null) {
@@ -269,31 +296,112 @@ public class SC_Model_Element extends Element implements Runnable {
 		return checkOK;
 	}
 	
+	private boolean check_data(Element dato) {
+		boolean check_data_flag = true;
+		check_data_flag = check_data_id_single(dato) && check_data_id(dato);
+		check_data_flag = check_data_flag & check_data_src_expr(dato);
+		data_ids.add(dato.getAttribute("id").getValue());
+		return check_data_flag;
+	}
+
+	private boolean check_data_src_expr(Element dato) {
+		if (dato.getAttribute("src") != null & dato.getAttribute("expr") != null) {
+			System.err.println("ERROR un data non puo avere src E expr");
+			return false;
+		} else
+			return true;
+	}
+
+	private boolean check_data_id(Element dato) {
+		if (dato.getAttribute("id") == null) {
+			System.err.println("ERROR un data non ha id");
+			return false;
+		} else if (dato.getAttribute("id").getValue() == "") {
+			System.err.println("ERROR: 'data' element with id = '" + dato.getAttribute("id").getValue()
+					+ "' has no value for the attribute");
+			return false;
+		} else
+			return true;
+	}
+
+	private boolean check_data_id_single(Element dato) {
+		if (data_ids.contains(dato.getAttributeValue("id"))) {
+			System.err.println("ERROR piu data hanno nome" + dato.getAttributeValue("id"));
+			return false;
+		} else
+			return true;
+	}
+
+	private boolean checkallOnentry(Iterator<Element> onentry){
+		boolean flag=true;
+		while (onentry.hasNext())
+			flag = flag & check_onentry(onentry.next());
+		return flag;
+	}
+	
+	private boolean checkallOnexit(Iterator<Element> onexit){
+		boolean flag=true;
+		while (onexit.hasNext())
+			flag = flag & check_onexit(onexit.next());	
+		return flag;
+	}
+	
+	private boolean checkallChildren(Iterator<Element> children){
+		boolean flag=true;
+		while (children.hasNext())
+			flag = flag & check_state(children.next());
+		return flag;
+	}
+	
+	private boolean checkallParallelChildren(Iterator<Element> childrenp){
+		boolean flag=true;
+		while (childrenp.hasNext())
+			flag = flag & check_parallel(childrenp.next());
+		return flag;
+	}
+	
+	private boolean checkallFinalChildren(Iterator<Element> childrenf){
+		boolean flag=true;
+		while (childrenf.hasNext())
+			flag = flag & check_final(childrenf.next());
+		return flag;
+	}
+	
+
+	private boolean checkallTransition(Iterator<Element> childrent){
+		boolean flag=true;
+		while (childrent.hasNext())
+			flag = flag & check_trans(childrent.next());
+		return flag;
+	}
+	
 	private boolean check_state(Element state) {
 		List<String> figli = new ArrayList<String>();
 		boolean flag = true;
+		
 		flag = check_state_id(state);
+		
 		Iterator<Element> onentry = state.getContent(new ElementFilter("onentry")).iterator();
-		while (onentry.hasNext())
-			flag = flag & check_onentry(onentry.next());
+		flag =flag & checkallOnentry(onentry);
+		
 		Iterator<Element> onexit = state.getContent(new ElementFilter("onexit")).iterator();
-		while (onexit.hasNext())
-			flag = flag & check_onexit(onexit.next());
+		flag = flag & checkallOnexit(onexit);
+				
 		Iterator<Element> children = state.getContent(new ElementFilter("state")).iterator();
 		figli.addAll(state.getContent(new ElementFilter("state")));
-		while (children.hasNext())
-			flag = flag & check_state(children.next());
+		flag = flag & checkallChildren(children);
+		
 		Iterator<Element> childrenp = state.getContent(new ElementFilter("parallel")).iterator();
 		figli.addAll(state.getContent(new ElementFilter("parallel")));
-		while (childrenp.hasNext())
-			flag = flag & check_parallel(childrenp.next());
+		flag=flag & checkallParallelChildren(childrenp);
+		
 		Iterator<Element> childrenf = state.getContent(new ElementFilter("final")).iterator();
 		figli.addAll(state.getContent(new ElementFilter("final")));
-		while (childrenf.hasNext())
-			flag = flag & check_final(childrenf.next());
+		flag=flag & checkallFinalChildren(childrenf);
+		
 		Iterator<Element> childrent = state.getContent(new ElementFilter("transition")).iterator();
-		while (childrent.hasNext())
-			flag = flag & check_trans(childrent.next());
+		flag=flag & checkallTransition(childrent);
+		
 		if ((state.getAttribute("id") != null & state.getAttribute("initial") != null)
 				&& !(figli.contains(state.getAttribute("initial").getValue()))) {
 			flag = false;
@@ -356,21 +464,21 @@ public class SC_Model_Element extends Element implements Runnable {
 	private boolean check_parallel(Element parallel) {
 		boolean flag = true;
 		flag = check_parallel_id(parallel);
+		
 		Iterator<Element> onentry = parallel.getContent(new ElementFilter("onentry")).iterator();
-		while (onentry.hasNext())
-			flag = flag & check_onentry(onentry.next());
+		flag =flag & checkallOnentry(onentry);
+		
 		Iterator<Element> onexit = parallel.getContent(new ElementFilter("onexit")).iterator();
-		while (onexit.hasNext())
-			flag = flag & check_onexit(onexit.next());
+		flag = flag & checkallOnexit(onexit);
+				
 		Iterator<Element> children = parallel.getContent(new ElementFilter("state")).iterator();
-		while (children.hasNext())
-			flag = flag & check_state(children.next());
+		flag = flag & checkallChildren(children);
+		
 		Iterator<Element> childrenp = parallel.getContent(new ElementFilter("parallel")).iterator();
-		while (childrenp.hasNext())
-			flag = flag & check_parallel(childrenp.next());
+		flag=flag & checkallParallelChildren(childrenp);
+		
 		Iterator<Element> childrent = parallel.getContent(new ElementFilter("transition")).iterator();
-		while (childrent.hasNext())
-			flag = flag & check_trans(childrent.next());
+		flag=flag & checkallTransition(childrent);
 		return flag;
 	}
 
@@ -396,42 +504,49 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 
-
-
-	private boolean check_data(Element dato) {
-		boolean check_data_flag = true;
-		check_data_flag = check_data_id_single(dato) && check_data_id(dato);
-		check_data_flag = check_data_flag & check_data_src_expr(dato);
-		data_ids.add(dato.getAttribute("id").getValue());
-		return check_data_flag;
+	
+	
+	private boolean check_final(Element finale) {
+		boolean flag = true;
+		if (finale.getAttribute("id") != null)
+			stati.add(finale.getAttribute("id").getValue());
+		else
+			stati.add("final");
+		
+		Iterator<Element> onentry = finale.getContent(new ElementFilter("onentry")).iterator();
+		flag =flag & checkallOnentry(onentry);
+		
+		Iterator<Element> onexit = finale.getContent(new ElementFilter("onexit")).iterator();
+		flag = flag & checkallOnexit(onexit);
+				
+		return flag;
 	}
 
-	private boolean check_data_src_expr(Element dato) {
-		if (dato.getAttribute("src") != null & dato.getAttribute("expr") != null) {
-			System.err.println("ERROR un data non puo avere src E expr");
-			return false;
-		} else
-			return true;
+
+	private boolean check_onentry(Element onentry) {
+		boolean flag = true;
+		Iterator<Element> assigns = onentry.getContent(new ElementFilter("assign")).iterator();
+		while (assigns.hasNext()) {
+			flag = flag & check_assign(assigns.next());
+		}
+		Iterator<Element> logs = onentry.getContent(new ElementFilter("log")).iterator();
+		while (logs.hasNext()) {
+			flag = flag & check_log(logs.next());
+		}
+		return flag;
 	}
 
-	private boolean check_data_id(Element dato) {
-		if (dato.getAttribute("id") == null) {
-			System.err.println("ERROR un data non ha id");
-			return false;
-		} else if (dato.getAttribute("id").getValue() == "") {
-			System.err.println("ERROR: 'data' element with id = '" + dato.getAttribute("id").getValue()
-					+ "' has no value for the attribute");
-			return false;
-		} else
-			return true;
-	}
-
-	private boolean check_data_id_single(Element dato) {
-		if (data_ids.contains(dato.getAttributeValue("id"))) {
-			System.err.println("ERROR piu data hanno nome" + dato.getAttributeValue("id"));
-			return false;
-		} else
-			return true;
+	private boolean check_onexit(Element onexit) {
+		boolean flag = true;
+		Iterator<Element> assigns = onexit.getContent(new ElementFilter("assign")).iterator();
+		while (assigns.hasNext()) {
+			flag = flag & check_assign(assigns.next());
+		}
+		Iterator<Element> logs = onexit.getContent(new ElementFilter("log")).iterator();
+		while (logs.hasNext()) {
+			flag = flag & check_log(logs.next());
+		}
+		return flag;
 	}
 
 	private boolean check_trans(Element trans) {
@@ -462,49 +577,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		return flag;
 	}
 
-	private boolean check_final(Element finale) {
-		boolean flag = true;
-		if (finale.getAttribute("id") != null)
-			stati.add(finale.getAttribute("id").getValue());
-		else
-			stati.add("final");
-		Iterator<Element> onentry = finale.getContent(new ElementFilter("onentry")).iterator();
-		while (onentry.hasNext()) {
-			flag = flag & check_onentry(onentry.next());
-		}
-		Iterator<Element> onexit = finale.getContent(new ElementFilter("onexit")).iterator();
-		while (onexit.hasNext()) {
-			flag = flag & check_onexit(onexit.next());
-		}
-		return flag;
-	}
-
-	private boolean check_onentry(Element onentry) {
-		boolean flag = true;
-		Iterator<Element> assigns = onentry.getContent(new ElementFilter("assign")).iterator();
-		while (assigns.hasNext()) {
-			flag = flag & check_assign(assigns.next());
-		}
-		Iterator<Element> logs = onentry.getContent(new ElementFilter("log")).iterator();
-		while (logs.hasNext()) {
-			flag = flag & check_log(logs.next());
-		}
-		return flag;
-	}
-
-	private boolean check_onexit(Element onexit) {
-		boolean flag = true;
-		Iterator<Element> assigns = onexit.getContent(new ElementFilter("assign")).iterator();
-		while (assigns.hasNext()) {
-			flag = flag & check_assign(assigns.next());
-		}
-		Iterator<Element> logs = onexit.getContent(new ElementFilter("log")).iterator();
-		while (logs.hasNext()) {
-			flag = flag & check_log(logs.next());
-		}
-		return flag;
-	}
-
+	
 	private boolean check_assign(Element assegna) {
 		boolean flag = true;
 		Element padre;
@@ -528,6 +601,8 @@ public class SC_Model_Element extends Element implements Runnable {
 		return true;
 	}
 
+	
+	
 	private void copyModelFile(String pSCXMLModel) {
 		File modelInputFile = new File(Conf.data_dir + Conf.filesep + pSCXMLModel + Conf.scxml_extension);
 		try {
