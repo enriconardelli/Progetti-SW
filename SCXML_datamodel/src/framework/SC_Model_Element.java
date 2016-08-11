@@ -162,8 +162,6 @@ public class SC_Model_Element extends Element implements Runnable {
 	public boolean SCXMLDocumentSyntaxOK() {
 		Element pDocumentRoot = documentRoot;
 		boolean checkOK = true;
-//		Iterator<Element> anElement = pDocumentRoot.getDescendants(new ElementFilter("data"));
-//		checkOK = checkElements(anElement);
 		checkOK = scxml_control_scxml(pDocumentRoot);
 		return checkOK;
 	}
@@ -172,32 +170,10 @@ public class SC_Model_Element extends Element implements Runnable {
 	
 	// private methods
 
-	
-	private boolean checkElements(Iterator<Element> anElement) {
-		boolean checkOK = true;
-		while (anElement.hasNext()) {
-
-			Element currentElement = anElement.next();
-
-			if (currentElement.getAttribute("expr") == null) {
-				System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
-						+ "' has no 'expr' attribute");
-				checkOK = false;
-			} else {
-				if (currentElement.getAttribute("expr").getValue() == "") {
-					System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
-							+ "' has no value for the 'expr' attribute");
-					checkOK = false;
-				}
-			}
-		}
-		return checkOK;
-	}
-
-	
 	private boolean scxml_control_scxml(Element pDocumentRoot) {
 		boolean check = true;
-		// controllo indirizzo e versione
+		// controllo indirizzo e versione e deve avere almeno uno state oppure
+		// un parallel o un final
 		if (pDocumentRoot.getAttribute("version") != null) {
 			if (!pDocumentRoot.getAttribute("version").getValue().equals("1.0")) {
 				System.err.println("ERROR version");
@@ -211,7 +187,6 @@ public class SC_Model_Element extends Element implements Runnable {
 			System.err.println("ERROR errato valore per xmlns");
 			check = false;
 		}
-		// controllo deve avere almeno uno state oppure un parallel o un final
 		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty()
 				& pDocumentRoot.getContent(new ElementFilter("parallel")).isEmpty()
 				& pDocumentRoot.getContent(new ElementFilter("final")).isEmpty()) {
@@ -221,7 +196,8 @@ public class SC_Model_Element extends Element implements Runnable {
 		// Ora controlleremo i figli chiamando funzioni ricorsive
 		Iterator<Element> datamodel = pDocumentRoot.getContent(new ElementFilter("datamodel")).iterator();
 		if (datamodel.hasNext()) {
-			check = check & check_datamodel(datamodel.next());
+			check = check & check_datamodel(pDocumentRoot); 
+			datamodel.equals(datamodel.next());
 		}
 		if (datamodel.hasNext()) {
 			System.err.println("ERROR più di un datamodel");
@@ -239,14 +215,14 @@ public class SC_Model_Element extends Element implements Runnable {
 		while (finals.hasNext()) {
 			check = check & check_final(finals.next());
 		}
-		// controllo deve avere indicazione stato iniziale
-		check = check & check_initial(pDocumentRoot);
-		// controllo che le destinazioni di tutte le transizioni sono degli stati esistenti
+
 		check = check & check_targets();
-		// controllo che le assegnazioni ai data element sono tutte dei data element esistenti
 		check = check & check_assign_in_data();
+		check = check & check_initial(pDocumentRoot);
 		return check;
 	}
+
+	
 
 	private boolean check_initial(Element pDocumentRoot) {
 		boolean check = true;
@@ -260,14 +236,168 @@ public class SC_Model_Element extends Element implements Runnable {
 		return check;
 	}
 
-	private boolean check_datamodel(Element datamodel) {
+
+	private boolean check_datamodel(Element pDocumentRoot) {
 		boolean flag = true;
+		Iterator<Element> anElement = pDocumentRoot.getDescendants(new ElementFilter("data"));
+		flag=checkDataElements(anElement);
+		Iterator<Element> data = pDocumentRoot.getContent(new ElementFilter("datamodel")).iterator();
+		Element datamodel= data.next();
 		Iterator<Element> datas = datamodel.getContent(new ElementFilter("data")).iterator();
 		while (datas.hasNext())
 			flag = flag & check_data(datas.next());
 		return flag;
 	}
 	
+	private boolean checkDataElements(Iterator<Element> anElement) {
+		boolean checkOK = true;
+		while (anElement.hasNext()) {
+
+			Element currentElement = anElement.next();
+			if (currentElement.getAttribute("expr") == null) {
+				System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
+						+ "' has no 'expr' attribute");
+				checkOK = false;
+			} else {
+				if (currentElement.getAttribute("expr").getValue() == "") {
+					System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
+							+ "' has no value for the 'expr' attribute");
+					checkOK = false;
+				}
+			}
+		}
+		return checkOK;
+	}
+	
+	private boolean check_state(Element state) {
+		List<String> figli = new ArrayList<String>();
+		boolean flag = true;
+		flag = check_state_id(state);
+		Iterator<Element> onentry = state.getContent(new ElementFilter("onentry")).iterator();
+		while (onentry.hasNext())
+			flag = flag & check_onentry(onentry.next());
+		Iterator<Element> onexit = state.getContent(new ElementFilter("onexit")).iterator();
+		while (onexit.hasNext())
+			flag = flag & check_onexit(onexit.next());
+		Iterator<Element> children = state.getContent(new ElementFilter("state")).iterator();
+		figli.addAll(state.getContent(new ElementFilter("state")));
+		while (children.hasNext())
+			flag = flag & check_state(children.next());
+		Iterator<Element> childrenp = state.getContent(new ElementFilter("parallel")).iterator();
+		figli.addAll(state.getContent(new ElementFilter("parallel")));
+		while (childrenp.hasNext())
+			flag = flag & check_parallel(childrenp.next());
+		Iterator<Element> childrenf = state.getContent(new ElementFilter("final")).iterator();
+		figli.addAll(state.getContent(new ElementFilter("final")));
+		while (childrenf.hasNext())
+			flag = flag & check_final(childrenf.next());
+		Iterator<Element> childrent = state.getContent(new ElementFilter("transition")).iterator();
+		while (childrent.hasNext())
+			flag = flag & check_trans(childrent.next());
+		if ((state.getAttribute("id") != null & state.getAttribute("initial") != null)
+				&& !(figli.contains(state.getAttribute("initial").getValue()))) {
+			flag = false;
+			System.err.println("ERROR lo stato " + state.getAttributeValue("id") + "ha un initial="
+					+ state.getAttributeValue("initial") + " che non ï¿½ un figlio");
+		}
+		return flag;
+	}
+
+	
+	private boolean check_state_id(Element state) {
+		boolean flag = true;
+		Element padre;
+		if (state.getAttribute("id") == null) {
+			padre = state.getParentElement();
+			if (padre.getAttribute("id") == null)
+				System.err.println("ERROR esiste uno stato senza attributo id, con padre senza attributo id");
+			else
+				System.err.println("ERROR esiste uno stato figlio di " + padre.getAttribute("id").getValue()
+						+ "senza attributo id");
+			flag = false;
+		} else {
+			if (stati.contains(state.getAttribute("id").getValue())) {
+				flag = false;
+				System.err.println("ERROR esistono più stati chiamati " + state.getAttribute("id").getValue());
+			}
+			stati.add(state.getAttribute("id").getValue());
+		}
+		return flag;
+	}
+
+	private boolean check_assign_in_data() {
+		boolean flag = true;
+		data_assign.removeAll(data_ids);
+		if (!(data_assign.isEmpty())) {
+			Iterator<String> elenco = data_assign.iterator();
+			while (elenco.hasNext()) {
+				System.err.println("ERROR c'è un assegnazione al data " + elenco.next() + " che però non esiste");
+				flag = false;
+			}
+		}
+		data_assign.addAll(data_ids);
+		return flag;
+	}
+
+	private boolean check_targets() {
+		boolean flag = true;
+		targets.removeAll(stati);
+		if (!(targets.isEmpty())) {
+			Iterator<String> elenco = targets.iterator();
+			while (elenco.hasNext()) {
+				System.err.println("ERROR il target" + elenco.next() + " non ï¿½ nessuno degli stati");
+				flag = false;
+			}
+		}
+		targets.addAll(stati);
+		return flag;
+	}
+
+	private boolean check_parallel(Element parallel) {
+		boolean flag = true;
+		flag = check_parallel_id(parallel);
+		Iterator<Element> onentry = parallel.getContent(new ElementFilter("onentry")).iterator();
+		while (onentry.hasNext())
+			flag = flag & check_onentry(onentry.next());
+		Iterator<Element> onexit = parallel.getContent(new ElementFilter("onexit")).iterator();
+		while (onexit.hasNext())
+			flag = flag & check_onexit(onexit.next());
+		Iterator<Element> children = parallel.getContent(new ElementFilter("state")).iterator();
+		while (children.hasNext())
+			flag = flag & check_state(children.next());
+		Iterator<Element> childrenp = parallel.getContent(new ElementFilter("parallel")).iterator();
+		while (childrenp.hasNext())
+			flag = flag & check_parallel(childrenp.next());
+		Iterator<Element> childrent = parallel.getContent(new ElementFilter("transition")).iterator();
+		while (childrent.hasNext())
+			flag = flag & check_trans(childrent.next());
+		return flag;
+	}
+
+	private boolean check_parallel_id(Element parallel) {
+		boolean flag = true;
+		Element padre;
+		if (parallel.getAttribute("id") == null) {
+			padre = parallel.getParentElement();
+			if (padre.getAttribute("id") == null)
+				System.err
+						.println("ERROR esiste uno stato (parallel) senza attributo id, con padre senza attributo id");
+			else
+				System.err.println("ERROR esiste uno stato (parallel) figlio di " + padre.getAttribute("id").getValue()
+						+ "senza attributo id");
+			flag = false;
+		} else {
+			if (stati.contains(parallel.getAttribute("id").getValue())) {
+				flag = false;
+				System.err.println("ERROR esistono piï¿½ stati chiamati " + parallel.getAttribute("id").getValue());
+			}
+			stati.add(parallel.getAttribute("id").getValue());
+		}
+		return flag;
+	}
+
+
+
 	private boolean check_data(Element dato) {
 		boolean check_data_flag = true;
 		check_data_flag = check_data_id_single(dato) && check_data_id(dato);
@@ -304,105 +434,7 @@ public class SC_Model_Element extends Element implements Runnable {
 			return true;
 	}
 
-	private boolean check_state(Element state) {
-		List<String> figli = new ArrayList<String>();
-		boolean flag = true;
-		flag = check_state_id(state);
-		Iterator<Element> onentry = state.getContent(new ElementFilter("onentry")).iterator();
-		// controllo dei set-up di ingresso e uscita
-		flag = check_on_entry_and_on_exit(state);
-		// controllo dei figli state, parallel e final
-		Iterator<Element> children = state.getContent(new ElementFilter("state")).iterator();
-		figli.addAll(state.getContent(new ElementFilter("state")));
-		while (children.hasNext())
-			flag = flag & check_state(children.next());
-		Iterator<Element> childrenp = state.getContent(new ElementFilter("parallel")).iterator();
-		figli.addAll(state.getContent(new ElementFilter("parallel")));
-		while (childrenp.hasNext())
-			flag = flag & check_parallel(childrenp.next());
-		Iterator<Element> childrenf = state.getContent(new ElementFilter("final")).iterator();
-		figli.addAll(state.getContent(new ElementFilter("final")));
-		while (childrenf.hasNext())
-			flag = flag & check_final(childrenf.next());
-		// controllo delle transizioni
-		Iterator<Element> childrent = state.getContent(new ElementFilter("transition")).iterator();
-		while (childrent.hasNext())
-			flag = flag & check_transition(childrent.next());
-		// TODO: questo test è fatto in modo incompleto. Uno stato che ha l'attributo 'initial'
-		// deve essere uno stato che ha un unico figlio 'transition', senza attributi 'cond' e 'event'
-		if ((state.getAttribute("id") != null & state.getAttribute("initial") != null)
-				&& !(figli.contains(state.getAttribute("initial").getValue()))) {
-			flag = false;
-			System.err.println("ERROR lo stato " + state.getAttributeValue("id") + "ha un initial="
-					+ state.getAttributeValue("initial") + " che non è un figlio");
-		}
-		return flag;
-	}
-
-	
-	private boolean check_state_id(Element state) {
-		boolean flag = true;
-		Element padre;
-		if (state.getAttribute("id") == null) {
-			padre = state.getParentElement();
-			if (padre.getAttribute("id") == null)
-				System.err.println("ERROR esiste uno stato senza attributo id, con padre senza attributo id");
-			else
-				System.err.println("ERROR esiste uno stato figlio di " + padre.getAttribute("id").getValue()
-						+ "senza attributo id");
-			flag = false;
-		} else {
-			if (stati.contains(state.getAttribute("id").getValue())) {
-				flag = false;
-				System.err.println("ERROR esistono più stati chiamati " + state.getAttribute("id").getValue());
-			}
-			stati.add(state.getAttribute("id").getValue());
-		}
-		return flag;
-	}
-
-	private boolean check_parallel(Element parallel) {
-		boolean flag = true;
-		flag = check_parallel_id(parallel);
-		// controllo dei set-up di ingresso e uscita
-		flag = check_on_entry_and_on_exit(parallel);
-		// controllo dei figli state e parallel
-		Iterator<Element> children = parallel.getContent(new ElementFilter("state")).iterator();
-		while (children.hasNext())
-			flag = flag & check_state(children.next());
-		Iterator<Element> childrenp = parallel.getContent(new ElementFilter("parallel")).iterator();
-		while (childrenp.hasNext())
-			flag = flag & check_parallel(childrenp.next());
-		// controllo delle transizioni
-		Iterator<Element> childrent = parallel.getContent(new ElementFilter("transition")).iterator();
-		while (childrent.hasNext())
-			flag = flag & check_transition(childrent.next());
-		return flag;
-	}
-
-	private boolean check_parallel_id(Element parallel) {
-		boolean flag = true;
-		Element padre;
-		if (parallel.getAttribute("id") == null) {
-			padre = parallel.getParentElement();
-			if (padre.getAttribute("id") == null)
-				System.err
-						.println("ERROR esiste uno stato (parallel) senza attributo id, con padre senza attributo id");
-			else
-				System.err.println("ERROR esiste uno stato (parallel) figlio di " + padre.getAttribute("id").getValue()
-						+ "senza attributo id");
-			flag = false;
-		} else {
-			if (stati.contains(parallel.getAttribute("id").getValue())) {
-				flag = false;
-				System.err.println("ERROR esistono piï¿½ stati chiamati " + parallel.getAttribute("id").getValue());
-			}
-			stati.add(parallel.getAttribute("id").getValue());
-		}
-		return flag;
-	}
-
-	private boolean check_transition(Element trans) {
+	private boolean check_trans(Element trans) {
 		boolean flag = true;
 		Element padre;
 		if (trans.getAttribute("event") == null & trans.getAttribute("cond") == null
@@ -436,18 +468,11 @@ public class SC_Model_Element extends Element implements Runnable {
 			stati.add(finale.getAttribute("id").getValue());
 		else
 			stati.add("final");
-		// controllo dei set-up di ingresso e uscita
-		flag = check_on_entry_and_on_exit(finale);
-		return flag;
-	}
-
-	private boolean check_on_entry_and_on_exit(Element anElement) {
-		boolean flag = true;
-		Iterator<Element> onentry = anElement.getContent(new ElementFilter("onentry")).iterator();
+		Iterator<Element> onentry = finale.getContent(new ElementFilter("onentry")).iterator();
 		while (onentry.hasNext()) {
 			flag = flag & check_onentry(onentry.next());
 		}
-		Iterator<Element> onexit = anElement.getContent(new ElementFilter("onexit")).iterator();
+		Iterator<Element> onexit = finale.getContent(new ElementFilter("onexit")).iterator();
 		while (onexit.hasNext()) {
 			flag = flag & check_onexit(onexit.next());
 		}
@@ -495,34 +520,6 @@ public class SC_Model_Element extends Element implements Runnable {
 		} else {
 			data_assign.add(assegna.getAttribute("name").getValue());
 		}
-		return flag;
-	}
-
-	private boolean check_targets() {
-		boolean flag = true;
-		targets.removeAll(stati);
-		if (!(targets.isEmpty())) {
-			Iterator<String> elenco = targets.iterator();
-			while (elenco.hasNext()) {
-				System.err.println("ERROR il target" + elenco.next() + " non è nessuno degli stati");
-				flag = false;
-			}
-		}
-		targets.addAll(stati);
-		return flag;
-	}
-
-	private boolean check_assign_in_data() {
-		boolean flag = true;
-		data_assign.removeAll(data_ids);
-		if (!(data_assign.isEmpty())) {
-			Iterator<String> elenco = data_assign.iterator();
-			while (elenco.hasNext()) {
-				System.err.println("ERROR c'è un assegnazione al data " + elenco.next() + " che però non esiste");
-				flag = false;
-			}
-		}
-		data_assign.addAll(data_ids);
 		return flag;
 	}
 
