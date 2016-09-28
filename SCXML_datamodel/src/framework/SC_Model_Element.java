@@ -40,6 +40,7 @@ public class SC_Model_Element extends Element implements Runnable {
 	 * pathName is the possibly empty directory part of modelName
 	 */
 	private String pathName;
+	private String name;
 
 	private List<String> stati = new ArrayList<String>();
 	private List<String> targets = new ArrayList<String>();
@@ -52,11 +53,12 @@ public class SC_Model_Element extends Element implements Runnable {
 
 	public void set_Model(String p_modelName) {
 		modelName = p_modelName;
-		// controllo se modelName contiene uno o più separatori di directory
-		// stacco l'ultimo pezzo e lo assegno a "name"
-		// il pezzo prima, se non è vuoto, lo assegno a "pathName"
-		// in attesa di implementare quanto sopra
-		setName(modelName);
+		int index = 0;
+		index = modelName.lastIndexOf(File.separator);
+		name = modelName.substring(index+1);
+		if (index != -1) {
+		pathName = modelName.substring(0, index);
+		}
 	}
 
 	public File get_inputFile() {
