@@ -40,7 +40,7 @@ public class SC_Model_Element extends Element implements Runnable {
 	 * pathName is the possibly empty directory part of modelName
 	 */
 	private String pathName;
-	private String name;
+	
 
 	private List<String> stati = new ArrayList<String>();
 	private List<String> targets = new ArrayList<String>();
@@ -54,7 +54,7 @@ public class SC_Model_Element extends Element implements Runnable {
 	public void set_Model(String p_modelName) {
 		modelName = p_modelName;
 		int index = 0;
-		index = modelName.lastIndexOf(File.separator);
+		index = modelName.lastIndexOf("/");
 		name = modelName.substring(index+1);
 		if (index != -1) {
 		pathName = modelName.substring(0, index);
