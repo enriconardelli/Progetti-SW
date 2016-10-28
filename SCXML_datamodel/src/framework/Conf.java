@@ -12,6 +12,7 @@ public class Conf {
 	public static final String class_code_dir = "bin";
 	public static final String data_dir = "data";
 	public static final String model_name = "model";
+	public static final String input_file_for_running = "FilesToRun.txt";
 	public static final String source_extension = ".java";
 	public static final String class_code_extension = ".class";
 	public static final String scxml_extension = ".scxml";
