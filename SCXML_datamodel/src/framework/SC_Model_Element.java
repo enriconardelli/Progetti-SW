@@ -59,9 +59,6 @@ public class SC_Model_Element extends Element implements Runnable {
 		if (index != -1) {
 		pathName = modelName.substring(0, index);
 		}
-		System.out.println("name=" + name);
-		System.out.println("Pathname=" + pathName);
-		System.out.println("Conf.filesep=" + Conf.filesep);
 	}
 
 	public File get_inputFile() {
