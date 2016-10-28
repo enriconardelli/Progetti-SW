@@ -13,21 +13,28 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+
 import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler;
+
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.filter.ElementFilter;
 
 public class Generator {
 	
-	// To pass arguments in Eclipse: "Run Configurations...", "Arguments", "Program Arguments"
+	// OLD -- To pass arguments in Eclipse: "Run Configurations...", "Arguments", "Program Arguments"
+	// VALE ANCORA OLD
+	// CURRENT -- Insert filenames in the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
 	
 	
 	
 	public static void main(String[] args) throws Exception {
 		// the current document must be created dynamically
 		SC_Model_Element SCXMLDocument = new SC_Model_Element();
+// VALE ANCORA OLD
+// method to get input file name has been changed
+// now input file are read from the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
 		// checking input file name(s)
 		if (args.length <= 0) {
 			System.err.println("No args! Give the NAME(s) of the file(s) NAME.scxml containing the StateChart specification(s)");
@@ -50,6 +57,10 @@ public class Generator {
 		Scanner console = new Scanner (System.in);
 		String read="";
 		for (String SCXMLModel : args) {
+//
+//		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.input_file_for_running);
+//		ArrayList<String[]> model_filenames = Common.read(inputFile);
+//
 			System.out.println("--BEGIN-- processing StateChart for model specified in file '" + Conf.data_dir + Conf.filesep + SCXMLModel
 					+ Conf.scxml_extension + "'");
 			SCXMLDocument.set_Model(SCXMLModel);
