@@ -54,11 +54,14 @@ public class SC_Model_Element extends Element implements Runnable {
 	public void set_Model(String p_modelName) {
 		modelName = p_modelName;
 		int index = 0;
-		index = modelName.lastIndexOf("/");
+		index = modelName.lastIndexOf(Conf.filesep);
 		name = modelName.substring(index+1);
 		if (index != -1) {
 		pathName = modelName.substring(0, index);
 		}
+		System.out.println("name=" + name);
+		System.out.println("Pathname=" + pathName);
+		System.out.println("Conf.filesep=" + Conf.filesep);
 	}
 
 	public File get_inputFile() {
