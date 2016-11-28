@@ -23,23 +23,30 @@ import org.jdom.filter.ElementFilter;
 
 public class Generator {
 	
-	// OLD -- To pass arguments in Eclipse: "Run Configurations...", "Arguments", "Program Arguments"
-	// VALE ANCORA OLD
-	// CURRENT -- Insert filenames in the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
+
+	// CURRENT VERSION -- Insert filenames in the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
 	
 	
 	
 	public static void main(String[] args) throws Exception {
 		// the current document must be created dynamically
 		SC_Model_Element SCXMLDocument = new SC_Model_Element();
-// VALE ANCORA OLD
+		
+		
+		for(int i = 0; i < args.length; i++) {
+            System.out.println(args[i]);
+        }
+// CURRENT VERSION
 // method to get input file name has been changed
 // now input file are read from the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
-		// checking input file name(s)
-		if (args.length <= 0) {
-			System.err.println("No args! Give the NAME(s) of the file(s) NAME.scxml containing the StateChart specification(s)");
-			return;
-		}
+		
+// OLD VERSION		
+// checking input file name(s)
+//		if (args.length <= 0) {
+//			System.err.println("No args! Give the NAME(s) of the file(s) NAME.scxml containing the StateChart specification(s)");
+//			return;
+//		}
+		
 		// checking existence of directory where generated source code of StateChart model(s) is stored
 		if (!new File(Conf.source_dir).exists()) {
 			System.out.println("Directory '" + Conf.source_dir + "' doesn't exist! It will be created.");
@@ -56,11 +63,17 @@ public class Generator {
 		// generate and execute code for StateChart model(s), one at a time
 		Scanner console = new Scanner (System.in);
 		String read="";
-		for (String SCXMLModel : args) {
-//
-//		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.input_file_for_running);
-//		ArrayList<String[]> model_filenames = Common.read(inputFile);
-//
+
+// CURRENT VERSION
+// now input file are read from the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
+		
+		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.input_file_for_running);
+		ArrayList<String> model_filenames = Common.read(inputFile);
+
+		
+		for (String SCXMLModel : model_filenames) {
+
+
 			System.out.println("--BEGIN-- processing StateChart for model specified in file '" + Conf.data_dir + Conf.filesep + SCXMLModel
 					+ Conf.scxml_extension + "'");
 			SCXMLDocument.set_Model(SCXMLModel);
