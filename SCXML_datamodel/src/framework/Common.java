@@ -88,16 +88,16 @@ public class Common {
 	 * @param file
 	 * @return the file lines in a list
 	 */
-	public static ArrayList<String[]> read(File file) {
-	      ArrayList<String[]> lines = new ArrayList<String[]>();
+	public static ArrayList<String> read(File file) {
+	      ArrayList<String> lines = new ArrayList<String>();
 	      try {
 	         if (file.canRead()) {
 	            lines.clear();
 	            BufferedReader reader = new BufferedReader(new FileReader(file));
 	            String line;
 	            while ((line = reader.readLine()) != null) {
-	            	String[] l = {line};
-	               lines.add(l);
+	            	String l = line;
+	                lines.add(l);
 	            }
 	            reader.close();
 	         }
