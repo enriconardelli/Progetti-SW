@@ -32,10 +32,6 @@ public class Generator {
 		// the current document must be created dynamically
 		SC_Model_Element SCXMLDocument = new SC_Model_Element();
 		
-		
-		for(int i = 0; i < args.length; i++) {
-            System.out.println(args[i]);
-        }
 // CURRENT VERSION
 // method to get input file name has been changed
 // now input file are read from the file in Conf.data_dir whose name is specified in Conf.input_file_for_running

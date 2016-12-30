@@ -39,7 +39,7 @@ public class SC_Model_Element extends Element implements Runnable {
 	/*
 	 * pathName is the possibly empty directory part of modelName
 	 */
-	private String pathName;
+	private String pathName="";
 	
 
 	private List<String> stati = new ArrayList<String>();
@@ -68,6 +68,7 @@ public class SC_Model_Element extends Element implements Runnable {
 	public void set_documentRoot(String nomeCartella)
 	// throws InterruptedException
 	{
+		set_Model(modelName);
 		inputFile = new File(
 				Conf.data_dir + Conf.filesep + nomeCartella + Conf.filesep + modelName + Conf.scxml_extension);
 		if (!inputFile.exists()) {
@@ -79,9 +80,9 @@ public class SC_Model_Element extends Element implements Runnable {
 		} else { // working on file for current model
 			System.out.println("--START-- generation of StateChart source code for model '" + modelName
 					+ "' specified in the file " + inputFile.getAbsolutePath());
-			if (!new File(Conf.source_dir + Conf.filesep + modelName).exists()) {
+			if (!new File(Conf.source_dir + Conf.filesep + name).exists()) {
 				System.out.println("First time for this StateChart, the package is created");
-				if (!new File(Conf.source_dir + Conf.filesep + modelName).mkdir()) {
+				if (!new File(Conf.source_dir + Conf.filesep + name).mkdir()) {
 					// Thread.sleep(100); // to avoid mixing printouts
 					System.err.println(
 							"Directory '" + Conf.source_dir + Conf.filesep + modelName + "' can NOT be created!");
@@ -171,6 +172,10 @@ public class SC_Model_Element extends Element implements Runnable {
 		Element pDocumentRoot = documentRoot;
 		boolean checkOK = true;
 		checkOK = scxml_control_scxml(pDocumentRoot);
+		data_ids.clear();
+		stati.clear();
+		data_assign.clear();
+		targets.clear();
 		return checkOK;
 	}
 
@@ -198,7 +203,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty()
 				& pDocumentRoot.getContent(new ElementFilter("parallel")).isEmpty()
 				& pDocumentRoot.getContent(new ElementFilter("final")).isEmpty()) {
-			System.err.println("ERROR non è presente nè uno state ne un parallel ne un final");
+			System.err.println("ERROR non è presente nè uno state nè un parallel nè un final");
 			check = false;
 		}
 		
@@ -328,7 +333,7 @@ public class SC_Model_Element extends Element implements Runnable {
 
 	private boolean check_data_id_single(Element dato) {
 		if (data_ids.contains(dato.getAttributeValue("id"))) {
-			System.err.println("ERROR piu data hanno nome" + dato.getAttributeValue("id"));
+			System.err.println("ERROR più data hanno nome " + dato.getAttributeValue("id"));
 			return false;
 		} else
 			return true;
@@ -408,7 +413,7 @@ public class SC_Model_Element extends Element implements Runnable {
 				&& !(figli.contains(state.getAttribute("initial").getValue()))) {
 			flag = false;
 			System.err.println("ERROR lo stato " + state.getAttributeValue("id") + "ha un initial="
-					+ state.getAttributeValue("initial") + " che non ï¿½ un figlio");
+					+ state.getAttributeValue("initial") + " che non è un figlio");
 		}
 		return flag;
 	}
@@ -455,7 +460,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		if (!(targets.isEmpty())) {
 			Iterator<String> elenco = targets.iterator();
 			while (elenco.hasNext()) {
-				System.err.println("ERROR il target" + elenco.next() + " non ï¿½ nessuno degli stati");
+				System.err.println("ERROR il target " + elenco.next() + " non è nessuno degli stati");
 				flag = false;
 			}
 		}
@@ -499,7 +504,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		} else {
 			if (stati.contains(parallel.getAttribute("id").getValue())) {
 				flag = false;
-				System.err.println("ERROR esistono piï¿½ stati chiamati " + parallel.getAttribute("id").getValue());
+				System.err.println("ERROR esistono piu stati chiamati " + parallel.getAttribute("id").getValue());
 			}
 			stati.add(parallel.getAttribute("id").getValue());
 		}
@@ -559,10 +564,10 @@ public class SC_Model_Element extends Element implements Runnable {
 			padre = trans.getParentElement();
 			if (padre.getAttribute("id") == null)
 				System.err.println(
-						"ERROR una transizione di uno stato senza nome non ha nï¿½ target nï¿½ event nï¿½ cond");
+						"ERROR una transizione di uno stato senza nome non ha nè target nè event nè cond");
 			else
 				System.err.println("ERROR una transizione dello stato " + padre.getAttributeValue("id")
-						+ " non ha nï¿½ target nï¿½ event nï¿½ cond");
+						+ " non ha nè target nè event nè cond");
 			flag = false;
 		}
 		if (trans.getAttribute("target") != null) {
