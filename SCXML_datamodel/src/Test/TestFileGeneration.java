@@ -61,9 +61,9 @@ public class TestFileGeneration {
 	}
 
 	@Parameterized.Parameters
-	public static Collection<String[]> filesToTest() {
+	public static Collection<String> filesToTest() {
 		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.input_file_for_testing);
-		ArrayList<String[]> input = Common.read(inputFile);
+		ArrayList<String> input = Common.read(inputFile);
 		return input;
 	}
 }

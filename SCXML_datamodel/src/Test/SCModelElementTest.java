@@ -12,7 +12,6 @@ import framework.Conf;
 
 public class SCModelElementTest {
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testSet_Model() {
 		SC_Model_Element element = new SC_Model_Element();
