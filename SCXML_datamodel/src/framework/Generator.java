@@ -70,18 +70,16 @@ public class Generator {
 		for (String SCXMLModel : model_filenames) {
 
 
-			System.out.println("--BEGIN-- processing StateChart for model specified in file '" + Conf.data_dir + Conf.filesep + SCXMLModel
-					+ Conf.scxml_extension + "'");
+			System.out.println("--BEGIN-- processing StateChart for model in data directory '" + Conf.data_dir + "', specified in file '" + SCXMLModel + Conf.scxml_extension + "'");
 			SCXMLDocument.set_Model(SCXMLModel);
 			SCXMLDocument.set_documentRoot("");
 			if (!(SCXMLDocument.SCXMLDocumentSyntaxOK())) {
 				Thread.sleep(100); // to avoid mixing printouts
 				System.err.println("Syntax error(s) in file " + SCXMLDocument.get_inputFile().getAbsolutePath());
-				System.err.println("--ERROR-- The generation of this StateChart is interrupted.\n");
+				System.err.println("--FATAL ERROR-- The generation of this StateChart is interrupted.\n");
 			} else {
 				SCXMLDocument.stateChartGeneration(SCXMLModel);
-				System.out.println("--FINISH-- generation of StateChart source code for model specified in file '" + Conf.data_dir + Conf.filesep
-						+ SCXMLModel + Conf.scxml_extension + "'\n");
+				System.out.println("--FINISH-- generation of StateChart source code for model in data directory '" + Conf.data_dir + "', specified in file '" + SCXMLModel + Conf.scxml_extension + "'\n");
 				System.out.println("PRESS <S> + <<Return>> to compile and execute NOW this StateChart, others to skip");
 				if (console.hasNextLine())
 					read = console.next();
@@ -99,8 +97,7 @@ public class Generator {
 //				startSC_thread.join();
 			}
 			Thread.sleep(100); // to avoid mixing printouts
-			System.out.println("-- END -- processing StateChart for model specified in file '" + Conf.data_dir + Conf.filesep + SCXMLModel
-					+ Conf.scxml_extension + "'\n");
+			System.out.println("-- END -- processing StateChart for model in data directory '" + Conf.data_dir + "', specified in file '" + SCXMLModel + Conf.scxml_extension + "'\n");
 			System.out.println("PRESS <C> + <<Return>> to continue with next SC, others to finish");
 			if (console.hasNextLine())
 				read = console.next();
