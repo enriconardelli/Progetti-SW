@@ -189,21 +189,21 @@ public class SC_Model_Element extends Element implements Runnable {
 		// un parallel o un final
 		if (pDocumentRoot.getAttribute("version") != null) {
 			if (!pDocumentRoot.getAttribute("version").getValue().equals("1.0")) {
-				System.err.println("ERROR version");
+				System.err.println("SYNTAX ERROR: valore errato per version number");
 				check = false;
 			}
 		} else {
-			System.err.println("ERROR: version not found");
+			System.err.println("SYNTAX ERROR: attributo 'version' non presente");
 			check = false;
 		}
 		if (!pDocumentRoot.getNamespace().getURI().equals("http://www.w3.org/2005/07/scxml")) {
-			System.err.println("ERROR errato valore per xmlns");
+			System.err.println("SYNTAX ERROR: errato valore per xmlns");
 			check = false;
 		}
 		if (pDocumentRoot.getContent(new ElementFilter("state")).isEmpty()
 				& pDocumentRoot.getContent(new ElementFilter("parallel")).isEmpty()
 				& pDocumentRoot.getContent(new ElementFilter("final")).isEmpty()) {
-			System.err.println("ERROR non è presente nè uno state nè un parallel nè un final");
+			System.err.println("SYNTAX ERROR: non è presente nè attributo 'state' nè 'parallel' nè 'final'");
 			check = false;
 		}
 		
@@ -214,7 +214,7 @@ public class SC_Model_Element extends Element implements Runnable {
 			datamodel.equals(datamodel.next());
 		}
 		if (datamodel.hasNext()) {
-			System.err.println("ERROR più di un datamodel");
+			System.err.println("SYNTAX ERROR: presente più di un datamodel");
 			check = false;
 		}
 		
@@ -261,10 +261,10 @@ public class SC_Model_Element extends Element implements Runnable {
 	private boolean check_initial(Element pDocumentRoot) {
 		boolean check = true;
 		if (pDocumentRoot.getAttribute("initial") == null) {
-			System.err.println("ERROR: initial not found");
+			System.err.println("SYNTAX ERROR: attributo 'initial' non presente");
 			check = false;
 		} else if (!(stati.contains(pDocumentRoot.getAttribute("initial").getValue()))) {
-			System.err.println("ERROR lo stato identificato come iniziale non esiste");
+			System.err.println("SYNTAX ERROR: lo stato identificato come iniziale non esiste");
 			check = false;
 		}
 		return check;
@@ -289,12 +289,12 @@ public class SC_Model_Element extends Element implements Runnable {
 
 			Element currentElement = anElement.next();
 			if (currentElement.getAttribute("expr") == null) {
-				System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
+				System.err.println("SYNTAX ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
 						+ "' has no 'expr' attribute");
 				checkOK = false;
 			} else {
 				if (currentElement.getAttribute("expr").getValue() == "") {
-					System.err.println("ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
+					System.err.println("SYNTAX ERROR: 'data' element '" + currentElement.getAttribute("id").getValue()
 							+ "' has no value for the 'expr' attribute");
 					checkOK = false;
 				}
@@ -313,7 +313,7 @@ public class SC_Model_Element extends Element implements Runnable {
 
 	private boolean check_data_src_expr(Element dato) {
 		if (dato.getAttribute("src") != null & dato.getAttribute("expr") != null) {
-			System.err.println("ERROR un data non puo avere src E expr");
+			System.err.println("SYNTAX ERROR:  un data non puo avere src E expr");
 			return false;
 		} else
 			return true;
@@ -321,10 +321,10 @@ public class SC_Model_Element extends Element implements Runnable {
 
 	private boolean check_data_id(Element dato) {
 		if (dato.getAttribute("id") == null) {
-			System.err.println("ERROR un data non ha id");
+			System.err.println("SYNTAX ERROR: un data non ha id");
 			return false;
 		} else if (dato.getAttribute("id").getValue() == "") {
-			System.err.println("ERROR: 'data' element with id = '" + dato.getAttribute("id").getValue()
+			System.err.println("SYNTAX ERROR: 'data' element with id = '" + dato.getAttribute("id").getValue()
 					+ "' has no value for the attribute");
 			return false;
 		} else
@@ -333,7 +333,7 @@ public class SC_Model_Element extends Element implements Runnable {
 
 	private boolean check_data_id_single(Element dato) {
 		if (data_ids.contains(dato.getAttributeValue("id"))) {
-			System.err.println("ERROR più data hanno nome " + dato.getAttributeValue("id"));
+			System.err.println("SYNTAX ERROR: più data hanno nome " + dato.getAttributeValue("id"));
 			return false;
 		} else
 			return true;
@@ -412,7 +412,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		if ((state.getAttribute("id") != null & state.getAttribute("initial") != null)
 				&& !(figli.contains(state.getAttribute("initial").getValue()))) {
 			flag = false;
-			System.err.println("ERROR lo stato " + state.getAttributeValue("id") + "ha un initial="
+			System.err.println("SYNTAX ERROR: lo stato " + state.getAttributeValue("id") + "ha un initial="
 					+ state.getAttributeValue("initial") + " che non è un figlio");
 		}
 		return flag;
@@ -425,15 +425,15 @@ public class SC_Model_Element extends Element implements Runnable {
 		if (state.getAttribute("id") == null) {
 			padre = state.getParentElement();
 			if (padre.getAttribute("id") == null)
-				System.err.println("ERROR esiste uno stato senza attributo id, con padre senza attributo id");
+				System.err.println("SYNTAX ERROR: esiste uno stato senza attributo id, con padre senza attributo id");
 			else
-				System.err.println("ERROR esiste uno stato figlio di " + padre.getAttribute("id").getValue()
+				System.err.println("SYNTAX ERROR: esiste uno stato figlio di " + padre.getAttribute("id").getValue()
 						+ "senza attributo id");
 			flag = false;
 		} else {
 			if (stati.contains(state.getAttribute("id").getValue())) {
 				flag = false;
-				System.err.println("ERROR esistono più stati chiamati " + state.getAttribute("id").getValue());
+				System.err.println("SYNTAX ERROR: esistono più stati chiamati " + state.getAttribute("id").getValue());
 			}
 			stati.add(state.getAttribute("id").getValue());
 		}
@@ -446,7 +446,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		if (!(data_assign.isEmpty())) {
 			Iterator<String> elenco = data_assign.iterator();
 			while (elenco.hasNext()) {
-				System.err.println("ERROR c'è un assegnazione al data " + elenco.next() + " che però non esiste");
+				System.err.println("SYNTAX ERROR: c'è un assegnazione al data " + elenco.next() + " che però non esiste");
 				flag = false;
 			}
 		}
@@ -460,7 +460,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		if (!(targets.isEmpty())) {
 			Iterator<String> elenco = targets.iterator();
 			while (elenco.hasNext()) {
-				System.err.println("ERROR il target " + elenco.next() + " non è nessuno degli stati");
+				System.err.println("SYNTAX ERROR: il target " + elenco.next() + " non è nessuno degli stati");
 				flag = false;
 			}
 		}
@@ -496,15 +496,15 @@ public class SC_Model_Element extends Element implements Runnable {
 			padre = parallel.getParentElement();
 			if (padre.getAttribute("id") == null)
 				System.err
-						.println("ERROR esiste uno stato (parallel) senza attributo id, con padre senza attributo id");
+						.println("SYNTAX ERROR: esiste uno stato (parallel) senza attributo id, con padre senza attributo id");
 			else
-				System.err.println("ERROR esiste uno stato (parallel) figlio di " + padre.getAttribute("id").getValue()
+				System.err.println("SYNTAX ERROR: esiste uno stato (parallel) figlio di " + padre.getAttribute("id").getValue()
 						+ "senza attributo id");
 			flag = false;
 		} else {
 			if (stati.contains(parallel.getAttribute("id").getValue())) {
 				flag = false;
-				System.err.println("ERROR esistono piu stati chiamati " + parallel.getAttribute("id").getValue());
+				System.err.println("SYNTAX ERROR: esistono piu stati chiamati " + parallel.getAttribute("id").getValue());
 			}
 			stati.add(parallel.getAttribute("id").getValue());
 		}
@@ -564,9 +564,9 @@ public class SC_Model_Element extends Element implements Runnable {
 			padre = trans.getParentElement();
 			if (padre.getAttribute("id") == null)
 				System.err.println(
-						"ERROR una transizione di uno stato senza nome non ha nè target nè event nè cond");
+						"SYNTAX ERROR: una transizione di uno stato senza nome non ha nè target nè event nè cond");
 			else
-				System.err.println("ERROR una transizione dello stato " + padre.getAttributeValue("id")
+				System.err.println("SYNTAX ERROR: una transizione dello stato " + padre.getAttributeValue("id")
 						+ " non ha nè target nè event nè cond");
 			flag = false;
 		}
@@ -592,9 +592,9 @@ public class SC_Model_Element extends Element implements Runnable {
 			// usare il metodo org.jdom.output.XMLOutputter.outputString ??
 			padre = assegna.getParentElement().getParentElement();
 			if (padre.getAttribute("id") == null)
-				System.err.println("ERROR assegnazione relativa a uno stato senza id non ha l'attributo name");
+				System.err.println("SYNTAX ERROR: assegnazione relativa a uno stato senza id non ha l'attributo name");
 			else
-				System.err.println("ERROR Assegnazione relativa allo stato " + padre.getAttribute("id").getValue()
+				System.err.println("SYNTAX ERROR: Assegnazione relativa allo stato " + padre.getAttribute("id").getValue()
 						+ "non ha l'attributo name");
 			flag = false;
 		} else {
