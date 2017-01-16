@@ -68,7 +68,6 @@ public class SC_Model_Element extends Element implements Runnable {
 	public void set_documentRoot(String nomeCartella)
 	// throws InterruptedException
 	{
-		set_Model(modelName);
 		inputFile = new File(
 				Conf.data_dir + Conf.filesep + nomeCartella + Conf.filesep + modelName + Conf.scxml_extension);
 		if (!inputFile.exists()) {
