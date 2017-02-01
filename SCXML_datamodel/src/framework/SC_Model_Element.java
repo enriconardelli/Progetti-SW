@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.filter.ElementFilter;
@@ -32,16 +33,17 @@ public class SC_Model_Element extends Element implements Runnable {
 	private File inputFile;
 
 	/*
-	 * modelName is the full name of the SCXML model including directory
+	 * fullModelName is the full name of the SCXML model including directory, with respect to directory Conf.data_dir
+	 * 
 	 */
-	private String modelName;
+	private String fullModelName;
 
 	/*
-	 * pathName is the possibly empty directory part of modelName
+	 * pathName is the (possibly empty) directory part of fullModelName, that is the directory part between Conf.data_dir and the filename
+	 *   including the final path separator
 	 */
 	private String pathName="";
 	
-
 	private List<String> stati = new ArrayList<String>();
 	private List<String> targets = new ArrayList<String>();
 	private List<String> data_ids = new ArrayList<String>();
@@ -52,12 +54,12 @@ public class SC_Model_Element extends Element implements Runnable {
 	// public methods
 
 	public void set_Model(String p_modelName) {
-		modelName = p_modelName;
+		fullModelName = p_modelName;
 		int index = 0;
-		index = modelName.lastIndexOf(Conf.filesep);
-		name = modelName.substring(index+1);
+		index = fullModelName.lastIndexOf(Conf.filesep);
+		name = fullModelName.substring(index+1);
 		if (index != -1) {
-		pathName = modelName.substring(0, index);
+		pathName = fullModelName.substring(0, index+1);
 		}
 	}
 
@@ -65,33 +67,33 @@ public class SC_Model_Element extends Element implements Runnable {
 		return inputFile;
 	}
 
-	public void set_documentRoot(String nomeCartella)
+	public void set_documentRoot()
 	// throws InterruptedException
 	{
 		inputFile = new File(
-				Conf.data_dir + Conf.filesep + nomeCartella + Conf.filesep + modelName + Conf.scxml_extension);
+				Conf.data_dir + Conf.filesep + fullModelName + Conf.scxml_extension);
 		if (!inputFile.exists()) {
 			// Thread.sleep(100); // to avoid mixing printouts
-			System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + modelName
+			System.err.println("ERROR: the file " + inputFile.getAbsolutePath() + " for the model " + fullModelName
 					+ " does not exist.");
-			System.err.println("Generation for the model " + modelName + " is interrupted.");
+			System.err.println("Generation for the model " + fullModelName + " is interrupted.");
 			return;
 		} else { // working on file for current model
-			System.out.println("--START-- generation of StateChart source code for model '" + modelName
+			System.out.println("--START-- generation of StateChart source code for model '" + fullModelName
 					+ "' specified in the file " + inputFile.getAbsolutePath());
-			if (!new File(Conf.source_dir + Conf.filesep + name).exists()) {
+			if (!new File(Conf.source_dir + Conf.filesep + fullModelName).exists()) {
 				System.out.println("First time for this StateChart, the package is created");
-				if (!new File(Conf.source_dir + Conf.filesep + name).mkdir()) {
+				if (!new File(Conf.source_dir + Conf.filesep + fullModelName).mkdir()) {
 					// Thread.sleep(100); // to avoid mixing printouts
 					System.err.println(
-							"Directory '" + Conf.source_dir + Conf.filesep + modelName + "' can NOT be created!");
+							"Directory '" + Conf.source_dir + Conf.filesep + fullModelName + "' can NOT be created!");
 					System.err.println("The Generator is halted.");
 					System.exit(0);
 				} else
-					System.out.println("Directory '" + Conf.source_dir + Conf.filesep + modelName
+					System.out.println("Directory '" + Conf.source_dir + Conf.filesep + fullModelName
 							+ "' created. Program will continue generating the StateChart code ");
 			} else
-				System.out.println("Modifying the existing package of the StateChart for model '" + modelName + "'");
+				System.out.println("Modifying the existing package of the StateChart for model '" + fullModelName + "'");
 			documentRoot = Common.getDocumentRoot(inputFile);
 		}
 	}
@@ -102,9 +104,9 @@ public class SC_Model_Element extends Element implements Runnable {
 
 	public synchronized void startSC() {
 		System.out.println("Invoking the Launcher for the model specified in file '" + Conf.data_dir + Conf.filesep
-				+ modelName + Conf.scxml_extension + "'");
+				+ fullModelName + Conf.scxml_extension + "'");
 		try {
-			Class<?> classe = Class.forName(modelName + Conf.packagesep + "Launcher");
+			Class<?> classe = Class.forName(fullModelName + Conf.packagesep + "Launcher");
 			// System.out.println("classe.getName() = " + classe.getName());
 			Object istanza_classe = classe.newInstance();
 			// System.out.println("istanza_classe.getName() = " +
