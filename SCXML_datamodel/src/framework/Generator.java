@@ -22,27 +22,20 @@ import org.jdom.JDOMException;
 import org.jdom.filter.ElementFilter;
 
 public class Generator {
-	
 
-	// CURRENT VERSION -- Insert filenames in the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
-	
-	
-	
+	// Insert filenames to process in the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
+
 	public static void main(String[] args) throws Exception {
-		// the current document must be created dynamically
-		SC_Model_Element SCXMLDocument = new SC_Model_Element();
-		
-// CURRENT VERSION
-// method to get input file name has been changed
-// now input file are read from the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
-		
-// OLD VERSION		
-// checking input file name(s)
-//		if (args.length <= 0) {
-//			System.err.println("No args! Give the NAME(s) of the file(s) NAME.scxml containing the StateChart specification(s)");
-//			return;
-//		}
-		
+
+		// checking existence of model names to process
+		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.input_file_for_running);
+		ArrayList<String> model_filenames = Common.read(inputFile);
+		if (model_filenames.size()==0) {
+			System.err.println("File " + Conf.data_dir + Conf.filesep + Conf.input_file_for_running + "doesn't contain any model name!" );
+			System.err.println("The Generator is halted.");
+			return;
+		}
+
 		// checking existence of directory where generated source code of StateChart model(s) is stored
 		if (!new File(Conf.source_dir).exists()) {
 			System.out.println("Directory '" + Conf.source_dir + "' doesn't exist! It will be created.");
@@ -56,23 +49,15 @@ public class Generator {
 				System.out.println("The Generator will now continue reading SC model(s).\n");
 			}
 		}
+		
 		// generate and execute code for StateChart model(s), one at a time
 		Scanner console = new Scanner (System.in);
 		String read="";
-
-// CURRENT VERSION
-// now input file are read from the file in Conf.data_dir whose name is specified in Conf.input_file_for_running
-		
-		File inputFile = new File(Conf.data_dir + Conf.filesep + Conf.input_file_for_running);
-		ArrayList<String> model_filenames = Common.read(inputFile);
-
-		
+		SC_Model_Element SCXMLDocument = new SC_Model_Element();
 		for (String SCXMLModel : model_filenames) {
-
-
 			System.out.println("--BEGIN-- processing StateChart for model in data directory '" + Conf.data_dir + "', specified in file '" + SCXMLModel + Conf.scxml_extension + "'");
 			SCXMLDocument.set_Model(SCXMLModel);
-			SCXMLDocument.set_documentRoot("");
+			SCXMLDocument.set_documentRoot();
 			if (!(SCXMLDocument.SCXMLDocumentSyntaxOK())) {
 				Thread.sleep(100); // to avoid mixing printouts
 				System.err.println("Syntax error(s) in file " + SCXMLDocument.get_inputFile().getAbsolutePath());
