@@ -1,3 +1,4 @@
 SCxml_sbagliati\datadoppio
 contatore
+SCxml_sbagliati\mancastatoparallelfinal
 OneTwoThree
