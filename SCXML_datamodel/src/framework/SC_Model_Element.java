@@ -59,7 +59,7 @@ public class SC_Model_Element extends Element implements Runnable {
 		index = fullModelName.lastIndexOf(Conf.filesep);
 		name = fullModelName.substring(index+1);
 		if (index != -1) {
-		pathName = fullModelName.substring(0, index+1);
+		pathName = fullModelName.substring(0, index);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class SC_Model_Element extends Element implements Runnable {
 					+ "' specified in the file " + inputFile.getAbsolutePath());
 			if (!new File(Conf.source_dir + Conf.filesep + fullModelName).exists()) {
 				System.out.println("First time for this StateChart, the package is created");
-				if (!new File(Conf.source_dir + Conf.filesep + fullModelName).mkdir()) {
+				if (!new File(Conf.source_dir + Conf.filesep + fullModelName).mkdirs()) {
 					// Thread.sleep(100); // to avoid mixing printouts
 					System.err.println(
 							"Directory '" + Conf.source_dir + Conf.filesep + fullModelName + "' can NOT be created!");
