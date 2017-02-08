@@ -1,4 +1,7 @@
-SCxml_sbagliati\datadoppio
+SCxml_sbagliati\versione_sbagliata
+SCxml_sbagliati\datamodel\data_element_assente
+SCxml_sbagliati\datamodel\data_element_duplicato
+SCxml_sbagliati\datamodel\data_element_assente_per_errore_sintassi
+SCxml_sbagliati\datamodel\datamodel_duplicato
 contatore
-SCxml_sbagliati\mancastatoparallelfinal
 OneTwoThree
