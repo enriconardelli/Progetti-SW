@@ -16,9 +16,10 @@ feature --Attributi
 	state_chart: CONFIGURAZIONE
 
 	eventi: ARRAY [STRING]
-			-- serve durante la lettura degli eventi dal file
+			-- memorizza gli eventi letti dal file
 
 	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
+			-- rappresenta sotto forma di un albero la SC
 
 feature {NONE} -- Inizializzazione
 
@@ -37,6 +38,7 @@ feature {NONE} -- Inizializzazione
 feature
 
 	crea_albero
+	-- crea e inizializza `albero'
 		local
 			parser: XML_PARSER
 			un_file: STRING
@@ -80,7 +82,7 @@ feature
 		end
 
 	verifica_eventi: ARRAY [STRING]
-			--Serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
+			-- Serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
 			--Comunica a video se ci sono eventi incompatibili
 		local
 			v_new, v_old: ARRAY [STRING]
