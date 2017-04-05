@@ -11,7 +11,6 @@ create
 	start
 
 feature --Attributi
-	--	conf: CONFIGURAZIONE
 
 	state_chart: CONFIGURAZIONE
 
