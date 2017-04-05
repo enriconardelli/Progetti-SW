@@ -7,16 +7,18 @@ note
 class
 	STAMPA
 
-inherit AZIONE
+inherit
+
+	AZIONE
 
 create
 	make_with_text
 
-feature --attributi
+feature -- attributi
 
 	testo: STRING
 
-feature --creazione
+feature -- creazione
 
 	make_with_text (una_stringa: STRING)
 		require
@@ -28,13 +30,11 @@ feature --creazione
 			testo_non_void: testo /= Void
 		end
 
+feature -- azione
 
-feature
-    action(condizioni:  HASH_TABLE [BOOLEAN, STRING])
-	do
-		print("LOG:   "+testo+"%N")
-	end
-
-
+	action (condizioni: HASH_TABLE [BOOLEAN, STRING])
+		do
+			print ("LOG:   " + testo + "%N")
+		end
 
 end
