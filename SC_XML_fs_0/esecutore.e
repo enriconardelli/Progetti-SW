@@ -13,7 +13,7 @@ create
 feature --Attributi
 
 	state_chart: CONFIGURAZIONE
-
+			--	conf: CONFIGURAZIONE
 	eventi: ARRAY [STRING]
 			-- memorizza gli eventi letti dal file
 
