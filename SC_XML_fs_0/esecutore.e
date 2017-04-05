@@ -10,15 +10,16 @@ class
 create
 	start
 
-feature --Attributi
+feature -- Attributi
 
 	state_chart: CONFIGURAZIONE
-			--	conf: CONFIGURAZIONE
+			-- rappresenta la SC durante la sua esecuzione
+
 	eventi: ARRAY [STRING]
-			-- memorizza gli eventi letti dal file
+			-- memorizza gli eventi letti da file
 
 	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
-			-- rappresenta sotto forma di un albero la SC
+			-- rappresenta sotto forma di un albero la SC letta da file
 
 feature {NONE} -- Inizializzazione
 
@@ -31,13 +32,13 @@ feature {NONE} -- Inizializzazione
 			eventi := acquisisci_eventi
 			print ("acquisiti eventi %N")
 			create state_chart.make (albero)
-			state_chart.evolvi_SC(eventi)
+			state_chart.evolvi_SC (eventi)
 		end
 
 feature
 
 	crea_albero
-	-- crea e inizializza `albero'
+			-- crea e inizializza `albero'
 		local
 			parser: XML_PARSER
 			un_file: STRING
@@ -58,7 +59,7 @@ feature
 		end
 
 	acquisisci_eventi: ARRAY [STRING]
-			-- Legge gli eventi dal file 'eventi.txt' e li inserisce in un vettore
+			-- Legge gli eventi dal file 'eventi.txt' e li inserisce in `eventi'
 
 		local
 			file: PLAIN_TEXT_FILE
@@ -82,7 +83,7 @@ feature
 
 	verifica_eventi: ARRAY [STRING]
 			-- Serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
-			--Comunica a video se ci sono eventi incompatibili
+			-- Comunica a video se ci sono eventi incompatibili
 		local
 			v_new, v_old: ARRAY [STRING]
 			h_stati: HASH_TABLE [STATO, STRING]
