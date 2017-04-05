@@ -5,7 +5,9 @@ contiene la versione generica delle classi EIFFEL di gestione di liste con l'uso
 
 È stata generata a partire da una vecchia versione di
   linked_list
-che non aveva la Void Safety con l'introduzione della genericità nelle classi.
+che non aveva la Void Safety, aggiungendo 
+ - Void Safety
+ - genericità nelle classi.
 
 Devo capire come farla evolvere, se nel filone degli esercizi di Eiffel per il corso della triennale (in cui però non c'è l'uso di Autotest) oppure come parte del corso magistrale PSI
 
