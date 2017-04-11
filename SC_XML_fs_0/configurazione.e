@@ -114,7 +114,7 @@ feature -- inizializzazione SC
 				lis_data.forth
 			end
 			condizioni.extend (true, "condizione_vuota")
-				--						condizione_vuota è una condizione sempre true che si applica alle transizioni che hanno condizione void (cfr riempi_stato)
+				-- condizione_vuota è una condizione sempre true che si applica alle transizioni che hanno condizione void (cfr riempi_stato)
 		end
 
 	istanzia_stati_e_condizioni (lis_el: LIST [XML_ELEMENT])

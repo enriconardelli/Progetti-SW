@@ -16,10 +16,10 @@ feature -- Attributi
 			-- rappresenta la SC durante la sua esecuzione
 
 	eventi: ARRAY [STRING]
-			-- memorizza gli eventi letti da file
+			-- memorizza gli eventi letti dal file
 
 	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
-			-- rappresenta sotto forma di un albero la SC letta da file
+			-- rappresenta sotto forma di un albero la SC letta dal file
 
 feature {NONE} -- Inizializzazione
 
@@ -82,8 +82,8 @@ feature
 		end
 
 	verifica_eventi: ARRAY [STRING]
-			-- Serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
-			-- Comunica a video se ci sono eventi incompatibili
+			-- Verifica che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
+			-- Segnala l'eventuale presenza di eventi incompatibili
 		local
 			v_new, v_old: ARRAY [STRING]
 			h_stati: HASH_TABLE [STATO, STRING]
@@ -125,7 +125,7 @@ feature
 					h_stati.forth
 				end
 				if NOT flag then
-					print ("%N SANTIDDIO!! L'evento " + v_old [i] + " non viene utilizzato!")
+					print ("%N ATTENZIONE!! L'evento " + v_old [i] + " non viene utilizzato!")
 				end
 				i := i + 1
 			end
