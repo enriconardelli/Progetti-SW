@@ -102,7 +102,7 @@ feature --routines
 
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
 			--		require
-			--			numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) > 0
+			--		numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) > 0
 		local
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
@@ -134,13 +134,13 @@ feature --routines
 	determinismo_senza_evento (hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
 		local
 			index_count: INTEGER
-			numero_di_transizioni_senza_evento_con_condizione_vera: INTEGER --questo conta il numero di transizione nell'array cn campo evento vuoto e condizione vera
+			numero_di_transizioni_senza_evento_con_condizione_vera: INTEGER --questo conta il numero di transizioni nell'array con campo evento vuoto e condizione vera
 
 		do
-				-- ritorna vero se il numero delle transizioni con campo evento vuoto e condizioni vere sono al più una sola
+				-- ritorna vero se il numero di transizioni con campo evento vuoto e condizioni vere sono al più una sola
 
 			from
-				index_count := transizioni.lower --si parte a scorrere l'array di transizioni dal suo indice più piccolo
+				index_count := transizioni.lower --si scorre l'array di transizioni a partire dal suo indice più piccolo
 				numero_di_transizioni_senza_evento_con_condizione_vera := 0
 			until
 				index_count = transizioni.upper + 1 or numero_di_transizioni_senza_evento_con_condizione_vera > 1
