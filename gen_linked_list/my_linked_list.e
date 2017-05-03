@@ -15,6 +15,14 @@ feature
 	last_element: detachable MY_LINKABLE[G]
 			-- Last cell of the list
 
+	attached_element (a_value: G): MY_LINKABLE[G]
+			-- Elemento sempre attached usato per creazione di nuovi elementi da aggiungere
+		do
+			create Result.make (a_value)
+		ensure
+			esiste_result: Result /= Void
+		end
+
 	count: INTEGER
 			-- Number of elements in the list
 
@@ -26,16 +34,18 @@ feature
 		local
 			new_element: like first_element
 		do
-			create new_element.make (a_value)
+			new_element := attached_element (a_value)
 			if first_element = Void then
 				first_element := new_element
 			else
-				last_element.link_to (new_element)
+				check attached last_element as le then
+					le.link_to (new_element)
+				end
 			end
 			last_element := new_element
 			count := count + 1
 		ensure
-			last_element.value = a_value
+			attached last_element as le implies le.value = a_value
 			count = old count + 1
 		end
 
@@ -140,7 +150,7 @@ feature
 				current_element := current_element.next
 			end
 			if current_element /= Void then
-				new_element.insert_after (current_element)
+				new_element.link_after (current_element)
 				if last_element = current_element then
 					last_element := new_element
 				end
@@ -149,7 +159,7 @@ feature
 					first_element := new_element
 					last_element := first_element
 				else
-					new_element.insert_after (last_element)
+					new_element.link_after (last_element)
 					last_element := new_element
 				end
 			end
@@ -183,7 +193,7 @@ feature
 						previous_element := previous_element.next
 					end
 					if previous_element.next /= Void then
-						new_element.insert_after (previous_element)
+						new_element.link_after (previous_element)
 					else -- list does not contain `target'
 						new_element.link_to (first_element)
 						first_element := new_element
@@ -249,7 +259,7 @@ feature
 				loop
 					if current_element.value = target then
 						create new_element.make (new)
-						new_element.insert_after (current_element)
+						new_element.link_after (current_element)
 						count := count + 1
 						if current_element = last_element then
 							last_element := new_element
@@ -266,7 +276,7 @@ feature
 					first_element := new_element
 					last_element := new_element
 				else
-					new_element.insert_after (last_element)
+					new_element.link_after (last_element)
 					last_element := new_element
 				end
 				count := count + 1

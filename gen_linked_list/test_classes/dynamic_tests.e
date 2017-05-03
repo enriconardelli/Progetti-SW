@@ -48,7 +48,7 @@ feature -- Test routines
 
 		lista_a.insert_before (7,0)
 		assert ("errore: insert_before fallisce inserimento con target inesistente su lista non vuota", lista_a.first_element.value = 7)
-		assert ("errore: insert_before con target inesistente su lista non vuota non lega il primo elemento", lista_a.first_element.next.value = -2)
+		assert ("errore: insert_before con target inesistente su lista non vuota non lega il primo elemento",attached lista_a.first_element as l_af implies l_af.value = -2)
 	end
 
 

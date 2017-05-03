@@ -45,7 +45,7 @@ feature -- Test routines
 		assert ("errore: get_element su lista_uno", lista_uno.get_element(ok) /= Void)
 		-- negli ensure di get_element ho già che Result /= Void implies Result.value = a_value
 --		assert ("errore: sum_of_positive su lista_uno", lista_uno.sum_of_positive = ok)
-		assert ("errore: valore di first_element e last_element su lista_uno", lista_uno.first_element.value = ok)
+		assert ("errore: valore di first_element e last_element su lista_uno", attached lista_uno.first_element as l1 implies l1.value = ok)
     	assert ("errore: append non aggiorna count su lista_uno", lista_uno.count = 1)
 	end
 
