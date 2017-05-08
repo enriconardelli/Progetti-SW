@@ -66,7 +66,7 @@ feature -- Test routines
 		assert ("errore: get_element su lista_due", (lista_due.get_element(ok1) /= Void) and (lista_due.get_element(ok2) /= Void) and (lista_due.get_element(ko) = Void))
 		assert ("errore: first_element su lista due", lista_due.first_element = lista_due.get_element(ok1))
 		assert ("errore: last_element su lista_due", lista_due.last_element = lista_due.get_element(ok2))
-		assert ("errore: last_element su lista_due", lista_due.get_element(ok1).next = lista_due.last_element)
+		assert ("errore: last_element su lista_due", attached lista_due.get_element(ok1)as l_2 implies l_2.next = lista_due.last_element)
 --		assert ("errore: sum_of_positive su lista_due", lista_due.sum_of_positive = ok1)
 		assert ("errore: append non aggiorna count su lista_due", lista_due.count = 2)
 	end
@@ -88,10 +88,10 @@ feature -- Test routines
 		-- il valore di lista_n adesso è (12,-5,0)
 		assert ("errore: has su lista_n", lista_n.has(ok2) and lista_n.has(ok1) and lista_n.has(ok3))
 		assert ("errore: get_element su lista_n", (lista_n.get_element(ok2) /= Void) and (lista_n.get_element(ok3) /= Void) and (lista_n.get_element(ok1) /= Void) and (lista_n.get_element(ko) = Void))
-		assert ("errore: get_element su lista_n", lista_n.get_element(ok2).next.value = ok3)
+		assert ("errore: get_element su lista_n", attached lista_n.get_element(ok2) as l_n implies (attached l_n.next as l_nn implies l_nn.value = ok3))
 		assert ("errore: first_element su lista_n", lista_n.first_element = lista_n.get_element(ok1))
 		assert ("errore: last_element su lista_n", lista_n.last_element = lista_n.get_element(ok3))
-		assert ("errore: last_element su lista_n", lista_n.get_element(ok1).next.next = lista_n.last_element)
+		assert ("errore: last_element su lista_n", attached lista_n.get_element(ok1) as l_n implies (attached l_n.next as l_nn implies l_nn.next = lista_n.last_element))
 --		assert ("errore: sum_of_positive su lista_n", lista_n.sum_of_positive = ok1)
 	end
 

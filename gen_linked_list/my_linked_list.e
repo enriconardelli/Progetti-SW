@@ -166,8 +166,8 @@ feature
 			count := count + 1
 		ensure
 			uno_in_piu: count = old count + 1
-			accodato_se_non_presente: not (old has (target)) implies last_element.value = new;
-			collegato_se_presente: old has (target) implies get_element (target).next.value = new;
+			accodato_se_non_presente: not (old has (target)) implies (attached last_element as le implies le.value = new)
+			collegato_se_presente: old has (target) implies (attached get_element (target)as ge implies (attached ge.next as gen implies gen.value = new))
 		end
 
 	insert_before (new, target: G)
@@ -181,29 +181,33 @@ feature
 				first_element := new_element
 				last_element := first_element
 			else
-				if (target = first_element.value) then
-					new_element.link_to (first_element)
-					first_element := new_element
-				else -- list contains at least one element and the first element is not the target
-					from
-						previous_element := first_element
-					until
-						(previous_element.next = Void) or else (previous_element.next.value = target)
-					loop
-						previous_element := previous_element.next
-					end
-					if previous_element.next /= Void then
-						new_element.link_after (previous_element)
-					else -- list does not contain `target'
+				check attached first_element as fe then
+					if (target = fe.value) then
 						new_element.link_to (first_element)
 						first_element := new_element
+					else -- la lista contiene almento un elemento e il primo elemento non e' il target
+						from
+							previous_element := first_element
+						until
+							attached previous_element as pe implies ((pe.next = Void) or else (attached pe.next as pen implies pen.value = target))
+						loop
+							previous_element := previous_element.next
+						end
+						check attached previous_element as pe then
+							if pe.next /= Void then
+								new_element.link_after (pe)
+							else -- list does not contain `target'
+								new_element.link_to (first_element)
+								first_element := new_element
+							end
+						end
 					end
 				end
 			end
 			count := count + 1
 		ensure
 			uno_in_piu: count = old count + 1
-			in_testa_se_non_presente: not (old has (target)) implies first_element.value = new;
+			in_testa_se_non_presente: not (old has (target)) implies (attached first_element as fe implies fe.value = new)
 			collegato_se_presente: old has (target) implies value_follows (target, new);
 		end
 
@@ -283,8 +287,8 @@ feature
 			end
 		ensure
 			di_piu: count > old count
-			appeso_se_non_presente: not (old has(target)) implies last_element.value = new;
-			collegato_se_presente: old has(target) implies get_element(target).next.value = new;
+			appeso_se_non_presente: not (old has(target)) implies (attached last_element as le implies le.value = new)
+			collegato_se_presente: old has(target) implies (attached get_element(target)as ge implies (attached ge.next as gen implies gen.value = new))
 	end
 
 	invert
@@ -348,9 +352,9 @@ feature
 
 invariant
 	contatore_non_negativo: count >= 0
-	lista_termina_Void: last_element /= Void implies last_element.next = Void
+	lista_termina_Void: attached last_element as le implies le.next = Void
 	consistenza_lista_vuota: count = 0 implies (first_element = last_element) and (first_element = Void)
 	consistenza_lista_mono_elemento: count = 1 implies (first_element = last_element) and (first_element /= Void)
-	consistenza_lista_pluri_elemento: count > 1 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and then (first_element.next /= Void)
+	consistenza_lista_pluri_elemento: count > 1 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and then (attached first_element as fe implies fe.next /= Void)
 
 end
