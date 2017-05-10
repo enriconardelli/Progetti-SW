@@ -93,7 +93,7 @@ feature -- Test routines
 			-- Verifica la corretta esecuzione dell'inversione
 	local
 		lista, lista_copy: MY_LINKED_LIST[INTEGER]
-		x,y : MY_LINKABLE[INTEGER]
+		x,y : detachable MY_LINKABLE[INTEGER]
 		c: INTEGER
 	do
 		create lista
