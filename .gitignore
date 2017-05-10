@@ -4,9 +4,10 @@ support
 # Java compiled code directory
 bin
 
-# Eiffel compiled code directory and *.rc file
+# Eiffel compiled code directory, *.rc file and *.ecf configuration file 
 EIFGENs
 *.rc
+*.ecf
 
 # Editor back-up files
 *.bak
@@ -57,6 +58,3 @@ test_out.xml
 Network Trash Folder
 Temporary Items
 .apdisk
-linked_list/linked_list.ecf
-*.ecf
-*.ecf
