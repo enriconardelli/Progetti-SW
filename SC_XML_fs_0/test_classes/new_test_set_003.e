@@ -72,13 +72,21 @@ feature -- Test routines
 			if attached transizione_prova_2 as trp2 then trp2.set_evento ("effe") trp2.set_condizione ("beta") end
 
 			create hash_di_prova.make (2)
-			hash_di_prova.put (TRUE, "Pippo" )
-			hash_di_prova.put (FALSE, "Pluto" )
-			hash_di_prova.put (TRUE, "Minnie" )
+			hash_di_prova.p
+			hash_di_prova.put (FALSE, "acca")
+			hash_di_prova.put (FALSE, "emme")
 			if attached stato_prova as sp then
-				assert ("non c'è determinismo, invece dovrebbe esserci!!!",
-				sp.numero_transizioni_abilitate ("stringa che non esiste", hash_di_prova) > 0)
+				assert("c'è determinismo", sp.numero_transizioni_abilitate ("effe", hash_di_prova)=1)
 			end
+
+--			create hash_di_prova.make (2)
+--			hash_di_prova.put (TRUE, "Pippo" )
+--			hash_di_prova.put (FALSE, "Pluto" )
+--			hash_di_prova.put (TRUE, "Minnie" )
+--			if attached stato_prova as sp then
+--				assert ("non c'è determinismo, invece dovrebbe esserci!!!",
+--				sp.numero_transizioni_abilitate ("stringa che non esiste", hash_di_prova) > 0)
+--			end
 		end
 
 		--	t_stato_target
