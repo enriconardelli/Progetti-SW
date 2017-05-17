@@ -20,16 +20,49 @@ inherit
 feature {NONE} -- Supporto
 
 	stato_prova: detachable STATO
-	target_prova_1, target_prova_2: detachable STATO
-	transizione_prova_1, transizione_prova_2: detachable TRANSIZIONE
+	target_prova_1, target_prova_2, target_prova_3: detachable STATO
+	transizione_prova_1, transizione_prova_2,  transizione_prova_3: detachable TRANSIZIONE
+	hash_di_prova: HASH_TABLE [BOOLEAN, STRING]
 
 feature {NONE} -- Events
 
 	on_prepare
-			-- <Precursor>
+			-- creo stato di prova
 		do
-				--			assert ("not_implemented", False)
+			create stato_prova.make_with_id ("stato_prova")
+			create target_prova_1.make_with_id ("target_prova_1")
+			create target_prova_2.make_with_id ("target_prova_2")
+			create target_prova_3.make_with_id ("target_prova_3")
+			if attached target_prova_1 as tp1 then create transizione_prova_1.make_with_target(tp1) end
+			if attached target_prova_2 as tp2 then create transizione_prova_2.make_with_target(tp2) end
+			if attached target_prova_3 as tp3 then create transizione_prova_3.make_with_target(tp3) end
+				if attached transizione_prova_1 as trp1 then
+				trp1.set_evento ("evento1") trp1.set_condizione ("cond1")
+				if attached stato_prova as sp then sp.agg_trans (trp1)  end
+				end
+			if attached transizione_prova_2 as trp2 then
+				trp2.set_evento ("evento2") trp2.set_condizione ("cond2")
+				if attached stato_prova as sp then sp.agg_trans (trp2)  end
+				end
+			if attached transizione_prova_3 as trp3 then
+				trp3.set_evento ("evento1") trp3.set_condizione ("cond3")
+				if attached stato_prova as sp then sp.agg_trans (trp3)  end
+				end
+
+			create hash_di_prova.make (3)
+			hash_di_prova.put (TRUE, "cond1")
+			hash_di_prova.put (TRUE, "cond2")
+			hash_di_prova.put (TRUE, "cond3")
 		end
+
+
+set_hash_di_prova(b1,b2,b3:BOOLEAN)
+       do
+       		hash_di_prova.replace (b1, "cond1")
+			hash_di_prova.replace (b2, "cond2")
+			hash_di_prova.replace (b3, "cond3")
+       end
+
 
 feature -- Test routines
 
@@ -51,42 +84,21 @@ feature -- Test routines
 			end
 		end
 
-	t_stato_determinismo
---  QUESTO TEST VA RISCRITTO CREANDO UNO STATO CON DUE TRANSIZIONI
---  CON EVENTI DIFFERENTI E VERIFICANDO CHE numero_transizioni_abilitate RESTITUISCE 1
---  QUANDO VIENE INVOCATA CON UNO DEI DUE EVENTI
---  INOLTRE VA CREATO IL TEST SIMMETRICO t_stato_non_determinismo CHE CREA UNO STATO
---  CON DUE TRANSIZIONI CON LO STESSO EVENTO E VERIFICANDO CHE numero_transizioni_abilitate RESTITUISCE 2
---  QUANDO VIENE INVOCATA CON L'EVENTO
---  IL CASO PIU' SEMPLICE E' SE LA TRANSIZIONE HA SOLO EVENTO OPPURE SOLO CONDIZIONE (CHE SONO DUE CASI)
---  IL CASO PIU' COMPLESSO E' SE LA TRANSIZIONE HA SIA EVENTO CHE CONDIZIONE
-		local
-			hash_di_prova: HASH_TABLE [BOOLEAN, STRING]
+	t_stato_non_determinismo
 		do
-			create stato_prova.make_with_id ("stato_prova")
-			create target_prova_1.make_with_id ("target_prova_1")
-			create target_prova_2.make_with_id ("target_prova_2")
-			if attached target_prova_1 as tp1 then create transizione_prova_1.make_with_target(tp1) end
-			if attached target_prova_2 as tp2 then create transizione_prova_2.make_with_target(tp2) end
-			if attached transizione_prova_1 as trp1 then trp1.set_evento ("effe") trp1.set_condizione ("alfa") end
-			if attached transizione_prova_2 as trp2 then trp2.set_evento ("effe") trp2.set_condizione ("beta") end
-
-			create hash_di_prova.make (2)
-			hash_di_prova.p
-			hash_di_prova.put (FALSE, "acca")
-			hash_di_prova.put (FALSE, "emme")
+			set_hash_di_prova(TRUE,TRUE,TRUE)
 			if attached stato_prova as sp then
-				assert("c'è determinismo", sp.numero_transizioni_abilitate ("effe", hash_di_prova)=1)
+				assert("ci sono due transizioni abilitate non rilevate", sp.numero_transizioni_abilitate ("evento1", hash_di_prova)=2)
+			end
+		end
+		
+	t_stato_determinismo
+		do
+			set_hash_di_prova(TRUE,TRUE,FALSE)
+			if attached stato_prova as sp then
+					assert("unica transizione abilitata non rilevata", sp.numero_transizioni_abilitate ("evento1", hash_di_prova)=1)
 			end
 
---			create hash_di_prova.make (2)
---			hash_di_prova.put (TRUE, "Pippo" )
---			hash_di_prova.put (FALSE, "Pluto" )
---			hash_di_prova.put (TRUE, "Minnie" )
---			if attached stato_prova as sp then
---				assert ("non c'è determinismo, invece dovrebbe esserci!!!",
---				sp.numero_transizioni_abilitate ("stringa che non esiste", hash_di_prova) > 0)
---			end
 		end
 
 		--	t_stato_target
