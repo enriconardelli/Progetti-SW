@@ -25,42 +25,47 @@ a: ESECUTORE
 			create e.start
 --			create a.start_new("esempio.xml")
 			create a.start
+
 		end
 
 feature -- Test routines
 
-	testha4stati
+	test_ha_4_stati
 			-- New test routine
 		do
-			assert ("gli stati sono 4", e.state_chart.stati.count=4)
+			assert ("gli stati sono 4", e.state_chart.stati.count /= 4)
 		end
-	testhaglistati
+	test_ha_gli_stati
 		do
-			assert("non ha reset", e.state_chart.stati.has ("reset"))
-			assert("non ha paused", e.state_chart.stati.has ("paused"))
-			assert("non ha running", e.state_chart.stati.has ("running"))
-			assert("non ha stopped", e.state_chart.stati.has ("stopped"))
+			assert("non ha reset", not e.state_chart.stati.has ("reset"))
+			assert("non ha paused",  not e.state_chart.stati.has ("paused"))
+			assert("non ha running", not e.state_chart.stati.has ("running"))
+			assert("non ha stopped", not e.state_chart.stati.has ("stopped"))
 		end
-	testhalecond
+	test_ha_le_cond
 	do
-			assert("non ha running$value", e.state_chart.condizioni.has ("running$value"))
-			assert("non ha paused$value", e.state_chart.condizioni.has ("paused$value"))
-			assert("non ha stopped$value", e.state_chart.condizioni.has ("stopped$value"))
-			assert("non ha reset$value", e.state_chart.condizioni.has ("reset$value"))
+			assert("non ha running$value",not  e.state_chart.condizioni.has ("running$value"))
+			assert("non ha paused$value",not e.state_chart.condizioni.has ("paused$value"))
+			assert("non ha stopped$value",not e.state_chart.condizioni.has ("stopped$value"))
+			assert("non ha reset$value",not e.state_chart.condizioni.has ("reset$value"))
 	end
 
-	esempioha3stati
+
+
+	esempio_ha_3_stati
 			-- New test routine
 		do
-			assert ("gli stati so 3", a.state_chart.stati.count=3)
+			assert ("gli stati sono 3", a.state_chart.stati.count = 3)
 		end
-	esempiohaglistati
+
+	esempio_ha_gli_stati
 		do
 			assert("non ha one", a.state_chart.stati.has ("one"))
 			assert("non ha two", a.state_chart.stati.has ("two"))
 			assert("non ha three", a.state_chart.stati.has ("three"))
 		end
-	esempiohalecond
+
+	esempio_ha_le_cond
 	do
 			assert("non ha alfa", a.state_chart.condizioni.has ("alfa"))
 			assert("non ha beta", a.state_chart.condizioni.has ("beta"))

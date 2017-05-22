@@ -25,14 +25,15 @@ feature -- Test routines
 			create e.start
 		end
 
+-- ~
 	test_contenuto_eventi
 		do
-			assert ("Fatto male", e.eventi [1] ~ "watch_reset")
+			assert ("Fatto male", e.eventi [1] ~ "circle")
 		end
 
 	test_count_eventi
 		do
-			assert ("Fatto male", e.eventi.count = 4)
+			assert ("Fatto male", e.eventi.count = 7)
 		end
 
 	test_verifica_eventi
@@ -59,7 +60,7 @@ feature -- Test routines
 				i:=i+1
 			end
 			assert ("Fatto male flag", not flag)
-			assert("Fatto male flag_1", flag_1)
+			assert("Fatto male flag_1", not flag_1)
 		end
 
 	test_crea_stati

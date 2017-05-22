@@ -91,7 +91,7 @@ feature -- Test routines
 				assert("ci sono due transizioni abilitate non rilevate", sp.numero_transizioni_abilitate ("evento1", hash_di_prova)=2)
 			end
 		end
-		
+
 	t_stato_determinismo
 		do
 			set_hash_di_prova(TRUE,TRUE,FALSE)
@@ -101,16 +101,16 @@ feature -- Test routines
 
 		end
 
-		--	t_stato_target
+--			t_stato_target
 
-		--		do
-		--			create stato_prova.make_with_id ("stato_prova")
+--				do
+--					create stato_prova.make_with_id ("stato_prova")
 
-		--			if attached stato_prova as sp then
-		--				assert ("restituito target non void, mentre doveva restituirlo void", sp.target("ti sfido a trovare uno stato con questo nome")=Void)
-		--			end
+--					if attached stato_prova as sp then
+--						assert ("restituito target non void, mentre doveva restituirlo void", sp.target("ti sfido a trovare uno stato con questo nome")=Void)
+--					end
 
-		--		end
+--				end
 
 	t_stato_get_events
 		local
