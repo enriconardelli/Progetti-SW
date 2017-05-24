@@ -8,7 +8,7 @@ class
 	ESECUTORE
 
 create
-	start, make
+	start --, make
 
 feature -- Attributi
 
@@ -21,39 +21,21 @@ feature -- Attributi
 	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
 			-- rappresenta sotto forma di un albero la SC letta dal file
 
-	nomi_files: ARRAY [STRING]
-			-- sono i nomi dei files con la SC e gli eventi
-
 feature {NONE} -- Inizializzazione
 
-	make
+	start (nomi_files: ARRAY [STRING])
+			-- prepara la SC e avvia la sua esecuzione
+			-- i parametri vanno scritti da Eiffel Studio con
+			-- menu "Execution" -> "Execution Parameters" -> "Add"
+			-- doppio click su spazio bianco accanto a "Arguments"
+			-- scrivere i parametri ognuno tra doppi apici
 		do
-			create nomi_files.make_filled ("", 1, 2)
-			nomi_files [1] := "esempio.xml"
-			nomi_files [2] := "eventi.txt"
-
 			print ("INIZIO!%N")
+			print ("esegue la SC in " + nomi_files [1] + "%N")
+			print ("con gli eventi in" + nomi_files [2] + "%N")
 			crea_albero (nomi_files [1])
 			create eventi.make_empty
 			eventi := acquisisci_eventi (nomi_files [2])
-			print ("acquisiti eventi %N")
-			create state_chart.make (albero)
-			if verifica_eventi.count /= 0 then
-				print (" nel file ci sono eventi che la SC non conosce %N")
-			else
-				print ("eventi verificati, si esegue la SC %N")
-				state_chart.evolvi_SC (eventi)
-			end
-		end
-
-	start (nomi_files_passati: ARRAY[STRING])
-			-- prepara la SC e avvia la sua esecuzione
-		do
-			create nomi_files.make_filled ("", 1, 2)
-			print ("INIZIO!%N")
-			crea_albero (nomi_files_passati [1])
-			create eventi.make_empty
-			eventi := acquisisci_eventi (nomi_files_passati [2])
 			print ("acquisiti eventi %N")
 			create state_chart.make (albero)
 			if verifica_eventi.count /= 0 then
