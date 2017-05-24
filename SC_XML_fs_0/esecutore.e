@@ -27,7 +27,7 @@ feature {NONE} -- Inizializzazione
 			-- prepara la SC e avvia la sua esecuzione
 		do
 			print ("INIZIO!%N")
-			crea_albero
+			crea_albero("esempio.xml")
 			create eventi.make_empty
 			eventi := acquisisci_eventi("eventi.txt")
 			print ("acquisiti eventi %N")
@@ -37,20 +37,18 @@ feature {NONE} -- Inizializzazione
 
 feature
 
-	crea_albero
+	crea_albero(nome_file: STRING)
 			-- crea e inizializza `albero'
 		local
 			parser: XML_PARSER
-			un_file: STRING
 		do
 				--| Instantiate parser
 			create {XML_STANDARD_PARSER} parser.make
 				--| Build tree callbacks
 			create albero.make_null
 			parser.set_callbacks (albero)
-			un_file := "esempio.xml"
 				--| Parse the `file_name' content
-			parser.parse_from_filename (un_file)
+			parser.parse_from_filename (nome_file)
 			if parser.error_occurred then
 				print ("Parsing error!!! %N")
 			else
