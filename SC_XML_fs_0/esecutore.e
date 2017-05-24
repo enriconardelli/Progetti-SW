@@ -23,13 +23,15 @@ feature -- Attributi
 
 feature {NONE} -- Inizializzazione
 
-	start
+	start(nomi_files: ARRAY[STRING])
 			-- prepara la SC e avvia la sua esecuzione
+			-- nomi_files[1] = nome_file_SC
+			-- nomi_files[2] = nome_file_eventi
 		do
 			print ("INIZIO!%N")
-			crea_albero("esempio.xml")
+			crea_albero(nomi_files[1])
 			create eventi.make_empty
-			eventi := acquisisci_eventi("eventi.txt")
+			eventi := acquisisci_eventi(nomi_files[2])
 			print ("acquisiti eventi %N")
 			create state_chart.make (albero)
 			state_chart.evolvi_SC (eventi)
@@ -37,7 +39,7 @@ feature {NONE} -- Inizializzazione
 
 feature
 
-	crea_albero(nome_file: STRING)
+	crea_albero(nome_file_SC: STRING)
 			-- crea e inizializza `albero'
 		local
 			parser: XML_PARSER
@@ -48,7 +50,7 @@ feature
 			create albero.make_null
 			parser.set_callbacks (albero)
 				--| Parse the `file_name' content
-			parser.parse_from_filename (nome_file)
+			parser.parse_from_filename (nome_file_SC)
 			if parser.error_occurred then
 				print ("Parsing error!!! %N")
 			else
