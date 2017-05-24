@@ -16,13 +16,21 @@ inherit
 			on_prepare
 		end
 
+feature {NONE} -- Supporto
+
+	nomi_files_prova: ARRAY[STRING]
+
 feature -- Test routines
 
 	e: ESECUTORE
 
 	on_prepare
 		do
-			create e.start
+			create nomi_files_prova.make_filled ("", 1, 2)
+			nomi_files_prova[1] := "esempio.xml"
+			nomi_files_prova[2] := "eventi.txt"
+
+			create e.start(nomi_files_prova)
 		end
 
 -- ~
