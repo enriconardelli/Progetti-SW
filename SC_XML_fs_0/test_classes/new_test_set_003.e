@@ -23,6 +23,7 @@ feature {NONE} -- Supporto
 	target_prova_1, target_prova_2, target_prova_3: detachable STATO
 	transizione_prova_1, transizione_prova_2,  transizione_prova_3: detachable TRANSIZIONE
 	hash_di_prova: HASH_TABLE [BOOLEAN, STRING]
+	nomi_files_prova: ARRAY[STRING]
 
 feature {NONE} -- Events
 
@@ -53,6 +54,11 @@ feature {NONE} -- Events
 			hash_di_prova.put (TRUE, "cond1")
 			hash_di_prova.put (TRUE, "cond2")
 			hash_di_prova.put (TRUE, "cond3")
+
+			create nomi_files_prova.make_filled ("", 1, 2)
+			nomi_files_prova[1] := "esempio.xml"
+			nomi_files_prova[2] := "eventi.txt"
+
 		end
 
 
@@ -117,7 +123,7 @@ feature -- Test routines
 			e: ESECUTORE
 			eventi: ARRAY [STRING]
 		do
-			create e.start
+			create e.start(nomi_files_prova)
 			if attached e.state_chart.stati.item ("reset") as reset then
 				eventi := reset.get_events
 				assert ("Fatto male count", eventi.count = 1)
