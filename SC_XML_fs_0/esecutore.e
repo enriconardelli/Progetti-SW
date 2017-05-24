@@ -8,7 +8,7 @@ class
 	ESECUTORE
 
 create
-	start
+	start, make
 
 feature -- Attributi
 
@@ -21,25 +21,52 @@ feature -- Attributi
 	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
 			-- rappresenta sotto forma di un albero la SC letta dal file
 
+	nomi_files: ARRAY [STRING]
+			-- sono i nomi dei files con la SC e gli eventi
+
 feature {NONE} -- Inizializzazione
 
-	start(nomi_files: ARRAY[STRING])
-			-- prepara la SC e avvia la sua esecuzione
-			-- nomi_files[1] = nome_file_SC
-			-- nomi_files[2] = nome_file_eventi
+	make
 		do
+			create nomi_files.make_filled ("", 1, 2)
+			nomi_files [1] := "esempio.xml"
+			nomi_files [2] := "eventi.txt"
+
 			print ("INIZIO!%N")
-			crea_albero(nomi_files[1])
+			crea_albero (nomi_files [1])
 			create eventi.make_empty
-			eventi := acquisisci_eventi(nomi_files[2])
+			eventi := acquisisci_eventi (nomi_files [2])
 			print ("acquisiti eventi %N")
 			create state_chart.make (albero)
-			state_chart.evolvi_SC (eventi)
+			if verifica_eventi.count /= 0 then
+				print (" nel file ci sono eventi che la SC non conosce %N")
+			else
+				print ("eventi verificati, si esegue la SC %N")
+				state_chart.evolvi_SC (eventi)
+			end
+		end
+
+	start (nomi_files_passati: ARRAY[STRING])
+			-- prepara la SC e avvia la sua esecuzione
+		do
+			create nomi_files.make_filled ("", 1, 2)
+			print ("INIZIO!%N")
+			crea_albero (nomi_files_passati [1])
+			create eventi.make_empty
+			eventi := acquisisci_eventi (nomi_files_passati [2])
+			print ("acquisiti eventi %N")
+			create state_chart.make (albero)
+			if verifica_eventi.count /= 0 then
+				print (" nel file ci sono eventi che la SC non conosce %N")
+			else
+				print ("eventi verificati, si esegue la SC %N")
+				state_chart.evolvi_SC (eventi)
+			end
 		end
 
 feature
 
-	crea_albero(nome_file_SC: STRING)
+	crea_albero (nome_file_SC: STRING)
 			-- crea e inizializza `albero'
 		local
 			parser: XML_PARSER
@@ -58,14 +85,13 @@ feature
 			end
 		end
 
-	acquisisci_eventi(nome_file_eventi: STRING): ARRAY [STRING]
+	acquisisci_eventi (nome_file_eventi: STRING): ARRAY [STRING]
 			-- Legge gli eventi dal file 'eventi.txt' e li inserisce in `eventi'
 
 		local
 			file: PLAIN_TEXT_FILE
 			v_eventi: ARRAY [STRING]
 			i: INTEGER
-
 		do
 			create v_eventi.make_empty
 			create file.make_open_read (nome_file_eventi)
@@ -83,7 +109,7 @@ feature
 		end
 
 	verifica_eventi: ARRAY [STRING]
-			-- Verifica che tutti gli eventi nel file eventi.txt compaiano effettivamente tra gli eventi di qualche transizione
+			-- Verifica che tutti gli eventi nel file compaiano effettivamente tra gli eventi di qualche transizione
 			-- Segnala l'eventuale presenza di eventi incompatibili
 		local
 			v_new, v_old: ARRAY [STRING]
@@ -92,8 +118,8 @@ feature
 			flag, flag_1: BOOLEAN
 		do
 			create v_new.make_empty
-			h_stati := current.state_chart.stati
-			v_old := current.eventi
+			h_stati := state_chart.stati
+			v_old := eventi
 			k := 1
 			from
 				i := 1
