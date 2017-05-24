@@ -29,7 +29,7 @@ feature {NONE} -- Inizializzazione
 			print ("INIZIO!%N")
 			crea_albero
 			create eventi.make_empty
-			eventi := acquisisci_eventi
+			eventi := acquisisci_eventi("eventi.txt")
 			print ("acquisiti eventi %N")
 			create state_chart.make (albero)
 			state_chart.evolvi_SC (eventi)
@@ -58,16 +58,17 @@ feature
 			end
 		end
 
-	acquisisci_eventi: ARRAY [STRING]
+	acquisisci_eventi(nome_file_eventi: STRING): ARRAY [STRING]
 			-- Legge gli eventi dal file 'eventi.txt' e li inserisce in `eventi'
 
 		local
 			file: PLAIN_TEXT_FILE
 			v_eventi: ARRAY [STRING]
 			i: INTEGER
+
 		do
 			create v_eventi.make_empty
-			create file.make_open_read ("eventi.txt")
+			create file.make_open_read (nome_file_eventi)
 			from
 				i := 1
 			until
