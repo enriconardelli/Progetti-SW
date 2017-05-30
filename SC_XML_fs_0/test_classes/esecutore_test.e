@@ -61,6 +61,4 @@ feature -- Test routines
 			assert("Fatto male flag_1", not flag_1)
 		end
 
-
-
 end
