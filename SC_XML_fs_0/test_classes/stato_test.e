@@ -108,7 +108,29 @@ feature -- Test routines
 				if attached sp.target("evento_1",hash_di_prova) as st then
 					assert ("target scorretto", st.id ~ "target_prova_1")
 				end
+				if attached sp.target("evento_2",hash_di_prova) as st then
+					assert ("target scorretto", st.id ~ "target_prova_2")
+				end
 			end
+			set_hash_di_prova(FALSE,TRUE,TRUE)
+			if attached stato_prova as sp then
+				if attached sp.target("evento_1",hash_di_prova) as st then
+					assert ("target scorretto", st.id ~ "target_prova_3")
+				end
+				if attached sp.target("evento_2",hash_di_prova) as st then
+					assert ("target scorretto", st.id ~ "target_prova_2")
+				end
+			end
+			set_hash_di_prova(FALSE,FALSE,FALSE)
+			if attached stato_prova as sp then
+				if attached sp.target("evento_1",hash_di_prova) as st then
+					assert ("target scorretto", st = Void)
+				end
+				if attached sp.target("evento_2",hash_di_prova) as st then
+					assert ("target scorretto", st = Void)
+				end
+			end
+
 		end
 
 --	t_stato_get_events
