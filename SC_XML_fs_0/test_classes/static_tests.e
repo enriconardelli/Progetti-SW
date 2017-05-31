@@ -29,7 +29,7 @@ feature -- preparazione
 
 	on_prepare
 		do
-			file_name := "test.xml"
+			file_name := "esempio_per_altro_esecutore_test.xml"
 				--| Instantiate parser
 			create {XML_STANDARD_PARSER} parser.make
 				--| Build tree callbacks
