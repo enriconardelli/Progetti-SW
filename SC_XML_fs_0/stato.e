@@ -234,25 +234,4 @@ feature --cose a parte
 		--			Result := has
 		--		end
 
-	get_events: ARRAY [STRING]
-		local
-			i: INTEGER
-			ev: ARRAY [STRING]
-		do
-			create ev.make_empty
-			if attached Current.transizioni as tr then
-				from
-					i := 1
-				until
-					i = tr.count + 1
-				loop
-					if attached tr [i].evento as evento then
-						ev.force (evento, i)
-					end
-					i := i + 1
-				end
-			end
-			Result := ev
-		end
-
 end
