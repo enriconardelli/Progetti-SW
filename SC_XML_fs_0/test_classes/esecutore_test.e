@@ -89,23 +89,23 @@ feature -- Test routines
 
 	altro_esecutore_ha_4_stati
 		do
-			assert ("gli stati sono 4", altro_esecutore_prova.state_chart.stati.count /= 4)
+			assert ("gli stati sono 4", altro_esecutore_prova.state_chart.stati.count = 4)
 		end
 
 	altro_esecutore_ha_nomi_stati
 		do
-			assert("non ha reset", not altro_esecutore_prova.state_chart.stati.has ("reset"))
-			assert("non ha paused",  not altro_esecutore_prova.state_chart.stati.has ("paused"))
-			assert("non ha running", not altro_esecutore_prova.state_chart.stati.has ("running"))
-			assert("non ha stopped", not altro_esecutore_prova.state_chart.stati.has ("stopped"))
+			assert("non ha reset", altro_esecutore_prova.state_chart.stati.has ("reset"))
+			assert("non ha paused",  altro_esecutore_prova.state_chart.stati.has ("paused"))
+			assert("non ha running", altro_esecutore_prova.state_chart.stati.has ("running"))
+			assert("non ha stopped", altro_esecutore_prova.state_chart.stati.has ("stopped"))
 		end
 
 	altro_esecutore_ha_nomi_cond
 	do
-			assert("non ha running$value",not  altro_esecutore_prova.state_chart.condizioni.has ("running$value"))
-			assert("non ha paused$value",not altro_esecutore_prova.state_chart.condizioni.has ("paused$value"))
-			assert("non ha stopped$value",not altro_esecutore_prova.state_chart.condizioni.has ("stopped$value"))
-			assert("non ha reset$value",not altro_esecutore_prova.state_chart.condizioni.has ("reset$value"))
+			assert("non ha running$value",  altro_esecutore_prova.state_chart.condizioni.has ("running$value"))
+			assert("non ha paused$value", altro_esecutore_prova.state_chart.condizioni.has ("paused$value"))
+			assert("non ha stopped$value", altro_esecutore_prova.state_chart.condizioni.has ("stopped$value"))
+			assert("non ha reset$value", altro_esecutore_prova.state_chart.condizioni.has ("reset$value"))
 	end
 
 end
