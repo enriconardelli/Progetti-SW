@@ -15,7 +15,7 @@ feature -- Attributi
 	state_chart: CONFIGURAZIONE
 			-- rappresenta la SC durante la sua esecuzione
 
-	eventi: ARRAY [STRING]
+	eventi_esterni: ARRAY [STRING]
 			-- memorizza gli eventi letti dal file
 
 	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
@@ -32,17 +32,17 @@ feature {NONE} -- Inizializzazione
 		do
 			print ("INIZIO!%N")
 			print ("esegue la SC in " + nomi_files [1] + "%N")
-			print ("con gli eventi in" + nomi_files [2] + "%N")
+			print ("con gli eventi in " + nomi_files [2] + "%N")
 			crea_albero (nomi_files [1])
-			create eventi.make_empty
-			eventi := acquisisci_eventi (nomi_files [2])
+			create eventi_esterni.make_empty
+			acquisisci_eventi (nomi_files [2])
 			print ("acquisiti eventi %N")
 			create state_chart.make (albero)
-			if verifica_eventi.count /= 0 then
-				print (" nel file ci sono eventi che la SC non conosce %N")
-			else
+			if verifica_eventi_esterni then
 				print ("eventi verificati, si esegue la SC %N")
-				state_chart.evolvi_SC (eventi)
+				state_chart.evolvi_SC (eventi_esterni)
+			else
+				print (" nel file ci sono eventi che la SC non conosce %N")
 			end
 		end
 
@@ -67,15 +67,13 @@ feature
 			end
 		end
 
-	acquisisci_eventi (nome_file_eventi: STRING): ARRAY [STRING]
-			-- Legge gli eventi dal file 'eventi.txt' e li inserisce in `eventi'
+	acquisisci_eventi (nome_file_eventi: STRING)
+			-- Legge gli eventi dal file passato come secondo argomento e li inserisce in `eventi_esterni'
 
 		local
 			file: PLAIN_TEXT_FILE
-			v_eventi: ARRAY [STRING]
 			i: INTEGER
 		do
-			create v_eventi.make_empty
 			create file.make_open_read (nome_file_eventi)
 			from
 				i := 1
@@ -83,80 +81,55 @@ feature
 				file.off
 			loop
 				file.read_line
-				v_eventi.force (file.last_string.twin, i)
+				eventi_esterni.force (file.last_string.twin, i)
 				i := i + 1
 			end
 			file.close
-			Result := v_eventi
 		end
 
-	verifica_eventi: ARRAY [STRING]
+	verifica_eventi_esterni: BOOLEAN
 			-- Verifica che tutti gli eventi nel file compaiano effettivamente tra gli eventi di qualche transizione
 			-- Segnala l'eventuale presenza di eventi incompatibili
 		local
-			v_new, v_old: ARRAY [STRING]
-			h_stati: HASH_TABLE [STATO, STRING]
-			i, j, k: INTEGER
-			flag, flag_1: BOOLEAN
+			eventi_nella_SC: HASH_TABLE [BOOLEAN, STRING]
+			v_new: ARRAY [STRING]
+			i, j: INTEGER
+			evento_assente: BOOLEAN
 		do
-			create v_new.make_empty
-			h_stati := state_chart.stati
-			v_old := eventi
-			k := 1
+			create eventi_nella_SC.make (0)
+			-- inserisce tutti gli eventi definiti nella SC in eventi_nella_SC
+			from
+				state_chart.stati.start
+			until
+				state_chart.stati.after
+			loop
+				if attached state_chart.stati.item_for_iteration.transizioni as tr then
+					from
+						j := 1
+					until
+						j = tr.count + 1
+					loop
+						if attached tr [j].evento as e then
+							eventi_nella_SC.put (True, e)
+						end
+						j := j + 1
+					end
+				end
+				state_chart.stati.forth
+			end
+			-- verifica che ogni evento esterno sia presente nella SC
 			from
 				i := 1
 			until
-				i = eventi.count + 1
+				i = eventi_esterni.count + 1
 			loop
-				flag := False
-				from
-					h_stati.start
-				until
-					h_stati.after OR flag
-				loop
-					flag_1 := False
-					if attached h_stati.item_for_iteration.get_events as tp then
-						from
-							j := 1
-						until
-							j = tp.count + 1 or flag_1
-						loop
-							if tp [j] ~ v_old [i] then
-								v_new.force (v_old [i].twin, k)
-								k := k + 1
-								flag_1 := True
-								flag := True
-							else
-								j := j + 1
-							end
-						end
-					end
-					h_stati.forth
-				end
-				if NOT flag then
-					print ("%N ATTENZIONE!! L'evento " + v_old [i] + " non viene utilizzato!")
+				if not eventi_nella_SC.has (eventi_esterni [i]) then
+					print ("%N ATTENZIONE!! L'evento " + eventi_esterni [i] + " non viene utilizzato!")
+					evento_assente := True
 				end
 				i := i + 1
 			end
-			Result := v_new
+			Result := not evento_assente
 		end
-
-		--			ottieni_evento: STRING --serve a verificare che tutti gli eventi nel file eventi.txt compaiano effettivamente
-		--								   --tra gli eventi di qualche transizione
-		--					  local
-		--					    evento_letto: STRING
-		--				do
-		--					Result := ""
-		--						  FROM
-		--						    evento_letto := leggi_prossimo_evento
-		--						  UNTIL
-		--						    count_evento_corrente>eventi.count
-		--						  LOOP
-		--						    messaggio_di_errore(evento_letto non è un evento legale)
-		--						    evento_letto := leggi_prossimo_evento
-		--						  END
-		--						  IF evento_letto IN eventi THEN
-		--						    Result := evento_letto
-		--				end
 
 end

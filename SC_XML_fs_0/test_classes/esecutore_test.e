@@ -33,39 +33,18 @@ feature -- Test routines
 			create esecutore_prova.start (nomi_files_prova)
 
 			create nomi_files_prova.make_filled ("", 1, 2)
-			nomi_files_prova[1] := "esempio_per_altro_esecutore.xml"
-			nomi_files_prova[2] := "eventi_per_altro_esecutore.txt"
+			nomi_files_prova[1] := "esempio_per_altro_esecutore_test.xml"
+			nomi_files_prova[2] := "eventi_per_altro_esecutore_test.txt"
 
 			create altro_esecutore_prova.start (nomi_files_prova)
 
 		end
 
-
-	esecutore_verifica_eventi
-		local
-			v: ARRAY [STRING]
-			v_v: ARRAY [STRING]
-			i:INTEGER
-			flag,flag_1:BOOLEAN
+	test_verifica_eventi_esterni
 		do
-			v := esecutore_prova.eventi
-			v_v := esecutore_prova.verifica_eventi
-			assert ("Fatto male e si vede dal count", v_v.count < v.count)
-			from
-				i:=1
-			until
-				i=v_v.count+1
-			loop
-				if v_v[i]~"25" then
-					flag:=true
-				end
-				if v_v[i]~"watch_reset" then
-					flag_1:=true
-				end
-				i:=i+1
-			end
-			assert ("Fatto male flag", not flag)
-			assert("Fatto male flag_1", not flag_1)
+			assert("non viene rilevato evento esterno assente",esecutore_prova.verifica_eventi_esterni=False)
+			assert("viene falsamente rilevato evento esterno assente",altro_esecutore_prova.verifica_eventi_esterni=True)
+
 		end
 
 	esecutore_ha_3_stati
