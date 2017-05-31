@@ -101,8 +101,8 @@ feature --routines
 		end
 
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
-			--		require
-			--		numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) > 0
+		-- ritorna Void se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
+		-- ritorna lo stato a cui porta la transizione di indice massimoattivabile nella configurazione corrente con evento_corrente
 		local
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
@@ -127,8 +127,6 @@ feature --routines
 				index_count := index_count + 1
 			end
 			result := target_della_transizione
-				-- ritorna Void se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
-				-- ritorna lo stato a cui porta l'unica transizione attivabile nella configurazione corrente con evento_corrente
 		end
 
 	determinismo_senza_evento (hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN

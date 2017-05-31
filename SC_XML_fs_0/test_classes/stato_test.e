@@ -50,9 +50,9 @@ feature {NONE} -- Events
 				end
 
 			create hash_di_prova.make (3)
-			hash_di_prova.put (TRUE, "cond1")
-			hash_di_prova.put (TRUE, "cond2")
-			hash_di_prova.put (TRUE, "cond3")
+    		hash_di_prova.put (False, "cond1")
+    		hash_di_prova.put (False, "cond2")
+    		hash_di_prova.put (False, "cond3")
 
 		end
 
@@ -99,19 +99,17 @@ feature -- Test routines
 			if attached stato_prova as sp then
 					assert("unica transizione abilitata non rilevata", sp.numero_transizioni_abilitate ("evento1", hash_di_prova)=1)
 			end
-
 		end
 
---			t_stato_target
-
---				do
---					create stato_prova.make_with_id ("stato_prova")
-
---					if attached stato_prova as sp then
---						assert ("restituito target non void, mentre doveva restituirlo void", sp.target("ti sfido a trovare uno stato con questo nome")=Void)
---					end
-
---				end
+	t_stato_target
+		do
+			set_hash_di_prova(TRUE,TRUE,FALSE)
+			if attached stato_prova as sp then
+				if attached sp.target("evento_1",hash_di_prova) as st then
+					assert ("target scorretto", st.id ~ "target_prova_1")
+				end
+			end
+		end
 
 --	t_stato_get_events
 --		local
