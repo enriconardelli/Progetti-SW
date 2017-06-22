@@ -32,7 +32,6 @@ feature --attributi
 
 feature --creazione
 
---	make (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
 	make(nome_SC: STRING)
 		do
 			create stato_iniziale.make_empty
@@ -150,13 +149,10 @@ feature -- inizializzazione SC
 				lis_el.after
 			loop
 				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
-						-- TODO gestire fallimento del test
 					stati.extend (create {STATO}.make_final_with_id (att.value), att.value)
 				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
-						-- TODO gestire fallimento del test
 					stati.extend (create {STATO}.make_with_id (att.value), att.value)
 				elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
-						-- TODO gestire fallimento del test
 					istanzia_condizioni (lis_data)
 				end
 				lis_el.forth
@@ -197,7 +193,6 @@ feature -- inizializzazione SC
 			--	inizializza ogni stato con le sue transizioni con eventi ed azioni
 		do
 			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
-					-- TODO gestire fallimento del test
 				istanzia_stati_e_condizioni (lis_el)
 				imposta_stato_iniziale (f)
 				inizializza_stati (lis_el)
@@ -266,10 +261,10 @@ feature -- inizializzazione SC
 			loop
 
 					-- TODO gestire separatamente feature di creazione transizione che torna o transizione o errore
-				if transition_list.item_for_iteration.name ~ "transition" and then attached transition_list.item_for_iteration.attribute_by_name ("target") as target then
+				if transition_list.item_for_iteration.name ~ "transition" and then attached transition_list.item_for_iteration.attribute_by_name ("target") as tt then
 						-- TODO gestire fallimento del test per assenza clausola target
-					if attached stati.item (target.value) as target_state then
-						create transizione.make_with_target (target_state)
+					if attached stati.item (tt.value) as ts then
+						create transizione.make_with_target (ts)
 						assegnazione_evento (transition_list, transizione)
 						assegnazione_condizione (transition_list, transizione)
 						assign_list := transition_list.item_for_iteration.elements

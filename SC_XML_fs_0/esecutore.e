@@ -32,7 +32,6 @@ feature {NONE} -- Inizializzazione
 			print ("INIZIO!%N")
 			print ("esegue la SC in " + nomi_files [1] + "%N")
 			print ("con gli eventi in " + nomi_files [2] + "%N")
---			crea_albero (nomi_files [1])
 			create eventi_esterni.make_empty
 			acquisisci_eventi (nomi_files [2])
 			print ("acquisiti eventi %N")
