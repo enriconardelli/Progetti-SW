@@ -38,15 +38,15 @@ feature {NONE} -- Events
 			if attached target_prova_3 as tp3 then create transizione_prova_3.make_with_target(tp3) end
 				if attached transizione_prova_1 as trp1 then
 				trp1.set_evento ("evento1") trp1.set_condizione ("cond1")
-				if attached stato_prova as sp then sp.agg_trans (trp1)  end
+				if attached stato_prova as sp then sp.aggiungi_transizione (trp1)  end
 				end
 			if attached transizione_prova_2 as trp2 then
 				trp2.set_evento ("evento2") trp2.set_condizione ("cond2")
-				if attached stato_prova as sp then sp.agg_trans (trp2)  end
+				if attached stato_prova as sp then sp.aggiungi_transizione (trp2)  end
 				end
 			if attached transizione_prova_3 as trp3 then
 				trp3.set_evento ("evento1") trp3.set_condizione ("cond3")
-				if attached stato_prova as sp then sp.agg_trans (trp3)  end
+				if attached stato_prova as sp then sp.aggiungi_transizione (trp3)  end
 				end
 
 			create hash_di_prova.make (3)

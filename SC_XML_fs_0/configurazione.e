@@ -274,12 +274,12 @@ feature -- inizializzazione SC
 						assegnazione_condizione (transition_list, transizione)
 						assign_list := transition_list.item_for_iteration.elements
 						assegnazione_azioni (assign_list, transizione)
-						if attached stati.item (id_stato) as si_c then
-							si_c.agg_trans (transizione)
+						if attached stati.item (id_stato) as si then
+							si.aggiungi_transizione (transizione)
 						end
 					else
-						if attached stati.item (id_stato) as si_c then
-							print ("lo stato" + si_c.id + "ha una transizione non valida %N")
+						if attached stati.item (id_stato) as si then
+							print ("lo stato" + si.id + "ha una transizione non valida %N")
 						end
 					end
 				end

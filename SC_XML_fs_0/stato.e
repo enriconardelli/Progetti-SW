@@ -62,7 +62,7 @@ feature --setter
 
 feature --routines
 
-	agg_trans (tr: TRANSIZIONE)
+	aggiungi_transizione (tr: TRANSIZIONE)
 		do
 			transizioni.force (tr, transizioni.count + 1)
 		end
