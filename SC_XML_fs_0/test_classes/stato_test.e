@@ -67,7 +67,7 @@ set_hash_di_prova(b1,b2,b3:BOOLEAN)
 
 feature -- Test routines
 
-	t_stato_make_with_id
+	t_make_with_id
 		do
 			create stato_prova.make_with_id ("stato_prova")
 			if attached stato_prova as sp then
@@ -76,7 +76,7 @@ feature -- Test routines
 			end
 		end
 
-	t_stato_set_final
+	t_set_final
 		do
 			create stato_prova.make_with_id ("stato_prova")
 			if attached stato_prova as sp then
@@ -85,7 +85,7 @@ feature -- Test routines
 			end
 		end
 
-	t_stato_non_determinismo
+	t_numero_transizioni_abilitate_non_determinismo
 		do
 			set_hash_di_prova(TRUE,TRUE,TRUE)
 			if attached stato_prova as sp then
@@ -93,7 +93,7 @@ feature -- Test routines
 			end
 		end
 
-	t_stato_determinismo
+	t_numero_transizioni_abilitate_determinismo
 		do
 			set_hash_di_prova(TRUE,TRUE,FALSE)
 			if attached stato_prova as sp then
@@ -101,7 +101,7 @@ feature -- Test routines
 			end
 		end
 
-	t_stato_target
+	t_target
 		do
 			set_hash_di_prova(TRUE,TRUE,FALSE)
 			if attached stato_prova as sp then
