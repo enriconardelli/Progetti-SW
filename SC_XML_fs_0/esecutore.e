@@ -18,8 +18,7 @@ feature -- Attributi
 	eventi_esterni: ARRAY [STRING]
 			-- memorizza gli eventi letti dal file
 
-	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
-			-- rappresenta sotto forma di un albero la SC letta dal file
+
 
 feature {NONE} -- Inizializzazione
 
@@ -33,11 +32,11 @@ feature {NONE} -- Inizializzazione
 			print ("INIZIO!%N")
 			print ("esegue la SC in " + nomi_files [1] + "%N")
 			print ("con gli eventi in " + nomi_files [2] + "%N")
-			crea_albero (nomi_files [1])
+--			crea_albero (nomi_files [1])
 			create eventi_esterni.make_empty
 			acquisisci_eventi (nomi_files [2])
 			print ("acquisiti eventi %N")
-			create state_chart.make (albero)
+			create state_chart.make(nomi_files [1])
 			if verifica_eventi_esterni then
 				print ("eventi verificati, si esegue la SC %N")
 				state_chart.evolvi_SC (eventi_esterni)
@@ -48,24 +47,7 @@ feature {NONE} -- Inizializzazione
 
 feature
 
-	crea_albero (nome_file_SC: STRING)
-			-- crea e inizializza `albero'
-		local
-			parser: XML_PARSER
-		do
-				--| Instantiate parser
-			create {XML_STANDARD_PARSER} parser.make
-				--| Build tree callbacks
-			create albero.make_null
-			parser.set_callbacks (albero)
-				--| Parse the `file_name' content
-			parser.parse_from_filename (nome_file_SC)
-			if parser.error_occurred then
-				print ("Parsing error!!! %N")
-			else
-				print ("Parsing OK. %N")
-			end
-		end
+
 
 	acquisisci_eventi (nome_file_eventi: STRING)
 			-- Legge gli eventi dal file passato come secondo argomento e li inserisce in `eventi_esterni'

@@ -27,19 +27,43 @@ feature --attributi
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
 			-- una volta che è terminata non serve più
 
+	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
+			-- rappresenta sotto forma di un albero la SC letta dal file
+
 feature --creazione
 
-	make (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+--	make (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+	make(nome_SC: STRING)
 		do
 			create stato_iniziale.make_empty
 			stato_iniziale.set_final
+			crea_albero (nome_SC)
 			create stati.make (1)
 			create condizioni.make (1)
-			crea_stati_e_condizioni (albero)
+			crea_stati_e_condizioni
 			stato_corrente := stato_iniziale
 		end
 
 feature --evoluzione SC
+
+	crea_albero (nome_file_SC: STRING)
+			-- crea e inizializza `albero'
+		local
+			parser: XML_PARSER
+		do
+				--| Instantiate parser
+			create {XML_STANDARD_PARSER} parser.make
+				--| Build tree callbacks
+			create albero.make_null
+			parser.set_callbacks (albero)
+				--| Parse the `file_name' content
+			parser.parse_from_filename (nome_file_SC)
+			if parser.error_occurred then
+				print ("Parsing error!!! %N")
+			else
+				print ("Parsing OK. %N")
+			end
+		end
 
 	evolvi_SC (eventi: ARRAY [STRING])
 		local
@@ -168,7 +192,7 @@ feature -- inizializzazione SC
 			end
 		end
 
-	crea_stati_e_condizioni (albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT)
+	crea_stati_e_condizioni
 			--	riempie le hashtable degli stati e delle condizioni
 			--	inizializza ogni stato con le sue transizioni con eventi ed azioni
 		do
