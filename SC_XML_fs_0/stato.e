@@ -89,10 +89,10 @@ feature --routines
 
 	attivabile (index_count: INTEGER; evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
 		do
-			if attached transizioni [index_count].evento as ang then
-				if ang.is_equal (evento_corrente) then
-					if attached transizioni [index_count].condizione as cond then
-						if hash_delle_condizioni.item (cond) = True then
+			if attached transizioni [index_count].evento as e then
+				if e.is_equal (evento_corrente) then
+					if attached transizioni [index_count].condizione as c then
+						if hash_delle_condizioni.item (c) = True then
 							Result := True
 						end
 					end
