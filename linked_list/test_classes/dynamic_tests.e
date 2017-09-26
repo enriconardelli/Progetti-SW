@@ -26,7 +26,6 @@ feature -- Test routines
 		lista_a.insert_before (1,0)
 		lista_b.insert_before (3,-5)
 		-- stato liste:  a = [1], b = [3]
-
 		assert ("insert_before fallisce su lista con zero elementi", lista_a.has(1) and lista_b.has(3))
 		assert ("insert_before fallisce su lista con zero elementi", (not lista_a.has(0)) and (not lista_b.has(-5)))
 		assert ("insert_before non aggiorna count su lista con zero elementi", (lista_a.count=1) and (lista_b.count=1))
@@ -34,21 +33,62 @@ feature -- Test routines
 		lista_a.insert_before (-2,1)
 		lista_b.insert_before (9,-7)
 		-- stato liste: a = [-2,1], b = [9,3]
-
 		assert ("errore: insert_before modifica last_element", (lista_a.last_element.value = 1) and (lista_b.last_element.value = 3))
-		assert ("errore: insert_before non aggiorna first_element quando il target è first_element", lista_a.first_element.value = -2)
+		assert ("errore: insert_before non aggiorna first_element quando il target è first_element", (lista_a.first_element.value = -2) and (lista_b.first_element.value = 9))
 
 		lista_a.insert_before (3,1)
 		lista_b.insert_before (-2,9)
 		-- stato liste: a = [-2,3,1], b = [-2,9,3]
-
-		assert ("errore: insert_before non lega il precedente del target all'elemento inserito", lista_a.get_element(-2).next.value = 3)
+		assert ("errore: insert_before non lega il precedente del target all'elemento inserito", (lista_a.get_element(-2).next.value = 3) and (lista_b.get_element(-2).next.value = 9))
 		-- il legame tra elemento inserito e target è verificato dall'ensure della feature
-		assert ("errore: insert_before distrugge il legame tra target e successivo", lista_b.get_element(-2).next.next.value = 3)
 
-		lista_a.insert_before (7,0)
-		assert ("errore: insert_before fallisce inserimento con target inesistente su lista non vuota", lista_a.first_element.value = 7)
-		assert ("errore: insert_before con target inesistente su lista non vuota non lega il primo elemento", lista_a.first_element.next.value = -2)
+		lista_a.insert_before (3,0)
+		lista_b.insert_before (9,0)
+		-- stato liste: a = [3,-2,3,1], b = [9,-2,9,3]
+		assert ("errore: insert_before fallisce inserimento con target inesistente su lista non vuota", (lista_a.first_element.value = 3) and (lista_b.first_element.value = 9))
+		assert ("errore: insert_before con target inesistente su lista non vuota non lega il primo elemento", (lista_a.first_element.next.value = -2) and (lista_b.first_element.next.value = -2))
+	end
+
+
+	t_insert_multiple_before
+			-- Verifica la corretta esecuzione degli inserimenti multipli prima del target
+	local
+		lista_a , lista_b: INT_LINKED_LIST
+	do
+		create lista_a
+		create lista_b
+
+		lista_a.insert_multiple_before (1,0)
+		lista_b.insert_multiple_before (3,-5)
+		-- stato liste:  a = [1], b = [3]
+		assert ("ERRORE ==> insert_multiple_before fallisce su lista con zero elementi", lista_a.has(1) and lista_b.has(3))
+		assert ("ERRORE ==> insert_multiple_before fallisce su lista con zero elementi", (not lista_a.has(0)) and (not lista_b.has(-5)))
+		assert ("ERRORE ==> insert_multiple_before non aggiorna count su lista con zero elementi", (lista_a.count=1) and (lista_b.count=1))
+
+		lista_a.insert_multiple_before (-2,1)
+		lista_b.insert_multiple_before (9,-7)
+		-- stato liste: a = [-2,1], b = [9,3]
+		assert ("ERRORE ==> insert_multiple_before modifica last_element", (lista_a.last_element.value = 1) and (lista_b.last_element.value = 3))
+		assert ("ERRORE ==> insert_multiple_before non aggiorna first_element quando il target è first_element", (lista_a.first_element.value = -2) and (lista_b.first_element.value = 9))
+
+		lista_a.insert_multiple_before (3,1)
+		lista_b.insert_multiple_before (-2,9)
+		-- stato liste: a = [-2,3,1], b = [-2,9,3]
+		assert ("ERRORE ==> insert_multiple_before non lega il precedente del target all'elemento inserito", (lista_a.get_element(-2).next.value = 3) and (lista_b.get_element(-2).next.value = 9))
+		-- il legame tra elemento inserito e target è verificato dall'ensure della feature
+
+		lista_a.insert_multiple_before (3,0)
+		lista_b.insert_multiple_before (9,0)
+		-- stato liste: a = [3,-2,3,1], b = [9,-2,9,3]
+		assert ("ERRORE ==> insert_multiple_before fallisce inserimento con target inesistente su lista non vuota", (lista_a.first_element.value = 3) and (lista_b.first_element.value = 9))
+		assert ("ERRORE ==> insert_multiple_before con target inesistente su lista non vuota non lega il primo elemento", (lista_a.first_element.next.value = -2) and (lista_b.first_element.next.value = -2))
+
+		lista_a.insert_multiple_before (66,3)
+		lista_b.insert_multiple_before (44,9)
+		-- stato liste: a = [66,3,-2,66,3,1], b = [44,9,-2,44,9,3]
+		assert ("ERRORE ==> insert_multiple_before non lega il precedente del target all'elemento inserito", (lista_a.get_element(-2).next.value = 66) and (lista_b.get_element(-2).next.value = 44))
+		-- il legame tra elemento inserito e prima occorrenza del target è verificato dall'ensure della feature
+		-- per le successive occorrenze del target va verificato manualmente ma serve una nuova feature get_all_elements
 	end
 
 

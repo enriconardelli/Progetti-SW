@@ -13,7 +13,7 @@ create
 feature -- accesso
 
 	value: INTEGER
-			-- l’intero memorizzato in questo elemento
+			-- l'intero memorizzato in questo elemento
 
 	set_value (new_value: INTEGER)
 			-- assegna l'intero memorizzato in questo elemento

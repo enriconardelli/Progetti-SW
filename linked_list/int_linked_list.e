@@ -10,18 +10,18 @@ class
 feature -- accesso
 
 	first_element: INT_LINKABLE
-			-- Primo elemento della lista
+			-- il primo elemento della lista
 
 	last_element: INT_LINKABLE
-			-- Ultimo elemento della lista
+			-- l'ultimo elemento della lista
 
 	count: INTEGER
-			-- Numero di element nella lista
+			-- numero di elementi nella lista
 
 feature -- comandi fondamentali
 
 	append (a_value: INTEGER)
-			-- Aggiunge `a_value' dopo l'ultimo elemento.
+			-- aggiunge `a_value' dopo l'ultimo elemento.
 		local
 			new_element: like first_element
 		do
@@ -40,7 +40,7 @@ feature -- comandi fondamentali
 		end
 
 	prepend (a_value: INTEGER)
-			-- Aggiunge `a_value' prima del primo elemento.
+			-- aggiunge `a_value' prima del primo elemento.
 		local
 			new_element: like first_element
 		do
@@ -60,6 +60,8 @@ feature -- comandi fondamentali
 
 	remove________DA_IMPLEMENTARE (a_value: INTEGER)
 			-- DA IMPLEMENTARE
+			-- C'E' IMPLEMENTAZIONE IN SLIDE 13 STRUTTURE DATI PRESA DA IMPLEMENTAZIONE DI LINKED
+			-- LIST DI EIFFEL CHE USA IL CONCETTO DI CURSORE
 --		local
 --			current_element, temp: like first_element
 		do
@@ -80,8 +82,8 @@ feature -- comandi fondamentali
 		end
 
 	insert_after (a_value, target: INTEGER)
-			-- Inserisce `a_value' subito dopo la prima occorrenza di `target' se presente
-			-- Altrimenti inserisce `a_value' alla fine
+			-- inserisce `a_value' subito dopo la prima occorrenza di `target' se presente
+			-- altrimenti inserisce `a_value' alla fine
 		local
 			current_element, new_element: like first_element
 		do
@@ -115,8 +117,8 @@ feature -- comandi fondamentali
 		end
 
 	insert_before (a_value, target: INTEGER)
-			-- Inserisce `a_value' subito prima della prima occorrenza di `target' se esiste
-			-- Altrimenti inserisce `a_value' all'inizio
+			-- inserisce `a_value' subito prima della prima occorrenza di `target' se esiste
+			-- altrimenti inserisce `a_value' all'inizio
 		local
 			previous_element, new_element: like first_element
 		do
@@ -151,9 +153,9 @@ feature -- comandi fondamentali
 			collegato_se_presente: old has (target) implies get_element (a_value).next.value = target
 		end
 
+		--  ALTERNATIVE (less efficient) implementation using feature `has'
 		--	insert_before (new, target: INTEGER)
 		--			-- Insert `new' before `target' if present otherwise add `new' at the end
-		--			-- Alternative (less efficient) implementation using feature `has'
 		--		local
 		--			previous_element, new_element: INT_LINKABLE
 		--		do
@@ -189,8 +191,8 @@ feature -- comandi fondamentali
 		--		end
 
 	insert_multiple_after (a_value, target: INTEGER)
-			-- Inserisce `a_value' subito dopo ogni `target', se ne esistono
-			-- Altrimenti inserisce `new' alla fine
+			-- inserisce `a_value' subito dopo ogni `target', se ne esistono
+			-- altrimenti inserisce `new' alla fine
 		local
 			new_element, current_element: INT_LINKABLE
 			target_exist: BOOLEAN
@@ -232,8 +234,8 @@ feature -- comandi fondamentali
 	end
 
 	insert_multiple_before (a_value, target: INTEGER)
-			-- Inserisce `a_value' subito prima di ogni occorrenza di `target' se esiste
-			-- Altrimenti inserisce `a_value' all'inizio
+			-- inserisce `a_value' subito prima di ogni occorrenza di `target' se esiste
+			-- altrimenti inserisce `a_value' all'inizio
 		local
 			previous_element, current_element, new_element: like first_element
 		do
@@ -246,12 +248,12 @@ feature -- comandi fondamentali
 				loop
 					if current_element.value = target then
 						create new_element.make (a_value)
-						if previous_element = Void then
+						if current_element = first_element then
 							new_element.link_to(first_element)
 							first_element := new_element
 						else
-							previous_element.link_to(new_element)
 							new_element.link_to(current_element)
+							previous_element.link_to(new_element)
 						end
 						count := count + 1
 					end
@@ -262,7 +264,7 @@ feature -- comandi fondamentali
 				create new_element.make (a_value)
 				if count = 0 then
 					first_element := new_element
-					last_element := first_element
+					last_element := new_element
 				else
 					new_element.link_to(first_element)
 					first_element := new_element
@@ -271,8 +273,11 @@ feature -- comandi fondamentali
 			end
 		ensure
 			di_piu: count > old count
+			uno_in_piu_se_non_presente: not (old has (target)) implies count = old count + 1
 			in_testa_se_non_presente: not (old has (target)) implies first_element.value = a_value
-			collegato_se_presente: old has (target) implies get_element (a_value).next.value = target
+			collegato_al_primo_se_non_presente: not (old has (target)) implies first_element.next = old first_element
+			collegato_al_primo_se_presente: old has (target) implies get_element (a_value).next.value = target
+			-- verificare il collegamento con le successive occorrenze di target richiede get_all_elements
 		end
 
 	invert
@@ -311,22 +316,22 @@ feature -- comandi fondamentali
 feature -- query fondamentali
 
 	has (a_value: INTEGER): BOOLEAN
-			-- La lista contiene `a_value'?
+			-- la lista contiene `a_value'?
 		local
-			current_element, temp: like first_element
+			current_element, previous_element: like first_element
 		do
 			from
 				current_element := first_element
-				temp := Void
+				previous_element := Void
 			invariant
-				not Result implies (temp /= Void implies temp.value /= a_value)
+				not Result implies (previous_element /= Void implies previous_element.value /= a_value)
 			until
 				(current_element = Void) or Result
 			loop
 				if current_element.value = a_value then
 					Result := True
 				end
-				temp := current_element
+				previous_element := current_element
 				current_element := current_element.next
 			end
 		end
@@ -356,21 +361,21 @@ feature -- query fondamentali
 --		end
 
 	get_element (a_value: INTEGER): INT_LINKABLE
-			-- Ritorna il primo elemento contenente `a_value', se esiste
+			-- ritorna il primo elemento contenente `a_value', se esiste
 		local
-			current_element, temp: like first_element
+			current_element, previous_element: like first_element
 		do
 			from
 				current_element := first_element
-				temp := Void
+				previous_element := Void
 			invariant
 				current_element /= Void implies
-				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
+				  (current_element.value /= a_value implies (previous_element /= Void implies previous_element.value /= a_value))
 			until
 				(current_element = Void) or (current_element.value = a_value)
 			loop
-				temp := current_element
-				current_element := temp.next
+				previous_element := current_element
+				current_element := current_element.next
 			end
 			if (current_element /= Void and then current_element.value = a_value) then
 				Result := current_element
@@ -402,7 +407,7 @@ feature -- query fondamentali
 --		end
 
 	value_follows (a_value, target: INTEGER): BOOLEAN
-			-- La lista contiene `a_value' dopo la prima occorrenza di `target'?
+			-- la lista contiene `a_value' dopo la prima occorrenza di `target'?
 		local
 			current_element, temp: like first_element
 		do
@@ -424,7 +429,7 @@ feature -- query fondamentali
 		end
 
 	value_after___________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
-			-- La lista contiene `a_value' subito dopo la prima occorrenza di `target'?
+			-- la lista contiene `a_value' subito dopo la prima occorrenza di `target'?
 		local
 			current_element, temp: like first_element
 		do
@@ -447,7 +452,7 @@ feature -- query fondamentali
 
 	value_precedes_______________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
 			--
-			-- La lista contiene `a_value' prima della prima occorrenza di `target'?
+			-- la lista contiene `a_value' prima della prima occorrenza di `target'?
 		local
 			current_element, temp: like first_element
 		do
@@ -469,7 +474,7 @@ feature -- query fondamentali
 		end
 
 	value_before___________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
-			-- La lista contiene `a_value' subito prima della prima occorrenza di `target'?
+			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
 		local
 			current_element, temp: like first_element
 		do
@@ -491,7 +496,7 @@ feature -- query fondamentali
 		end
 
 	sum_of_positive: INTEGER
-			-- The sum of positive elements
+			-- valore della somma degli elementi maggiori di zero
 		local
 			temp: like first_element
 		do
@@ -510,7 +515,7 @@ feature -- query fondamentali
 		end
 
 	stampa
-			-- print the entire list
+			-- stampa tutta la lista
 		local
 			temp: like first_element
 		do

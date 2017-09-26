@@ -10,6 +10,6 @@ E' replicata nel repository GIT
   https://github.com/enriconardelli/Progetti-SW
 
 
-Tutte le modifiche/estensioni vanno apportate a questa versione
+In prospettiva nel corso di FPE va fatta solo la Void-Safety
 
 Bisogna aggiungere ai test statici e ai test dinamici gli opportuni controlli per le nuove feature aggiunte.
