@@ -19,15 +19,10 @@ feature
 
 			-- Run application.
 		local
-			tr, t: detachable MY_LINKED_LIST [INTEGER]
+			t: detachable MY_LINKED_LIST [INTEGER]
 			target: detachable MY_LINKABLE [INTEGER]
 		do
 			create t
-				--			create {INT_LINKED_LIST} t
-				--			t := create{INT_LINKED_LIST}
-			t.stampa
-			print ("%N Inverto la lista: ")
-			t.invert
 			t.stampa
 			print ("%N chiedo se 5 e' nella lista: ")
 			if t.has (5) then
@@ -57,12 +52,12 @@ feature
 			print ("%N Inverto la lista: ")
 			t.invert
 			t.stampa
-			print ("%N invoco insert 9 before 5 che sta all'inizio")
+			print ("%N invoco insert 9 before 15")
 			t.insert_before (9, 5)
 			t.stampa
-			print ("%N estendo con -3 e con 1")
-			t.append (-3)
-			t.append (1)
+			print ("%N estendo con 9 e con -1")
+			t.append (9)
+			t.append (-1)
 			print ("%N Lista creata.")
 			t.stampa
 			print ("%N La lista contiene 5? ")
@@ -88,27 +83,26 @@ feature
 				print ("%N il valore nell'elemento ritrovato e': ")
 				print (target.value)
 			end
-			print ("%N La somma dei valori positivi e': ")
-			print (t.sum_of_positive)
-			print ("%N Inserisco -6 dopo 7 ")
-			t.insert_after (-6, 7)
+			print ("%N Inserisco 9 dopo -1 ")
+			t.insert_after (9, -1)
 			t.stampa
-			print ("%N Inserisco -9 dopo 9")
-			t.insert_after (-9, 9)
+			print ("%N Inserisco 5 dopo 9")
+			t.insert_after (5, 9)
 			t.stampa
-			print ("%N La somma dei valori positivi e': ")
-			print (t.sum_of_positive)
-			print ("%N Inserisco 8 dopo 4 che sta alla fine")
-			t.insert_after (8, 4)
-			t.stampa
-			print ("%N Inserisco 88 dopo 9 che sta all'inizio")
-			t.insert_after (88, 9)
-			t.stampa
-			print ("%N La somma dei valori positivi e': ")
-			print (t.sum_of_positive)
-			print ("%N Inverto la lista: ")
 			t.invert
 			print ("%N Stampo la lista invertita: ")
+			t.stampa
+			print ("%N inserisco 1 dopo di ogni 9 ")
+			t.insert_multiple_after (1, 9)
+			t.stampa
+			print ("%N inserisco -1 prima di ogni 1 ")
+			t.insert_multiple_before (-1, 1)
+			t.stampa
+			print ("%N rimuovo 15 dalla lista ")
+			t.remove (15)
+			t.stampa
+			print ("%N pulisco la lista ")
+			t.wipeout
 			t.stampa
 		end
 
