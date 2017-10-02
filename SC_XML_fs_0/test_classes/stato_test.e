@@ -54,6 +54,8 @@ feature {NONE} -- Events
     		hash_di_prova.put (False, "cond2")
     		hash_di_prova.put (False, "cond3")
 
+    		
+
 		end
 
 
@@ -132,6 +134,28 @@ feature -- Test routines
 			end
 
 		end
+
+	t_numero_transizioni_abilitate_senza_evento_non_determinismo
+	do
+			set_hash_di_prova(TRUE,TRUE,TRUE)
+			if attached stato_prova as sp then
+				assert("ci sono due transizioni abilitate non rilevate", sp.numero_transizioni_abilitate_senza_evento (hash_di_prova)=2)
+			end
+		end
+
+
+
+
+--	t_numero_transizioni_abilitate_non_determinismo
+--		do
+--			set_hash_di_prova(TRUE,TRUE,TRUE)
+--			if attached stato_prova as sp then
+--				assert("ci sono due transizioni abilitate non rilevate", sp.numero_transizioni_abilitate ("evento1", hash_di_prova)=2)
+--			end
+--		end
+
+
+
 
 --	t_stato_get_events
 --		local
