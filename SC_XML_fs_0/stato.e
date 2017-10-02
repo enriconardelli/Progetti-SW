@@ -135,7 +135,7 @@ feature --routines
 			numero_di_transizioni_senza_evento_con_condizione_vera: INTEGER
 			--questo conta il numero di transizioni nell'array con campo evento vuoto e condizione vera
 		do
-			-- ritorna vero se il numero di transizioni con campo evento vuoto e condizioni vere sono al più una sola
+			-- ritorna il numero di transizioni nell'array con campo evento vuoto e condizione vera
 			from
 				index_count := transizioni.lower --si scorre l'array di transizioni a partire dal suo indice più piccolo
 				numero_di_transizioni_senza_evento_con_condizione_vera := 0
@@ -155,15 +155,6 @@ feature --routines
 			end --loop
 				result := numero_di_transizioni_senza_evento_con_condizione_vera
 		end
-
---	determinismo_senza_evento(numero_di_transizioni_senza_evento_con_condizione_vera: INTEGER): BOOLEAN
---		do
---			if numero_di_transizioni_senza_evento_con_condizione_vera > 1 then
---				result := FALSE
---					else
---				result := TRUE
---			end
---		end
 
 	target_senza_evento (hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
 		require
