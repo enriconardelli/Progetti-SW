@@ -19,16 +19,19 @@ inherit
 
 feature {NONE} -- Supporto
 
-	stato_prova: detachable STATO
+	stato_prova, stato_prova_senza_evento: detachable STATO
 	target_prova_1, target_prova_2, target_prova_3: detachable STATO
+	target_prova_senza_evento_1, target_prova_senza_evento_2, target_prova_senza_evento_3: detachable STATO
 	transizione_prova_1, transizione_prova_2,  transizione_prova_3: detachable TRANSIZIONE
-	hash_di_prova: HASH_TABLE [BOOLEAN, STRING]
+	transizione_prova_senza_evento_1, transizione_prova_senza_evento_2,  transizione_prova_senza_evento_3: detachable TRANSIZIONE
+	hash_di_prova, hash_di_prova_senza_evento: HASH_TABLE [BOOLEAN, STRING]
 
 feature {NONE} -- Events
 
 	on_prepare
-			-- creo stato di prova
+
 		do
+			-- creo stato di prova con evento
 			create stato_prova.make_with_id ("stato_prova")
 			create target_prova_1.make_with_id ("target_prova_1")
 			create target_prova_2.make_with_id ("target_prova_2")
@@ -48,13 +51,35 @@ feature {NONE} -- Events
 				trp3.set_evento ("evento1") trp3.set_condizione ("cond3")
 				if attached stato_prova as sp then sp.aggiungi_transizione (trp3)  end
 				end
+			--creo stato di prova senza evento
+			create stato_prova_senza_evento.make_final_with_id ("stato_prova_senza_evento")
+			create target_prova_senza_evento_1.make_with_id ("target_prova_1")
+			create target_prova_senza_evento_2.make_with_id ("target_prova_2")
+			create target_prova_senza_evento_3.make_with_id ("target_prova_3")
+			if attached target_prova_senza_evento_1 as tpse1 then create transizione_prova_senza_evento_1.make_with_target(tpse1) end
+			if attached target_prova_senza_evento_2 as tpse2 then create transizione_prova_senza_evento_2.make_with_target(tpse2) end
+			if attached target_prova_senza_evento_3 as tpse3 then create transizione_prova_senza_evento_3.make_with_target(tpse3) end
+			if attached transizione_prova_senza_evento_1 as trpse1 then
+				trpse1.set_condizione ("cond1")
+				if attached stato_prova_senza_evento as spse then spse.aggiungi_transizione (trpse1)  end
+				end
+			if attached transizione_prova_senza_evento_2 as trpse2 then
+				trpse2.set_condizione ("cond2")
+				if attached stato_prova_senza_evento as spse then spse.aggiungi_transizione (trpse2)  end
+				end
+			if attached transizione_prova_senza_evento_3 as trpse3 then
+				trpse3.set_condizione ("cond2")
+				if attached stato_prova_senza_evento as spse then spse.aggiungi_transizione (trpse3)  end
+				end
 
 			create hash_di_prova.make (3)
     		hash_di_prova.put (False, "cond1")
     		hash_di_prova.put (False, "cond2")
     		hash_di_prova.put (False, "cond3")
 
-    		
+    		create hash_di_prova_senza_evento.make (2)
+    		hash_di_prova.put (False, "cond1")
+    		hash_di_prova.put (False, "cond2")
 
 		end
 
@@ -66,6 +91,11 @@ set_hash_di_prova(b1,b2,b3:BOOLEAN)
 			hash_di_prova.replace (b3, "cond3")
        end
 
+set_hash_di_prova_senza_evento(b1,b2:BOOLEAN)
+       do
+       		hash_di_prova.replace (b1, "cond1")
+			hash_di_prova.replace (b2, "cond2")
+	   end
 
 feature -- Test routines
 
@@ -136,25 +166,20 @@ feature -- Test routines
 		end
 
 	t_numero_transizioni_abilitate_senza_evento_non_determinismo
-	do
-			set_hash_di_prova(TRUE,TRUE,TRUE)
-			if attached stato_prova as sp then
-				assert("ci sono due transizioni abilitate non rilevate", sp.numero_transizioni_abilitate_senza_evento (hash_di_prova)=2)
+		do
+			set_hash_di_prova_senza_evento(FALSE,TRUE)
+			if attached stato_prova_senza_evento as spse then
+				assert("ci sono due transizioni abilitate non rilevate", spse.numero_transizioni_abilitate_senza_evento (hash_di_prova)=2)
 			end
 		end
 
-
-
-
---	t_numero_transizioni_abilitate_non_determinismo
---		do
---			set_hash_di_prova(TRUE,TRUE,TRUE)
---			if attached stato_prova as sp then
---				assert("ci sono due transizioni abilitate non rilevate", sp.numero_transizioni_abilitate ("evento1", hash_di_prova)=2)
---			end
---		end
-
-
+	t_numero_transizioni_abilitate_senza_evento_determinismo
+		do
+			set_hash_di_prova_senza_evento(TRUE,FALSE)
+			if attached stato_prova_senza_evento as spse then
+				assert("unica transizione abilitata non rilevata", spse.numero_transizioni_abilitate_senza_evento (hash_di_prova)=1)
+			end
+		end
 
 
 --	t_stato_get_events
