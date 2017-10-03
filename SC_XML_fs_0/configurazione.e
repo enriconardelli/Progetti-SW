@@ -288,31 +288,58 @@ feature -- inizializzazione SC
 		--l'evoluzione della SC in termini di sequenza di quintuple:
 		--stato, evento, condizione, azione, target
 
---	stato_stabile
---			-- assicura che stato_stabile sia uno stato stabile eseguendo tutte le transizioni
---		require
---			controllo_determinismo: stato_corrente.	determinismo_senza_evento(condizioni)
---		do
---			if attached stato_corrente.target_senza_evento (condizioni) as sc_tse then
---				set_stato_corrente (sc_tse)
---				if stato_corrente.determinismo_senza_evento (condizioni) then
---					stato_stabile
---				end
---			end
---		end
+	determinismo_senza_evento (uno_stato:STATO; delle_condizioni: HASH_TABLE [BOOLEAN, STRING] ):BOOLEAN
+		do
+			if
+				uno_stato.numero_transizioni_abilitate_senza_evento (delle_condizioni) > 1 then
+				result := FALSE
+			else
+				result := TRUE
+			end
+		end
 
 	stato_stabile
-		-- assicura che stato_stabile sia uno stato stabile eseguendo tutte le transizioni
+			-- assicura che stato_stabile sia uno stato stabile eseguendo tutte le transizioni
 		require
-			stato_corrente.numero_transizioni_abilitate_senza_evento (condizioni) = 1
+			controllo_determinismo: determinismo_senza_evento(stato_corrente, condizioni)
 		do
 			if attached stato_corrente.target_senza_evento (condizioni) as sc_tse then
 				set_stato_corrente (sc_tse)
-				if stato_corrente.numero_transizioni_abilitate_senza_evento(condizioni) = 1 then
+				if determinismo_senza_evento (stato_corrente, condizioni) then
 					stato_stabile
 				end
 			end
 		end
 
+--Versione di stato_stabile che non prevede di passare attraverso risultato booleano
+
+--	stato_stabile
+--		-- assicura che stato_stabile sia uno stato stabile eseguendo tutte le transizioni
+--		require
+--			stato_corrente.numero_transizioni_abilitate_senza_evento (condizioni) = 1
+--		do
+--			if attached stato_corrente.target_senza_evento (condizioni) as sc_tse then
+--				set_stato_corrente (sc_tse)
+--				if stato_corrente.numero_transizioni_abilitate_senza_evento(condizioni) = 1 then
+--					stato_stabile
+--				end
+--			end
+--		end
+
+
+--Versione iniziale di stato_stabile
+
+--stato_stabile
+--			-- assicura che stato_stabile sia uno stato stabile eseguendo tutte le transizioni
+--		require
+--			controllo_determinismo: stato_corrente.numero_transizioni_abilitate_senza_evento(condizioni)
+--		do
+--			if attached stato_corrente.target_senza_evento (condizioni) as sc_tse then
+--				set_stato_corrente (sc_tse)
+--				if stato_corrente.numero_transizioni_abilitate_senza_evento(condizioni)then
+--					stato_stabile
+--				end
+--			end
+--		end
 
 end
