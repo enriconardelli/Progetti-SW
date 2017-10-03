@@ -23,6 +23,7 @@ feature {NONE} -- Supporto
 	target_prova_1, target_prova_2, target_prova_3: detachable STATO
 	target_prova_senza_evento_1, target_prova_senza_evento_2, target_prova_senza_evento_3: detachable STATO
 	transizione_prova_1, transizione_prova_2,  transizione_prova_3: detachable TRANSIZIONE
+	transizione_array: detachable ARRAY[TRANSIZIONE]
 	transizione_prova_senza_evento_1, transizione_prova_senza_evento_2,  transizione_prova_senza_evento_3: detachable TRANSIZIONE
 	hash_di_prova, hash_di_prova_senza_evento: HASH_TABLE [BOOLEAN, STRING]
 
@@ -97,6 +98,14 @@ set_hash_di_prova_senza_evento(b1,b2:BOOLEAN)
 			hash_di_prova.replace (b2, "cond2")
 	   end
 
+--set_array_di_transizioni(index:INTEGER; transizione: TRANSIZIONE)
+--	local
+--		array_di_transizioni: ARRAY[TRANSIZIONE]
+--	do
+--		create array_di_transizioni.make_empty
+--  	array_di_transizioni[index]:=transizione
+--	end
+
 feature -- Test routines
 
 	t_make_with_id
@@ -115,6 +124,19 @@ feature -- Test routines
 				sp.set_final
 				assert ("final NON è 'true'", sp.finale)
 			end
+		end
+
+	t_attivabile
+		local
+			index_count:INTEGER
+		do
+			set_hash_di_prova(TRUE,FALSE,FALSE)
+--			if attached transizione_prova_1 as tp1 then set_array_di_transizioni(1,tp1)end
+--			if attached transizione_prova_2 as tp2 then set_array_di_transizioni(1,tp2)end
+--			if attached transizione_prova_3 as tp3 then set_array_di_transizioni(1,tp3)end
+			if attached stato_prova as sp then
+				assert("c'e' una transizione attivabile non rilevata", sp.attivabile (1, "evento_1", hash_di_prova))
+				end
 		end
 
 	t_numero_transizioni_abilitate_non_determinismo
@@ -162,7 +184,6 @@ feature -- Test routines
 					assert ("target scorretto", st = Void)
 				end
 			end
-
 		end
 
 	t_numero_transizioni_abilitate_senza_evento_non_determinismo
@@ -181,6 +202,22 @@ feature -- Test routines
 			end
 		end
 
+	t_target_senza_evento
+		do
+			set_hash_di_prova_senza_evento(TRUE,FALSE)
+			if attached stato_prova_senza_evento as spse then
+				if attached spse.target_senza_evento(hash_di_prova_senza_evento) as stse then
+					assert ("target scorretto", stse.id ~ "target_prova_senza_evento_1")
+				end
+			end
+			set_hash_di_prova_senza_evento(FALSE,FALSE)
+			if attached stato_prova_senza_evento as spse then
+				if attached spse.target_senza_evento(hash_di_prova_senza_evento) as stse then
+					assert ("target scorretto", stse = Void)
+				end
+
+			end
+		end
 
 --	t_stato_get_events
 --		local
