@@ -156,6 +156,42 @@ feature --routines
 				result := numero_di_transizioni_senza_evento_con_condizione_vera
 		end
 
+--Versione iniziale precedentemente chiamata determinismo_senza_evento
+
+--numero_transizioni_abilitate_senza_evento (hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
+--		local
+--			index_count: INTEGER
+--			numero_di_transizioni_senza_evento_con_condizione_vera: INTEGER
+--			--questo conta il numero di transizioni nell'array con campo evento vuoto e condizione vera
+--		do
+--			-- ritorna il numero di transizioni nell'array con campo evento vuoto e condizione vera
+--			from
+--				index_count := transizioni.lower --si scorre l'array di transizioni a partire dal suo indice più piccolo
+--				numero_di_transizioni_senza_evento_con_condizione_vera := 0
+--			until
+--				index_count = transizioni.upper + 1 or numero_di_transizioni_senza_evento_con_condizione_vera > 1
+--			loop
+--				if transizioni [index_count].evento = Void then
+--					if attached transizioni [index_count].condizione as cond then
+--						if attached hash_delle_condizioni.item (cond) as cond_in_hash then
+--							if cond_in_hash = TRUE then
+--								numero_di_transizioni_senza_evento_con_condizione_vera := numero_di_transizioni_senza_evento_con_condizione_vera + 1
+--							end
+--						end
+--					end
+--				end
+--				index_count := index_count + 1
+--			end --loop
+
+--				if
+--				numero_di_transizioni_senza_evento_con_condizione_vera> 1 then
+--				result := FALSE
+--			else
+--				result := TRUE
+--			end
+--		end
+
+
 	target_senza_evento (hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
 		require
 			numero_transizioni_abilitate_senza_evento (hash_delle_condizioni)=1
