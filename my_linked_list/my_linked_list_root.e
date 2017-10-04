@@ -27,6 +27,8 @@ feature
 			print ("%N chiedo se 5 e' nella lista: ")
 			if t.has (5) then
 				print ("%N ERRORE: la lista e' vuota ma 'has' ritorna vero ")
+			elseif not t.has (5) then
+				print ("has ritorna falso correttamente")
 			end
 			print ("%N invoco insert -5 before 3 su lista vuota")
 			t.insert_before (-5, 3)
@@ -98,8 +100,20 @@ feature
 			print ("%N inserisco -1 prima di ogni 1 ")
 			t.insert_multiple_before (-1, 1)
 			t.stampa
-			print ("%N rimuovo 15 dalla lista ")
+			print ("%N rimuovo 15 dalla lista che si trova in mezzo")
 			t.remove (15)
+			t.stampa
+			print ("%N rimuovo 4 dalla lista che si trova all'inizio")
+			t.remove (4)
+			t.stampa
+			print ("%N rimuovo -1 dalla lista che si trova in mezzo ed ha altri valori uguali che lo seguono")
+			t.remove (-1)
+			t.stampa
+			print ("%N estendo con 88")
+			t.append (88)
+			t.stampa
+			print ("%N rimuovo 88 dalla lista che si trova alla fine")
+			t.remove (88)
 			t.stampa
 			print ("%N pulisco la lista ")
 			t.wipeout

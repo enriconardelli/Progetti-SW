@@ -77,19 +77,66 @@ feature --comandi fondamentali
 		local
 			current_element, temp: like first_element
 		do
-			current_element := get_element (a_value)
-			check attached current_element as ce then
-				temp := ce
-			end
-			if current_element /= void then
-				current_element := current_element.next
-				check attached temp as t then
-					t.link_to (current_element)
+
+				--			if count = 0 then
+				--				print ("ERRORE la lista non contiene elementi")
+				--			end
+				--			if not has (a_value) then
+				--				print ("ERRORE la lista non contiene il valore da rimuovere")
+			check attached first_element as fe then
+				if fe.value = a_value then
+					if first_element = last_element then
+						first_element := VOID
+						last_element := VOID
+					else
+						if attached first_element as fel then
+							first_element := fel.next
+						end
+						count := count - 1
+					end
+				elseif fe.value /= a_value then
+					current_element := first_element
+					temp := current_element
+					from
+						current_element := first_element
+					until
+						current_element = VOID or (attached temp as t implies t.value = a_value)
+					loop
+						if current_element /= last_element then
+							temp := current_element
+							check attached current_element as ce then
+								if ce.next /= VOID then
+									current_element := ce.next
+								end
+							end
+							if current_element /= last_element then
+								check attached current_element as ce then
+									if ce.value = a_value then
+										check attached ce.next as ce_n then
+											if attached temp as te then
+												temp.link_to (ce_n)
+											end
+										end
+										count := count - 1
+									end
+								end
+							end
+						elseif current_element = last_element then
+							if attached current_element as ce then
+								if ce.value = a_value then
+									check attached temp as te then
+										te.link_to (VOID)
+									end
+									count := count - 1
+								end
+								current_element:=VOID;
+							end
+						end
+					end
 				end
-				count := count - 1
 			end
-		ensure
-			removed: count = old count - 1
+				--		ensure
+				--			removed: count = old count - 1
 		end
 
 	sum_of_positive: INTEGER
