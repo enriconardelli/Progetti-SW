@@ -1,5 +1,4 @@
 circle
-cavallo
 minus
 star
 square

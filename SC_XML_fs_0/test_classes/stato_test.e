@@ -23,7 +23,7 @@ feature {NONE} -- Supporto
 	target_prova_1, target_prova_2, target_prova_3: detachable STATO
 	target_prova_senza_evento_1, target_prova_senza_evento_2, target_prova_senza_evento_3: detachable STATO
 	transizione_prova_1, transizione_prova_2,  transizione_prova_3: detachable TRANSIZIONE
-	transizione_array: detachable ARRAY[TRANSIZIONE]
+--	transizione_array: detachable ARRAY[TRANSIZIONE]
 	transizione_prova_senza_evento_1, transizione_prova_senza_evento_2,  transizione_prova_senza_evento_3: detachable TRANSIZIONE
 	hash_di_prova, hash_di_prova_senza_evento: HASH_TABLE [BOOLEAN, STRING]
 
@@ -79,8 +79,8 @@ feature {NONE} -- Events
     		hash_di_prova.put (False, "cond3")
 
     		create hash_di_prova_senza_evento.make (2)
-    		hash_di_prova.put (False, "cond1")
-    		hash_di_prova.put (False, "cond2")
+    		hash_di_prova_senza_evento.put (False, "cond1")
+    		hash_di_prova_senza_evento.put (False, "cond2")
 
 		end
 
@@ -94,8 +94,8 @@ set_hash_di_prova(b1,b2,b3:BOOLEAN)
 
 set_hash_di_prova_senza_evento(b1,b2:BOOLEAN)
        do
-       		hash_di_prova.replace (b1, "cond1")
-			hash_di_prova.replace (b2, "cond2")
+       		hash_di_prova_senza_evento.replace (b1, "cond1")
+			hash_di_prova_senza_evento.replace (b2, "cond2")
 	   end
 
 --set_array_di_transizioni(index:INTEGER; transizione: TRANSIZIONE)
@@ -135,8 +135,8 @@ feature -- Test routines
 --			if attached transizione_prova_2 as tp2 then set_array_di_transizioni(1,tp2)end
 --			if attached transizione_prova_3 as tp3 then set_array_di_transizioni(1,tp3)end
 			if attached stato_prova as sp then
-				assert("c'e' una transizione attivabile non rilevata", sp.attivabile (1, "evento_1", hash_di_prova))
-				end
+				assert("c'e' una transizione attivabile non rilevata", sp.attivabile (1, "evento1", hash_di_prova))
+			end
 		end
 
 	t_numero_transizioni_abilitate_non_determinismo
