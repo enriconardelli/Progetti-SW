@@ -21,9 +21,9 @@ feature {NONE} -- Supporto
 
 	stato_prova, stato_prova_senza_evento: detachable STATO
 	target_prova_1, target_prova_2, target_prova_3: detachable STATO
-	target_prova_senza_evento_1, target_prova_senza_evento_2, target_prova_senza_evento_3, target_prova_senza_evento_4: detachable STATO
+	target_prova_senza_evento_1, target_prova_senza_evento_2, target_prova_senza_evento_3: detachable STATO
 	transizione_prova_1, transizione_prova_2,  transizione_prova_3: detachable TRANSIZIONE
-	transizione_prova_senza_evento_1, transizione_prova_senza_evento_2,  transizione_prova_senza_evento_3, transizione_prova_senza_evento_4: detachable TRANSIZIONE
+	transizione_prova_senza_evento_1, transizione_prova_senza_evento_2,  transizione_prova_senza_evento_3: detachable TRANSIZIONE
 	hash_di_prova, hash_di_prova_senza_evento: HASH_TABLE [BOOLEAN, STRING]
 
 feature {NONE} -- Events
@@ -65,7 +65,6 @@ feature {NONE} -- Events
 			if attached target_prova_senza_evento_1 as tpse1 then create transizione_prova_senza_evento_1.make_with_target(tpse1) end
 			if attached target_prova_senza_evento_2 as tpse2 then create transizione_prova_senza_evento_2.make_with_target(tpse2) end
 			if attached target_prova_senza_evento_3 as tpse3 then create transizione_prova_senza_evento_3.make_with_target(tpse3) end
---			if attached target_prova_senza_evento_4 as tpse4 then create transizione_prova_senza_evento_4.make_with_target(tpse4) end
 			if attached transizione_prova_senza_evento_1 as trpse1 then
 				trpse1.set_condizione ("cond1")
 				if attached stato_prova_senza_evento as spse then spse.aggiungi_transizione (trpse1)  end
@@ -78,14 +77,10 @@ feature {NONE} -- Events
 				trpse3.set_condizione ("cond2")
 				if attached stato_prova_senza_evento as spse then spse.aggiungi_transizione (trpse3)  end
 				end
---			if attached transizione_prova_senza_evento_4 as trpse4 then
---				trpse4.set_condizione ("cond3")
---				if attached stato_prova_senza_evento as spse then spse.aggiungi_transizione (trpse4)  end
---				end
+
     		create hash_di_prova_senza_evento.make (2)
     		hash_di_prova_senza_evento.put (False, "cond1")
     		hash_di_prova_senza_evento.put (False, "cond2")
---			hash_di_prova_senza_evento.put (False, "cond3")
 
 		end
 
@@ -103,7 +98,6 @@ feature -- Test routines
        do
        		hash_di_prova_senza_evento.replace (b1, "cond1")
 			hash_di_prova_senza_evento.replace (b2, "cond2")
---			hash_di_prova_senza_evento.replace (b3, "cond3")
 	   end
 
 	t_make_with_id
@@ -208,9 +202,6 @@ feature -- Test routines
 			if attached stato_prova_senza_evento as spse then
 				set_hash_di_prova_senza_evento(TRUE,FALSE)
 				assert("la prima transizione attivabile non e' rilevata", spse.attivabile_senza_evento (1, hash_di_prova_senza_evento))
---				set_hash_di_prova_senza_evento(FALSE,TRUE)
---				assert("la quarta transizione attivabile non e' rilevata", spse.attivabile_senza_evento (4, hash_di_prova_senza_evento))
-----				
 			end
 		end
 
