@@ -208,29 +208,28 @@ feature -- Test routines
 			if attached stato_prova_senza_evento as spse then
 				set_hash_di_prova_senza_evento(TRUE,FALSE)
 				assert("la prima transizione attivabile non e' rilevata", spse.attivabile_senza_evento (1, hash_di_prova_senza_evento))
---				set_hash_di_prova_senza_evento(FALSE,FALSE,TRUE)
+--				set_hash_di_prova_senza_evento(FALSE,TRUE)
 --				assert("la quarta transizione attivabile non e' rilevata", spse.attivabile_senza_evento (4, hash_di_prova_senza_evento))
 ----				
 			end
 		end
 
-
 	t_target_senza_evento
 		do
 			set_hash_di_prova_senza_evento(TRUE,FALSE)
 			if attached stato_prova_senza_evento as spse then
-				if attached spse.target_senza_evento(hash_di_prova_senza_evento) as stse then
-					assert ("target scorretto", stse.id ~ "target_prova_senza_evento_1")
+				if attached spse.target_senza_evento (hash_di_prova_senza_evento)as stse then
+					assert("target scorretto", stse.id ~ "target_prova_senza_evento_1")
 				end
 			end
 			set_hash_di_prova_senza_evento(FALSE,FALSE)
 			if attached stato_prova_senza_evento as spse then
-				if attached spse.target_senza_evento(hash_di_prova_senza_evento) as stse then
-					assert ("target scorretto", stse = Void)
+				if attached spse.target_senza_evento (hash_di_prova_senza_evento)as stse then
+					assert("target scorretto", stse.id = Void)
 				end
-
 			end
 		end
+
 
 --	t_stato_get_events
 --		local

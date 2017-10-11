@@ -167,7 +167,7 @@ feature --routines
 
 	target_senza_evento (hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
 		require
-			numero_transizioni_abilitate_senza_evento (hash_delle_condizioni)=1
+			numero_transizioni_abilitate_senza_evento (hash_delle_condizioni)<2
 		local
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
