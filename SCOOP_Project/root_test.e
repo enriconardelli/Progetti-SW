@@ -20,7 +20,7 @@ feature {NONE} -- Initialization
 				test: detachable TEST_OBJECT[INTEGER]
 		do
 			create test.make (5)
-			print (test.value)
+			if attached test as t then print (t.value) end
 		end
 
 end
