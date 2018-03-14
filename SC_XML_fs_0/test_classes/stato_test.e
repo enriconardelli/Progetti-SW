@@ -94,11 +94,11 @@ feature -- Test routines
 			hash_di_prova.replace (b3, "cond3")
        end
 
-	set_hash_di_prova_senza_evento(b1,b2:BOOLEAN)
-       do
-       		hash_di_prova_senza_evento.replace (b1, "cond1")
-			hash_di_prova_senza_evento.replace (b2, "cond2")
-	   end
+--	set_hash_di_prova_senza_evento(b1,b2:BOOLEAN)
+--       do
+--       		hash_di_prova_senza_evento.replace (b1, "cond1")
+--			hash_di_prova_senza_evento.replace (b2, "cond2")
+--	   end
 
 	t_make_with_id
 		do
@@ -124,11 +124,11 @@ feature -- Test routines
 		do
 			if attached stato_prova as sp then
 				set_hash_di_prova(TRUE,FALSE,FALSE)
-				assert("la prima transizione attivabile non e' rilevata", sp.attivabile_con_evento (1, "evento1", hash_di_prova))
+				assert("la prima transizione attivabile non e' rilevata", sp.attivabile (1, "evento1", hash_di_prova))
 				set_hash_di_prova(TRUE,TRUE,FALSE)
-				assert("la seconda transizione attivabile non e' rilevata", sp.attivabile_con_evento (2, "evento2", hash_di_prova))
+				assert("la seconda transizione attivabile non e' rilevata", sp.attivabile (2, "evento2", hash_di_prova))
 				set_hash_di_prova(FALSE,FALSE,TRUE)
-				assert("la terza transizione attivabile non e' rilevata", sp.attivabile_con_evento (3, "evento1", hash_di_prova))
+				assert("la terza transizione attivabile non e' rilevata", sp.attivabile (3, "evento1", hash_di_prova))
 			end
 		end
 
@@ -136,7 +136,7 @@ feature -- Test routines
 		do
 			set_hash_di_prova(TRUE,TRUE,TRUE)
 			if attached stato_prova as sp then
-				assert("ci sono due transizioni abilitate non rilevate", sp.numero_transizioni_abilitate_con_evento ("evento1", hash_di_prova)=2)
+				assert("ci sono due transizioni abilitate non rilevate", sp.numero_transizioni_abilitate ("evento1", hash_di_prova)=2)
 			end
 		end
 
@@ -144,7 +144,7 @@ feature -- Test routines
 		do
 			set_hash_di_prova(TRUE,TRUE,FALSE)
 			if attached stato_prova as sp then
-					assert("unica transizione abilitata non rilevata", sp.numero_transizioni_abilitate_con_evento ("evento1", hash_di_prova)=1)
+					assert("unica transizione abilitata non rilevata", sp.numero_transizioni_abilitate ("evento1", hash_di_prova)=1)
 			end
 		end
 
@@ -152,28 +152,28 @@ feature -- Test routines
 		do
 			set_hash_di_prova(TRUE,TRUE,FALSE)
 			if attached stato_prova as sp then
-				if attached sp.target_con_evento("evento_1",hash_di_prova) as st then
+				if attached sp.target("evento_1",hash_di_prova) as st then
 					assert ("target scorretto", st.id ~ "target_prova_1")
 				end
-				if attached sp.target_con_evento("evento_2",hash_di_prova) as st then
+				if attached sp.target("evento_2",hash_di_prova) as st then
 					assert ("target scorretto", st.id ~ "target_prova_2")
 				end
 			end
 			set_hash_di_prova(FALSE,TRUE,TRUE)
 			if attached stato_prova as sp then
-				if attached sp.target_con_evento("evento_1",hash_di_prova) as st then
+				if attached sp.target("evento_1",hash_di_prova) as st then
 					assert ("target scorretto", st.id ~ "target_prova_3")
 				end
-				if attached sp.target_con_evento("evento_2",hash_di_prova) as st then
+				if attached sp.target("evento_2",hash_di_prova) as st then
 					assert ("target scorretto", st.id ~ "target_prova_2")
 				end
 			end
 			set_hash_di_prova(FALSE,FALSE,FALSE)
 			if attached stato_prova as sp then
-				if attached sp.target_con_evento("evento_1",hash_di_prova) as st then
+				if attached sp.target("evento_1",hash_di_prova) as st then
 					assert ("target scorretto", st = Void)
 				end
-				if attached sp.target_con_evento("evento_2",hash_di_prova) as st then
+				if attached sp.target("evento_2",hash_di_prova) as st then
 					assert ("target scorretto", st = Void)
 				end
 			end
@@ -181,45 +181,45 @@ feature -- Test routines
 
 -- Test per features senza evento
 
-	t_numero_transizioni_abilitate_senza_evento_non_determinismo
-		do
-			set_hash_di_prova_senza_evento(FALSE,TRUE)
-			if attached stato_prova_senza_evento as spse then
-				assert("ci sono due transizioni abilitate non rilevate", spse.numero_transizioni_abilitate_senza_evento (hash_di_prova_senza_evento)=2)
-			end
-		end
+--	t_numero_transizioni_abilitate_senza_evento_non_determinismo
+--		do
+--			set_hash_di_prova_senza_evento(FALSE,TRUE)
+--			if attached stato_prova_senza_evento as spse then
+--				assert("ci sono due transizioni abilitate non rilevate", spse.numero_transizioni_abilitate_senza_evento (hash_di_prova_senza_evento)=2)
+--			end
+--		end
 
-	t_numero_transizioni_abilitate_senza_evento_determinismo
-		do
-			set_hash_di_prova_senza_evento(TRUE,FALSE)
-			if attached stato_prova_senza_evento as spse then
-				assert("unica transizione abilitata non rilevata", spse.numero_transizioni_abilitate_senza_evento (hash_di_prova_senza_evento)=1)
-			end
-		end
+--	t_numero_transizioni_abilitate_senza_evento_determinismo
+--		do
+--			set_hash_di_prova_senza_evento(TRUE,FALSE)
+--			if attached stato_prova_senza_evento as spse then
+--				assert("unica transizione abilitata non rilevata", spse.numero_transizioni_abilitate_senza_evento (hash_di_prova_senza_evento)=1)
+--			end
+--		end
 
-	t_attivabile_senza_evento
-		do
-			if attached stato_prova_senza_evento as spse then
-				set_hash_di_prova_senza_evento(TRUE,FALSE)
-				assert("la prima transizione attivabile non e' rilevata", spse.attivabile_senza_evento (1, hash_di_prova_senza_evento))
-			end
-		end
+--	t_attivabile_senza_evento
+--		do
+--			if attached stato_prova_senza_evento as spse then
+--				set_hash_di_prova_senza_evento(TRUE,FALSE)
+--				assert("la prima transizione attivabile non e' rilevata", spse.attivabile_senza_evento (1, hash_di_prova_senza_evento))
+--			end
+--		end
 
-	t_target_senza_evento
-		do
-			set_hash_di_prova_senza_evento(TRUE,FALSE)
-			if attached stato_prova_senza_evento as spse then
-				if attached spse.target_senza_evento (hash_di_prova_senza_evento)as stse then
-					assert("target scorretto", stse.id ~ "target_prova_senza_evento_1")
-				end
-			end
-			set_hash_di_prova_senza_evento(FALSE,FALSE)
-			if attached stato_prova_senza_evento as spse then
-				if attached spse.target_senza_evento (hash_di_prova_senza_evento)as stse then
-					assert("target scorretto", stse.id = Void)
-				end
-			end
-		end
+--	t_target_senza_evento
+--		do
+--			set_hash_di_prova_senza_evento(TRUE,FALSE)
+--			if attached stato_prova_senza_evento as spse then
+--				if attached spse.target_senza_evento (hash_di_prova_senza_evento)as stse then
+--					assert("target scorretto", stse.id ~ "target_prova_senza_evento_1")
+--				end
+--			end
+--			set_hash_di_prova_senza_evento(FALSE,FALSE)
+--			if attached stato_prova_senza_evento as spse then
+--				if attached spse.target_senza_evento (hash_di_prova_senza_evento)as stse then
+--					assert("target scorretto", stse.id = Void)
+--				end
+--			end
+--		end
 
 
 --	t_stato_get_events
