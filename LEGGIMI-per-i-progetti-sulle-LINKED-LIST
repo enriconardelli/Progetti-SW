@@ -1,0 +1,12 @@
+
+
+                genericità    autotest     void safe
+linked_list         NO            SI           NO
+VS_linked_list      NO            SI           SI
+gen_linked_list     SI            SI           NO
+my_linked_list      SI            NO           SI (di Luca Biondo)
+
+gen_vs_linked_list deve aggiungere a my_linked list gli autotest
+
+(VS_ e gen_ sono le più "vecchie" in termini di numero di feature e organizzazione)
+
