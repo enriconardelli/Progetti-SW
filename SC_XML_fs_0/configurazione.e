@@ -80,7 +80,7 @@ feature --evoluzione SC
 			UNTIL
 				stato_corrente.finale or count_evento_corrente > eventi.count
 			LOOP
-				stabilizza_stato
+				-- stabilizza_stato
 				evento_corrente := eventi [count_evento_corrente]
 				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "   %N")
