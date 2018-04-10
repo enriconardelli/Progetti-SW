@@ -100,7 +100,8 @@ feature --evoluzione SC
 --				count_evento_corrente := count_evento_corrente + 1
 --				print ("evento corrente = " + evento_corrente + "   %N")
 --				nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
---				esegui_azioni (evento_corrente)
+--				transizione_corrente := stato.corrente.transizione_abilitata (evento_corrente, condizioni)
+--				esegui_azioni (transizione_corrente)
 --				if attached nuovo_stato as ns then
 --					set_stato_corrente (ns)
 --				end
