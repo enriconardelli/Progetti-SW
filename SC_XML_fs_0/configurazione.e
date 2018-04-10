@@ -16,6 +16,9 @@ feature --attributi
 
 	stato_iniziale: STATO
 
+	transizione_corrente: detachable TRANSIZIONE
+			-- la transizione che deve essere eseguita
+
 		--	eventi: ARRAY [STRING]
 		--			-- serve durante la lettura degli eventi dal file
 
@@ -29,9 +32,6 @@ feature --attributi
 
 	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
 			-- rappresenta sotto forma di un albero la SC letta dal file
-
-	transizione_corrente: TRANSIZIONE
-			-- la transizione che deve essere eseguita
 
 feature --creazione
 
@@ -80,7 +80,7 @@ feature --evoluzione SC
 			UNTIL
 				stato_corrente.finale or count_evento_corrente > eventi.count
 			LOOP
-				-- stabilizza_stato
+				stabilizza_stato
 				evento_corrente := eventi [count_evento_corrente]
 				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "   %N")
@@ -88,7 +88,7 @@ feature --evoluzione SC
 					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
 				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
 					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
-			--	esegui_azioni (evento_corrente)
+				esegui_azioni (evento_corrente)
 					if attached nuovo_stato as ns then
 						set_stato_corrente (ns)
 					end
