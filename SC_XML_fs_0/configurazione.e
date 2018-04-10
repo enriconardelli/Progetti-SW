@@ -88,7 +88,7 @@ feature --evoluzione SC
 					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
 				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
 					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
-					esegui_azioni (evento_corrente)
+					esegui_azioni (transizione_corrente)
 					if attached nuovo_stato as ns then
 						set_stato_corrente (ns)
 					end
