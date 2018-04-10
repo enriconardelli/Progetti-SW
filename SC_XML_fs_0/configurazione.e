@@ -30,6 +30,9 @@ feature --attributi
 	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
 			-- rappresenta sotto forma di un albero la SC letta dal file
 
+	transizione_corrente: TRANSIZIONE
+			-- la transizione che deve essere eseguita
+
 feature --creazione
 
 	make(nome_SC: STRING)
