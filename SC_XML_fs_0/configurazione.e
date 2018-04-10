@@ -88,7 +88,6 @@ feature --evoluzione SC
 					esegui_azioni (evento_corrente)
 					if attached nuovo_stato as ns then
 						set_stato_corrente (ns)
-						print ("%N %Nnuovo stato corrente = " + ns.id + "    %N")
 					end
 				else
 					print ("ERRORE!!! Non c'è determinismo!!!")
@@ -135,6 +134,7 @@ feature -- inizializzazione SC
 			stato_corrente_not_void: stato_corrente /= Void
 		do
 			stato_corrente := uno_stato
+			print ("%N %Nnuovo stato corrente = " + stato_corrente.id + "    %N")
 		end
 
 	istanzia_condizioni (lis_data: LIST [XML_ELEMENT])
