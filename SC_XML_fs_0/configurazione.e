@@ -97,7 +97,6 @@ feature --evoluzione SC
 			print ("%N%NHo finito nello stato = " + stato_corrente.id + "%N")
 		end
 
-
 	esegui_azioni (evento_corrente: STRING)
 		local
 			transizione: TRANSIZIONE
@@ -111,6 +110,21 @@ feature --evoluzione SC
 			loop
 			    transizione.azioni[i].action(condizioni)
 			    i:=i+1
+			end
+		end
+
+	stabilizza_stato
+		-- assicura che stato_stabile sia stabile eseguendo tutte le transizioni
+		local evento: detachable STRING
+		-- 	require  stato_corrente.numero_transizioni_abilitate(evento,condizioni) <2
+			do
+			if attached evento as e then
+				if attached stato_corrente.target(e,condizioni) as sc_tse then
+					set_stato_corrente (sc_tse)
+					if stato_corrente.numero_transizioni_abilitate(e,condizioni) = 1 then
+						stabilizza_stato
+					end
+				end
 			end
 		end
 
@@ -287,22 +301,5 @@ feature -- inizializzazione SC
 		--la configurazione iniziale in termini di stato e nomi-valori delle condizioni
 		--l'evoluzione della SC in termini di sequenza di quintuple:
 		--stato, evento, condizione, azione, target
-
-	stabilizza_stato
-		-- assicura che stato_stabile sia stabile eseguendo tutte le transizioni
-		local evento: detachable STRING
-
--- 	require  stato_corrente.numero_transizioni_abilitate(evento,condizioni) <2
-			do
-			if attached evento as e then
-				if attached stato_corrente.target(e,condizioni) as sc_tse then
-					set_stato_corrente (sc_tse)
-					if stato_corrente.numero_transizioni_abilitate(e,condizioni) = 1 then
-						stabilizza_stato
-					end
-				end
-			end
-		end
-
 
 end
