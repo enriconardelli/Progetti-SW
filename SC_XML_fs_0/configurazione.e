@@ -115,15 +115,15 @@ feature --evoluzione SC
 			transizione: TRANSIZIONE
 		    i: INTEGER
 		do
-			transizione := stato_corrente.get_transition (evento_corrente)
-			from
-				i := 1
-			until
-				i = transizione.azioni.count + 1
-			loop
-			    transizione.azioni[i].action(condizioni)
-			    i:=i+1
-			end
+--			transizione := stato_corrente.get_transition (evento_corrente)
+--			from
+--				i := 1
+--			until
+--				i = transizione.azioni.count + 1
+--			loop
+--			    transizione.azioni[i].action(condizioni)
+--			    i:=i+1
+--			end
 		end
 
 	stabilizza_stato
