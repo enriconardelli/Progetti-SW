@@ -90,6 +90,12 @@ feature --routines
 			Result := numero_di_transizioni_attivate_da_evento_corrente
 		end
 
+	transizione_abilitata (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
+	do
+
+	end
+
+
 	attivabile (index_count: INTEGER; evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
 		do
 			if attached transizioni [index_count].evento as e then
