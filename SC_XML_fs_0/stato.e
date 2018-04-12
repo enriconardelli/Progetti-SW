@@ -118,8 +118,8 @@ feature --routines
 		end
 
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
-		-- ritorna Void se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
-		-- ritorna lo stato a cui porta la transizione di indice massimoattivabile nella configurazione corrente con evento_corrente
+		-- ritorna stato_corrente se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
+		-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con evento_corrente
 		require
 			numero_transizioni_abilitate (evento_corrente,hash_delle_condizioni)<2
 		local
@@ -145,7 +145,10 @@ feature --routines
 				end
 				index_count := index_count + 1
 			end
-			result := target_della_transizione
+			if target_della_transizione = Void then
+				target_della_transizione := Current
+			end
+			Result := target_della_transizione
 		end
 
 
