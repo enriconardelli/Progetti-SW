@@ -149,7 +149,7 @@ feature --routines
 
 feature --cose a parte
 
-	get_transition (evento_corrente: STRING): TRANSIZIONE
+	get_transition (evento_corrente: STRING): detachable TRANSIZIONE
 		local
 			index_count: INTEGER
 			index: INTEGER
@@ -166,7 +166,9 @@ feature --cose a parte
 				end
 				index_count := index_count + 1
 			end
-			Result := transizioni [index]
+			if index /= 0 then
+				Result := transizioni [index]
+			end
 		end
 
 end
