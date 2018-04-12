@@ -163,10 +163,20 @@ feature -- Test routines
 
 	t_abilitata_con_evento_unica
 		do
+			if attached stato_prova as sp then
+				set_hash_di_prova(TRUE, TRUE, TRUE)
+				assert ("ERRORE: transizione abilitata con evento unica non rilevata", sp.transizione_abilitata ("evento2", hash_di_prova) = transizione_prova_2)
+			end
 		end
 
 	t_abilitata_con_evento_molteplici
 		do
+			set_hash_di_prova (TRUE, FALSE, TRUE)
+			if attached stato_prova as sp then
+				if attached sp.transizione_abilitata ("evento_1", hash_di_prova) as spta then
+					assert ("ERRORE: transizione abilitata con evento molteplici", false)
+				end
+			end
 		end
 
 	t_attivabile_con_evento
