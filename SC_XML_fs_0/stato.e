@@ -132,8 +132,8 @@ feature --routines
 			until
 				index_count = transizioni.upper + 1 or target_della_transizione /= Void
 			loop
-				if attached transizioni [index_count].evento as ang then
-					if ang.is_equal (evento_corrente) then
+				if attached transizioni [index_count].evento as te then
+					if te.is_equal (evento_corrente) then
 						if attached transizioni [index_count].condizione as cond then
 							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
 								if cond_in_hash = TRUE then
