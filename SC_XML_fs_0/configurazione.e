@@ -90,9 +90,9 @@ feature --evoluzione SC
 				nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
 				transizione_corrente := stato_corrente.transizione_abilitata (evento_corrente, condizioni)
 				esegui_azioni
-					if attached nuovo_stato as ns then
-						set_stato_corrente (ns)
-					end
+				if attached nuovo_stato as ns then
+					set_stato_corrente (ns)
+				end
 --				else
 --					print ("ERRORE!!! Non c'è determinismo!!!")
 --				end
