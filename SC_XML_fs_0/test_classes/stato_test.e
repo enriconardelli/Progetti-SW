@@ -149,7 +149,9 @@ feature -- Test routines
 
 	t_abilitata_con_evento_non_esistente
 		do
-			assert ("ERRORE: transizione abilitata con evento non_esistente", false)
+			if attached stato_prova as sp then
+				assert ("ERRORE: transizione abilitata con evento non_esistente", sp.transizione_abilitata ("non_esiste", hash_di_prova) = Void)
+			end
 		end
 
 	t_abilitata_con_evento_vuoto
