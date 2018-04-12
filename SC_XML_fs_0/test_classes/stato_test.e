@@ -149,6 +149,7 @@ feature -- Test routines
 
 	t_abilitata_con_evento_non_esistente
 		do
+			assert ("ERRORE: transizione abilitata con evento non_esistente", false)
 		end
 
 	t_abilitata_con_evento_vuoto
