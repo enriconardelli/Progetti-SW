@@ -154,13 +154,6 @@ feature -- Test routines
 			end
 		end
 
-	t_abilitata_con_evento_vuoto
-		do
-			if attached stato_prova as sp then
-				assert ("ERRORE: transizione abilitata con evento vuoto", sp.transizione_abilitata ("vuoto", hash_di_prova) = Void)
-			end
-		end
-
 	t_abilitata_con_evento_unica
 		do
 			if attached stato_prova as sp then

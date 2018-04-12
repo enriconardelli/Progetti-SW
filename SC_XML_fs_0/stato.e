@@ -91,6 +91,8 @@ feature --routines
 		end
 
 	transizione_abilitata (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
+	require
+		evento_non_vuoto: evento_corrente /= void
 	do
 
 	end
