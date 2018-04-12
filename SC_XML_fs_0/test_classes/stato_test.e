@@ -174,7 +174,7 @@ feature -- Test routines
 			set_hash_di_prova (TRUE, FALSE, TRUE)
 			if attached stato_prova as sp then
 				if attached sp.transizione_abilitata ("evento_1", hash_di_prova) as spta then
-					assert ("ERRORE: transizione abilitata con evento molteplici", false)
+					assert ("ERRORE: transizione abilitata con evento molteplici non rivela quella corretta", spta = transizione_prova_1)
 				end
 			end
 		end
