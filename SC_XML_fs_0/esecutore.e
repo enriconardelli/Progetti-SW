@@ -15,8 +15,9 @@ feature -- Attributi
 	state_chart: CONFIGURAZIONE
 			-- rappresenta la SC durante la sua esecuzione
 
-	eventi_esterni: ARRAY [STRING]
+	eventi_esterni: ARRAY [HASH_TABLE [STRING, STRING]]
 			-- memorizza gli eventi letti dal file
+			-- l'array rappresenta gli istanti mentre ogni hash_table l'insieme degli eventi che occorrono nell'istante specifico
 
 
 
@@ -55,17 +56,17 @@ feature
 			file: PLAIN_TEXT_FILE
 			i: INTEGER
 		do
-			create file.make_open_read (nome_file_eventi)
-			from
-				i := 1
-			until
-				file.off
-			loop
-				file.read_line
-				eventi_esterni.force (file.last_string.twin, i)
-				i := i + 1
-			end
-			file.close
+--			create file.make_open_read (nome_file_eventi)
+--			from
+--				i := 1
+--			until
+--				file.off
+--			loop
+--				file.read_line
+--				eventi_esterni.force (file.last_string.twin, i)
+--				i := i + 1
+--			end
+--			file.close
 		end
 
 	verifica_eventi_esterni: BOOLEAN
@@ -77,40 +78,40 @@ feature
 			i, j: INTEGER
 			evento_assente: BOOLEAN
 		do
-			create eventi_nella_SC.make (0)
-			-- inserisce tutti gli eventi definiti nella SC in eventi_nella_SC
-			from
-				state_chart.stati.start
-			until
-				state_chart.stati.after
-			loop
-				if attached state_chart.stati.item_for_iteration.transizioni as tr then
-					from
-						j := 1
-					until
-						j = tr.count + 1
-					loop
-						if attached tr [j].evento as e then
-							eventi_nella_SC.put (True, e)
-						end
-						j := j + 1
-					end
-				end
-				state_chart.stati.forth
-			end
-			-- verifica che ogni evento esterno sia presente nella SC
-			from
-				i := 1
-			until
-				i = eventi_esterni.count + 1
-			loop
-				if not eventi_nella_SC.has (eventi_esterni [i]) then
-					print ("%N ATTENZIONE!! L'evento " + eventi_esterni [i] + " non viene utilizzato!")
-					evento_assente := True
-				end
-				i := i + 1
-			end
-			Result := not evento_assente
+--			create eventi_nella_SC.make (0)
+--			-- inserisce tutti gli eventi definiti nella SC in eventi_nella_SC
+--			from
+--				state_chart.stati.start
+--			until
+--				state_chart.stati.after
+--			loop
+--				if attached state_chart.stati.item_for_iteration.transizioni as tr then
+--					from
+--						j := 1
+--					until
+--						j = tr.count + 1
+--					loop
+--						if attached tr [j].evento as e then
+--							eventi_nella_SC.put (True, e)
+--						end
+--						j := j + 1
+--					end
+--				end
+--				state_chart.stati.forth
+--			end
+--			-- verifica che ogni evento esterno sia presente nella SC
+--			from
+--				i := 1
+--			until
+--				i = eventi_esterni.count + 1
+--			loop
+--				if not eventi_nella_SC.has (eventi_esterni [i]) then
+--					print ("%N ATTENZIONE!! L'evento " + eventi_esterni [i] + " non viene utilizzato!")
+--					evento_assente := True
+--				end
+--				i := i + 1
+--			end
+--			Result := not evento_assente
 		end
 
 end

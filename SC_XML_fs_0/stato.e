@@ -67,7 +67,6 @@ feature --routines
 			transizioni.force (tr, transizioni.count + 1)
 		end
 
-
 	numero_transizioni_abilitate (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): INTEGER
 			-- ritorna il numero di transizioni attivabili con evento_corrente nella configurazione corrente
 		local
@@ -80,23 +79,42 @@ feature --routines
 			until
 				index_count = transizioni.upper + 1 or numero_di_transizioni_attivate_da_evento_corrente > 1
 			loop
-				if attached evento_corrente as ec then if attivabile (index_count, ec, hash_delle_condizioni) then
-					numero_di_transizioni_attivate_da_evento_corrente := numero_di_transizioni_attivate_da_evento_corrente + 1
+				if attached evento_corrente as ec then
+					if attivabile (index_count, ec, hash_delle_condizioni) then
+						numero_di_transizioni_attivate_da_evento_corrente := numero_di_transizioni_attivate_da_evento_corrente + 1
+					end
 				end
-			end
 				index_count := index_count + 1
 			end
-
 			Result := numero_di_transizioni_attivate_da_evento_corrente
 		end
 
-	transizione_abilitata (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
-	require
-		evento_non_vuoto: evento_corrente /= void
-	do
-
-	end
-
+	transizione_abilitata (evento_corrente: HASH_TABLE [STRING, STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
+		require
+			evento_non_vuoto: evento_corrente /= void
+		local
+			transizione_target: detachable TRANSIZIONE
+			index_count: INTEGER
+		do
+			from
+				index_count := transizioni.lower
+			until
+				index_count = transizioni.upper or transizione_target /= VOID
+			loop
+				if attached transizioni [index_count].evento as te then
+					if evento_corrente.has (te) then
+						if attached transizioni [index_count].condizione as cond then
+							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
+								if cond_in_hash = TRUE then
+									transizione_target := transizioni [index_count]
+								end
+							end
+						end
+					end
+				end
+			end
+			result := transizione_target
+		end
 
 	attivabile (index_count: INTEGER; evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
 		do
@@ -110,18 +128,18 @@ feature --routines
 				end
 			else
 				if attached transizioni [index_count].condizione as cond then
-						if hash_delle_condizioni.item (cond) = True then
-							Result := True
-						end
+					if hash_delle_condizioni.item (cond) = True then
+						Result := True
+					end
 				end
 			end
 		end
 
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
-		-- ritorna stato_corrente se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
-		-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con evento_corrente
+			-- ritorna stato_corrente se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
+			-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con evento_corrente
 		require
-			numero_transizioni_abilitate (evento_corrente,hash_delle_condizioni)<2
+			numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) < 2
 		local
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
@@ -150,7 +168,6 @@ feature --routines
 			end
 			Result := target_della_transizione
 		end
-
 
 feature --cose a parte
 
