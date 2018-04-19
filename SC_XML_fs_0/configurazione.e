@@ -67,7 +67,7 @@ feature --evoluzione SC
 			end
 		end
 
-	evolvi_SC (eventi: ARRAY [STRING])
+	evolvi_SC (eventi:  ARRAY [HASH_TABLE [STRING, STRING]])
 		local
 			count_evento_corrente: INTEGER
 			evento_corrente: STRING
@@ -81,18 +81,26 @@ feature --evoluzione SC
 				stato_corrente.finale or count_evento_corrente > eventi.count
 			LOOP
 --				stabilizza_stato
-				evento_corrente := eventi [count_evento_corrente]
-				count_evento_corrente := count_evento_corrente + 1
-				print ("evento corrente = " + evento_corrente + "   %N")
---				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
---					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
---				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
-				nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
-				transizione_corrente := stato_corrente.transizione_abilitata (evento_corrente, condizioni)
-				esegui_azioni(transizione_corrente)
-				if attached nuovo_stato as ns then
-					set_stato_corrente (ns)
+				if attached transizione_corrente as tc then
+					if attached tc.evento as et then
+						if eventi[count_evento_corrente].has(et) then
+							if attached eventi[count_evento_corrente].item(et) as evento_in_hash then
+								evento_corrente := evento_in_hash
+								print ("evento corrente = " + evento_corrente + "   %N")
+								count_evento_corrente := count_evento_corrente + 1
+				--				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
+				--					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
+				--				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
+								nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
+								transizione_corrente := stato_corrente.transizione_abilitata (eventi[count_evento_corrente], condizioni)
+								esegui_azioni(tc)
+								if attached nuovo_stato as ns then
+									set_stato_corrente (ns)
+							end
+						end
+					end
 				end
+			end
 --				else
 --					print ("ERRORE!!! Non c'è determinismo!!!")
 --				end
