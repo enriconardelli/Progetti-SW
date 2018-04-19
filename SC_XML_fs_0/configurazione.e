@@ -89,7 +89,7 @@ feature --evoluzione SC
 --				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
 				nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
 				transizione_corrente := stato_corrente.transizione_abilitata (evento_corrente, condizioni)
-				esegui_azioni
+				esegui_azioni(transizione_corrente)
 				if attached nuovo_stato as ns then
 					set_stato_corrente (ns)
 				end
@@ -110,20 +110,18 @@ feature --evoluzione SC
 			print ("%N%NHo finito nello stato = " + stato_corrente.id + "%N")
 		end
 
-	esegui_azioni
+	esegui_azioni (transizione: TRANSIZIONE)
 		local
-			transizione: TRANSIZIONE
 		    i: INTEGER
 		do
---			transizione := stato_corrente.get_transition (evento_corrente)
---			from
---				i := 1
---			until
---				i = transizione.azioni.count + 1
---			loop
---			    transizione.azioni[i].action(condizioni)
---			    i:=i+1
---			end
+			from
+				i := 1
+			until
+				i = transizione.azioni.count + 1
+			loop
+			    transizione.azioni[i].action(condizioni)
+			    i:=i+1
+			end
 		end
 
 	stabilizza_stato
