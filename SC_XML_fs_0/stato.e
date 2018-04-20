@@ -112,6 +112,7 @@ feature --routines
 						end
 					end
 				end
+				index_count := index_count + 1
 			end
 			result := transizione_target
 		end
@@ -135,11 +136,11 @@ feature --routines
 			end
 		end
 
-	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
+	target (evento_corrente: HASH_TABLE[STRING, STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
 			-- ritorna stato_corrente se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
 			-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con evento_corrente
 		require
-			numero_transizioni_abilitate (evento_corrente, hash_delle_condizioni) < 2
+			evento_non_vuoto: evento_corrente /= void
 		local
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
@@ -150,8 +151,8 @@ feature --routines
 			until
 				index_count = transizioni.upper + 1 or target_della_transizione /= Void
 			loop
-				if attached transizioni [index_count].evento as te then
-					if te.is_equal (evento_corrente) then
+			if attached transizioni [index_count].evento as te then
+					if evento_corrente.has (te) then
 						if attached transizioni [index_count].condizione as cond then
 							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
 								if cond_in_hash = TRUE then
