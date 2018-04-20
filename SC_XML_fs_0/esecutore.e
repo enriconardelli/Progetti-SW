@@ -55,18 +55,23 @@ feature
 		local
 			file: PLAIN_TEXT_FILE
 			i: INTEGER
+			events_read: LIST[STRING]
+			istante: HASH_TABLE [STRING, STRING]
 		do
---			create file.make_open_read (nome_file_eventi)
---			from
---				i := 1
---			until
---				file.off
---			loop
---				file.read_line
---				eventi_esterni.force (file.last_string.twin, i)
---				i := i + 1
---			end
---			file.close
+			create file.make_open_read (nome_file_eventi)
+			from
+				i := 1
+			until
+				file.off
+			loop
+				file.read_line
+				events_read := file.last_string.twin.split (' ')
+				create istante.make (0)
+				across events_read as er loop istante.put (er.item, er.item)  end
+				eventi_esterni.force (istante, i)
+				i := i + 1
+			end
+			file.close
 		end
 
 	verifica_eventi_esterni: BOOLEAN

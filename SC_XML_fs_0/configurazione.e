@@ -114,14 +114,14 @@ feature --evoluzione SC
 			evento: detachable STRING
 			-- 	require  stato_corrente.numero_transizioni_abilitate(evento,condizioni) <2
 		do
-			if attached evento as e then
-				if attached stato_corrente.target (e, condizioni) as sc_tse then
-					set_stato_corrente (sc_tse)
-					if stato_corrente.numero_transizioni_abilitate (e, condizioni) = 1 then
-						stabilizza_stato
-					end
-				end
-			end
+--			if attached evento as e then
+--				if attached stato_corrente.target (e, condizioni) as sc_tse then
+--					set_stato_corrente (sc_tse)
+--					if stato_corrente.numero_transizioni_abilitate (e, condizioni) = 1 then
+--						stabilizza_stato
+--					end
+--				end
+--			end
 		end
 
 feature -- inizializzazione SC
