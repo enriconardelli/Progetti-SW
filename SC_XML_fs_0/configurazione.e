@@ -69,7 +69,7 @@ feature --evoluzione SC
 
 	evolvi_SC (istanti: ARRAY [HASH_TABLE [STRING, STRING]])
 		local
-			count_evento_corrente: INTEGER
+			count_istante_corrente: INTEGER
 			istante_corrente: HASH_TABLE [STRING, STRING]
 			nuovo_stato: detachable STATO
 		do
@@ -85,11 +85,11 @@ feature --evoluzione SC
 				if attached istanti [count_istante_corrente] as istante then
 					istante_corrente := istante
 					print ("istante corrente = ")
-					print (count_evento_corrente)
+					print (count_istante_corrente)
 					print ("   %N")
 					transizione_corrente := stato_corrente.transizione_abilitata (istante_corrente, condizioni)
 					stato_corrente := stato_corrente.target (istante_corrente, condizioni)
-					count_evento_corrente := count_evento_corrente + 1
+					count_istante_corrente := count_istante_corrente + 1
 						--				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
 						--					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
 						--				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
