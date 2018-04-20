@@ -89,9 +89,7 @@ feature --routines
 			Result := numero_di_transizioni_attivate_da_evento_corrente
 		end
 
-	transizione_abilitata (evento_corrente: HASH_TABLE [STRING, STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
-		require
-			evento_non_vuoto: evento_corrente /= void
+	transizione_abilitata (istante_corrente: HASH_TABLE [STRING, STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
 		local
 			transizione_target: detachable TRANSIZIONE
 			index_count: INTEGER
@@ -102,7 +100,7 @@ feature --routines
 				index_count = transizioni.upper or transizione_target /= VOID
 			loop
 				if attached transizioni [index_count].evento as te then
-					if evento_corrente.has (te) then
+					if istante_corrente.has (te) then
 						if attached transizioni [index_count].condizione as cond then
 							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
 								if cond_in_hash = TRUE then
