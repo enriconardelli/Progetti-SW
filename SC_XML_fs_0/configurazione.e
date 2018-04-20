@@ -35,7 +35,7 @@ feature --attributi
 
 feature --creazione
 
-	make(nome_SC: STRING)
+	make (nome_SC: STRING)
 		do
 			create stato_iniziale.make_empty
 			stato_iniziale.set_final
@@ -67,80 +67,78 @@ feature --evoluzione SC
 			end
 		end
 
-	evolvi_SC (eventi:  ARRAY [HASH_TABLE [STRING, STRING]])
+	evolvi_SC (istanti: ARRAY [HASH_TABLE [STRING, STRING]])
 		local
 			count_evento_corrente: INTEGER
-			evento_corrente: STRING
+			istante_corrente: HASH_TABLE [STRING, STRING]
 			nuovo_stato: detachable STATO
 		do
 			print ("%Nentrato in evolvi_SC:  %N %N")
 			print ("stato iniziale:  " + stato_corrente.id + "       %N")
 			FROM
-				count_evento_corrente := 1
+				count_istante_corrente := 1
 			UNTIL
-				stato_corrente.finale or count_evento_corrente > eventi.count
+				stato_corrente.finale or count_istante_corrente > istanti.count
 			LOOP
---				stabilizza_stato
-				if attached transizione_corrente as tc then
-					if attached tc.evento as et then
-						if eventi[count_evento_corrente].has(et) then
-							if attached eventi[count_evento_corrente].item(et) as evento_in_hash then
-								evento_corrente := evento_in_hash
-								print ("evento corrente = " + evento_corrente + "   %N")
-								count_evento_corrente := count_evento_corrente + 1
-				--				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
-				--					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
-				--				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
-								nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
-								transizione_corrente := stato_corrente.transizione_abilitata (eventi[count_evento_corrente], condizioni)
-								esegui_azioni(tc)
-								if attached nuovo_stato as ns then
-									set_stato_corrente (ns)
-							end
-						end
+					--				stabilizza_stato
+
+				if attached istanti [count_istante_corrente] as istante then
+					istante_corrente := istante
+					print ("istante corrente = ")
+					print (count_evento_corrente)
+					print ("   %N")
+					transizione_corrente := stato_corrente.transizione_abilitata (istante_corrente, condizioni)
+					stato_corrente := stato_corrente.target (istante_corrente, condizioni)
+					count_evento_corrente := count_evento_corrente + 1
+						--				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
+						--					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
+						--				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
+					if attached transizione_corrente as tc then
+						esegui_azioni (tc)
 					end
 				end
+
+					--				else
+					--					print ("ERRORE!!! Non c'è determinismo!!!")
+					--				end
+					--				VERSIONE SEMPLIFICATA
+					--				evento_corrente := eventi [count_evento_corrente]
+					--				count_evento_corrente := count_evento_corrente + 1
+					--				print ("evento corrente = " + evento_corrente + "   %N")
+					--				nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
+					--				transizione_corrente := stato_corrente.transizione_abilitata (evento_corrente, condizioni)
+					--				esegui_azioni (transizione_corrente)
+					--				if attached nuovo_stato as ns then
+					--					set_stato_corrente (ns)
+					--				end
 			end
---				else
---					print ("ERRORE!!! Non c'è determinismo!!!")
---				end
---				VERSIONE SEMPLIFICATA
---				evento_corrente := eventi [count_evento_corrente]
---				count_evento_corrente := count_evento_corrente + 1
---				print ("evento corrente = " + evento_corrente + "   %N")
---				nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
---				transizione_corrente := stato_corrente.transizione_abilitata (evento_corrente, condizioni)
---				esegui_azioni (transizione_corrente)
---				if attached nuovo_stato as ns then
---					set_stato_corrente (ns)
---				end
-			end
-			print ("%N%NHo finito nello stato = " + stato_corrente.id + "%N")
+			print ("%N%NHo terminato l'elaborazione degli eventi nello stato = " + stato_corrente.id + "%N")
 		end
 
 	esegui_azioni (transizione: TRANSIZIONE)
 		local
-		    i: INTEGER
+			i: INTEGER
 		do
 			from
 				i := 1
 			until
 				i = transizione.azioni.count + 1
 			loop
-			    transizione.azioni[i].action(condizioni)
-			    i:=i+1
+				transizione.azioni [i].action (condizioni)
+				i := i + 1
 			end
 		end
 
 	stabilizza_stato
-		-- assicura che stato_stabile sia stabile eseguendo tutte le transizioni
-		local evento: detachable STRING
-		-- 	require  stato_corrente.numero_transizioni_abilitate(evento,condizioni) <2
-			do
+			-- assicura che stato_stabile sia stabile eseguendo tutte le transizioni
+		local
+			evento: detachable STRING
+			-- 	require  stato_corrente.numero_transizioni_abilitate(evento,condizioni) <2
+		do
 			if attached evento as e then
-				if attached stato_corrente.target(e,condizioni) as sc_tse then
+				if attached stato_corrente.target (e, condizioni) as sc_tse then
 					set_stato_corrente (sc_tse)
-					if stato_corrente.numero_transizioni_abilitate(e,condizioni) = 1 then
+					if stato_corrente.numero_transizioni_abilitate (e, condizioni) = 1 then
 						stabilizza_stato
 					end
 				end
