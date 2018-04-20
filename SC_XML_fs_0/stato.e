@@ -93,23 +93,30 @@ feature --routines
 		local
 			transizione_target: detachable TRANSIZIONE
 			index_count: INTEGER
+			transizione_corrente: detachable TRANSIZIONE
 		do
 			from
 				index_count := transizioni.lower
 			until
 				index_count = transizioni.upper or transizione_target /= VOID
 			loop
-				if attached transizioni [index_count].evento as te then
-					if istante_corrente.has (te) then
-						if attached transizioni [index_count].condizione as cond then
-							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
-								if cond_in_hash = TRUE then
-									transizione_target := transizioni [index_count]
-								end
-							end
-						end
-					end
+				transizione_corente:=transizioni [index_count]
+				evento_abilitato:=transizione_corrente.check_evento(istante_corrente)
+				condizione_abilitato:=transizione_corrente.check_condizione(istante_corrente, hash_delle_condizioni)
+				if evento_abilitato and condizione_abilitata then
+					transizione_target := transizioni [index_count]
 				end
+--				if attached transizioni [index_count].evento as te then
+--					if istante_corrente.has (te) then
+--						if attached transizioni [index_count].condizione as cond then
+--							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
+--								if cond_in_hash = TRUE then
+--									transizione_target := transizioni [index_count]
+--								end
+--							end
+--						end
+--					end
+--				end
 				index_count := index_count + 1
 			end
 			result := transizione_target
