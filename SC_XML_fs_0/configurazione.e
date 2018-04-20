@@ -1,8 +1,8 @@
 note
 	description: "La classe che rappresenta la statechart"
-	author: "Daniele Fakhoury & Eloisa Scarsella"
-	date: "$Date$"
-	revision: "$Revision $"
+	author: "Daniele Fakhoury & Eloisa Scarsella & Luca Biondo & Simone Longhi"
+	date: "20 aprile 2018"
+	revision: "2"
 
 class
 	CONFIGURAZIONE
