@@ -70,7 +70,6 @@ feature --evoluzione SC
 	evolvi_SC (istanti: ARRAY [HASH_TABLE [STRING, STRING]])
 		local
 			count_istante_corrente: INTEGER
-			istante_corrente: HASH_TABLE [STRING, STRING]
 			nuovo_stato: detachable STATO
 		do
 			print ("%Nentrato in evolvi_SC:  %N %N")
@@ -80,37 +79,17 @@ feature --evoluzione SC
 			UNTIL
 				stato_corrente.finale or count_istante_corrente > istanti.count
 			LOOP
-					--				stabilizza_stato
-
-				if attached istanti [count_istante_corrente] as istante then
-					istante_corrente := istante
-					print ("istante corrente = ")
+				if attached istanti [count_istante_corrente] as istante_corrente then
+					print ("Stampa indice istante corrente = ")
 					print (count_istante_corrente)
 					print ("   %N")
 					transizione_corrente := stato_corrente.transizione_abilitata (istante_corrente, condizioni)
 					stato_corrente := stato_corrente.target (istante_corrente, condizioni)
 					count_istante_corrente := count_istante_corrente + 1
-						--				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
-						--					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
-						--				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
 					if attached transizione_corrente as tc then
 						esegui_azioni (tc)
 					end
 				end
-
-					--				else
-					--					print ("ERRORE!!! Non c'è determinismo!!!")
-					--				end
-					--				VERSIONE SEMPLIFICATA
-					--				evento_corrente := eventi [count_evento_corrente]
-					--				count_evento_corrente := count_evento_corrente + 1
-					--				print ("evento corrente = " + evento_corrente + "   %N")
-					--				nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
-					--				transizione_corrente := stato_corrente.transizione_abilitata (evento_corrente, condizioni)
-					--				esegui_azioni (transizione_corrente)
-					--				if attached nuovo_stato as ns then
-					--					set_stato_corrente (ns)
-					--				end
 			end
 			print ("%N%NHo terminato l'elaborazione degli eventi nello stato = " + stato_corrente.id + "%N")
 		end
