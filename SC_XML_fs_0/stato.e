@@ -100,7 +100,7 @@ feature --routines
 			until
 				index_count = transizioni.upper or transizione_target /= VOID
 			loop
-				transizione_corente:=transizioni [index_count]
+				transizione_corrente:=transizioni [index_count]
 				evento_abilitato:=transizione_corrente.check_evento(istante_corrente)
 				condizione_abilitato:=transizione_corrente.check_condizione(istante_corrente, hash_delle_condizioni)
 				if evento_abilitato and condizione_abilitata then

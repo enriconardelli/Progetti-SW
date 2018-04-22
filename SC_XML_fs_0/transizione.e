@@ -52,4 +52,22 @@ feature --setter
 			target := uno_stato
 		end
 
+feature --check
+
+	check_evento (istante: HASH_TABLE [STRING, STRING]): BOOLEAN
+		do
+			if attached evento as e then
+				if istante.has (e) then
+					result:= TRUE
+				end
+			else
+				result:= TRUE
+			end
+		end
+
+	check_transizione (): BOOLEAN
+	do
+
+	end
+
 end
