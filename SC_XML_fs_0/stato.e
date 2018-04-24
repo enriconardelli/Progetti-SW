@@ -147,7 +147,7 @@ feature --routines
 			-- ritorna stato_corrente se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
 			-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con evento_corrente
 		local
-			target_della_transizione: detachable STATO
+			target_della_transizione: STATO
 			index_count: INTEGER
 			transizione_corrente: detachable TRANSIZIONE
 			evento_abilitato: BOOLEAN
@@ -167,7 +167,12 @@ feature --routines
 				end
 				index_count := index_count + 1
 			end
-			result := target_della_transizione
+			if attached target_della_transizione as tt then
+				result := target_della_transizione
+			else
+				result := current
+			end
+
 		end
 
 feature --cose a parte
