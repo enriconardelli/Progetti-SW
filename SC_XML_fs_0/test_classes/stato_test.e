@@ -130,9 +130,10 @@ feature -- Test routines
 
 	set_hash_di_prova_evento (b1, b2, b3: STRING)
 		do
-			hash_di_prova.replace (b1, "evento1")
-			hash_di_prova.replace (b2, "evento2")
-			hash_di_prova.replace (b3, "evento3")
+			hash_di_prova_evento.wipe_out
+			hash_di_prova_evento.put (b1, b1)
+			hash_di_prova_evento.put (b2, b2)
+			hash_di_prova_evento.put (b3, b3)
 		end
 
 		--	set_hash_di_prova_senza_evento(b1,b2:BOOLEAN)
@@ -163,24 +164,27 @@ feature -- Test routines
 
 	t_abilitata_con_evento_non_esistente
 		do
+			set_hash_di_prova_evento ("non", "non", "non")
 			if attached stato_prova as sp then
-				assert ("ERRORE: transizione abilitata con evento non_esistente", sp.transizione_abilitata ("non_esiste", hash_di_prova) = Void)
+				assert ("ERRORE: transizione abilitata con evento non_esistente", sp.transizione_abilitata (hash_di_prova_evento, hash_di_prova) = Void)
 			end
 		end
 
 	t_abilitata_con_evento_unica
 		do
 			set_hash_di_prova (TRUE, TRUE, TRUE)
+			set_hash_di_prova_evento ("non", "evento2", "non")
 			if attached stato_prova as sp then
-				assert ("ERRORE: transizione abilitata con evento unica non rilevata", sp.transizione_abilitata ("evento2", hash_di_prova) = transizione_prova_2)
+				assert ("ERRORE: transizione abilitata con evento unica non rilevata", sp.transizione_abilitata (hash_di_prova_evento, hash_di_prova) = transizione_prova_2)
 			end
 		end
 
 	t_abilitata_con_evento_molteplici
 		do
 			set_hash_di_prova (TRUE, FALSE, TRUE)
+			set_hash_di_prova_evento ("evento1", "evento2", "evento3")
 			if attached stato_prova as sp then
-				assert ("ERRORE: transizione abilitata con evento molteplici non rivela quella corretta", sp.transizione_abilitata ("evento_1", hash_di_prova) = transizione_prova_1)
+				assert ("ERRORE: transizione abilitata con evento molteplici non rivela quella corretta", sp.transizione_abilitata (hash_di_prova_evento, hash_di_prova) = transizione_prova_1)
 			end
 		end
 
