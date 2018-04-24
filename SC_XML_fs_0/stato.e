@@ -94,6 +94,8 @@ feature --routines
 			transizione_target: detachable TRANSIZIONE
 			index_count: INTEGER
 			transizione_corrente: detachable TRANSIZIONE
+			evento_abilitato: BOOLEAN
+			condizione_abilitata: BOOLEAN
 		do
 			from
 				index_count := transizioni.lower
@@ -102,7 +104,7 @@ feature --routines
 			loop
 				transizione_corrente:=transizioni [index_count]
 				evento_abilitato:=transizione_corrente.check_evento(istante_corrente)
-				condizione_abilitato:=transizione_corrente.check_condizione(istante_corrente, hash_delle_condizioni)
+				condizione_abilitata:=transizione_corrente.check_condizione(hash_delle_condizioni)
 				if evento_abilitato and condizione_abilitata then
 					transizione_target := transizioni [index_count]
 				end
