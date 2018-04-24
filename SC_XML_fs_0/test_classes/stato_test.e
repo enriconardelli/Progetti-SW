@@ -31,6 +31,8 @@ feature {NONE} -- Supporto
 
 	hash_di_prova, hash_di_prova_senza_evento: HASH_TABLE [BOOLEAN, STRING]
 
+	hash_di_prova_evento: HASH_TABLE [STRING, STRING]
+
 feature {NONE} -- Events
 
 	on_prepare
@@ -110,6 +112,11 @@ feature {NONE} -- Events
 			create hash_di_prova_senza_evento.make (2)
 			hash_di_prova_senza_evento.put (False, "cond1")
 			hash_di_prova_senza_evento.put (False, "cond2")
+
+			create hash_di_prova_evento.make (3)
+			hash_di_prova_evento.put ("evento1", "evento1")
+			hash_di_prova_evento.put ("evento2", "evento2")
+			hash_di_prova_evento.put ("evento3", "evento3")
 		end
 
 feature -- Test routines
@@ -119,6 +126,13 @@ feature -- Test routines
 			hash_di_prova.replace (b1, "cond1")
 			hash_di_prova.replace (b2, "cond2")
 			hash_di_prova.replace (b3, "cond3")
+		end
+
+	set_hash_di_prova_evento (b1, b2, b3: STRING)
+		do
+			hash_di_prova.replace (b1, "evento1")
+			hash_di_prova.replace (b2, "evento2")
+			hash_di_prova.replace (b3, "evento3")
 		end
 
 		--	set_hash_di_prova_senza_evento(b1,b2:BOOLEAN)
@@ -198,36 +212,36 @@ feature -- Test routines
 			end
 		end
 
-	t_target_con_evento
-		do
-			set_hash_di_prova (TRUE, TRUE, FALSE)
-			if attached stato_prova as sp then
-				if attached sp.target ("evento1", hash_di_prova) as st then
-					assert ("target scorretto: TTF + e1", st.id ~ "target_prova_1")
-				end
-				if attached sp.target ("evento2", hash_di_prova) as st then
-					assert ("target scorretto: TTF + e2", st.id ~ "target_prova_2")
-				end
-			end
-			set_hash_di_prova (FALSE, TRUE, TRUE)
-			if attached stato_prova as sp then
-				if attached sp.target ("evento1", hash_di_prova) as st then
-					assert ("target scorretto: FTT + e1", st.id ~ "target_prova_3")
-				end
-				if attached sp.target ("evento2", hash_di_prova) as st then
-					assert ("target scorretto: FTT + e2", st.id ~ "target_prova_2")
-				end
-			end
-			set_hash_di_prova (FALSE, FALSE, FALSE)
-			if attached stato_prova as sp then
-				if attached sp.target ("evento1", hash_di_prova) as st then
-					assert ("target scorretto: FFF + e1", st = sp)
-				end
-				if attached sp.target ("evento2", hash_di_prova) as st then
-					assert ("target scorretto: FFF + e2", st = sp)
-				end
-			end
-		end
+--	t_target_con_evento
+--		do
+--			set_hash_di_prova (TRUE, TRUE, FALSE)
+--			if attached stato_prova as sp then
+--				if attached sp.target ("evento1", hash_di_prova) as st then
+--					assert ("target scorretto: TTF + e1", st.id ~ "target_prova_1")
+--				end
+--				if attached sp.target ("evento2", hash_di_prova) as st then
+--					assert ("target scorretto: TTF + e2", st.id ~ "target_prova_2")
+--				end
+--			end
+--			set_hash_di_prova (FALSE, TRUE, TRUE)
+--			if attached stato_prova as sp then
+--				if attached sp.target ("evento1", hash_di_prova) as st then
+--					assert ("target scorretto: FTT + e1", st.id ~ "target_prova_3")
+--				end
+--				if attached sp.target ("evento2", hash_di_prova) as st then
+--					assert ("target scorretto: FTT + e2", st.id ~ "target_prova_2")
+--				end
+--			end
+--			set_hash_di_prova (FALSE, FALSE, FALSE)
+--			if attached stato_prova as sp then
+--				if attached sp.target ("evento1", hash_di_prova) as st then
+--					assert ("target scorretto: FFF + e1", st = sp)
+--				end
+--				if attached sp.target ("evento2", hash_di_prova) as st then
+--					assert ("target scorretto: FFF + e2", st = sp)
+--				end
+--			end
+--		end
 
 		-- Test per features senza evento
 
