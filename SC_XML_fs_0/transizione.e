@@ -65,11 +65,11 @@ feature --check
 			end
 		end
 
-	check_transizione ( hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING] ): BOOLEAN
+	check_condizione (hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING] ): BOOLEAN
 	--Controlla se la condizione dell'evento è verificata.
 	do
-		if attached condizione as e then
-			if .has (e) then
+		if attached condizione as c then
+			if hash_delle_condizioni.has (c) then
 				result:= TRUE
 			end
 		else
