@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="reset">
+	<state id="reset">
+		<transition event="start" target="running" />
+	</state>
+	<state id="running">
+		<transition event="split" target="paused" />
+		<transition event="stop" target="stopped" />
+	</state>
+
+	<state id="paused">
+		<transition event="unsplit" target="running" />
+		<transition event="stop" target="stopped" />
+	</state>
+
+	<state id="stopped">
+		<transition event="reset" target="reset" />
+	</state>
+
+</scxml>
