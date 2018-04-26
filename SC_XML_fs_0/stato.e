@@ -41,7 +41,7 @@ feature --creazione
 			create id.make_empty
 		end
 
-feature --attributi
+feature -- attributi
 
 	transizioni: ARRAY [TRANSIZIONE]
 
@@ -49,7 +49,7 @@ feature --attributi
 
 	id: STRING
 
-feature --setter
+feature -- setter
 
 	set_final
 		do
@@ -58,9 +58,7 @@ feature --setter
 			ora_e_finale: finale
 		end
 
-		--add_transition
-
-feature --routines
+feature -- routines
 
 	aggiungi_transizione (tr: TRANSIZIONE)
 		do
@@ -91,30 +89,7 @@ feature --routines
 			result := transizione_target
 		end
 
-	target (istante_corrente: HASH_TABLE[STRING, STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): STATO
-			-- ritorna stato_corrente se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
-			-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con evento_corrente
-		local
-			index_count: INTEGER
-			transizione_corrente: detachable TRANSIZIONE
-			evento_abilitato: BOOLEAN
-			condizione_abilitata: BOOLEAN
-		do
-			Result := Current
-			from
-				index_count := transizioni.lower
-			until
-				index_count = transizioni.upper + 1 or Result /= Current
-			loop
-				transizione_corrente:=transizioni [index_count]
-				evento_abilitato:=transizione_corrente.check_evento(istante_corrente)
-				condizione_abilitata:=transizione_corrente.check_condizione(hash_delle_condizioni)
-				if evento_abilitato and condizione_abilitata then
-					Result := transizioni [index_count].target
-				end
-				index_count := index_count + 1
-			end
-		end
+feature -- routines forse inutili
 
 	numero_transizioni_abilitate (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): INTEGER
 			-- ritorna il numero di transizioni attivabili con evento_corrente nella configurazione corrente
@@ -156,8 +131,6 @@ feature --routines
 				end
 			end
 		end
-
-feature --cose a parte
 
 	get_transition (evento_corrente: STRING): detachable TRANSIZIONE
 		local
