@@ -108,17 +108,6 @@ feature --routines
 				if evento_abilitato and condizione_abilitata then
 					transizione_target := transizioni [index_count]
 				end
---				if attached transizioni [index_count].evento as te then
---					if istante_corrente.has (te) then
---						if attached transizioni [index_count].condizione as cond then
---							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
---								if cond_in_hash = TRUE then
---									transizione_target := transizioni [index_count]
---								end
---							end
---						end
---					end
---				end
 				index_count := index_count + 1
 			end
 			result := transizione_target
@@ -147,32 +136,25 @@ feature --routines
 			-- ritorna stato_corrente se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
 			-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con evento_corrente
 		local
-			target_della_transizione: STATO
 			index_count: INTEGER
 			transizione_corrente: detachable TRANSIZIONE
 			evento_abilitato: BOOLEAN
 			condizione_abilitata: BOOLEAN
 		do
-			target_della_transizione := Void
+			Result := Current
 			from
 				index_count := transizioni.lower
 			until
-				index_count = transizioni.upper + 1 or target_della_transizione /= Void
+				index_count = transizioni.upper + 1 or Result /= Current
 			loop
-			transizione_corrente:=transizioni [index_count]
+				transizione_corrente:=transizioni [index_count]
 				evento_abilitato:=transizione_corrente.check_evento(istante_corrente)
 				condizione_abilitata:=transizione_corrente.check_condizione(hash_delle_condizioni)
 				if evento_abilitato and condizione_abilitata then
-					target_della_transizione := transizioni [index_count].target
+					Result := transizioni [index_count].target
 				end
 				index_count := index_count + 1
 			end
-			if attached target_della_transizione as tt then
-				result := target_della_transizione
-			else
-				result := current
-			end
-
 		end
 
 feature --cose a parte
