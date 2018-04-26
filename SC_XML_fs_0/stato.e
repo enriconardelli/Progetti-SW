@@ -67,28 +67,6 @@ feature --routines
 			transizioni.force (tr, transizioni.count + 1)
 		end
 
-	numero_transizioni_abilitate (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): INTEGER
-			-- ritorna il numero di transizioni attivabili con evento_corrente nella configurazione corrente
-		local
-			index_count: INTEGER
-			numero_di_transizioni_attivate_da_evento_corrente: INTEGER
-		do
-			from
-				index_count := transizioni.lower
-				numero_di_transizioni_attivate_da_evento_corrente := 0
-			until
-				index_count = transizioni.upper + 1 or numero_di_transizioni_attivate_da_evento_corrente > 1
-			loop
-				if attached evento_corrente as ec then
-					if attivabile (index_count, ec, hash_delle_condizioni) then
-						numero_di_transizioni_attivate_da_evento_corrente := numero_di_transizioni_attivate_da_evento_corrente + 1
-					end
-				end
-				index_count := index_count + 1
-			end
-			Result := numero_di_transizioni_attivate_da_evento_corrente
-		end
-
 	transizione_abilitata (istante_corrente: HASH_TABLE [STRING, STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
 		local
 			transizione_target: detachable TRANSIZIONE
@@ -113,25 +91,6 @@ feature --routines
 			result := transizione_target
 		end
 
-	attivabile (index_count: INTEGER; evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
-		do
-			if attached transizioni [index_count].evento as e then
-				if e.is_equal (evento_corrente) then
-					if attached transizioni [index_count].condizione as c then
-						if hash_delle_condizioni.item (c) = True then
-							Result := True
-						end
-					end
-				end
-			else
-				if attached transizioni [index_count].condizione as cond then
-					if hash_delle_condizioni.item (cond) = True then
-						Result := True
-					end
-				end
-			end
-		end
-
 	target (istante_corrente: HASH_TABLE[STRING, STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): STATO
 			-- ritorna stato_corrente se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
 			-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con evento_corrente
@@ -154,6 +113,47 @@ feature --routines
 					Result := transizioni [index_count].target
 				end
 				index_count := index_count + 1
+			end
+		end
+
+	numero_transizioni_abilitate (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): INTEGER
+			-- ritorna il numero di transizioni attivabili con evento_corrente nella configurazione corrente
+		local
+			index_count: INTEGER
+			numero_di_transizioni_attivate_da_evento_corrente: INTEGER
+		do
+			from
+				index_count := transizioni.lower
+				numero_di_transizioni_attivate_da_evento_corrente := 0
+			until
+				index_count = transizioni.upper + 1 or numero_di_transizioni_attivate_da_evento_corrente > 1
+			loop
+				if attached evento_corrente as ec then
+					if attivabile (index_count, ec, hash_delle_condizioni) then
+						numero_di_transizioni_attivate_da_evento_corrente := numero_di_transizioni_attivate_da_evento_corrente + 1
+					end
+				end
+				index_count := index_count + 1
+			end
+			Result := numero_di_transizioni_attivate_da_evento_corrente
+		end
+
+	attivabile (index_count: INTEGER; evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
+		do
+			if attached transizioni [index_count].evento as e then
+				if e.is_equal (evento_corrente) then
+					if attached transizioni [index_count].condizione as c then
+						if hash_delle_condizioni.item (c) = True then
+							Result := True
+						end
+					end
+				end
+			else
+				if attached transizioni [index_count].condizione as cond then
+					if hash_delle_condizioni.item (cond) = True then
+						Result := True
+					end
+				end
 			end
 		end
 
