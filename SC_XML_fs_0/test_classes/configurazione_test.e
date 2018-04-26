@@ -36,6 +36,9 @@ feature -- Test routines
 		do
 			nomi_files_prova[2] := "eventi_cronometro_1_per_esecutore_test.txt"
 			create esecutore_prova.start (nomi_files_prova)
+			if attached esecutore_prova as ep then
+				ep.state_chart.evolvi_sc (ep.eventi_esterni)
+			end
 			assert ("not_implemented", False)
 		end
 
