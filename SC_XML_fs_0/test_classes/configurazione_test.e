@@ -25,13 +25,10 @@ feature -- Test routines
 
 	on_prepare
 		do
-
 			create nomi_files_prova.make_filled ("", 1, 2)
 			nomi_files_prova[1] := "esempio_cronometro_1_per_esecutore_test.xml"
 			nomi_files_prova[2] := "eventi_cronometro_1_per_esecutore_test.txt"
-
 			create esecutore_prova.start (nomi_files_prova)
-
 		end
 
 feature -- Test routines
