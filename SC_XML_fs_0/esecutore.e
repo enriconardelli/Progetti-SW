@@ -37,12 +37,12 @@ feature {NONE} -- Inizializzazione
 			acquisisci_eventi (nomi_files [2])
 			print ("acquisiti eventi %N")
 			create state_chart.make(nomi_files [1])
-			if verifica_eventi_esterni then
+--			if verifica_eventi_esterni then
 				print ("eventi verificati, si esegue la SC %N")
 				state_chart.evolvi_SC (eventi_esterni)
-			else
-				print (" nel file ci sono eventi che la SC non conosce %N")
-			end
+--			else
+--				print (" nel file ci sono eventi che la SC non conosce %N")
+--			end
 		end
 
 feature
