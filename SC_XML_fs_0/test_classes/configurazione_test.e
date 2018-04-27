@@ -32,9 +32,9 @@ feature -- Test routines
 feature -- Test routines
 
 	t_evolvi_cronometro_1
-			-- New test routine
+			-- Il processo dovrebbe arrestarsi nello stato "running"
 		do
-			nomi_files_prova[2] := "eventi_cronometro_1_per_esecutore_test.txt"
+			nomi_files_prova[2] := "eventi_cronometro_1_per_esecutore_test_verifica.txt"
 			create esecutore_prova.start (nomi_files_prova)
 			if attached esecutore_prova as ep then
 				ep.state_chart.evolvi_sc (ep.eventi_esterni)
@@ -43,12 +43,53 @@ feature -- Test routines
 		end
 
 	t_evolvi_cronometro_2
-			-- New test routine
+			-- Il processo dovrebbe arrestarsi nello stato "stopped"
+		do
+			nomi_files_prova[2] := "eventi_cronometro_2_per_esecutore_test_verifica.txt"
+			create esecutore_prova.start (nomi_files_prova)
+			assert ("not_implemented", False)
+		end
+
+	t_evolvi_cronometro_3
+			-- Il processo dovrebbe arrestarsi nello stato "reset"
+		do
+			nomi_files_prova[2] := "eventi_cronometro_3_per_esecutore_test_verifica.txt"
+			create esecutore_prova.start (nomi_files_prova)
+			assert ("not_implemented", False)
+		end
+
+	t_evolvi_cronometro_4
+			-- Il processo dovrebbe arrestarsi nello stato "paused"
+		do
+			nomi_files_prova[2] := "eventi_cronometro_4_per_esecutore_test_verifica.txt"
+			create esecutore_prova.start (nomi_files_prova)
+			assert ("not_implemented", False)
+		end
+
+	t_evolvi_cronometro_5
+			-- Il processo dovrebbe arrestarsi nello stato "stopped"
+		do
+			nomi_files_prova[2] := "eventi_cronometro_5_per_esecutore_test_verifica.txt"
+			create esecutore_prova.start (nomi_files_prova)
+			assert ("not_implemented", False)
+		end
+
+	t_evolvi_cronometro_6
+			-- Il processo dovrebbe arrestarsi nello stato "paused"
+		do
+			nomi_files_prova[2] := "eventi_cronometro_1_per_esecutore_test.txt"
+			create esecutore_prova.start (nomi_files_prova)
+			assert ("not_implemented", False)
+		end
+
+	t_evolvi_cronometro_7
+			-- Il processo dovrebbe arrestarsi nello stato "stopped"
 		do
 			nomi_files_prova[2] := "eventi_cronometro_2_per_esecutore_test.txt"
 			create esecutore_prova.start (nomi_files_prova)
 			assert ("not_implemented", False)
 		end
+
 end
 
 
