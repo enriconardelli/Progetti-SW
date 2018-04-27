@@ -67,7 +67,6 @@ feature -- routines
 
 	transizione_abilitata (istante_corrente: HASH_TABLE [STRING, STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
 		local
-			transizione_target: detachable TRANSIZIONE
 			index_count: INTEGER
 			transizione_corrente: detachable TRANSIZIONE
 			evento_abilitato: BOOLEAN
@@ -75,18 +74,22 @@ feature -- routines
 		do
 			from
 				index_count := transizioni.lower
+			invariant
+				index_count >= 1
+				index_count <= transizioni.count + 1
 			until
-				index_count = transizioni.upper or transizione_target /= VOID
+				index_count = transizioni.upper + 1 or Result /= Void
 			loop
 				transizione_corrente:=transizioni [index_count]
 				evento_abilitato:=transizione_corrente.check_evento(istante_corrente)
 				condizione_abilitata:=transizione_corrente.check_condizione(hash_delle_condizioni)
 				if evento_abilitato and condizione_abilitata then
-					transizione_target := transizioni [index_count]
+					Result := transizioni [index_count]
 				end
 				index_count := index_count + 1
 			end
-			result := transizione_target
+--			ensure
+--				not_found: Result = Void implies index_count = transizioni.count + 1
 		end
 
 feature -- routines forse inutili
