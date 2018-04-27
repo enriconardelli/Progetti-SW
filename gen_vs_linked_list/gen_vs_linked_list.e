@@ -7,13 +7,29 @@ note
 class
 	GEN_VS_LINKED_LIST [G]
 
-feature --accesso
+feature -- accesso
 
 	first_element: detachable GEN_VS_LINKABLE [G]
-			-- First cell of the list
+			-- primo elemento della lista
 
 	last_element: detachable GEN_VS_LINKABLE [G]
-			-- Last cell of the list
+			-- ultimo elemento della lista
+
+	first: G
+			-- valore del primo elemento della lista
+		do
+			check attached first_element as fe then
+				Result := fe.value
+			end
+		end
+
+	last: G
+			-- valore dell'ultimo elemento della lista
+		do
+			check attached last_element as le then
+				Result := le.value
+			end
+		end
 
 	attached_element (a_value: G): GEN_VS_LINKABLE [G]
 			-- Elemento sempre attached usato per creazione di nuovi elementi da aggiungere
@@ -24,7 +40,7 @@ feature --accesso
 		end
 
 	count: INTEGER
-			-- Number of elements in the list
+			-- numero di elementi nella lista
 
 feature --comandi fondamentali
 
@@ -44,8 +60,9 @@ feature --comandi fondamentali
 			last_element := new_element
 			count := count + 1
 		ensure
-			attached last_element as le implies le.value = a_value
-			count = old count + 1
+			uno_in_piu: count = old count + 1
+			accodato: attached last_element as le implies le.value = a_value
+			collegato: attached (old last_element) as ole implies ole.next = last_element
 		end
 
 	prepend (a_value: G)

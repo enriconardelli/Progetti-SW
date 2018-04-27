@@ -1,0 +1,27 @@
+
+Questa cartella
+  D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\gen_vs_linked_list
+contiene la versione generica delle classi EIFFEL di gestione di liste in versione void_safe. Compilato con opzione void safet ALL funziona
+
+È stata generata da Luca Biondo (a.a. 2016-17) a partire da
+  linked_list
+  gen_linked_list
+  VS_linked_list
+
+che ho ripulito dalle routine non più utili. Ho aggiunto feature FIRST e LAST ma sono perplesso che compila VS anche se possono tornare un VOID in caso di lista vuota ed il tipo delle feature non è detachable
+
+DEVO VERIFICARE CHE I CONTRATTI SIANO STATI PORTATI CON LE ETICHETTE RISPETTO A LINKED LIST
+
+BISOGNA PERO' aggiungere le funzioni di Autotest
+
+BISOGNA RIPORTARE I COMMENTI IN ITALIANO
+
+È replicata nel repository GIT
+  https://github.com/enriconardelli/Progetti-SW
+
+
+Biondo dice che se si aggiunge la scoop, siccome c'è la genericità e void safety allora tutto insieme scoop+genericita+void sfaty ha problemi (da capire meglio)
+
+
+
+
