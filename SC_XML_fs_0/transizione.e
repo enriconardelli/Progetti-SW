@@ -18,14 +18,14 @@ feature --creazione
 			target:= uno_stato
             create azioni.make_empty
 			evento:= Void
-			condizione:= Void
+			condizione:= "condizione_vuota"
 		end
 
 feature --attributi
 
 	evento: detachable STRING
 
-	condizione: detachable STRING
+	condizione: STRING
 
     azioni: ARRAY [AZIONE]
 
