@@ -68,12 +68,10 @@ feature --check
 	check_condizione (hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING] ): BOOLEAN
 	--Controlla se la condizione dell'evento è verificata.
 	do
-		if attached condizione as c then
-			if hash_delle_condizioni.has (c) then
+		if condizione ~ "condizione_vuota" then
 				result:= TRUE
-			end
 		else
-			result:= TRUE
+			result:= hash_delle_condizioni.item (condizione)
 		end
 	end
 
