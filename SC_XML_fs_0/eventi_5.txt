@@ -1,7 +1,5 @@
 circle
-cavallo
 minus
 star
 square
 plus
-star

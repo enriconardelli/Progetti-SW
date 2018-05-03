@@ -1,0 +1,7 @@
+circle
+test1
+minus
+test2 star
+square test3
+plus
+test4
