@@ -25,11 +25,17 @@ feature -- access
 
 	tree: XML_CALLBACKS_TREE
 
+	a_path: PATH
+
+	test_data_dir: STRING = "test_data"
+
 feature -- preparazione
 
 	on_prepare
 		do
-			file_name := "esempio_per_altro_esecutore_test.xml"
+			create a_path.make_current
+			test_data_dir.append_character(a_path.directory_separator)
+			file_name :=test_data_dir + "esempio_per_altro_esecutore_test.xml"
 				--| Instantiate parser
 			create {XML_STANDARD_PARSER} parser.make
 				--| Build tree callbacks
