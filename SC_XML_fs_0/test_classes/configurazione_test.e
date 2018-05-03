@@ -20,12 +20,22 @@ feature {NONE} -- Supporto
 
 	nomi_files_prova: ARRAY [STRING]
 	esecutore_prova: detachable ESECUTORE
+	a_path: PATH
+	test_data_dir: STRING = "test_data"
 
 feature -- Test routines
 
 	on_prepare
 		do
+<<<<<<< HEAD
 			create nomi_files_prova.make_filled ("", 1, 2)
+=======
+		    create a_path.make_current
+			test_data_dir.append_character(a_path.directory_separator)
+		    create nomi_files_prova.make_filled ("", 1, 2)
+			nomi_files_prova[1] := test_data_dir + "esempio_cronometro_per_esecutore_test.xml"
+			nomi_files_prova[2] := test_data_dir
+>>>>>>> a50e8cef1812f22b6795cf5c24d9f9ca4ecffa56
 		end
 
 feature -- Test Cronometro
@@ -33,8 +43,12 @@ feature -- Test Cronometro
 	t_evolvi_cronometro_1
 			-- Il processo dovrebbe arrestarsi nello stato "running"
 		do
+<<<<<<< HEAD
 			nomi_files_prova[1] := "esempio_cronometro_1_per_esecutore_test.xml"
 			nomi_files_prova[2] := "eventi_cronometro_1_per_esecutore_test_verifica.txt"
+=======
+			nomi_files_prova[2] := test_data_dir + "eventi_cronometro_1_per_esecutore_test_verifica.txt"
+>>>>>>> a50e8cef1812f22b6795cf5c24d9f9ca4ecffa56
 			create esecutore_prova.start (nomi_files_prova)
 			if attached esecutore_prova as ep then
 				assert ("ERRORE il sistema non ha terminato nello stato corretto (RUNNING)", ep.state_chart.stato_corrente.id.is_equal ("running"))
@@ -45,8 +59,12 @@ feature -- Test Cronometro
 	t_evolvi_cronometro_2
 			-- Il processo dovrebbe arrestarsi nello stato "stopped"
 		do
+<<<<<<< HEAD
 			nomi_files_prova[1] := "esempio_cronometro_1_per_esecutore_test.xml"
 			nomi_files_prova[2] := "eventi_cronometro_2_per_esecutore_test_verifica.txt"
+=======
+			nomi_files_prova[2] := test_data_dir + "eventi_cronometro_2_per_esecutore_test_verifica.txt"
+>>>>>>> a50e8cef1812f22b6795cf5c24d9f9ca4ecffa56
 			create esecutore_prova.start (nomi_files_prova)
 			if attached esecutore_prova as ep then
 				assert ("ERRORE il sistema non ha terminato nello stato corretto (STOPPED)", ep.state_chart.stato_corrente.id.is_equal ("stopped"))
@@ -56,8 +74,12 @@ feature -- Test Cronometro
 	t_evolvi_cronometro_3
 			-- Il processo dovrebbe arrestarsi nello stato "reset"
 		do
+<<<<<<< HEAD
 			nomi_files_prova[1] := "esempio_cronometro_1_per_esecutore_test.xml"
 			nomi_files_prova[2] := "eventi_cronometro_3_per_esecutore_test_verifica.txt"
+=======
+			nomi_files_prova[2] := test_data_dir + "eventi_cronometro_3_per_esecutore_test_verifica.txt"
+>>>>>>> a50e8cef1812f22b6795cf5c24d9f9ca4ecffa56
 			create esecutore_prova.start (nomi_files_prova)
 			if attached esecutore_prova as ep then
 				assert ("ERRORE il sistema non ha terminato nello stato corretto (RESET)", ep.state_chart.stato_corrente.id.is_equal ("reset"))
@@ -67,8 +89,12 @@ feature -- Test Cronometro
 	t_evolvi_cronometro_4
 			-- Il processo dovrebbe arrestarsi nello stato "paused"
 		do
+<<<<<<< HEAD
 			nomi_files_prova[1] := "esempio_cronometro_1_per_esecutore_test.xml"
 			nomi_files_prova[2] := "eventi_cronometro_4_per_esecutore_test_verifica.txt"
+=======
+			nomi_files_prova[2] := test_data_dir + "eventi_cronometro_4_per_esecutore_test_verifica.txt"
+>>>>>>> a50e8cef1812f22b6795cf5c24d9f9ca4ecffa56
 			create esecutore_prova.start (nomi_files_prova)
 			if attached esecutore_prova as ep then
 				assert ("ERRORE il sistema non ha terminato nello stato corretto (PAUSED)", ep.state_chart.stato_corrente.id.is_equal ("paused"))
@@ -78,8 +104,12 @@ feature -- Test Cronometro
 	t_evolvi_cronometro_5
 			-- Il processo dovrebbe arrestarsi nello stato "running"
 		do
+<<<<<<< HEAD
 			nomi_files_prova[1] := "esempio_cronometro_1_per_esecutore_test.xml"
 			nomi_files_prova[2] := "eventi_cronometro_5_per_esecutore_test_verifica.txt"
+=======
+			nomi_files_prova[2] := test_data_dir + "eventi_cronometro_5_per_esecutore_test_verifica.txt"
+>>>>>>> a50e8cef1812f22b6795cf5c24d9f9ca4ecffa56
 			create esecutore_prova.start (nomi_files_prova)
 			if attached esecutore_prova as ep then
 				assert ("ERRORE il sistema non ha terminato nello stato corretto (RUNNING)", ep.state_chart.stato_corrente.id.is_equal ("running"))
@@ -89,8 +119,12 @@ feature -- Test Cronometro
 	t_evolvi_cronometro_6
 			-- Il processo dovrebbe arrestarsi nello stato "paused"
 		do
+<<<<<<< HEAD
 			nomi_files_prova[1] := "esempio_cronometro_1_per_esecutore_test.xml"
 			nomi_files_prova[2] := "eventi_cronometro_1_per_esecutore_test.txt"
+=======
+			nomi_files_prova[2] := test_data_dir + "eventi_cronometro_1_per_esecutore_test.txt"
+>>>>>>> a50e8cef1812f22b6795cf5c24d9f9ca4ecffa56
 			create esecutore_prova.start (nomi_files_prova)
 			if attached esecutore_prova as ep then
 				assert ("ERRORE il sistema non ha terminato nello stato corretto (PAUSED)", ep.state_chart.stato_corrente.id.is_equal ("paused"))
@@ -100,8 +134,12 @@ feature -- Test Cronometro
 	t_evolvi_cronometro_7
 			-- Il processo dovrebbe arrestarsi nello stato "stopped"
 		do
+<<<<<<< HEAD
 			nomi_files_prova[1] := "esempio_cronometro_1_per_esecutore_test.xml"
 			nomi_files_prova[2] := "eventi_cronometro_2_per_esecutore_test.txt"
+=======
+			nomi_files_prova[2] := test_data_dir + "eventi_cronometro_2_per_esecutore_test.txt"
+>>>>>>> a50e8cef1812f22b6795cf5c24d9f9ca4ecffa56
 			create esecutore_prova.start (nomi_files_prova)
 			if attached esecutore_prova as ep then
 				assert ("ERRORE il sistema non ha terminato nello stato corretto (STOPPED)", ep.state_chart.stato_corrente.id.is_equal ("stopped"))

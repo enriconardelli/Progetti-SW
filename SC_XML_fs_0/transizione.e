@@ -54,7 +54,7 @@ feature --setter
 
 feature --check
 
-	check_evento (istante: HASH_TABLE [STRING, STRING]): BOOLEAN
+	check_evento (istante: LINKED_SET [STRING] ): BOOLEAN
 		do
 			if attached evento as e then
 				if istante.has (e) then

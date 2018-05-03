@@ -65,7 +65,7 @@ feature -- routines
 			transizioni.force (tr, transizioni.count + 1)
 		end
 
-	transizione_abilitata (istante_corrente: HASH_TABLE [STRING, STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
+	transizione_abilitata (istante_corrente: LINKED_SET [STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
 		local
 			index_count: INTEGER
 			transizione_corrente: detachable TRANSIZIONE
