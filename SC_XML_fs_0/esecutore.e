@@ -113,7 +113,7 @@ feature
 				from
 					j := eventi_esterni [i].lower
 				until
-					j = eventi_esterni [i].count
+					j = eventi_esterni [i].count + 1
 				loop
 					if attached eventi_esterni[i].i_th (j) as ei then
 						if not eventi_nella_SC.has (ei) then
