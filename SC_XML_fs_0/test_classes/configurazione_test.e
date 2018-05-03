@@ -20,15 +20,15 @@ feature {NONE} -- Supporto
 
 	nomi_files_prova: ARRAY [STRING]
 	esecutore_prova: detachable ESECUTORE
---	a_path: PATH
-	test_data_dir: STRING = "test_data/"
+	a_path: PATH
+	test_data_dir: STRING = "test_data"
 
 feature -- Test routines
 
 	on_prepare
 		do
---		    create a_path.make_current
---			test_data_dir.append_character(a_path.directory_separator)
+		    create a_path.make_current
+			test_data_dir.append_character(a_path.directory_separator)
 		    create nomi_files_prova.make_filled ("", 1, 2)
 			nomi_files_prova[1] := test_data_dir + "esempio_cronometro_per_esecutore_test.xml"
 			nomi_files_prova[2] := test_data_dir
