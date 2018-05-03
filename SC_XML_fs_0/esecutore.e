@@ -35,12 +35,11 @@ feature {NONE} -- Inizializzazione
 			acquisisci_eventi (nomi_files [2])
 			print ("acquisiti eventi %N")
 			create state_chart.make (nomi_files [1])
-				--			if verifica_eventi_esterni then
+			if not verifica_eventi_esterni then
+				print ("WARNING nel file ci sono eventi che la SC non conosce %N")
+			end
 			print ("eventi verificati, si esegue la SC %N")
 			state_chart.evolvi_SC (eventi_esterni)
-				--			else
-				--				print (" nel file ci sono eventi che la SC non conosce %N")
-				--			end
 		end
 
 feature
@@ -105,24 +104,24 @@ feature
 				state_chart.stati.forth
 			end
 				-- verifica che ogni evento esterno sia presente nella SC
+			from
+				i := eventi_esterni.lower
+			until
+				i = eventi_esterni.upper
+			loop
 				from
-					i := eventi_esterni.lower
+					eventi_esterni [i].start
 				until
-					i = eventi_esterni.upper
+					eventi_esterni [i].after
 				loop
-					from
-						eventi_esterni [i].start
-					until
-						eventi_esterni [i].after
-					loop
-						if not eventi_nella_SC.has (eventi_esterni [i].key_for_iteration) then
-							print ("%N ATTENZIONE!! un evento non viene utilizzato!")
-							evento_assente := True
-						end
-						eventi_esterni[i].forth
+					if not eventi_nella_SC.has (eventi_esterni [i].key_for_iteration) then
+						print ("%N ATTENZIONE!! l'evento" + eventi_esterni [i].key_for_iteration + "non viene utilizzato!")
+						evento_assente := True
 					end
-					i := i + 1
+					eventi_esterni [i].forth
 				end
+				i := i + 1
+			end
 			Result := not evento_assente
 		end
 
