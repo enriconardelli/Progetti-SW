@@ -29,12 +29,12 @@ feature {NONE} -- Inizializzazione
 			-- scrivere i parametri ognuno tra doppi apici
 		do
 			print ("INIZIO!%N")
-			print ("esegue la SC in " + nomi_files [1] + "%N")
-			print ("con gli eventi in " + nomi_files [2] + "%N")
+			print ("crea la SC in " + nomi_files [1] + "%N")
+			create state_chart.make (nomi_files [1])
+			print ("e la esegue con gli eventi in " + nomi_files [2] + "%N")
 			create eventi_esterni.make_empty
 			acquisisci_eventi (nomi_files [2])
 			print ("acquisiti eventi %N")
-			create state_chart.make (nomi_files [1])
 			if not verifica_eventi_esterni then
 				print ("WARNING nel file ci sono eventi che la SC non conosce %N")
 			end
