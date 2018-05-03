@@ -67,7 +67,7 @@ feature --evoluzione SC
 			end
 		end
 
-	evolvi_SC (istanti: ARRAY [HASH_TABLE [STRING, STRING]])
+	evolvi_SC (istanti: ARRAY [LINKED_SET [STRING]])
 		local
 			count_istante_corrente: INTEGER
 			nuovo_stato: detachable STATO

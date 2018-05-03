@@ -31,7 +31,7 @@ feature {NONE} -- Supporto
 
 	hash_di_prova, hash_di_prova_senza_evento: HASH_TABLE [BOOLEAN, STRING]
 
-	hash_di_prova_evento: HASH_TABLE [STRING, STRING]
+	hash_di_prova_evento: LINKED_SET [STRING]
 
 feature {NONE} -- Events
 
@@ -113,10 +113,11 @@ feature {NONE} -- Events
 			hash_di_prova_senza_evento.put (False, "cond1")
 			hash_di_prova_senza_evento.put (False, "cond2")
 
-			create hash_di_prova_evento.make (3)
-			hash_di_prova_evento.put ("evento1", "evento1")
-			hash_di_prova_evento.put ("evento2", "evento2")
-			hash_di_prova_evento.put ("evento3", "evento3")
+			create hash_di_prova_evento.make
+			hash_di_prova_evento.compare_objects
+			hash_di_prova_evento.force ("evento1")
+			hash_di_prova_evento.force ("evento2")
+			hash_di_prova_evento.force ("evento3")
 		end
 
 feature -- Test routines
@@ -131,9 +132,9 @@ feature -- Test routines
 	set_hash_di_prova_evento (b1, b2, b3: STRING)
 		do
 			hash_di_prova_evento.wipe_out
-			hash_di_prova_evento.put (b1, b1)
-			hash_di_prova_evento.put (b2, b2)
-			hash_di_prova_evento.put (b3, b3)
+			hash_di_prova_evento.force (b1)
+			hash_di_prova_evento.force (b2)
+			hash_di_prova_evento.force (b3)
 		end
 
 		--	set_hash_di_prova_senza_evento(b1,b2:BOOLEAN)

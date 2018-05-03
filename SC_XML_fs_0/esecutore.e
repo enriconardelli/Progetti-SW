@@ -15,7 +15,7 @@ feature -- Attributi
 	state_chart: CONFIGURAZIONE
 			-- rappresenta la SC durante la sua esecuzione
 
-	eventi_esterni: ARRAY [HASH_TABLE [STRING, STRING]]
+	eventi_esterni: ARRAY [LINKED_SET [STRING]]
 			-- memorizza gli eventi letti dal file
 			-- l'array rappresenta gli istanti mentre ogni hash_table l'insieme degli eventi che occorrono nell'istante specifico
 
@@ -51,7 +51,7 @@ feature
 			file: PLAIN_TEXT_FILE
 			i: INTEGER
 			events_read: LIST [STRING]
-			istante: HASH_TABLE [STRING, STRING]
+			istante: LINKED_SET [STRING]
 		do
 			create file.make_open_read (nome_file_eventi)
 			from
@@ -61,11 +61,12 @@ feature
 			loop
 				file.read_line
 				events_read := file.last_string.twin.split (' ')
-				create istante.make (0)
+				create istante.make
+				istante.compare_objects
 				across
 					events_read as er
 				loop
-					istante.put (er.item, er.item)
+					istante.force (er.item)
 				end
 				eventi_esterni.force (istante, i)
 				i := i + 1
@@ -110,15 +111,17 @@ feature
 				i = eventi_esterni.upper + 1
 			loop
 				from
-					eventi_esterni [i].start
+					j := eventi_esterni [i].lower
 				until
-					eventi_esterni [i].after
+					j = eventi_esterni [i].count
 				loop
-					if not eventi_nella_SC.has (eventi_esterni [i].key_for_iteration) then
-						print ("%N ATTENZIONE!! l'evento" + eventi_esterni [i].key_for_iteration + "non viene utilizzato!")
+					if attached eventi_esterni[i].i_th (j) as ei then
+						if not eventi_nella_SC.has (ei) then
+						print ("%N ATTENZIONE!! l'evento" + ei + "non viene utilizzato!")
 						evento_assente := True
+						end
 					end
-					eventi_esterni [i].forth
+					j := j + 1
 				end
 				i := i + 1
 			end
