@@ -107,7 +107,7 @@ feature
 			from
 				i := eventi_esterni.lower
 			until
-				i = eventi_esterni.upper
+				i = eventi_esterni.upper + 1
 			loop
 				from
 					eventi_esterni [i].start
