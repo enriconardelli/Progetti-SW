@@ -49,6 +49,10 @@ feature -- attributi
 
 	id: STRING
 
+	OnEntry: detachable AZIONE
+
+	OnExit: detachable AZIONE
+
 feature -- setter
 
 	set_final
@@ -56,6 +60,24 @@ feature -- setter
 			finale := TRUE
 		ensure
 			ora_e_finale: finale
+		end
+
+	set_OnEntry (una_azione: AZIONE)
+		require
+			e_una_azione: una_azione /= VOID
+		do
+			OnEntry := una_azione
+		ensure
+			azione_assegnata: OnEntry = una_azione
+		end
+
+	set_OnExit (una_azione: AZIONE)
+		require
+			e_una_azione: una_azione /= VOID
+		do
+			OnExit := una_azione
+		ensure
+			azione_assegnata: OnExit = una_azione
 		end
 
 feature -- routines
@@ -80,16 +102,16 @@ feature -- routines
 			until
 				index_count = transizioni.upper + 1 or Result /= Void
 			loop
-				transizione_corrente:=transizioni [index_count]
-				evento_abilitato:=transizione_corrente.check_evento(istante_corrente)
-				condizione_abilitata:=transizione_corrente.check_condizione(hash_delle_condizioni)
+				transizione_corrente := transizioni [index_count]
+				evento_abilitato := transizione_corrente.check_evento (istante_corrente)
+				condizione_abilitata := transizione_corrente.check_condizione (hash_delle_condizioni)
 				if evento_abilitato and condizione_abilitata then
 					Result := transizioni [index_count]
 				end
 				index_count := index_count + 1
 			end
---			ensure
---				not_found: Result = Void implies index_count = transizioni.count + 1
+				--			ensure
+				--				not_found: Result = Void implies index_count = transizioni.count + 1
 		end
 
 feature -- routines forse inutili
