@@ -20,7 +20,7 @@ feature {NONE} -- Supporto
 
 	nomi_files: ARRAY [STRING]
 	state_chart: CONFIGURAZIONE
-	eventi_esterni: ARRAY [LINKED_SET [STRING]]
+--	eventi_esterni: ARRAY [LINKED_SET [STRING]]
 	a_path: PATH
 	test_data_dir: STRING = "test_data"
 

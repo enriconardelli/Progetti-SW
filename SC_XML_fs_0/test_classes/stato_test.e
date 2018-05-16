@@ -161,6 +161,30 @@ feature -- Test routines
 			end
 		end
 
+	t_set_OnEntry
+		local
+			azione_prova: STAMPA
+		do
+			create stato_prova.make_with_id ("stato_prova")
+			create azione_prova.make_with_text ("prova")
+			if attached stato_prova as sp then
+			sp.set_OnEntry (azione_prova)
+			assert ("Azione OnEntry NON assegnata correttamente", sp.OnEntry ~ azione_prova)
+			end
+		end
+
+		t_set_OnExit
+		local
+			azione_prova: STAMPA
+		do
+			create stato_prova.make_with_id ("stato_prova")
+			create azione_prova.make_with_text ("prova")
+			if attached stato_prova as sp then
+			sp.set_OnExit (azione_prova)
+			assert ("Azione OnEntry NON assegnata correttamente", sp.OnExit ~ azione_prova)
+			end
+		end
+
 		-- Test per features con evento
 
 	t_abilitata_con_evento_non_esistente
