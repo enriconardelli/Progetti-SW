@@ -52,6 +52,8 @@ feature -- attributi
 
 	stato_default: detachable STATO
 
+	stato_genitore: detachable STATO
+
 	id: STRING
 
 	type: INTEGER
@@ -92,6 +94,15 @@ feature -- routines
 	aggiungi_transizione (tr: TRANSIZIONE)
 		do
 			transizioni.force (tr, transizioni.count + 1)
+		end
+
+	aggiungi_genitore (gen: STATO)
+		require
+			genitore_esistente: gen /= VOID
+		do
+			stato_genitore := gen
+		ensure
+			genitore_acquisito: stato_genitore = gen
 		end
 
 	transizione_abilitata (istante_corrente: LINKED_SET [STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
