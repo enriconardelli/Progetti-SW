@@ -132,43 +132,38 @@ feature --evoluzione SC
 			create azioni.make_empty
 			create stato_gen_corrente.make_empty
 			create stato_gen_target.make_empty
-			stop:=FALSE
+			stop := FALSE
 			if attached stato_corrente.stato_genitore as ssg then
 				if attached transizione_corrente as tc then
-				if attached tc.target.stato_genitore as tsg then
-					stato_gen_corrente:=ssg
-					stato_gen_target:=tsg
-					if ssg.id ~ tsg.id then
-						stop:=TRUE
-					end
-				end
-				end
-
-			end
-			from
-
-			until
-				stop=TRUE
-			loop
-				if attached stato_gen_corrente.onexit as ox then
-				azioni.force (ox , azioni.count+1)
-				end
-				if attached stato_gen_target.onentry as oe then
-				azioni.force (oe , azioni.count+1)
-				end
-
-				if attached stato_gen_corrente.stato_genitore as ssg then
-					if attached stato_gen_target.stato_genitore as tsg then
-						stato_gen_corrente:=ssg
-						stato_gen_target:=tsg
+					if attached tc.target.stato_genitore as tsg then
+						stato_gen_corrente := ssg
+						stato_gen_target := tsg
 						if ssg.id ~ tsg.id then
-							stop:=TRUE
+							stop := TRUE
 						end
 					end
 				end
 			end
-
-
+			from
+			until
+				stop = TRUE
+			loop
+				if attached stato_gen_corrente.onexit as ox then
+					azioni.force (ox, azioni.count + 1)
+				end
+				if attached stato_gen_target.onentry as oe then
+					azioni.force (oe, azioni.count + 1)
+				end
+				if attached stato_gen_corrente.stato_genitore as ssg then
+					if attached stato_gen_target.stato_genitore as tsg then
+						stato_gen_corrente := ssg
+						stato_gen_target := tsg
+						if ssg.id ~ tsg.id then
+							stop := TRUE
+						end
+					end
+				end
+			end
 		end
 
 	stabilizza_stato
