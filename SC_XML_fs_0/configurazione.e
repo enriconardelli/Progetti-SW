@@ -84,11 +84,16 @@ feature --evoluzione SC
 					print (count_istante_corrente)
 					print ("   %N")
 					transizione_corrente := stato_corrente.transizione_abilitata (istante_corrente, condizioni)
-						--					stato_corrente := stato_corrente.target (istante_corrente, condizioni)
 					count_istante_corrente := count_istante_corrente + 1
 					if attached transizione_corrente as tc then
 						esegui_azioni (tc)
-						stato_corrente := tc.target
+						if tc.target.type = 0 then
+							stato_corrente := tc.target
+						elseif tc.target.type = 1 then
+							if attached tc.target.stato_default as sd then
+								stato_corrente := sd
+							end
+						end
 					end
 				end
 			end
@@ -119,7 +124,6 @@ feature --evoluzione SC
 
 	calcola_azioni: detachable ARRAY [AZIONE]
 		do
-
 		end
 
 	stabilizza_stato

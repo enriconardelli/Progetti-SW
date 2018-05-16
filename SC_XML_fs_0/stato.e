@@ -50,6 +50,8 @@ feature -- attributi
 
 	finale: BOOLEAN
 
+	stato_default: detachable STATO
+
 	id: STRING
 
 	type: INTEGER

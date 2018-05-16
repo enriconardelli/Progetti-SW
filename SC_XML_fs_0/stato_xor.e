@@ -32,8 +32,6 @@ feature -- attributi
 
 	stati: ARRAY [STATO]
 
-	stato_default: STATO
-
 feature -- setter
 
 	add_stato (uno_stato: STATO)
