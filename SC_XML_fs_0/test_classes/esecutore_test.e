@@ -21,29 +21,26 @@ feature {NONE} -- Supporto
 
 	nomi_files_prova: ARRAY [STRING]
 	altro_esecutore_prova, esecutore_prova: ESECUTORE
+	a_path: PATH
+	test_data_dir: STRING = "test_data"
 
 feature -- Test routines
 
 	on_prepare
 		do
+			create a_path.make_current
+			test_data_dir.append_character(a_path.directory_separator)
 			create nomi_files_prova.make_filled ("", 1, 2)
-			nomi_files_prova [1] := "esempio_per_esecutore_test.xml"
-			nomi_files_prova [2] := "eventi_per_esecutore_test.txt"
+			nomi_files_prova [1] := test_data_dir + "esempio_per_esecutore_test.xml"
+			nomi_files_prova [2] := test_data_dir + "eventi_per_esecutore_test.txt"
 
 			create esecutore_prova.start (nomi_files_prova)
 
 			create nomi_files_prova.make_filled ("", 1, 2)
-			nomi_files_prova[1] := "esempio_per_altro_esecutore_test.xml"
-			nomi_files_prova[2] := "eventi_per_altro_esecutore_test.txt"
+			nomi_files_prova[1] := test_data_dir + "esempio_per_altro_esecutore_test.xml"
+			nomi_files_prova[2] := test_data_dir + "eventi_per_altro_esecutore_test.txt"
 
 			create altro_esecutore_prova.start (nomi_files_prova)
-
-		end
-
-	test_verifica_eventi_esterni
-		do
-			assert("non viene rilevato evento esterno assente",esecutore_prova.verifica_eventi_esterni=True)
-			assert("viene falsamente rilevato evento esterno assente",altro_esecutore_prova.verifica_eventi_esterni=True)
 
 		end
 
