@@ -18,6 +18,7 @@ feature --creazione
 		do
 			id := un_id
 			finale := FALSE
+			type := 0
 			create transizioni.make_empty
 		ensure
 			attributo_assegnato: id = un_id
@@ -29,6 +30,7 @@ feature --creazione
 		do
 			id := un_id
 			finale := TRUE
+			type := 0
 			create transizioni.make_empty
 		ensure
 			attributo_assegnato: id = un_id
@@ -37,6 +39,7 @@ feature --creazione
 	make_empty
 		do
 			create transizioni.make_empty
+			type := 0
 			finale := false
 			create id.make_empty
 		end
@@ -48,6 +51,8 @@ feature -- attributi
 	finale: BOOLEAN
 
 	id: STRING
+
+	type: INTEGER
 
 	OnEntry: detachable AZIONE
 

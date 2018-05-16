@@ -24,11 +24,15 @@ feature -- creazione
 			id := un_id
 			create transizioni.make_empty
 			create stati.make_empty
+			create stato_default.make_empty
+			type:=1
 		end
 
 feature -- attributi
 
 	stati: ARRAY [STATO]
+
+	stato_default: STATO
 
 feature -- setter
 
@@ -39,5 +43,11 @@ feature -- setter
 		stati.force (uno_stato, stati.count + 1)
 	end
 
+	set_stato_default (lo_stato: STATO)
+	require
+		uno_stato_esistente: lo_stato /= VOID
+	do
+		stato_default:= lo_stato
+	end
 
 end
