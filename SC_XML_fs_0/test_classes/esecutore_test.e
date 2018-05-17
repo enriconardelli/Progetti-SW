@@ -44,13 +44,6 @@ feature -- Test routines
 
 		end
 
-	test_verifica_eventi_esterni
-		do
-			assert("non viene rilevato evento esterno assente",esecutore_prova.verifica_eventi_esterni=True)
-			assert("viene falsamente rilevato evento esterno assente",altro_esecutore_prova.verifica_eventi_esterni=True)
-
-		end
-
 	esecutore_ha_3_stati
 		do
 			assert ("gli stati sono 3", esecutore_prova.state_chart.stati.count = 3)
