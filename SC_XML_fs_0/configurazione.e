@@ -117,6 +117,15 @@ feature --evoluzione SC
 				transizione.azioni [i].action (condizioni)
 				i := i + 1
 			end
+			if attached azioni_nel_percorso as ap then
+				from
+					i := 1
+				until
+					i = azioni_nel_percorso.count + 1
+				loop
+					azioni_nel_percorso.item (i).action (condizioni)
+				end
+			end
 			if attached transizione.target.onexit as ox then
 				ox.action (condizioni)
 			end
