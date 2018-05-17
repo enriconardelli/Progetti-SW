@@ -15,6 +15,9 @@ feature -- Attributi
 	state_chart: CONFIGURAZIONE
 			-- rappresenta la SC durante la sua esecuzione
 
+	prova: detachable STATO_XOR
+			-- da cancellare, solo per avere l'elenco delle features di STATO_XOR in EiffelStudio
+			
 	eventi_esterni: ARRAY [LINKED_SET [STRING]]
 			-- memorizza gli eventi letti dal file
 			-- l'array rappresenta gli istanti mentre ogni hash_table l'insieme degli eventi che occorrono nell'istante specifico
