@@ -163,6 +163,9 @@ feature --evoluzione SC
 						end
 					end
 				end
+				if stato_gen_corrente.stato_genitore = VOID and stato_gen_target.stato_genitore = VOID then
+					stop := TRUE
+				end
 			end
 		end
 
