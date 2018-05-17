@@ -112,7 +112,6 @@ feature {NONE} -- Events
 			create hash_di_prova_senza_evento.make (2)
 			hash_di_prova_senza_evento.put (False, "cond1")
 			hash_di_prova_senza_evento.put (False, "cond2")
-
 			create hash_di_prova_evento.make
 			hash_di_prova_evento.compare_objects
 			hash_di_prova_evento.force ("evento1")
@@ -158,6 +157,30 @@ feature -- Test routines
 			if attached stato_prova as sp then
 				sp.set_final
 				assert ("final NON è 'true'", sp.finale)
+			end
+		end
+
+	t_set_OnEntry
+		local
+			azione_prova: STAMPA
+		do
+			create stato_prova.make_with_id ("stato_prova")
+			create azione_prova.make_with_text ("prova")
+			if attached stato_prova as sp then
+				sp.set_OnEntry (azione_prova)
+				assert ("Azione OnEntry NON assegnata correttamente", sp.OnEntry ~ azione_prova)
+			end
+		end
+
+	t_set_OnExit
+		local
+			azione_prova: STAMPA
+		do
+			create stato_prova.make_with_id ("stato_prova")
+			create azione_prova.make_with_text ("prova")
+			if attached stato_prova as sp then
+				sp.set_OnExit (azione_prova)
+				assert ("Azione OnEntry NON assegnata correttamente", sp.OnExit ~ azione_prova)
 			end
 		end
 

@@ -84,11 +84,16 @@ feature --evoluzione SC
 					print (count_istante_corrente)
 					print ("   %N")
 					transizione_corrente := stato_corrente.transizione_abilitata (istante_corrente, condizioni)
---					stato_corrente := stato_corrente.target (istante_corrente, condizioni)
 					count_istante_corrente := count_istante_corrente + 1
 					if attached transizione_corrente as tc then
 						esegui_azioni (tc)
-						stato_corrente := tc.target
+						if tc.target.type = 0 then
+							stato_corrente := tc.target
+						elseif tc.target.type = 1 then
+							if attached tc.target.stato_default as sd then
+								stato_corrente := sd
+							end
+						end
 					end
 				end
 			end
@@ -98,7 +103,12 @@ feature --evoluzione SC
 	esegui_azioni (transizione: TRANSIZIONE)
 		local
 			i: INTEGER
+			azioni_nel_percorso: detachable ARRAY [AZIONE]
 		do
+			if attached stato_corrente.onexit as oe then
+				oe.action (condizioni)
+			end
+			azioni_nel_percorso := calcola_azioni
 			from
 				i := 1
 			until
@@ -106,6 +116,65 @@ feature --evoluzione SC
 			loop
 				transizione.azioni [i].action (condizioni)
 				i := i + 1
+			end
+			if attached azioni_nel_percorso as ap then
+				from
+					i := 1
+				until
+					i = azioni_nel_percorso.count + 1
+				loop
+					azioni_nel_percorso.item (i).action (condizioni)
+				end
+			end
+			if attached transizione.target.onexit as ox then
+				ox.action (condizioni)
+			end
+		end
+
+	calcola_azioni: detachable ARRAY [AZIONE]
+		local
+			azioni: ARRAY [AZIONE]
+			stop: BOOLEAN
+			stato_gen_corrente: STATO
+			stato_gen_target: STATO
+		do
+			create azioni.make_empty
+			create stato_gen_corrente.make_empty
+			create stato_gen_target.make_empty
+			stop := FALSE
+			if attached stato_corrente.stato_genitore as ssg then
+				if attached transizione_corrente as tc then
+					if attached tc.target.stato_genitore as tsg then
+						stato_gen_corrente := ssg
+						stato_gen_target := tsg
+						if ssg.id ~ tsg.id then
+							stop := TRUE
+						end
+					end
+				end
+			end
+			from
+			until
+				stop = TRUE
+			loop
+				if attached stato_gen_corrente.onexit as ox then
+					azioni.force (ox, azioni.count + 1)
+				end
+				if attached stato_gen_target.onentry as oe then
+					azioni.force (oe, azioni.count + 1)
+				end
+				if attached stato_gen_corrente.stato_genitore as ssg then
+					if attached stato_gen_target.stato_genitore as tsg then
+						stato_gen_corrente := ssg
+						stato_gen_target := tsg
+						if ssg.id ~ tsg.id then
+							stop := TRUE
+						end
+					end
+				end
+				if stato_gen_corrente.stato_genitore = VOID and stato_gen_target.stato_genitore = VOID then
+					stop := TRUE
+				end
 			end
 		end
 
