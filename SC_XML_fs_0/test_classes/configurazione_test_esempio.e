@@ -18,6 +18,7 @@ feature -- Test routines
 		    precursor
 			nomi_files_prova[1] := test_data_dir + "esempio.xml"
 			nomi_files_prova[2] := test_data_dir
+			create configurazione_prova.make(nomi_files_prova[1])
 		end
 
  feature -- Test "Esempio"
@@ -26,10 +27,11 @@ feature -- Test routines
 			-- Il processo dovrebbe arrestarsi nello stato "three" con le condizioni "alfa" e "beta" vere e "gamma" falsa.
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_1.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (three)", ep.state_chart.stato_corrente.id.is_equal ("three") )
-				assert ("ERRORE il sistema non ha aggiornato correttamente le condizioni", ep.state_chart.condizioni.item ("alfa") and ep.state_chart.condizioni.item ("beta") and not ep.state_chart.condizioni.item ("gamma") )
+			ambiente_prova.acquisisci_eventi (nomi_files_prova[2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (three)", cp.stato_corrente.id.is_equal ("three") )
+				assert ("ERRORE il sistema non ha aggiornato correttamente le condizioni", cp.condizioni.item ("alfa") and cp.condizioni.item ("beta") and not cp.condizioni.item ("gamma") )
 			end
 		end
 
@@ -37,10 +39,11 @@ feature -- Test routines
 			-- Il processo dovrebbe arrestarsi nello stato "one" con le condizioni "alfa" e "beta" vere e "gamma" falsa.
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_2.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", ep.state_chart.stato_corrente.id.is_equal ("one") )
-				assert ("ERRORE il sistema non ha aggiornato correttamente le condizioni", ep.state_chart.condizioni.item ("alfa") and ep.state_chart.condizioni.item ("beta") and not ep.state_chart.condizioni.item ("gamma") )
+			ambiente_prova.acquisisci_eventi (nomi_files_prova[2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", cp.stato_corrente.id.is_equal ("one") )
+				assert ("ERRORE il sistema non ha aggiornato correttamente le condizioni", cp.condizioni.item ("alfa") and cp.condizioni.item ("beta") and not cp.condizioni.item ("gamma") )
 			end
 		end
 
@@ -48,10 +51,11 @@ feature -- Test routines
 			-- Il processo dovrebbe arrestarsi nello stato "one" con le condizioni "alfa" e "gamma" false e "beta" vera.
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_3.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", ep.state_chart.stato_corrente.id.is_equal ("one") )
-				assert ("ERRORE il sistema non ha aggiornato correttamente le condizioni", not ep.state_chart.condizioni.item ("alfa") and ep.state_chart.condizioni.item ("beta") and not ep.state_chart.condizioni.item ("gamma") )
+			ambiente_prova.acquisisci_eventi (nomi_files_prova[2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", cp.stato_corrente.id.is_equal ("one") )
+				assert ("ERRORE il sistema non ha aggiornato correttamente le condizioni", not cp.condizioni.item ("alfa") and cp.condizioni.item ("beta") and not cp.condizioni.item ("gamma") )
 			end
 		end
 
@@ -59,12 +63,13 @@ feature -- Test routines
 			-- Il processo dovrebbe arrestarsi nello stato "two" con le condizioni "alfa" e "gamma" false e "beta" vera.
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_4.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", ep.state_chart.stato_corrente.id.is_equal ("one") )
-				assert ("ERRORE il sistema non ha aggiornato alfa", not ep.state_chart.condizioni.item ("alfa") )
-				assert ("ERRORE il sistema non ha aggiornato beta", ep.state_chart.condizioni.item ("beta") )
-				assert ("ERRORE il sistema non ha aggiornato gamma", not ep.state_chart.condizioni.item ("gamma") )
+			ambiente_prova.acquisisci_eventi (nomi_files_prova[2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", cp.stato_corrente.id.is_equal ("one") )
+				assert ("ERRORE il sistema non ha aggiornato alfa", not cp.condizioni.item ("alfa") )
+				assert ("ERRORE il sistema non ha aggiornato beta", cp.condizioni.item ("beta") )
+				assert ("ERRORE il sistema non ha aggiornato gamma", not cp.condizioni.item ("gamma") )
 			end
 		end
 
@@ -73,12 +78,13 @@ feature -- Test routines
 			-- Verifica se posso compiere più azioni.
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_5.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", ep.state_chart.stato_corrente.id.is_equal ("one") )
-				assert ("ERRORE il sistema non ha aggiornato alfa", not ep.state_chart.condizioni.item ("alfa") )
-				assert ("ERRORE il sistema non ha aggiornato beta", not ep.state_chart.condizioni.item ("beta") )
-				assert ("ERRORE il sistema non ha aggiornato gamma", not ep.state_chart.condizioni.item ("gamma") )
+			ambiente_prova.acquisisci_eventi (nomi_files_prova[2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", cp.stato_corrente.id.is_equal ("one") )
+				assert ("ERRORE il sistema non ha aggiornato alfa", not cp.condizioni.item ("alfa") )
+				assert ("ERRORE il sistema non ha aggiornato beta", not cp.condizioni.item ("beta") )
+				assert ("ERRORE il sistema non ha aggiornato gamma", not cp.condizioni.item ("gamma") )
 			end
 		end
 
@@ -87,12 +93,13 @@ feature -- Test routines
 			-- Verifica funzionamento con evento non esistente.
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_verifica.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", ep.state_chart.stato_corrente.id.is_equal ("one") )
-				assert ("ERRORE il sistema non ha aggiornato alfa", not ep.state_chart.condizioni.item ("alfa") )
-				assert ("ERRORE il sistema non ha aggiornato beta", not ep.state_chart.condizioni.item ("beta") )
-				assert ("ERRORE il sistema non ha aggiornato gamma", not ep.state_chart.condizioni.item ("gamma") )
+			ambiente_prova.acquisisci_eventi (nomi_files_prova[2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (one)", cp.stato_corrente.id.is_equal ("one") )
+				assert ("ERRORE il sistema non ha aggiornato alfa", not cp.condizioni.item ("alfa") )
+				assert ("ERRORE il sistema non ha aggiornato beta", not cp.condizioni.item ("beta") )
+				assert ("ERRORE il sistema non ha aggiornato gamma", not cp.condizioni.item ("gamma") )
 			end
 		end
 

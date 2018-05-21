@@ -19,7 +19,8 @@ inherit
 feature {NONE} -- Supporto
 
 	nomi_files_prova: ARRAY [STRING]
-	esecutore_prova: detachable ESECUTORE
+	configurazione_prova: CONFIGURAZIONE
+	ambiente_prova: AMBIENTE
 	a_path: PATH
 	test_data_dir: STRING = "test_data"
 
@@ -30,6 +31,7 @@ feature -- Test routines
 		    create a_path.make_current
 			test_data_dir.append_character(a_path.directory_separator)
 		    create nomi_files_prova.make_filled ("", 1, 2)
+		    create ambiente_prova.make_empty
 		end
 
 end

@@ -17,6 +17,7 @@ feature -- Test routines
 		    precursor
 			nomi_files_prova[1] := test_data_dir + "esempio_cronometro_per_esecutore_test.xml"
 			nomi_files_prova[2] := test_data_dir
+			create configurazione_prova.make(nomi_files_prova[1])
 		end
 
 feature -- Test Cronometro
@@ -25,20 +26,21 @@ feature -- Test Cronometro
 			-- Il processo dovrebbe arrestarsi nello stato "running"
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_cronometro_1_per_esecutore_test_verifica.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (RUNNING)", ep.state_chart.stato_corrente.id.is_equal ("running"))
+			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (RUNNING)", cp.stato_corrente.id.is_equal("running") )
 			end
-
 		end
 
 	t_evolvi_cronometro_2
 			-- Il processo dovrebbe arrestarsi nello stato "stopped"
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_cronometro_2_per_esecutore_test_verifica.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (STOPPED)", ep.state_chart.stato_corrente.id.is_equal ("stopped"))
+			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (STOPPED)", cp.stato_corrente.id.is_equal ("stopped"))
 			end
 		end
 
@@ -46,9 +48,10 @@ feature -- Test Cronometro
 			-- Il processo dovrebbe arrestarsi nello stato "reset"
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_cronometro_3_per_esecutore_test_verifica.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (RESET)", ep.state_chart.stato_corrente.id.is_equal ("reset"))
+			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (RESET)", cp.stato_corrente.id.is_equal ("reset"))
 			end
 		end
 
@@ -56,9 +59,10 @@ feature -- Test Cronometro
 			-- Il processo dovrebbe arrestarsi nello stato "paused"
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_cronometro_4_per_esecutore_test_verifica.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (PAUSED)", ep.state_chart.stato_corrente.id.is_equal ("paused"))
+			ambiente_prova.acquisisci_eventi (nomi_files_prova[2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (PAUSED)", cp.stato_corrente.id.is_equal ("paused"))
 			end
 		end
 
@@ -66,9 +70,10 @@ feature -- Test Cronometro
 			-- Il processo dovrebbe arrestarsi nello stato "running"
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_cronometro_5_per_esecutore_test_verifica.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (RUNNING)", ep.state_chart.stato_corrente.id.is_equal ("running"))
+			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (RUNNING)", cp.stato_corrente.id.is_equal ("running"))
 			end
 		end
 
@@ -76,9 +81,10 @@ feature -- Test Cronometro
 			-- Il processo dovrebbe arrestarsi nello stato "paused"
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_cronometro_1_per_esecutore_test.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (PAUSED)", ep.state_chart.stato_corrente.id.is_equal ("paused"))
+			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (PAUSED)", cp.stato_corrente.id.is_equal ("paused"))
 			end
 		end
 
@@ -86,9 +92,10 @@ feature -- Test Cronometro
 			-- Il processo dovrebbe arrestarsi nello stato "stopped"
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_cronometro_2_per_esecutore_test.txt"
-			create esecutore_prova.start (nomi_files_prova)
-			if attached esecutore_prova as ep then
-				assert ("ERRORE il sistema non ha terminato nello stato corretto (STOPPED)", ep.state_chart.stato_corrente.id.is_equal ("stopped"))
+			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (STOPPED)", cp.stato_corrente.id.is_equal ("stopped"))
 			end
 		end
 
