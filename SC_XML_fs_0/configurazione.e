@@ -240,7 +240,7 @@ feature -- inizializzazione SC
 			end
 		end
 
-	inizializza_stati (lis_el: LIST [XML_ELEMENT])
+	inizializza_stati (lis_el: LIST [XML_ELEMENT]; parent: detachable STATO)
 			-- assegna agli stati presenti nella SC le transizioni con eventi e azioni
 		do
 			from
@@ -248,8 +248,14 @@ feature -- inizializzazione SC
 			until
 				lis_el.after
 			loop
-				if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato_xml then
-					riempi_stato (stato_xml.value, lis_el.item_for_iteration)
+				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato_xml then
+					stati.extend (create {STATO}.make_final_with_id (stato_xml.value), stato_xml.value)
+				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato_xml then
+					stati.extend (create {STATO}.make_with_id (stato_xml.value), stato_xml.value)
+					if attached stati.item (stato_xml.value) as st then
+						riempi_stato ( st, lis_el.item_for_iteration, parent)
+						inizializza_stati(lis_el.item_for_iteration.elements, st)
+					end
 				end
 				lis_el.forth
 			end
@@ -276,7 +282,7 @@ feature -- inizializzazione SC
 			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
 				istanzia_stati_e_condizioni (lis_el)
 				imposta_stato_iniziale (f)
-				inizializza_stati (lis_el)
+				inizializza_stati (lis_el, VOID)
 			end
 		end
 
@@ -328,19 +334,19 @@ feature -- inizializzazione SC
 			end
 		end
 
-	riempi_stato (id_stato: STRING; element: XML_ELEMENT)
+	riempi_stato (stato: STATO; element: XML_ELEMENT; parent: detachable STATO)
 		local
 			transition_list: LIST [XML_ELEMENT]
 			assign_list: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
 		do
+			stato.set_parent(parent)
 			transition_list := element.elements
 			from
 				transition_list.start
 			until
 				transition_list.after
 			loop
-
 					-- TODO gestire separatamente feature di creazione transizione che torna o transizione o errore
 				if transition_list.item_for_iteration.name ~ "transition" and then attached transition_list.item_for_iteration.attribute_by_name ("target") as tt then
 						-- TODO gestire fallimento del test per assenza clausola target
@@ -350,11 +356,11 @@ feature -- inizializzazione SC
 						assegnazione_condizione (transition_list, transizione)
 						assign_list := transition_list.item_for_iteration.elements
 						assegnazione_azioni (assign_list, transizione)
-						if attached stati.item (id_stato) as si then
+						if attached stati.item (stato.id) as si then
 							si.aggiungi_transizione (transizione)
 						end
 					else
-						if attached stati.item (id_stato) as si then
+						if attached stati.item (stato.id) as si then
 							print ("lo stato" + si.id + "ha una transizione non valida %N")
 						end
 					end

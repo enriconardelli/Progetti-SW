@@ -71,6 +71,16 @@ feature -- setter
 			ora_e_finale: finale
 		end
 
+	set_parent (genitore: detachable STATO)
+		require
+			e_uno_stato: genitore /= VOID
+		do
+			stato_genitore := genitore
+			type := 1
+		ensure
+			genitore_assegnato: stato_genitore = genitore
+		end
+
 	set_OnEntry (una_azione: AZIONE)
 		require
 			e_una_azione: una_azione /= VOID
