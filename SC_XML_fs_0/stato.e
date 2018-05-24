@@ -8,7 +8,7 @@ class
 	STATO
 
 create
-	make_with_id, make_final_with_id, make_empty
+	make_with_id, make_final_with_id, make_empty, make_with_id_and_parent
 
 feature --creazione
 
@@ -42,6 +42,20 @@ feature --creazione
 			type := 0
 			finale := false
 			create id.make_empty
+		end
+
+	make_with_id_and_parent (un_id: STRING; parent: STATO)
+		require
+			non_e_una_stringa_vuota: un_id /= Void
+			parente_esistente: parent /= Void
+		do
+			id := un_id
+			finale := FALSE
+			type := 0
+			stato_genitore := parent
+			create transizioni.make_empty
+		ensure
+			attributo_assegnato: id = un_id
 		end
 
 feature -- attributi

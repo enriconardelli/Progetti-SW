@@ -221,7 +221,7 @@ feature -- inizializzazione SC
 				-- condizione_vuota è una condizione sempre true che si applica alle transizioni che hanno condizione void (cfr riempi_stato)
 		end
 
-	istanzia_stati_e_condizioni (lis_el: LIST [XML_ELEMENT])
+	istanzia_condizioni_e_final (lis_el: LIST [XML_ELEMENT])
 			-- istanzia nella SC gli stati presenti in <state> e le condizioni presenti in <datamodel>
 		do
 			from
@@ -231,10 +231,33 @@ feature -- inizializzazione SC
 			loop
 				if lis_el.item_for_iteration.name ~ "final" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 					stati.extend (create {STATO}.make_final_with_id (att.value), att.value)
-				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
-					stati.extend (create {STATO}.make_with_id (att.value), att.value)
+--				elseif lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
+--					stati.extend (create {STATO}.make_with_id (att.value), att.value)
 				elseif lis_el.item_for_iteration.name ~ "datamodel" and then attached lis_el.item_for_iteration.elements as lis_data then
 					istanzia_condizioni (lis_data)
+				end
+				lis_el.forth
+			end
+		end
+
+	istanzia_stati (lis_el: LIST [XML_ELEMENT]; parent: detachable STATO)
+	do
+			from
+				lis_el.start
+			until
+				lis_el.after
+			loop
+				if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
+					if lis_el.item_for_iteration.has_element_by_name ("stato") then
+						stati.extend (create {STATO_XOR}.make_with_id (att.value), att.value)
+						istanzia_stati (lis_el.item_for_iteration.elements, stati.item (att.value))
+					else
+						if attached parent as pid then
+							stati.extend (create {STATO}.make_with_id_and_parent (att.value, pid), att.value)
+						else
+							stati.extend (create {STATO}.make_with_id (att.value), att.value)
+						end
+					end
 				end
 				lis_el.forth
 			end
@@ -274,7 +297,8 @@ feature -- inizializzazione SC
 			--	inizializza ogni stato con le sue transizioni con eventi ed azioni
 		do
 			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
-				istanzia_stati_e_condizioni (lis_el)
+				istanzia_condizioni_e_final (lis_el)
+				istanzia_stati (lis_el, void)
 				imposta_stato_iniziale (f)
 				inizializza_stati (lis_el)
 			end
