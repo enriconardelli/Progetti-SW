@@ -97,13 +97,13 @@ feature -- routines
 			transizioni.force (tr, transizioni.count + 1)
 		end
 
-	aggiungi_genitore (gen: STATO)
+	set_genitore (p_genitore: STATO)
 		require
-			genitore_esistente: gen /= VOID
+			genitore_esistente: p_genitore /= Void
 		do
-			stato_genitore := gen
+			stato_genitore := p_genitore
 		ensure
-			genitore_acquisito: stato_genitore = gen
+			genitore_acquisito: stato_genitore = p_genitore
 		end
 
 	transizione_abilitata (istante_corrente: LINKED_SET [STRING]; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable TRANSIZIONE
