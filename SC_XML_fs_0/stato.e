@@ -12,12 +12,20 @@ create
 
 feature --creazione
 
+	make_empty
+		do
+			create transizioni.make_empty
+			type := 0
+			finale := False
+			create id.make_empty
+		end
+
 	make_with_id (un_id: STRING)
 		require
 			non_e_una_stringa_vuota: un_id /= Void
 		do
 			id := un_id
-			finale := FALSE
+			finale := False
 			stato_default := Current
 			create transizioni.make_empty
 		ensure
@@ -32,14 +40,6 @@ feature --creazione
 			set_final
 		ensure
 			attributo_assegnato: id = un_id
-		end
-
-	make_empty
-		do
-			create transizioni.make_empty
-			type := 0
-			finale := false
-			create id.make_empty
 		end
 
 	make_with_id_and_parent (un_id: STRING; genitore: STATO)
