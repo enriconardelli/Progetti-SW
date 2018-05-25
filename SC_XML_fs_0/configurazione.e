@@ -142,8 +142,8 @@ feature --evoluzione SC
 			stato_gen_target: STATO
 		do
 			create azioni.make_empty
-			create stato_gen_corrente.make_empty
-			create stato_gen_target.make_empty
+			create stato_gen_corrente.make_with_id(create {STRING}.make_empty)
+			create stato_gen_target.make_with_id(create {STRING}.make_empty)
 			stop := FALSE
 			if attached stato_corrente.stato_genitore as ssg then
 				if attached transizione_corrente as tc then

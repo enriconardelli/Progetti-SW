@@ -8,17 +8,9 @@ class
 	STATO
 
 create
-	make_with_id, make_final_with_id, make_empty, make_with_id_and_parent
+	make_with_id, make_final_with_id, make_with_id_and_parent
 
 feature --creazione
-
-	make_empty
-		do
-			create transizioni.make_empty
-			type := 0
-			finale := False
-			create id.make_empty
-		end
 
 	make_with_id (un_id: STRING)
 		require
