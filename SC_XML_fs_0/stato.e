@@ -28,10 +28,8 @@ feature --creazione
 		require
 			non_e_una_stringa_vuota: un_id /= Void
 		do
-			id := un_id
-			finale := TRUE
-			type := 0
-			create transizioni.make_empty
+			make_with_id (un_id)
+			set_final
 		ensure
 			attributo_assegnato: id = un_id
 		end
@@ -44,16 +42,13 @@ feature --creazione
 			create id.make_empty
 		end
 
-	make_with_id_and_parent (un_id: STRING; parent: STATO)
+	make_with_id_and_parent (un_id: STRING; genitore: STATO)
 		require
 			non_e_una_stringa_vuota: un_id /= Void
-			parente_esistente: parent /= Void
+			genitore_esistente: genitore /= Void
 		do
-			id := un_id
-			finale := FALSE
-			type := 0
-			stato_genitore := parent
-			create transizioni.make_empty
+			make_with_id (un_id)
+			stato_genitore := genitore
 		ensure
 			attributo_assegnato: id = un_id
 		end
