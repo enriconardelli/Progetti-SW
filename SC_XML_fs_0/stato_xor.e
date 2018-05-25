@@ -23,27 +23,27 @@ feature -- creazione
 		do
 			id := un_id
 			create transizioni.make_empty
-			create stati.make_empty
+			create stati_figli.make_empty
 			create stato_default.make_empty
 			type:=1
 		end
 
 feature -- attributi
 
-	stati: ARRAY [STATO]
+	stati_figli: ARRAY [STATO]
 
 feature -- setter
 
-	add_stato (uno_stato: STATO)
+	add_figlio (uno_stato: STATO)
 	require
-		uno_stato_esistente: uno_stato /= VOID
+		uno_stato_esistente: uno_stato /= Void
 	do
-		stati.force (uno_stato, stati.count + 1)
+		stati_figli.force (uno_stato, stati_figli.count + 1)
 	end
 
 	set_stato_default (lo_stato: STATO)
 	require
-		uno_stato_esistente: lo_stato /= VOID
+		uno_stato_esistente: lo_stato /= Void
 	do
 		stato_default:= lo_stato
 	end
