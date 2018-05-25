@@ -87,9 +87,7 @@ feature --evoluzione SC
 					count_istante_corrente := count_istante_corrente + 1
 					if attached transizione_corrente as tc then
 						esegui_azioni (tc)
-						if attached tc.target.stato_default as sd then
-							stato_corrente := sd
-						end
+						stato_corrente := tc.target.stato_default
 --						if tc.target.type = 0 then
 --							stato_corrente := tc.target
 --						elseif tc.target.type = 1 then

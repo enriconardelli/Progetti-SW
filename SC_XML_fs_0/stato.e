@@ -51,7 +51,7 @@ feature -- attributi
 
 	finale: BOOLEAN
 
-	stato_default: detachable STATO
+	stato_default: STATO
 
 	stato_genitore: detachable STATO
 
