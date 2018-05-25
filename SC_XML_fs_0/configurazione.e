@@ -235,6 +235,7 @@ feature -- inizializzazione SC
 		end
 
 	istanzia_stati (lis_el: LIST [XML_ELEMENT]; p_genitore: detachable STATO)
+	local stato_temp: STATO
 	do
 			from
 				lis_el.start
@@ -246,8 +247,10 @@ feature -- inizializzazione SC
 						stati.extend (create {STATO_XOR}.make_with_id (att.value), att.value)
 						istanzia_stati (lis_el.item_for_iteration.elements, stati.item (att.value))
 					else
-						if attached p_genitore as pg then
-							stati.extend (create {STATO}.make_with_id_and_parent (att.value, pg), att.value)
+						if attached {STATO_XOR} p_genitore as pg then
+							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+							stati.extend (stato_temp, att.value)
+							pg.add_figlio (stato_temp)
 						else
 							stati.extend (create {STATO}.make_with_id (att.value), att.value)
 						end
