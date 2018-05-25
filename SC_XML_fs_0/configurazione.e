@@ -276,11 +276,16 @@ feature -- inizializzazione SC
 		do
 			if attached radice.attribute_by_name ("initial") as si then
 				if attached stati.item (si.value) as v then
+					-- se lo stato v ha dei figli bisogna andare in ricorsione
+					-- altrimenti si fa l'assegnazione
 					stato_iniziale := v
 				else
 					print ("ERRORE: lo stato indicato come 'initial' non è uno degli stati in <state>")
 				end
 			else
+				-- l'assenza di "initial" deve essere gestita scegliendo il primo dei figli se lo stato ha figli
+				-- oppure scegliendo sé stesso se lo stato non ha figli
+				-- oppure segnalando errore se il nodo è la radice <scxml>
 				print ("ERRORE: manca lo stato 'initial' nel file e non c'è la gestione della sua assenza")
 					-- TODO gestire la scelta dello stato iniziale in caso di assenza dell'attributo 'initial' nel file .xml
 			end
