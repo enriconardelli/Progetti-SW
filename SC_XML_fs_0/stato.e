@@ -18,7 +18,7 @@ feature --creazione
 		do
 			id := un_id
 			finale := FALSE
-			type := 0
+			stato_default := Current
 			create transizioni.make_empty
 		ensure
 			attributo_assegnato: id = un_id
