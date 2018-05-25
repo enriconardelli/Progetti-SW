@@ -244,6 +244,8 @@ feature -- inizializzazione SC
 			loop
 				if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 					if lis_el.item_for_iteration.has_element_by_name ("state") then
+						-- elemento corrente ha figli
+						-- se p_genitore diverso da Void va aggiunta la relazione genitore-figlio
 						stati.extend (create {STATO_XOR}.make_with_id (att.value), att.value)
 						istanzia_stati (lis_el.item_for_iteration.elements, stati.item (att.value))
 					else -- elemento corrente non ha figli
@@ -301,7 +303,7 @@ feature -- inizializzazione SC
 		do
 			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
 				istanzia_condizioni_e_final (lis_el)
-				istanzia_stati (lis_el, void)
+				istanzia_stati (lis_el, Void)
 				imposta_stato_iniziale (f)
 				inizializza_stati (lis_el)
 			end
