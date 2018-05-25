@@ -21,11 +21,8 @@ feature -- creazione
 
 	make_with_id (un_id: STRING)
 		do
-			id := un_id
-			create transizioni.make_empty
+			Precursor (un_id)
 			create stati_figli.make_empty
-			create stato_default.make_empty
-			type:=1
 		end
 
 feature -- attributi
