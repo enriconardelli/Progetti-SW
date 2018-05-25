@@ -88,13 +88,6 @@ feature --evoluzione SC
 					if attached transizione_corrente as tc then
 						esegui_azioni (tc)
 						stato_corrente := tc.target.stato_default
---						if tc.target.type = 0 then
---							stato_corrente := tc.target
---						elseif tc.target.type = 1 then
---							if attached tc.target.stato_default as sd then
---								stato_corrente := sd
---							end
---						end
 					end
 				end
 			end
