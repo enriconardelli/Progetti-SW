@@ -34,13 +34,13 @@ feature --creazione
 			attributo_assegnato: id = un_id
 		end
 
-	make_with_id_and_parent (un_id: STRING; genitore: STATO)
+	make_with_id_and_parent (un_id: STRING; p_genitore: STATO)
 		require
 			non_e_una_stringa_vuota: un_id /= Void
-			genitore_esistente: genitore /= Void
+			genitore_esistente: p_genitore /= Void
 		do
 			make_with_id (un_id)
-			stato_genitore := genitore
+			set_genitore(p_genitore)
 		ensure
 			attributo_assegnato: id = un_id
 		end
