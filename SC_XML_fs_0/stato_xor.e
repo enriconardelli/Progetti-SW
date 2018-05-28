@@ -38,4 +38,11 @@ feature -- setter
 		stati_figli.force (uno_stato, stati_figli.count + 1)
 	end
 
+	set_stato_default (lo_stato: STATO)
+	require
+		uno_stato_esistente: lo_stato /= Void
+	do
+		stato_default:= lo_stato
+	end
+
 end
