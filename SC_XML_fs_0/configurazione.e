@@ -244,7 +244,6 @@ istanzia_stati (lis_el: LIST [XML_ELEMENT]; p_genitore: detachable STATO)
 			loop
 				if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
 					if lis_el.item_for_iteration.has_element_by_name ("state") then -- elemento corrente ha figli
-						-- se p_genitore diverso da Void va aggiunta la relazione genitore-figlio
 						if attached {STATO_XOR} p_genitore as pg then
 							stato_temp := create {STATO_XOR}.make_with_id(att.value)
 							stato_temp.set_genitore (pg)
@@ -323,19 +322,14 @@ istanzia_stati (lis_el: LIST [XML_ELEMENT]; p_genitore: detachable STATO)
 				else
 					print ("ERRORE: lo stato indicato come 'initial' non è uno degli stati in <state>")
 				end
-			else
-				-- l'assenza di "initial" deve essere gestita scegliendo il primo dei figli se lo stato ha figli
-				if radice.has_element_by_name ("state") then
-					if attached radice.element_by_name ("state") as st then
-						if attached st.attribute_by_name ("id") as id then
-							if attached stati.item (id.value) as df then
-								stato_iniziale := df
-							end
+			elseif attached radice.element_by_name ("state") as st then
+				-- l'assenza di "initial" è gestita scegliendo il primo dei figli se lo stato ha figli oppure scegliendo sé stesso se lo stato non ha figli
+					if attached st.attribute_by_name ("id") as id then
+						if attached stati.item (id.value) as df then
+							inizializza_stati_ricorsivo ( df)
 						end
 					end
-				end
-				-- oppure scegliendo sé stesso se lo stato non ha figli
-				-- oppure segnalando errore se il nodo è la radice <scxml>
+			else -- TODO oppure segnalando errore se il nodo è la radice <scxml>
 				print ("ERRORE: manca lo stato 'initial' nel file e non c'è la gestione della sua assenza")
 					-- TODO gestire la scelta dello stato iniziale in caso di assenza dell'attributo 'initial' nel file .xml
 			end
