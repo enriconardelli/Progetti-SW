@@ -325,6 +325,15 @@ istanzia_stati (lis_el: LIST [XML_ELEMENT]; p_genitore: detachable STATO)
 				end
 			else
 				-- l'assenza di "initial" deve essere gestita scegliendo il primo dei figli se lo stato ha figli
+				if radice.has_element_by_name ("state") then
+					if attached radice.element_by_name ("state") as st then
+						if attached st.attribute_by_name ("id") as id then
+							if attached stati.item (id.value) as df then
+								stato_iniziale := df
+							end
+						end
+					end
+				end
 				-- oppure scegliendo sé stesso se lo stato non ha figli
 				-- oppure segnalando errore se il nodo è la radice <scxml>
 				print ("ERRORE: manca lo stato 'initial' nel file e non c'è la gestione della sua assenza")
