@@ -234,7 +234,7 @@ feature -- inizializzazione SC
 			end
 		end
 
-	istanzia_stati (lis_el: LIST [XML_ELEMENT]; p_genitore: detachable STATO)
+istanzia_stati (lis_el: LIST [XML_ELEMENT]; p_genitore: detachable STATO)
 	local stato_temp: STATO
 	do
 			from
@@ -283,13 +283,43 @@ feature -- inizializzazione SC
 			end
 		end
 
+	set_stati_default (lis_el: LIST [XML_ELEMENT])
+			-- assegna agli stati presenti nella SC le transizioni con eventi e azioni
+		do
+			from
+				lis_el.start
+			until
+				lis_el.after
+			loop
+				if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato then
+					if attached lis_el.item_for_iteration.attribute_by_name ("initial") as df then
+						if attached stati.item (df.value) as st_df then
+							if attached stati.item (stato.value) as pr then
+								pr.set_stato_default(st_df)
+							end
+						end
+					end
+					if lis_el.item_for_iteration.has_element_by_name ("state") then -- elemento corrente ha figli
+						set_stati_default (lis_el.item_for_iteration.elements)
+					end
+				end
+				lis_el.forth
+			end
+		end
+
 	imposta_stato_iniziale (radice: XML_ELEMENT)
 		do
 			if attached radice.attribute_by_name ("initial") as si then
 				if attached stati.item (si.value) as v then
-					-- se lo stato v ha dei figli bisogna andare in ricorsione
-					-- altrimenti si fa l'assegnazione
-					stato_iniziale := v
+					if attached v.stato_default as df then
+						if not df.id.is_equal (v.id) then
+							inizializza_stati_ricorsivo (df)
+						else
+							stato_iniziale := v
+						end
+					else
+						stato_iniziale := v
+					end
 				else
 					print ("ERRORE: lo stato indicato come 'initial' non è uno degli stati in <state>")
 				end
@@ -302,6 +332,17 @@ feature -- inizializzazione SC
 			end
 		end
 
+	inizializza_stati_ricorsivo ( stato: STATO)
+		do
+			if attached stato.stato_default as df then
+				if not df.id.is_equal (stato.id) then
+					inizializza_stati_ricorsivo (df)
+				else
+					stato_iniziale := stato
+				end
+			end
+		end
+
 	crea_stati_e_condizioni
 			--	riempie le hashtable degli stati e delle condizioni
 			--	inizializza ogni stato con le sue transizioni con eventi ed azioni
@@ -309,7 +350,8 @@ feature -- inizializzazione SC
 			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
 				istanzia_condizioni_e_final (lis_el)
 				istanzia_stati (lis_el, Void)
-				imposta_stato_iniziale (lis_el)
+				set_stati_default (lis_el)
+				imposta_stato_iniziale (f)
 				inizializza_stati (lis_el)
 			end
 		end
