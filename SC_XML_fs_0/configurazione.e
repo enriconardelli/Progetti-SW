@@ -243,14 +243,19 @@ feature -- inizializzazione SC
 				lis_el.after
 			loop
 				if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
-					if lis_el.item_for_iteration.has_element_by_name ("state") then
-						-- elemento corrente ha figli
+					if lis_el.item_for_iteration.has_element_by_name ("state") then -- elemento corrente ha figli
 						-- se p_genitore diverso da Void va aggiunta la relazione genitore-figlio
-						stati.extend (create {STATO_XOR}.make_with_id (att.value), att.value)
-						istanzia_stati (lis_el.item_for_iteration.elements, stati.item (att.value))
-					else -- elemento corrente non ha figli
 						if attached {STATO_XOR} p_genitore as pg then
-							-- elemento corrente ha genitore
+							stato_temp := create {STATO_XOR}.make_with_id(att.value)
+							stato_temp.set_genitore (pg)
+							stati.extend (stato_temp, att.value)
+							pg.add_figlio (stato_temp)
+						else
+							stati.extend (create {STATO_XOR}.make_with_id (att.value), att.value)
+						end
+							istanzia_stati (lis_el.item_for_iteration.elements, stati.item (att.value))
+					else -- elemento corrente non ha figli
+						if attached {STATO_XOR} p_genitore as pg then -- elemento corrente ha genitore
 							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
 							stati.extend (stato_temp, att.value)
 							pg.add_figlio (stato_temp)
@@ -304,7 +309,7 @@ feature -- inizializzazione SC
 			if attached {XML_ELEMENT} albero.document.first as f and then attached f.elements as lis_el then
 				istanzia_condizioni_e_final (lis_el)
 				istanzia_stati (lis_el, Void)
-				imposta_stato_iniziale (f)
+				imposta_stato_iniziale (lis_el)
 				inizializza_stati (lis_el)
 			end
 		end
