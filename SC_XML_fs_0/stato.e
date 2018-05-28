@@ -90,6 +90,13 @@ feature -- setter
 			azione_assegnata: OnExit = una_azione
 		end
 
+	set_stato_default (lo_stato: STATO)
+	require
+		uno_stato_esistente: lo_stato /= Void
+	do
+		stato_default:= lo_stato
+	end
+
 feature -- routines
 
 	aggiungi_transizione (tr: TRANSIZIONE)

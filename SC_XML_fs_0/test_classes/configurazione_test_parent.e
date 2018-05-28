@@ -24,7 +24,6 @@ feature -- Test routines
 feature -- Test
 
 	t_xor_1
-			-- Il processo dovrebbe arrestarsi nello stato "running"
 		do
 			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_xor_1.txt"
 			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
@@ -36,5 +35,37 @@ feature -- Test
 				end
 			end
 		end
+
+	t_default
+		do
+			nomi_files_prova[2] := nomi_files_prova[2] + "eventi_xor_1.txt"
+			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+
+			if attached configurazione_prova as cp then
+				if attached cp.stati.item("A") as st then
+					if attached st.stato_default as df then
+						assert ("ERRORE il sistema non ha impostato correttamente il default di A", df.id.is_equal("A1") )
+					end
+				end
+			end
+
+			if attached configurazione_prova as cp then
+				if attached cp.stati.item("A1") as st then
+					if attached st.stato_default as df then
+						assert ("ERRORE il sistema non ha impostato correttamente il default di A1", df.id.is_equal("A1b") )
+					end
+				end
+			end
+
+--			if attached configurazione_prova as cp then
+--				assert ("ERRORE il sistema non ha terminato nello stato corretto (A1b)", cp.stato_corrente.id.is_equal("A1b") )
+--				if attached cp.stato_corrente.stato_genitore as sp then
+--					assert ("ERRORE il sistema non ha istanziato correttamente gli stati (A-A1)", sp.id.is_equal("A1") )
+--				end
+			end
+
+
+--		end
 
 end
