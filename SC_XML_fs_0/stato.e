@@ -136,6 +136,12 @@ feature -- routines
 				end
 				index_count := index_count + 1
 			end
+			if result = Void then
+				if attached stato_genitore as sg then
+					transizione_corrente := sg.transizione_abilitata (istante_corrente, hash_delle_condizioni)
+				end
+
+			end
 				--			ensure
 				--				not_found: Result = Void implies index_count = transizioni.count + 1
 		end
