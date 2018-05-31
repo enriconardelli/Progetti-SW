@@ -124,9 +124,16 @@ feature --evoluzione SC
 
     end
 
-	esegui_azioni_onentry (p_contesto: detachable STATO; p_target: STATO)
+	esegui_azioni_onentry (p_contesto: detachable STATO; p_target: detachable STATO)
     do
-
+		if p_target /= p_contesto and then attached p_target as tr then
+			esegui_azioni_onentry (p_contesto, tr.stato_genitore)
+		end
+		if attached p_target as tr then
+			if attached tr.onentry as oe then
+				oe.action (condizioni)
+			end
+		end
     end
 
 
@@ -430,7 +437,7 @@ istanzia_stati (lis_el: LIST [XML_ELEMENT]; p_genitore: detachable STATO)
 				transition_list.forth
 			end
 		end
-		
+
 	crea_albero (nome_file_SC: STRING)
 			-- crea e inizializza `albero'
 		local
