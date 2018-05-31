@@ -96,8 +96,7 @@ feature --evoluzione SC
 
 	esegui_azioni (transizione: TRANSIZIONE)
 		local
-			i: INTEGER
-			azioni_nel_percorso: detachable ARRAY [AZIONE]
+			contesto: detachable STATO
 		do
 			contesto := trova_contesto (stato_corrente, transizione.target)
 			esegui_azioni_onexit (stato_corrente, contesto)
@@ -128,6 +127,27 @@ feature --evoluzione SC
 --				ox.action (condizioni)
 --			end
 		end
+
+    trova_contesto (p_sorgente, p_destinazione: STATO): detachable STATO
+    do
+
+    end
+
+	esegui_azioni_onexit (p_stato_corrente: STATO; p_contesto: detachable STATO)
+    do
+
+    end
+
+	esegui_azioni_transizione (p_azioni: ARRAY[AZIONE])
+    do
+
+    end
+
+	esegui_azioni_onentry (p_contesto: detachable STATO; p_target: STATO)
+    do
+
+    end
+
 
 	calcola_azioni: detachable ARRAY [AZIONE]
 		local
