@@ -129,24 +129,15 @@ feature --evoluzione SC
 		do
 		end
 
-<<<<<<< HEAD
-	esegui_azioni_onentry (p_contesto: detachable STATO; p_target: detachable STATO)
+	esegui_azioni_onentry (p_contesto: detachable STATO; p_target: STATO)
     do
-		if p_target /= p_contesto and then attached p_target as tr then
-			esegui_azioni_onentry (p_contesto, tr.stato_genitore)
-		end
-		if attached p_target as tr then
-			if attached tr.onentry as oe then
+		if p_target /= p_contesto and then attached p_target.stato_genitore as sg then
+			esegui_azioni_onentry (p_contesto, sg)
+			if attached p_target.onentry as oe then
 				oe.action (condizioni)
 			end
 		end
     end
-
-=======
-	esegui_azioni_onentry (p_contesto: detachable STATO; p_target: STATO)
-		do
-		end
->>>>>>> 738e8d1701e65f2343a17549ef1f5a23ab6581f5
 
 	calcola_azioni: detachable ARRAY [AZIONE]
 		local
