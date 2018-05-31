@@ -83,34 +83,32 @@ feature --evoluzione SC
 			esegui_azioni_onexit (stato_corrente, contesto)
 			esegui_azioni_transizione (transizione.azioni)
 			esegui_azioni_onentry (contesto, transizione.target)
-				--			if attached stato_corrente.onexit as oe then
-				--				oe.action (condizioni)
-				--			end
-				--			azioni_nel_percorso := calcola_azioni
-				--			from
-				--				i := 1
-				--			until
-				--				i = transizione.azioni.count + 1
-				--			loop
-				--				transizione.azioni [i].action (condizioni)
-				--				i := i + 1
-				--			end
-				--			if attached azioni_nel_percorso as ap then
-				--				from
-				--					i := 1
-				--				until
-				--					i = azioni_nel_percorso.count + 1
-				--				loop
-				--					azioni_nel_percorso.item (i).action (condizioni)
-				--				end
-				--			end
-				--			if attached transizione.target.onexit as ox then
-				--				ox.action (condizioni)
-				--			end
 		end
 
 	trova_contesto (p_sorgente, p_destinazione: STATO): detachable STATO
+		local
+			antenati: HASH_TABLE [STRING, STRING]
+			corrente: STATO
 		do
+			create antenati.make (0)
+				-- "marca" tutti gli antenati di p_sorgente incluso
+			from
+				corrente := p_sorgente
+			until
+				corrente = Void
+			loop
+				antenati.put (corrente.id, corrente.id)
+				corrente := corrente.stato_genitore
+			end
+				-- trova il più basso antento di p_destinazione in "antenati"
+			from
+				corrente := p_destinazione
+			until
+				corrente = Void or else antenati.has (corrente.id)
+			loop
+				corrente := corrente.stato_genitore
+			end
+			Result := corrente
 		end
 
 	esegui_azioni_onexit (p_stato_corrente: STATO; p_contesto: detachable STATO)
