@@ -120,9 +120,7 @@ feature --evoluzione SC
 					ox.action (condizioni)
 				end
 				if attached p_stato_corrente.stato_genitore as sg then
-					if sg /= p_contesto then
-						esegui_azioni_onexit (sg, p_contesto)
-					end
+					esegui_azioni_onexit (sg, p_contesto)
 				end
 			end
 		end
@@ -436,7 +434,7 @@ feature -- inizializzazione SC
 				transition_list.forth
 			end
 		end
-		
+
 	crea_albero (nome_file_SC: STRING)
 			-- crea e inizializza `albero'
 		local
