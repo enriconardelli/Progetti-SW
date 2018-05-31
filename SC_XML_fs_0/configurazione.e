@@ -129,8 +129,24 @@ feature --evoluzione SC
 		end
 
     trova_contesto (p_sorgente, p_destinazione: STATO): detachable STATO
+    local
+    	antenati: HASH_TABLE [STRING, STRING]
+    	corrente: STATO
     do
-
+		create antenati.make (0)
+		-- "marca" tutti gli antenati di p_sorgente incluso
+		from corrente := p_sorgente
+		until corrente = Void
+		loop
+			antenati.put (corrente.id, corrente.id)
+			corrente := corrente.stato_genitore
+		end
+		-- trova il più basso antento di p_destinazione in "antenati"
+		from corrente := p_destinazione
+		until corrente = Void or else antenati.has(corrente.id)
+		loop corrente := corrente.stato_genitore
+		end
+		Result := corrente
     end
 
 	esegui_azioni_onexit (p_stato_corrente: STATO; p_contesto: detachable STATO)
