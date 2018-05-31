@@ -48,25 +48,6 @@ feature --creazione
 
 feature --evoluzione SC
 
-	crea_albero (nome_file_SC: STRING)
-			-- crea e inizializza `albero'
-		local
-			parser: XML_PARSER
-		do
-				--| Instantiate parser
-			create {XML_STANDARD_PARSER} parser.make
-				--| Build tree callbacks
-			create albero.make_null
-			parser.set_callbacks (albero)
-				--| Parse the `file_name' content
-			parser.parse_from_filename (nome_file_SC)
-			if parser.error_occurred then
-				print ("Parsing error!!! %N")
-			else
-				print ("Parsing OK. %N")
-			end
-		end
-
 	evolvi_SC (istanti: ARRAY [LINKED_SET [STRING]])
 		local
 			count_istante_corrente: INTEGER
@@ -447,6 +428,25 @@ istanzia_stati (lis_el: LIST [XML_ELEMENT]; p_genitore: detachable STATO)
 					end
 				end
 				transition_list.forth
+			end
+		end
+		
+	crea_albero (nome_file_SC: STRING)
+			-- crea e inizializza `albero'
+		local
+			parser: XML_PARSER
+		do
+				--| Instantiate parser
+			create {XML_STANDARD_PARSER} parser.make
+				--| Build tree callbacks
+			create albero.make_null
+			parser.set_callbacks (albero)
+				--| Parse the `file_name' content
+			parser.parse_from_filename (nome_file_SC)
+			if parser.error_occurred then
+				print ("Parsing error!!! %N")
+			else
+				print ("Parsing OK. %N")
 			end
 		end
 
