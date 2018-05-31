@@ -99,30 +99,34 @@ feature --evoluzione SC
 			i: INTEGER
 			azioni_nel_percorso: detachable ARRAY [AZIONE]
 		do
-			if attached stato_corrente.onexit as oe then
-				oe.action (condizioni)
-			end
-			azioni_nel_percorso := calcola_azioni
-			from
-				i := 1
-			until
-				i = transizione.azioni.count + 1
-			loop
-				transizione.azioni [i].action (condizioni)
-				i := i + 1
-			end
-			if attached azioni_nel_percorso as ap then
-				from
-					i := 1
-				until
-					i = azioni_nel_percorso.count + 1
-				loop
-					azioni_nel_percorso.item (i).action (condizioni)
-				end
-			end
-			if attached transizione.target.onexit as ox then
-				ox.action (condizioni)
-			end
+			contesto := trova_contesto (stato_corrente, transizione.target)
+			esegui_azioni_onexit (stato_corrente, contesto)
+			esegui_azioni_transizione (transizione.azioni)
+			esegui_azioni_onentry (contesto, transizione.target)
+--			if attached stato_corrente.onexit as oe then
+--				oe.action (condizioni)
+--			end
+--			azioni_nel_percorso := calcola_azioni
+--			from
+--				i := 1
+--			until
+--				i = transizione.azioni.count + 1
+--			loop
+--				transizione.azioni [i].action (condizioni)
+--				i := i + 1
+--			end
+--			if attached azioni_nel_percorso as ap then
+--				from
+--					i := 1
+--				until
+--					i = azioni_nel_percorso.count + 1
+--				loop
+--					azioni_nel_percorso.item (i).action (condizioni)
+--				end
+--			end
+--			if attached transizione.target.onexit as ox then
+--				ox.action (condizioni)
+--			end
 		end
 
 	calcola_azioni: detachable ARRAY [AZIONE]
@@ -170,22 +174,6 @@ feature --evoluzione SC
 					stop := TRUE
 				end
 			end
-		end
-
-	stabilizza_stato
-			-- assicura che stato_stabile sia stabile eseguendo tutte le transizioni
-		local
-			evento: detachable STRING
-			-- 	require  stato_corrente.numero_transizioni_abilitate(evento,condizioni) <2
-		do
-				--			if attached evento as e then
-				--				if attached stato_corrente.target (e, condizioni) as sc_tse then
-				--					set_stato_corrente (sc_tse)
-				--					if stato_corrente.numero_transizioni_abilitate (e, condizioni) = 1 then
-				--						stabilizza_stato
-				--					end
-				--				end
-				--			end
 		end
 
 feature -- inizializzazione SC

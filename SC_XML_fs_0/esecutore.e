@@ -18,7 +18,7 @@ feature -- Attributi
 	eventi: AMBIENTE
 	prova: detachable STATO_XOR
 			-- da cancellare, solo per avere l'elenco delle features di STATO_XOR in EiffelStudio
-			
+
 			-- memorizza gli eventi letti dal file
 			-- l'array rappresenta gli istanti mentre ogni hash_table l'insieme degli eventi che occorrono nell'istante specifico
 
@@ -26,7 +26,7 @@ feature {NONE} -- Inizializzazione
 
 	start (nomi_files: ARRAY [STRING])
 			-- prepara la SC e avvia la sua esecuzione
-			-- i parametri vanno scritti da Eiffel Studio con
+			-- i parametri vanno scritti con la loro estensione in Eiffel Studio con
 			-- menu "Execution" -> "Execution Parameters" -> "Add"
 			-- doppio click su spazio bianco accanto a "Arguments"
 			-- scrivere i parametri ognuno tra doppi apici
