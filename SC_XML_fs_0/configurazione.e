@@ -100,7 +100,7 @@ feature --evoluzione SC
 				antenati.put (corrente.id, corrente.id)
 				corrente := corrente.stato_genitore
 			end
-				-- trova il più basso antento di p_destinazione in "antenati"
+				-- trova il più basso antenato di p_destinazione in "antenati"
 			from
 				corrente := p_destinazione
 			until
@@ -124,18 +124,27 @@ feature --evoluzione SC
 		end
 
 	esegui_azioni_transizione (p_azioni: ARRAY [AZIONE])
+		local
+			i: INTEGER
 		do
+			from
+				i := p_azioni.lower
+			until
+				i = p_azioni.upper + 1
+			loop
+				p_azioni [i].action (condizioni)
+			end
 		end
 
 	esegui_azioni_onentry (p_contesto: detachable STATO; p_target: STATO)
-    do
-		if p_target /= p_contesto and then attached p_target.stato_genitore as sg then
-			esegui_azioni_onentry (p_contesto, sg)
-			if attached p_target.onentry as oe then
-				oe.action (condizioni)
+		do
+			if p_target /= p_contesto and then attached p_target.stato_genitore as sg then
+				esegui_azioni_onentry (p_contesto, sg)
+				if attached p_target.onentry as oe then
+					oe.action (condizioni)
+				end
 			end
 		end
-    end
 
 	calcola_azioni: detachable ARRAY [AZIONE]
 		local
