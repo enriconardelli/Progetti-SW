@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="A">
+	<datamodel>
+		<data id="on_entryB" expr="false" />
+		<data id="on_entryB1" expr="false" />
+		<data id="on_exitA" expr="false" />
+		<data id="on_exitA1" expr="false" />
+		<data id="on_exitA1b" expr="false" />
+	</datamodel>
+	<state id="B" initial="B1" >
+		<onentry>
+			<assign location="on_entryB" expr="true" />
+        </onentry>
+		<state id="B1">
+			<onentry>
+				<assign location="on_entryB1" expr="true" />
+			</onentry>
+			<transition event="e3" target="B2" />
+		</state>
+		<state id="B2">
+		</state>
+		<transition event="e2" target="A1" />
+	</state>
+
+	<state id="A" initial="A1" >
+		<state id="A1" initial="A1b" >
+			<state id="A1a">
+				<transition event="e3" target="A1b" />
+				<transition event="e3" target="A2" />
+			</state>
+			<state id="A1b">
+			</state>
+			<transition event="e2" target="B" />
+			<onexit>
+				<assign location="on_exitA1" expr="true" />
+			<onexit>
+		</state>
+
+		<state id="A2">
+			<transition event="e1" target="B2" />
+		</state>
+
+		<transition event="e2" target="B2" />
+		<assign location="on_exitA" expr="true" />
+		<onexit>
+			<assign location="on_exitA" expr="true" />
+		<onexit>
+	</state>
+</scxml>

@@ -55,6 +55,13 @@ feature -- Test
 					end
 				end
 			end
+			if attached configurazione_prova as cp then
+				if attached cp.stati.item ("B") as st then
+					if attached st.stato_default as df then
+						assert ("ERRORE il sistema non ha impostato correttamente il default di B", df.id.is_equal ("B1"))
+					end
+				end
+			end
 		end
 
 		t_xor_eventi_semplici
