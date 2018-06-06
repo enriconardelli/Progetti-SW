@@ -69,6 +69,12 @@ feature --evoluzione SC
 					if attached transizione_corrente as tc then
 						esegui_azioni (tc)
 						stato_corrente := tc.target.stato_default
+						if attached tc.target.stato_default.onexit as oe then
+							oe.action (condizioni)
+						end
+						if attached tc.target.stato_default.onentry as on then
+							on.action (condizioni)
+						end
 					end
 				end
 			end
