@@ -68,17 +68,23 @@ feature --evoluzione SC
 					count_istante_corrente := count_istante_corrente + 1
 					if attached transizione_corrente as tc then
 						esegui_azioni (tc)
-						stato_corrente := tc.target.stato_default
-						if attached tc.target.stato_default.onexit as oe then
-							oe.action (condizioni)
-						end
-						if attached tc.target.stato_default.onentry as on then
-							on.action (condizioni)
-						end
+						stato_corrente := trova_default (tc.target)
 					end
 				end
 			end
 			print ("%N%NHo terminato l'elaborazione degli eventi nello stato = " + stato_corrente.id + "%N")
+		end
+
+	trova_default ( stato: STATO ): STATO
+		do
+			if stato /= stato.stato_default then
+				if attached stato.stato_default.onentry as oe then
+					oe.action (condizioni)
+				end
+				result := trova_default( stato.stato_default )
+			else
+				result := stato
+			end
 		end
 
 	esegui_azioni (transizione: TRANSIZIONE)
@@ -456,6 +462,11 @@ feature -- inizializzazione SC
 						istanzia_onentry(id_stato, list )
 					end
 				end
+				if transition_list.item_for_iteration.name ~ "onexit" then
+					if attached transition_list.item_for_iteration.elements as list then
+						istanzia_onexit(id_stato, list )
+					end
+				end
 				transition_list.forth
 			end
 		end
@@ -476,17 +487,55 @@ feature -- inizializzazione SC
 							end
 						elseif expr.value ~ "true" then
 							if attached stati.item (id_stato) as si then
-									si.set_onentry(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE) )
+								si.set_onentry(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE) )
 							end
 						end
 					end
 				end
-	--					if transition_list.item_for_iteration.name ~ "log" and then attached transition_list.item_for_iteration.attribute_by_name ("name") as name then
-	--						if attached name.value then
-	--							transizione.azioni.force (create {STAMPA}.make_with_text (name.value), i)
-	--						end
-	--					end
+				if elements.item_for_iteration.name ~ "log" and then attached elements.item_for_iteration.attribute_by_name ("name") as name then
+					if attached stati.item (id_stato) as si then
+						if attached name.value then
+							si.set_onentry(create {STAMPA}.make_with_text (name.value) )
+						end
+					end
+				end
+				elements.forth
+			end
+		end
 
+	istanzia_onexit (id_stato: STRING; elements: LIST [XML_ELEMENT])
+
+		local
+			azione: AZIONE
+		do
+			from
+				elements.start
+			until
+				elements.after or azione /= VOID
+			loop
+				if elements.item_for_iteration.name ~ "assign" then
+					if attached elements.item_for_iteration.attribute_by_name ("location") as luogo and then attached elements.item_for_iteration.attribute_by_name ("expr") as expr then
+						if expr.value ~ "false" then
+							if attached stati.item (id_stato) as si then
+								si.set_onexit(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE) )
+								azione := si.onexit
+							end
+						elseif expr.value ~ "true" then
+							if attached stati.item (id_stato) as si then
+								si.set_onexit(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE) )
+								azione := si.onexit
+							end
+						end
+					end
+				end
+				if elements.item_for_iteration.name ~ "log" and then attached elements.item_for_iteration.attribute_by_name ("name") as name then
+					if attached stati.item (id_stato) as si then
+						if attached name.value then
+							si.set_onexit(create {STAMPA}.make_with_text (name.value) )
+							azione := si.onexit
+						end
+					end
+				end
 				elements.forth
 			end
 		end
