@@ -74,4 +74,14 @@ feature -- Test
 			end
 		end
 
+		t_xor_giro_base_completo
+		do
+			nomi_files_prova [2] := nomi_files_prova [2] + "eventi_xor_3.txt"
+			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
+			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
+			if attached configurazione_prova as cp then
+				assert ("ERRORE il sistema non ha terminato nello stato corretto (B2)", cp.stato_corrente.id.is_equal ("B2"))
+			end
+		end
+
 end

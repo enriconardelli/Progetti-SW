@@ -6,14 +6,14 @@
 		</state>
 		<state id="B2">
 		</state>
-		<transition event="e2" target="A1b" />
+		<transition event="e2" target="A1a" />
 	</state>
 
 	<state id="A" initial="A1" >
 		<state id="A1" initial="A1b" >
 			<state id="A1a">
-				<transition event="e3" target="A1b" />
 				<transition event="e3" target="A2" />
+				<transition event="e3" target="A1b" />
 			</state>
 			<state id="A1b">
 			</state>
