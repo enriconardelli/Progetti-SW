@@ -140,9 +140,9 @@ feature --evoluzione SC
 		do
 			if p_target /= p_contesto and then attached p_target.stato_genitore as sg then
 				esegui_azioni_onentry (p_contesto, sg)
-				if attached p_target.onentry as oe then
-					oe.action (condizioni)
-				end
+			end
+			if p_target /= p_contesto and then attached p_target.onentry as oe then
+				oe.action (condizioni)
 			end
 		end
 
@@ -416,7 +416,7 @@ feature -- inizializzazione SC
 
 	riempi_stato (id_stato: STRING; element: XML_ELEMENT)
 		local
-			transition_list: LIST [XML_ELEMENT]
+			transition_list: LIST [XML_ELEMENT]  --lista di tutto ciò che appartiene allo stato
 			assign_list: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
 		do
@@ -445,7 +445,43 @@ feature -- inizializzazione SC
 						end
 					end
 				end
+				if transition_list.item_for_iteration.name ~ "onentry" then
+					if attached transition_list.item_for_iteration.elements as list then
+						istanzia_onentry(id_stato, list )
+					end
+				end
 				transition_list.forth
+			end
+		end
+
+	istanzia_onentry (id_stato: STRING; elements: LIST [XML_ELEMENT])
+
+		do
+			from
+				elements.start
+			until
+				elements.after
+			loop
+				if elements.item_for_iteration.name ~ "assign" then
+					if attached elements.item_for_iteration.attribute_by_name ("location") as luogo and then attached elements.item_for_iteration.attribute_by_name ("expr") as expr then
+						if expr.value ~ "false" then
+							if attached stati.item (id_stato) as si then
+								si.set_onentry(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE) )
+							end
+						elseif expr.value ~ "true" then
+							if attached stati.item (id_stato) as si then
+									si.set_onentry(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE) )
+							end
+						end
+					end
+				end
+	--					if transition_list.item_for_iteration.name ~ "log" and then attached transition_list.item_for_iteration.attribute_by_name ("name") as name then
+	--						if attached name.value then
+	--							transizione.azioni.force (create {STAMPA}.make_with_text (name.value), i)
+	--						end
+	--					end
+
+				elements.forth
 			end
 		end
 
