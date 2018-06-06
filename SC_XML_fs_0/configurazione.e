@@ -282,6 +282,7 @@ feature -- inizializzazione SC
 				lis_el.after
 			loop
 				if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato_xml then
+					inizializza_stati (lis_el.item_for_iteration.elements)
 					riempi_stato (stato_xml.value, lis_el.item_for_iteration)
 				end
 				lis_el.forth
