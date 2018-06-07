@@ -6,6 +6,7 @@
 		<data id="on_exitA" expr="false" />
 		<data id="on_exitA1" expr="false" />
 		<data id="on_exitA1b" expr="false" />
+		<data id="on_exitA1a" expr="false" />
 	</datamodel>
 	<state id="B" initial="B1" >
 		<onentry>
@@ -27,6 +28,9 @@
 			<state id="A1a">
 			</state>
 			<state id="A1b">
+				<onexit>
+					<assign location="on_exitA1b" expr="true" />
+				</onexit>
 			</state>
 			<transition event="e2" target="B" />
 			<onexit>

@@ -33,6 +33,8 @@ feature -- Test
 				assert ("ERRORE il sistema non ha eseguito l'azione on_entryB1", cp.condizioni.item ("on_entryB1") )
 				assert ("ERRORE il sistema non ha eseguito l'azione on_exitA", cp.condizioni.item ("on_exitA") )
 				assert ("ERRORE il sistema non ha eseguito l'azione on_exitA1", cp.condizioni.item ("on_exitA1") )
+				assert ("ERRORE il sistema non ha eseguito l'azione on_exitA1a", not cp.condizioni.item ("on_exitA1a") )
+				assert ("ERRORE il sistema non ha eseguito l'azione on_exitA1b", cp.condizioni.item ("on_exitA1b") )
 			end
 		end
 
