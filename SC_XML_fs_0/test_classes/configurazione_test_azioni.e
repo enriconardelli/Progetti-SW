@@ -5,37 +5,38 @@ note
 	revision: "$Revision$"
 
 class
-	CONFIGURAZIONE_TEST_AZIONI
+	ESECUTORE_TEST_AZIONI
 
 inherit
-	CONFIGURAZIONE_TEST
-		redefine on_prepare end
+
+	ESECUTORE_TEST
+		redefine
+			on_prepare
+		end
 
 feature -- Test routines
 
 	on_prepare
 		do
-		    precursor
-			nomi_files_prova[1] := test_data_dir + "esempio_xor_azioni.xml"
-			nomi_files_prova[2] := test_data_dir
-			create configurazione_prova.make(nomi_files_prova[1])
+			precursor
+			nomi_files_prova [1] := test_data_dir + "esempio_xor_azioni.xml"
+			nomi_files_prova [2] := test_data_dir
 		end
 
 feature -- Test
 
 	t_xor_azioni
+		local
+			esecutore: ESECUTORE
 		do
 			nomi_files_prova [2] := nomi_files_prova [2] + "eventi_xor_2.txt"
-			ambiente_prova.acquisisci_eventi (nomi_files_prova [2])
-			configurazione_prova.evolvi_SC (ambiente_prova.eventi_esterni)
-			if attached configurazione_prova as cp then
-				assert ("ERRORE il sistema non ha eseguito l'azione on_entryB", cp.condizioni.item ("on_entryB") )
-				assert ("ERRORE il sistema non ha eseguito l'azione on_entryB1", cp.condizioni.item ("on_entryB1") )
-				assert ("ERRORE il sistema non ha eseguito l'azione on_exitA", cp.condizioni.item ("on_exitA") )
-				assert ("ERRORE il sistema non ha eseguito l'azione on_exitA1", cp.condizioni.item ("on_exitA1") )
-				assert ("ERRORE il sistema non ha eseguito l'azione on_exitA1a", not cp.condizioni.item ("on_exitA1a") )
-				assert ("ERRORE il sistema non ha eseguito l'azione on_exitA1b", cp.condizioni.item ("on_exitA1b") )
-			end
+			create esecutore.start (nomi_files_prova)
+			assert ("ERRORE il sistema non ha eseguito l'azione on_entryB", esecutore.state_chart.condizioni.item ("on_entryB"))
+			assert ("ERRORE il sistema non ha eseguito l'azione on_entryB1", esecutore.state_chart.condizioni.item ("on_entryB1"))
+			assert ("ERRORE il sistema non ha eseguito l'azione on_exitA", esecutore.state_chart.condizioni.item ("on_exitA"))
+			assert ("ERRORE il sistema non ha eseguito l'azione on_exitA1", esecutore.state_chart.condizioni.item ("on_exitA1"))
+			assert ("ERRORE il sistema non ha eseguito l'azione on_exitA1a", not esecutore.state_chart.condizioni.item ("on_exitA1a"))
+			assert ("ERRORE il sistema non ha eseguito l'azione on_exitA1b", esecutore.state_chart.condizioni.item ("on_exitA1b"))
 		end
 
 end
