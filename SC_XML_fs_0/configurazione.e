@@ -98,6 +98,8 @@ feature --evoluzione SC
 		end
 
 	trova_contesto (p_sorgente, p_destinazione: STATO): detachable STATO
+	-- trova il contesto in base alla specifica SCXML secondo cui il contesto
+	-- è il minimo antenato comune PROPRIO a p_sorgente e p_destinazione
 		local
 			antenati: HASH_TABLE [STRING, STRING]
 			corrente: STATO
@@ -105,7 +107,7 @@ feature --evoluzione SC
 			create antenati.make (0)
 				-- "marca" tutti gli antenati di p_sorgente incluso
 			from
-				corrente := p_sorgente
+				corrente := p_sorgente.stato_genitore
 			until
 				corrente = Void
 			loop
