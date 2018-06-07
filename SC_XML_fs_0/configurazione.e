@@ -161,62 +161,7 @@ feature --evoluzione SC
 			end
 		end
 
---	calcola_azioni: detachable ARRAY [AZIONE]
---		local
---			azioni: ARRAY [AZIONE]
---			stop: BOOLEAN
---			stato_gen_corrente: STATO
---			stato_gen_target: STATO
---		do
---			create azioni.make_empty
---			create stato_gen_corrente.make_with_id (create {STRING}.make_empty)
---			create stato_gen_target.make_with_id (create {STRING}.make_empty)
---			stop := FALSE
---			if attached stato_corrente.stato_genitore as ssg then
---				if attached transizione_corrente as tc then
---					if attached tc.target.stato_genitore as tsg then
---						stato_gen_corrente := ssg
---						stato_gen_target := tsg
---						if ssg.id ~ tsg.id then
---							stop := TRUE
---						end
---					end
---				end
---			end
---			from
---			until
---				stop = TRUE
---			loop
---				if attached stato_gen_corrente.onexit as ox then
---					azioni.force (ox, azioni.count + 1)
---				end
---				if attached stato_gen_target.onentry as oe then
---					azioni.force (oe, azioni.count + 1)
---				end
---				if attached stato_gen_corrente.stato_genitore as ssg then
---					if attached stato_gen_target.stato_genitore as tsg then
---						stato_gen_corrente := ssg
---						stato_gen_target := tsg
---						if ssg.id ~ tsg.id then
---							stop := TRUE
---						end
---					end
---				end
---				if stato_gen_corrente.stato_genitore = VOID and stato_gen_target.stato_genitore = VOID then
---					stop := TRUE
---				end
---			end
---		end
-
 feature -- inizializzazione SC
-
-	set_stato_corrente (uno_stato: STATO)
-		require
-			stato_corrente_not_void: stato_corrente /= Void
-		do
-			stato_corrente := uno_stato
-			print ("%N %Nnuovo stato corrente = " + stato_corrente.id + "    %N")
-		end
 
 	istanzia_condizioni (lis_data: LIST [XML_ELEMENT])
 			-- istanzia nella SC le condizioni presenti in <datamodel>
