@@ -12,11 +12,11 @@ create
 
 feature --attributi
 
-	stato_corrente: STATO
+--	stato_corrente: STATO
 
 	stato_iniziale: STATO
 
-	transizione_corrente: detachable TRANSIZIONE
+--	transizione_corrente: detachable TRANSIZIONE
 			-- la transizione che deve essere eseguita
 
 		--	eventi: ARRAY [STRING]
@@ -43,122 +43,6 @@ feature --creazione
 			create stati.make (1)
 			create condizioni.make (1)
 			crea_stati_e_condizioni
-			stato_corrente := stato_iniziale
-		end
-
-feature --evoluzione SC
-
-	evolvi_SC (istanti: ARRAY [LINKED_SET [STRING]])
-		local
-			count_istante_corrente: INTEGER
-			nuovo_stato: detachable STATO
-		do
-			print ("%Nentrato in evolvi_SC:  %N %N")
-			print ("stato iniziale:  " + stato_corrente.id + "       %N")
-			FROM
-				count_istante_corrente := 1
-			UNTIL
-				stato_corrente.finale or count_istante_corrente > istanti.count
-			LOOP
-				if attached istanti [count_istante_corrente] as istante_corrente then
-					print ("Stampa indice istante corrente = ")
-					print (count_istante_corrente)
-					print ("   %N")
-					transizione_corrente := stato_corrente.transizione_abilitata (istante_corrente, condizioni)
-					count_istante_corrente := count_istante_corrente + 1
-					if attached transizione_corrente as tc then
-						esegui_azioni (tc)
-						stato_corrente := trova_default (tc.target)
-					end
-				end
-			end
-			print ("%N%NHo terminato l'elaborazione degli eventi nello stato = " + stato_corrente.id + "%N")
-		end
-
-	trova_default ( stato: STATO ): STATO
-		do
-			if stato /= stato.stato_default then
-				if attached stato.stato_default.onentry as oe then
-					oe.action (condizioni)
-				end
-				result := trova_default( stato.stato_default )
-			else
-				result := stato
-			end
-		end
-
-	esegui_azioni (transizione: TRANSIZIONE)
-		local
-			contesto: detachable STATO
-		do
-			contesto := trova_contesto (stato_corrente, transizione.target)
-			esegui_azioni_onexit (stato_corrente, contesto)
-			esegui_azioni_transizione (transizione.azioni)
-			esegui_azioni_onentry (contesto, transizione.target)
-		end
-
-	trova_contesto (p_sorgente, p_destinazione: STATO): detachable STATO
-	-- trova il contesto in base alla specifica SCXML secondo cui il contesto
-	-- è il minimo antenato comune PROPRIO a p_sorgente e p_destinazione
-		local
-			antenati: HASH_TABLE [STRING, STRING]
-			corrente: STATO
-		do
-			create antenati.make (0)
-				-- "marca" tutti gli antenati di p_sorgente incluso
-			from
-				corrente := p_sorgente.stato_genitore
-			until
-				corrente = Void
-			loop
-				antenati.put (corrente.id, corrente.id)
-				corrente := corrente.stato_genitore
-			end
-				-- trova il più basso antenato di p_destinazione in "antenati"
-			from
-				corrente := p_destinazione
-			until
-				corrente = Void or else antenati.has (corrente.id)
-			loop
-				corrente := corrente.stato_genitore
-			end
-			Result := corrente
-		end
-
-	esegui_azioni_onexit (p_stato_corrente: STATO; p_contesto: detachable STATO)
-		do
-			if p_stato_corrente /= p_contesto then
-				if attached p_stato_corrente.onexit as ox then
-					ox.action (condizioni)
-				end
-				if attached p_stato_corrente.stato_genitore as sg then
-					esegui_azioni_onexit (sg, p_contesto)
-				end
-			end
-		end
-
-	esegui_azioni_transizione (p_azioni: ARRAY [AZIONE])
-		local
-			i: INTEGER
-		do
-			from
-				i := p_azioni.lower
-			until
-				i = p_azioni.upper + 1
-			loop
-				p_azioni [i].action (condizioni)
-				i := i + 1
-			end
-		end
-
-	esegui_azioni_onentry (p_contesto: detachable STATO; p_target: STATO)
-		do
-			if p_target /= p_contesto and then attached p_target.stato_genitore as sg then
-				esegui_azioni_onentry (p_contesto, sg)
-			end
-			if p_target /= p_contesto and then attached p_target.onentry as oe then
-				oe.action (condizioni)
-			end
 		end
 
 feature -- inizializzazione SC
