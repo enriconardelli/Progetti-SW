@@ -19,7 +19,7 @@
 		</state>
 		<state id="B2">
 		</state>
-		<transition event="e2" target="A1" />
+		<transition event="e2" target="A1a" />
 	</state>
 
 	<state id="A" initial="A1" >
