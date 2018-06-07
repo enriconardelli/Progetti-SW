@@ -145,6 +145,7 @@ feature --evoluzione SC
 				i = p_azioni.upper + 1
 			loop
 				p_azioni [i].action (condizioni)
+				i := i + 1
 			end
 		end
 
