@@ -31,7 +31,7 @@
 			<transition event="e2" target="B" />
 			<onexit>
 				<assign location="on_exitA1" expr="true" />
-			<onexit>
+			</onexit>
 		</state>
 
 		<state id="A2">
@@ -42,6 +42,6 @@
 		<assign location="on_exitA" expr="true" />
 		<onexit>
 			<assign location="on_exitA" expr="true" />
-		<onexit>
+		</onexit>
 	</state>
 </scxml>
