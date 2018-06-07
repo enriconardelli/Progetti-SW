@@ -13,7 +13,7 @@ COMPLETAMENTO PROGRAMMA
 - Chiamare trova_contesto su sorgente e non su stato_corrente
 
 - Implementare transizioni interne:
-	+ Aggiungere l'attributo ext (BOOLEAN) a TRANSIZIONE, true di default
+	+ Aggiungere l'attributo internal (BOOLEAN) a TRANSIZIONE, false di default
 	+ Modificare istanza_azione
 	+ Verificare durante la creazione di una transizione interna che il target ha per antenato la sorgente
 	+ Chiamare trova_contesto se la transizione è esterna, altrimenti il contesto è la sorgente
