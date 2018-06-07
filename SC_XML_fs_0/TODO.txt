@@ -1,0 +1,28 @@
+COMPLETAMENTO PROGRAMMA
+
+- Implementare errore se non trova il file.
+
+- Spostare evolvi_sc e tutta l'esecuzione in ESECUTORE da CONFIGURAZIONE
+
+- Test sulle azioni (assign e log) delle transizioni con condizioni (basato su xor_azioni)
+
+- Test: Verificare se a condizioni diverse corrispondono percorsi diversi
+
+- Aggiungere l'attributo sorgente (STATO) a TRANSIZIONE
+
+- Chiamare trova_contesto su sorgente e non su stato_corrente
+
+- Implementare transizioni interne:
+	+ Aggiungere l'attributo ext (BOOLEAN) a TRANSIZIONE, true di default
+	+ Modificare istanza_azione
+	+ Verificare durante la creazione di una transizione interna che il target ha per antenato la sorgente
+	+ Chiamare trova_contesto se la transizione è esterna, altrimenti il contesto è la sorgente
+
+- Test con transizioni interne
+
+
+PROGETTO
+
+- Stati paralleli
+
+- Capire in che modo gli agenti possono essere usati per migliorare l'evoluzione della state_chart (vd https://www.eiffel.org/node/315 )
