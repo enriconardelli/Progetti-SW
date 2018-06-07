@@ -43,7 +43,7 @@
 		</state>
 
 		<transition event="e2" target="B2" />
-		<assign location="on_exitA" expr="true" />
+		
 		<onexit>
 			<assign location="on_exitA" expr="true" />
 		</onexit>
