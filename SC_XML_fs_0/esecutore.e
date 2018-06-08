@@ -14,15 +14,9 @@ feature -- Attributi
 
 	state_chart: CONFIGURAZIONE
 			-- rappresenta la SC durante la sua esecuzione
-
 	eventi: AMBIENTE
 	stato_corrente: STATO
 	transizione_corrente: detachable TRANSIZIONE
---	prova: detachable STATO_XOR
-			-- da cancellare, solo per avere l'elenco delle features di STATO_XOR in EiffelStudio
-
-			-- memorizza gli eventi letti dal file
-			-- l'array rappresenta gli istanti mentre ogni hash_table l'insieme degli eventi che occorrono nell'istante specifico
 
 feature {NONE} -- Inizializzazione
 
@@ -37,15 +31,20 @@ feature {NONE} -- Inizializzazione
 			print ("crea la SC in " + nomi_files [1] + "%N")
 			create state_chart.make (nomi_files [1])
 			stato_corrente := state_chart.stato_iniziale
-			print ("e la esegue con gli eventi in " + nomi_files [2] + "%N")
 			create eventi.make_empty
-			eventi.acquisisci_eventi (nomi_files [2])
-			print ("acquisiti eventi %N")
-			if not eventi.verifica_eventi_esterni(state_chart) then
-				print ("WARNING nel file ci sono eventi che la SC non conosce %N")
+			if not state_chart.ha_problemi_con_il_file_della_sc then
+				print ("e la esegue con gli eventi in " + nomi_files [2] + "%N")
+				eventi.acquisisci_eventi (nomi_files [2])
+				print ("acquisiti eventi %N")
+				if not eventi.verifica_eventi_esterni(state_chart) then
+					print ("WARNING nel file ci sono eventi che la SC non conosce %N")
+				end
+				print ("eventi verificati, si esegue la SC %N")
+				evolvi_SC (eventi.eventi_esterni)
+			else
+				print ("Ci sono problemi con il file xml.%N")
+				print ("Programma terminato.%N")
 			end
-			print ("eventi verificati, si esegue la SC %N")
-			evolvi_SC (eventi.eventi_esterni)
 		end
 
 feature --evoluzione SC
@@ -53,7 +52,6 @@ feature --evoluzione SC
 	evolvi_SC (istanti: ARRAY [LINKED_SET [STRING]])
 		local
 			count_istante_corrente: INTEGER
---			nuovo_stato: detachable STATO
 		do
 			print ("%Nentrato in evolvi_SC:  %N %N")
 			print ("stato iniziale:  " + stato_corrente.id + "       %N")

@@ -12,15 +12,7 @@ create
 
 feature --attributi
 
---	stato_corrente: STATO
-
 	stato_iniziale: STATO
-
---	transizione_corrente: detachable TRANSIZIONE
-			-- la transizione che deve essere eseguita
-
-		--	eventi: ARRAY [STRING]
-		--			-- serve durante la lettura degli eventi dal file
 
 	stati: HASH_TABLE [STATO, STRING]
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
@@ -32,6 +24,8 @@ feature --attributi
 
 	albero: XML_CALLBACKS_NULL_FILTER_DOCUMENT
 			-- rappresenta sotto forma di un albero la SC letta dal file
+
+	ha_problemi_con_il_file_della_sc: BOOLEAN
 
 feature --creazione
 
@@ -181,7 +175,7 @@ feature -- inizializzazione SC
 					end
 				end
 			else -- TODO oppure segnalando errore se il nodo è la radice <scxml>
-				print ("ERRORE: manca lo stato 'initial' nel file e non c'è la gestione della sua assenza")
+				print ("ERRORE: manca lo stato 'initial' nel file e non c'è la gestione della sua assenza %N")
 					-- TODO gestire la scelta dello stato iniziale in caso di assenza dell'attributo 'initial' nel file .xml
 			end
 		end
@@ -386,8 +380,10 @@ feature -- inizializzazione SC
 			parser.parse_from_filename (nome_file_SC)
 			if parser.error_occurred then
 				print ("Parsing error!!! %N")
+				ha_problemi_con_il_file_della_sc := TRUE
 			else
 				print ("Parsing OK. %N")
+				ha_problemi_con_il_file_della_sc := FALSE
 			end
 		end
 
