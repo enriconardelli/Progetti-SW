@@ -1,9 +1,5 @@
 COMPLETAMENTO PROGRAMMA
 
-- Implementare errore se non trova il file.
-
-- Spostare evolvi_sc e tutta l'esecuzione in ESECUTORE da CONFIGURAZIONE
-
 - Test sulle azioni (assign e log) delle transizioni con condizioni (basato su xor_azioni)
 
 - Test: Verificare se a condizioni diverse corrispondono percorsi diversi
