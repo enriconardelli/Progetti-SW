@@ -91,7 +91,11 @@ feature --evoluzione SC
 		local
 			contesto: detachable STATO
 		do
-			contesto := trova_contesto (stato_corrente, transizione.target)
+			if transizione.internal then
+				contesto := transizione.sorgente
+			else
+				contesto := trova_contesto (transizione.sorgente, transizione.target)
+			end
 			esegui_azioni_onexit (stato_corrente, contesto)
 			esegui_azioni_transizione (transizione.azioni)
 			esegui_azioni_onentry (contesto, transizione.target)

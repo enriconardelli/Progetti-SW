@@ -13,11 +13,13 @@ create
 
 feature --creazione
 
-	make_with_target(uno_stato: STATO)
+	make_with_target(tr_target, tr_sorgente: STATO)
 		do
-			target:= uno_stato
+			set_target(tr_target)
+			set_sorgente(tr_sorgente)
             create azioni.make_empty
 			evento:= Void
+			internal:= FALSE
 			condizione:= "condizione_vuota"
 		end
 
@@ -29,7 +31,11 @@ feature --attributi
 
     azioni: ARRAY [AZIONE]
 
+    sorgente: STATO
+
 	target: STATO
+
+	internal: BOOLEAN
 
 feature --setter
 
@@ -48,8 +54,22 @@ feature --setter
 		end
 
 	set_target (uno_stato: STATO)
+		require
+			not_void: uno_stato /= Void
 		do
 			target := uno_stato
+		end
+
+	set_sorgente (uno_stato: STATO)
+		require
+			not_void: uno_stato /= Void
+		do
+			sorgente := uno_stato
+		end
+
+	set_internal
+		do
+			internal := TRUE
 		end
 
 feature --check
