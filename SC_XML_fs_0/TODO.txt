@@ -4,16 +4,6 @@ COMPLETAMENTO PROGRAMMA
 
 - Test: Verificare se a condizioni diverse corrispondono percorsi diversi
 
-- Aggiungere l'attributo sorgente (STATO) a TRANSIZIONE
-
-- Chiamare trova_contesto su sorgente e non su stato_corrente
-
-- Implementare transizioni interne:
-	+ Aggiungere l'attributo internal (BOOLEAN) a TRANSIZIONE, false di default
-	+ Modificare istanza_azione
-	+ Verificare durante la creazione di una transizione interna che il target ha per antenato la sorgente
-	+ Chiamare trova_contesto se la transizione è esterna, altrimenti il contesto è la sorgente
-
 - Test con transizioni interne
 
 
