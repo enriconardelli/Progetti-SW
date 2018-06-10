@@ -42,14 +42,16 @@ feature {NONE} -- Events
 			create target_prova_1.make_with_id ("target_prova_1")
 			create target_prova_2.make_with_id ("target_prova_2")
 			create target_prova_3.make_with_id ("target_prova_3")
-			if attached target_prova_1 as tp1 then
-				create transizione_prova_1.make_with_target (tp1)
-			end
-			if attached target_prova_2 as tp2 then
-				create transizione_prova_2.make_with_target (tp2)
-			end
-			if attached target_prova_3 as tp3 then
-				create transizione_prova_3.make_with_target (tp3)
+			if attached stato_prova as sp then
+				if attached target_prova_1 as tp1 then
+					create transizione_prova_1.make_with_target (tp1,sp)
+				end
+				if attached target_prova_2 as tp2 then
+					create transizione_prova_2.make_with_target (tp2,sp)
+				end
+				if attached target_prova_3 as tp3 then
+					create transizione_prova_3.make_with_target (tp3,sp)
+				end
 			end
 			if attached transizione_prova_1 as trp1 then
 				trp1.set_evento ("evento1")
@@ -82,14 +84,16 @@ feature {NONE} -- Events
 			create target_prova_senza_evento_1.make_with_id ("target_prova_senza_evento_1")
 			create target_prova_senza_evento_2.make_with_id ("target_prova_senza_evento_2")
 			create target_prova_senza_evento_3.make_with_id ("target_prova_senza_evento_3")
-			if attached target_prova_senza_evento_1 as tpse1 then
-				create transizione_prova_senza_evento_1.make_with_target (tpse1)
-			end
-			if attached target_prova_senza_evento_2 as tpse2 then
-				create transizione_prova_senza_evento_2.make_with_target (tpse2)
-			end
-			if attached target_prova_senza_evento_3 as tpse3 then
-				create transizione_prova_senza_evento_3.make_with_target (tpse3)
+			if attached stato_prova_senza_evento as spse then
+				if attached target_prova_senza_evento_1 as tpse1 then
+					create transizione_prova_senza_evento_1.make_with_target (tpse1,spse)
+				end
+				if attached target_prova_senza_evento_2 as tpse2 then
+					create transizione_prova_senza_evento_2.make_with_target (tpse2,spse)
+				end
+				if attached target_prova_senza_evento_3 as tpse3 then
+					create transizione_prova_senza_evento_3.make_with_target (tpse3,spse)
+				end
 			end
 			if attached transizione_prova_senza_evento_1 as trpse1 then
 				trpse1.set_condizione ("cond1")

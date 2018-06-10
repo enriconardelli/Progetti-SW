@@ -254,7 +254,7 @@ feature -- inizializzazione SC
 
 	riempi_stato (id_stato: STRING; element: XML_ELEMENT)
 		local
-			transition_list: LIST [XML_ELEMENT]  --lista di tutto ciò che appartiene allo stato
+			transition_list: LIST [XML_ELEMENT] --lista di tutto ciò che appartiene allo stato
 			assign_list: LIST [XML_ELEMENT]
 			transizione: TRANSIZIONE
 		do
@@ -269,13 +269,20 @@ feature -- inizializzazione SC
 				if transition_list.item_for_iteration.name ~ "transition" and then attached transition_list.item_for_iteration.attribute_by_name ("target") as tt then
 						-- TODO gestire fallimento del test per assenza clausola target
 					if attached stati.item (tt.value) as ts then
-						create transizione.make_with_target (ts)
-						assegnazione_evento (transition_list, transizione)
-						assegnazione_condizione (transition_list, transizione)
-						assign_list := transition_list.item_for_iteration.elements
-						assegnazione_azioni (assign_list, transizione)
-						if attached stati.item (id_stato) as si then
-							si.aggiungi_transizione (transizione)
+						if attached stati.item (id_stato) as sr then
+							create transizione.make_with_target (ts, sr)
+							if attached transition_list.item_for_iteration.attribute_by_name ("type") as tp then
+								if tp.value ~ "internal" and verifica_internal (transizione.sorgente, transizione.target) then
+									transizione.set_internal
+								end
+							end
+							assegnazione_evento (transition_list, transizione)
+							assegnazione_condizione (transition_list, transizione)
+							assign_list := transition_list.item_for_iteration.elements
+							assegnazione_azioni (assign_list, transizione)
+							if attached stati.item (id_stato) as si then
+								si.aggiungi_transizione (transizione)
+							end
 						end
 					else
 						if attached stati.item (id_stato) as si then
@@ -285,20 +292,31 @@ feature -- inizializzazione SC
 				end
 				if transition_list.item_for_iteration.name ~ "onentry" then
 					if attached transition_list.item_for_iteration.elements as list then
-						istanzia_onentry(id_stato, list )
+						istanzia_onentry (id_stato, list)
 					end
 				end
 				if transition_list.item_for_iteration.name ~ "onexit" then
 					if attached transition_list.item_for_iteration.elements as list then
-						istanzia_onexit(id_stato, list )
+						istanzia_onexit (id_stato, list)
 					end
 				end
 				transition_list.forth
 			end
 		end
 
-	istanzia_onentry (id_stato: STRING; elements: LIST [XML_ELEMENT])
+	verifica_internal (sorgente, target: STATO): BOOLEAN
+		do
+--			Result := FALSE
+			if attached target.stato_genitore as tr_gn then
+				if tr_gn = sorgente then
+					Result := TRUE
+				else
+					Result := verifica_internal (sorgente, tr_gn)
+				end
+			end
+		end
 
+	istanzia_onentry (id_stato: STRING; elements: LIST [XML_ELEMENT])
 		do
 			from
 				elements.start
@@ -309,11 +327,11 @@ feature -- inizializzazione SC
 					if attached elements.item_for_iteration.attribute_by_name ("location") as luogo and then attached elements.item_for_iteration.attribute_by_name ("expr") as expr then
 						if expr.value ~ "false" then
 							if attached stati.item (id_stato) as si then
-								si.set_onentry(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE) )
+								si.set_onentry (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE))
 							end
 						elseif expr.value ~ "true" then
 							if attached stati.item (id_stato) as si then
-								si.set_onentry(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE) )
+								si.set_onentry (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE))
 							end
 						end
 					end
@@ -321,7 +339,7 @@ feature -- inizializzazione SC
 				if elements.item_for_iteration.name ~ "log" and then attached elements.item_for_iteration.attribute_by_name ("name") as name then
 					if attached stati.item (id_stato) as si then
 						if attached name.value then
-							si.set_onentry(create {STAMPA}.make_with_text (name.value) )
+							si.set_onentry (create {STAMPA}.make_with_text (name.value))
 						end
 					end
 				end
@@ -330,7 +348,6 @@ feature -- inizializzazione SC
 		end
 
 	istanzia_onexit (id_stato: STRING; elements: LIST [XML_ELEMENT])
-
 		local
 			azione: AZIONE
 		do
@@ -343,12 +360,12 @@ feature -- inizializzazione SC
 					if attached elements.item_for_iteration.attribute_by_name ("location") as luogo and then attached elements.item_for_iteration.attribute_by_name ("expr") as expr then
 						if expr.value ~ "false" then
 							if attached stati.item (id_stato) as si then
-								si.set_onexit(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE) )
+								si.set_onexit (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, FALSE))
 								azione := si.onexit
 							end
 						elseif expr.value ~ "true" then
 							if attached stati.item (id_stato) as si then
-								si.set_onexit(create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE) )
+								si.set_onexit (create {ASSEGNAZIONE}.make_with_cond_and_value (luogo.value, TRUE))
 								azione := si.onexit
 							end
 						end
@@ -357,7 +374,7 @@ feature -- inizializzazione SC
 				if elements.item_for_iteration.name ~ "log" and then attached elements.item_for_iteration.attribute_by_name ("name") as name then
 					if attached stati.item (id_stato) as si then
 						if attached name.value then
-							si.set_onexit(create {STAMPA}.make_with_text (name.value) )
+							si.set_onexit (create {STAMPA}.make_with_text (name.value))
 							azione := si.onexit
 						end
 					end
