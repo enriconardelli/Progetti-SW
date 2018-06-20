@@ -12,7 +12,7 @@ create
 
 feature --attributi
 
-	stato_iniziale: STATO
+	stato_iniziale: ARRAY[STATO]
 
 	stati: HASH_TABLE [STATO, STRING]
 			-- serve durante l'istanziazione iniziale di stati, transizione e configurazione
@@ -31,8 +31,9 @@ feature --creazione
 
 	make (nome_SC: STRING)
 		do
-			create stato_iniziale.make_with_id (create {STRING}.make_empty)
-			stato_iniziale.set_final
+--			create stato_iniziale.make_with_id (create {STRING}.make_empty)
+--			stato_iniziale.set_final
+			create stato_iniziale.make_empty
 			crea_albero (nome_SC)
 			create stati.make (1)
 			create condizioni.make (1)
@@ -93,12 +94,49 @@ feature -- inizializzazione SC
 							stato_temp.set_genitore (pg)
 							stati.extend (stato_temp, att.value)
 							pg.add_figlio (stato_temp)
+						elseif attached {STATO_AND} p_genitore as pg then -- elemento corrente ha genitore
+							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+							stati.extend (stato_temp, att.value)
+							pg.add_figlio (stato_temp)
 						else
 							stati.extend (create {STATO_XOR}.make_with_id (att.value), att.value)
 						end
 						istanzia_stati (lis_el.item_for_iteration.elements, stati.item (att.value))
 					else -- elemento corrente non ha figli
 						if attached {STATO_XOR} p_genitore as pg then -- elemento corrente ha genitore
+							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+							stati.extend (stato_temp, att.value)
+							pg.add_figlio (stato_temp)
+						elseif attached {STATO_AND} p_genitore as pg then -- elemento corrente ha genitore
+							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+							stati.extend (stato_temp, att.value)
+							pg.add_figlio (stato_temp)
+						else -- elemento corrente non ha neanche genitore
+							stati.extend (create {STATO}.make_with_id (att.value), att.value)
+						end
+					end
+				end
+				if lis_el.item_for_iteration.name ~ "parallel" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as att then
+					if lis_el.item_for_iteration.has_element_by_name ("state") then -- elemento corrente ha figli
+						if attached {STATO_AND} p_genitore as pg then
+							stato_temp := create {STATO_AND}.make_with_id (att.value)
+							stato_temp.set_genitore (pg)
+							stati.extend (stato_temp, att.value)
+							pg.add_figlio (stato_temp)
+						elseif attached {STATO_XOR} p_genitore as pg then
+							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+							stati.extend (stato_temp, att.value)
+							pg.add_figlio (stato_temp)
+						else
+							stati.extend (create {STATO_AND}.make_with_id (att.value), att.value)
+						end
+						istanzia_stati (lis_el.item_for_iteration.elements, stati.item (att.value))
+					else -- elemento corrente non ha figli
+						if attached {STATO_AND} p_genitore as pg then -- elemento corrente ha genitore
+							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+							stati.extend (stato_temp, att.value)
+							pg.add_figlio (stato_temp)
+						elseif attached {STATO_XOR} p_genitore as pg then
 							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
 							stati.extend (stato_temp, att.value)
 							pg.add_figlio (stato_temp)
@@ -123,6 +161,10 @@ feature -- inizializzazione SC
 					inizializza_stati (lis_el.item_for_iteration.elements)
 					riempi_stato (stato_xml.value, lis_el.item_for_iteration)
 				end
+				if lis_el.item_for_iteration.name ~ "parallel" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato_xml then
+					inizializza_stati (lis_el.item_for_iteration.elements)
+					riempi_stato (stato_xml.value, lis_el.item_for_iteration)
+				end
 				lis_el.forth
 			end
 		end
@@ -138,7 +180,7 @@ feature -- inizializzazione SC
 				if lis_el.item_for_iteration.name ~ "state" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato then
 					if attached lis_el.item_for_iteration.attribute_by_name ("initial") as df then
 						if attached stati.item (df.value) as st_df then
-							if attached stati.item (stato.value) as pr then
+							if attached {STATO_XOR} stati.item (stato.value) as pr then
 								pr.set_stato_default (st_df)
 							end
 						end
@@ -147,23 +189,42 @@ feature -- inizializzazione SC
 						set_stati_default (lis_el.item_for_iteration.elements)
 					end
 				end
+				if lis_el.item_for_iteration.name ~ "parallel" and then attached lis_el.item_for_iteration.attribute_by_name ("id") as stato then
+					if attached {STATO_AND} stati.item (stato.value) as st then
+						st.set_stato_default
+					end
+				end
 				lis_el.forth
 			end
 		end
 
 	imposta_stato_iniziale (radice: XML_ELEMENT)
+		local
+			i: INTEGER
 		do
 			if attached radice.attribute_by_name ("initial") as si then
 				if attached stati.item (si.value) as v then
-					if attached v.stato_default as df then
-						if not df.id.is_equal (v.id) then
-							inizializza_stati_ricorsivo (df)
-						else
-							stato_iniziale := v
+					if not v.stato_default.is_empty then
+						from
+							i := v.stato_default.lower
+						until
+							i = v.stato_default.upper + 1
+						loop
+							imposta_stati_ricorsivo (v.stato_default[i])
+							i := i + 1
 						end
 					else
-						stato_iniziale := v
+						stato_iniziale.force (v, stato_iniziale.count + 1)
 					end
+--					if attached v.stato_default as df then
+--						if not df.id.is_equal (v.id) then
+--							imposta_stati_ricorsivo (df)
+--						else
+--							stato_iniziale := v
+--						end
+--					else
+--						stato_iniziale := v
+--					end
 				else
 					print ("ERRORE: lo stato indicato come 'initial' non è uno degli stati in <state>")
 				end
@@ -171,23 +232,30 @@ feature -- inizializzazione SC
 					-- l'assenza di "initial" è gestita scegliendo il primo dei figli se lo stato ha figli oppure scegliendo sé stesso se lo stato non ha figli
 				if attached st.attribute_by_name ("id") as id then
 					if attached stati.item (id.value) as df then
-						inizializza_stati_ricorsivo (df)
+						imposta_stati_ricorsivo (df)
 					end
 				end
-			else -- TODO oppure segnalando errore se il nodo è la radice <scxml>
-				print ("ERRORE: manca lo stato 'initial' nel file e non c'è la gestione della sua assenza %N")
-					-- TODO gestire la scelta dello stato iniziale in caso di assenza dell'attributo 'initial' nel file .xml
+--			else -- TODO oppure segnalando errore se il nodo è la radice <scxml>
+--				print ("ERRORE: manca lo stato 'initial' nel file e non c'è la gestione della sua assenza %N")
+--					-- TODO gestire la scelta dello stato iniziale in caso di assenza dell'attributo 'initial' nel file .xml
 			end
 		end
 
-	inizializza_stati_ricorsivo (stato: STATO)
+	imposta_stati_ricorsivo (stato: STATO)
+		local
+			i: INTEGER
 		do
-			if attached stato.stato_default as df then
-				if not df.id.is_equal (stato.id) then
-					inizializza_stati_ricorsivo (df)
-				else
-					stato_iniziale := stato
+			if not stato.stato_default.is_empty then
+				from
+					i := stato.stato_default.lower
+				until
+					i = stato.stato_default.upper + 1
+				loop
+					imposta_stati_ricorsivo (stato.stato_default[i])
+					i := i + 1
 				end
+			else
+				stato_iniziale.force (stato, stato_iniziale.count + 1)
 			end
 		end
 
@@ -264,7 +332,6 @@ feature -- inizializzazione SC
 			until
 				transition_list.after
 			loop
-
 					-- TODO gestire separatamente feature di creazione transizione che torna o transizione o errore
 				if transition_list.item_for_iteration.name ~ "transition" and then attached transition_list.item_for_iteration.attribute_by_name ("target") as tt then
 						-- TODO gestire fallimento del test per assenza clausola target
