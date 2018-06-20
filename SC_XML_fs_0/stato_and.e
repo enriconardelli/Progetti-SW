@@ -1,14 +1,13 @@
 note
-	description: "Summary description for {STATO_XOR}."
+	description: "Summary description for {STATO_AND}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	STATO_XOR
+	STATO_AND
 
 inherit
-
 	STATO
 	redefine
 		make_with_id
@@ -38,11 +37,9 @@ feature -- setter
 		stati_figli.force (uno_stato, stati_figli.count + 1)
 	end
 
-	set_stato_default (lo_stato: STATO)
-	require
-		uno_stato_esistente: lo_stato /= Void
-	do
-		stato_default:= lo_stato
-	end
+	set_stato_default
+		do
+			stato_default.copy (stati_figli)
+		end
 
 end
