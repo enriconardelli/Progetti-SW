@@ -39,10 +39,10 @@ feature -- setter
 	end
 
 	set_stato_default (lo_stato: STATO)
-	require
-		uno_stato_esistente: lo_stato /= Void
-	do
-		stato_default:= lo_stato
-	end
+		require
+			uno_stato_esistente: lo_stato /= Void
+		do
+			stato_default.force (lo_stato, 1)
+		end
 
 end
