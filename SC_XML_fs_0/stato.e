@@ -10,6 +10,22 @@ class
 create
 	make_with_id, make_final_with_id, make_with_id_and_parent
 
+feature -- attributi
+
+	transizioni: ARRAY [TRANSIZIONE]
+
+	finale: BOOLEAN
+
+	stato_default: ARRAY[STATO]
+
+	stato_genitore: detachable STATO
+
+	id: STRING
+
+	OnEntry: detachable AZIONE
+
+	OnExit: detachable AZIONE
+
 feature --creazione
 
 	make_with_id (un_id: STRING)
@@ -18,7 +34,7 @@ feature --creazione
 		do
 			id := un_id
 			finale := False
-			stato_default := Current
+			create stato_default.make_empty
 			create transizioni.make_empty
 		ensure
 			attributo_assegnato: id = un_id
@@ -44,24 +60,6 @@ feature --creazione
 		ensure
 			attributo_assegnato: id = un_id
 		end
-
-feature -- attributi
-
-	transizioni: ARRAY [TRANSIZIONE]
-
-	finale: BOOLEAN
-
-	stato_default: STATO
-
-	stato_genitore: detachable STATO
-
-	id: STRING
-
-	type: INTEGER
-
-	OnEntry: detachable AZIONE
-
-	OnExit: detachable AZIONE
 
 feature -- setter
 
