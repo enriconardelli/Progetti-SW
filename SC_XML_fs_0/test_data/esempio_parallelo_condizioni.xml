@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="p">
+	<datamodel>
+		<data id="alfa" expr="false" />
+	</datamodel>
+	<parallel id="p">	
+		<state id="A" >
+			<transition event="e1" target="B">
+				<assign location="alfa" expr="true" />
+			</transition>
+		</state>
+		
+		<state id="UNO" >
+			<transition event="e1" cond="alfa" target="DUE" />
+		</state>
+	</parallel>
+	
+		<state id="B" >
+			<transition event="e2" cond="alfa" target="C" />
+		</state>
+		
+		<state id="C" >
+		</state>
+				
+		<state id="DUE" >
+			<transition event="e2" target="TRE" />
+		</state>
+		
+		<state id="TRE" >
+		</state>
+
+</scxml>
