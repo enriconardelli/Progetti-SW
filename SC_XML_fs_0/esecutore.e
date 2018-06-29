@@ -14,8 +14,11 @@ feature -- Attributi
 
 	state_chart: CONFIGURAZIONE
 			-- rappresenta la SC durante la sua esecuzione
+
 	eventi: AMBIENTE
-	stato_corrente: STATO
+
+	stato_corrente: ARRAY [STATO]
+
 	transizione_corrente: detachable TRANSIZIONE
 
 feature {NONE} -- Inizializzazione
@@ -30,13 +33,14 @@ feature {NONE} -- Inizializzazione
 			print ("INIZIO!%N")
 			print ("crea la SC in " + nomi_files [1] + "%N")
 			create state_chart.make (nomi_files [1])
-			stato_corrente := state_chart.stato_iniziale
+			create stato_corrente.make_empty
+			stato_corrente.copy (state_chart.stato_iniziale)
 			create eventi.make_empty
 			if not state_chart.ha_problemi_con_il_file_della_sc then
 				print ("e la esegue con gli eventi in " + nomi_files [2] + "%N")
 				eventi.acquisisci_eventi (nomi_files [2])
 				print ("acquisiti eventi %N")
-				if not eventi.verifica_eventi_esterni(state_chart) then
+				if not eventi.verifica_eventi_esterni (state_chart) then
 					print ("WARNING nel file ci sono eventi che la SC non conosce %N")
 				end
 				print ("eventi verificati, si esegue la SC %N")
@@ -52,42 +56,72 @@ feature --evoluzione SC
 	evolvi_SC (istanti: ARRAY [LINKED_SET [STRING]])
 		local
 			count_istante_corrente: INTEGER
+			i: INTEGER
+			nuovo_stato_corrente: ARRAY [STATO]
+			condizioni_correnti: HASH_TABLE [BOOLEAN, STRING]
 		do
 			print ("%Nentrato in evolvi_SC:  %N %N")
-			print ("stato iniziale:  " + stato_corrente.id + "       %N")
-			FROM
+			print ("stato iniziale:  ")
+			stampa_stati (stato_corrente)
+			create condizioni_correnti.make (1)
+			from
 				count_istante_corrente := 1
-			UNTIL
-				stato_corrente.finale or count_istante_corrente > istanti.count
-			LOOP
+			until
+				is_finale (stato_corrente) or count_istante_corrente > istanti.count
+			loop
 				if attached istanti [count_istante_corrente] as istante_corrente then
 					print ("Stampa indice istante corrente = ")
 					print (count_istante_corrente)
 					print ("   %N")
-					transizione_corrente := stato_corrente.transizione_abilitata (istante_corrente, state_chart.condizioni)
-					count_istante_corrente := count_istante_corrente + 1
-					if attached transizione_corrente as tc then
-						esegui_azioni (tc)
-						stato_corrente := trova_default (tc.target)
+					condizioni_correnti.copy (state_chart.condizioni)
+					create nuovo_stato_corrente.make_empty
+					from
+						i := stato_corrente.lower
+					until
+						i = stato_corrente.upper + 1
+					loop
+						transizione_corrente := stato_corrente [i].transizione_abilitata (istante_corrente, condizioni_correnti)
+						if attached transizione_corrente as tc then
+							esegui_azioni (tc, stato_corrente [i])
+							trova_default (tc.target, nuovo_stato_corrente)
+						else
+							nuovo_stato_corrente.force (stato_corrente [i], nuovo_stato_corrente.count + 1)
+						end
+						i := i + 1
+					end
+					if not nuovo_stato_corrente.is_empty then
+						stato_corrente.copy (nuovo_stato_corrente)
 					end
 				end
+				count_istante_corrente := count_istante_corrente + 1
+				stampa_stati (stato_corrente)
 			end
-			print ("%N%NHo terminato l'elaborazione degli eventi nello stato = " + stato_corrente.id + "%N")
+			print ("%N%NHo terminato l'elaborazione degli eventi nello stato = ")
+			stampa_stati (stato_corrente)
 		end
 
-	trova_default (stato: STATO): STATO
+	trova_default (stato: STATO; nuovo_stato_corrente: ARRAY [STATO])
+		local
+			i: INTEGER
 		do
-			if stato /= stato.stato_default then
-				if attached stato.stato_default.onentry as oe then
-					oe.action (state_chart.condizioni)
+			if not stato.stato_default.is_empty then
+				from
+					i := stato.stato_default.lower
+				until
+					i = stato.stato_default.upper + 1
+				loop
+					if attached stato.stato_default [i].onentry as oe then
+						oe.action (state_chart.condizioni)
+					end
+					trova_default (stato.stato_default [i], nuovo_stato_corrente)
+					i := i + 1
 				end
-				result := trova_default( stato.stato_default )
 			else
-				result := stato
+				nuovo_stato_corrente.force (stato, nuovo_stato_corrente.count + 1)
 			end
 		end
 
-	esegui_azioni (transizione: TRANSIZIONE)
+	esegui_azioni (transizione: TRANSIZIONE; stato: STATO)
 		local
 			contesto: detachable STATO
 		do
@@ -96,14 +130,14 @@ feature --evoluzione SC
 			else
 				contesto := trova_contesto (transizione.sorgente, transizione.target)
 			end
-			esegui_azioni_onexit (stato_corrente, contesto)
+			esegui_azioni_onexit (stato, contesto)
 			esegui_azioni_transizione (transizione.azioni)
 			esegui_azioni_onentry (contesto, transizione.target)
 		end
 
 	trova_contesto (p_sorgente, p_destinazione: STATO): detachable STATO
-	-- trova il contesto in base alla specifica SCXML secondo cui il contesto
-	-- è il minimo antenato comune PROPRIO a p_sorgente e p_destinazione
+			-- trova il contesto in base alla specifica SCXML secondo cui il contesto
+			-- è il minimo antenato comune PROPRIO a p_sorgente e p_destinazione
 		local
 			antenati: HASH_TABLE [STRING, STRING]
 			corrente: STATO
@@ -163,6 +197,39 @@ feature --evoluzione SC
 			if p_target /= p_contesto and then attached p_target.onentry as oe then
 				oe.action (state_chart.condizioni)
 			end
+		end
+
+	is_final (stato_corrente: ARRAY [STATO]): BOOLEAN
+		require
+			contesto: stato_corrente /= VOID
+		local
+			i: INTEGER
+		do
+			from
+				i := stato_corrente.lower
+			until
+				i = stato_corrente.upper + 1
+			loop
+				if stato_corrente [i].finale then
+					result := TRUE
+				end
+				i := i + 1
+			end
+		end
+
+	stampa_stati (stati: ARRAY [STATO])
+		local
+			i: INTEGER
+		do
+			from
+				i := stati.lower
+			until
+				i = stati.upper + 1
+			loop
+				print (stati [i].id + " ")
+				i := i + 1
+			end
+			print (" %N")
 		end
 
 end
