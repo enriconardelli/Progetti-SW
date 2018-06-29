@@ -199,7 +199,7 @@ feature --evoluzione SC
 			end
 		end
 
-	stato_final (stato_corrente: ARRAY [STATO]): BOOLEAN
+	stato_final (stato: ARRAY [STATO]): BOOLEAN
 		require
 			contesto: stato_corrente /= VOID
 		local
