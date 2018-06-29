@@ -67,7 +67,7 @@ feature --evoluzione SC
 			from
 				count_istante_corrente := 1
 			until
-				is_finale (stato_corrente) or count_istante_corrente > istanti.count
+				stato_final (stato_corrente) or count_istante_corrente > istanti.count
 			loop
 				if attached istanti [count_istante_corrente] as istante_corrente then
 					print ("Stampa indice istante corrente = ")
@@ -199,7 +199,7 @@ feature --evoluzione SC
 			end
 		end
 
-	is_final (stato_corrente: ARRAY [STATO]): BOOLEAN
+	stato_final (stato_corrente: ARRAY [STATO]): BOOLEAN
 		require
 			contesto: stato_corrente /= VOID
 		local
