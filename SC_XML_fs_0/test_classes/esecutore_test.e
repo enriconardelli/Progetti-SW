@@ -32,4 +32,21 @@ feature -- Test routines
 			create nomi_files_prova.make_filled ("", 1, 2)
 		end
 
+	has_state( stati: ARRAY [STATO]; stato: STRING ):BOOLEAN
+	-- Controlla se negli 'stati' passati c'è lo 'stato'
+		local
+			count: INTEGER
+		do
+			from
+				count := stati.lower
+			until
+				count = stati.upper + 1
+			loop
+				if stati[count].id.is_equal(stato) then
+					result := TRUE
+				end
+				count := count + 1
+			end
+		end
+		
 end
