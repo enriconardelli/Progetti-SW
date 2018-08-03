@@ -95,7 +95,8 @@ feature -- inizializzazione SC
 							stati.extend (stato_temp, att.value)
 							pg.add_figlio (stato_temp)
 						elseif attached {STATO_AND} p_genitore as pg then -- elemento corrente ha genitore
-							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+							stato_temp := create {STATO_XOR}.make_with_id (att.value)
+							stato_temp.set_genitore (pg)
 							stati.extend (stato_temp, att.value)
 							pg.add_figlio (stato_temp)
 						else
@@ -124,7 +125,8 @@ feature -- inizializzazione SC
 							stati.extend (stato_temp, att.value)
 							pg.add_figlio (stato_temp)
 						elseif attached {STATO_XOR} p_genitore as pg then
-							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+							stato_temp := create {STATO_AND}.make_with_id (att.value)
+							stato_temp.set_genitore (pg)
 							stati.extend (stato_temp, att.value)
 							pg.add_figlio (stato_temp)
 						else
@@ -132,17 +134,17 @@ feature -- inizializzazione SC
 						end
 						istanzia_stati (lis_el.item_for_iteration.elements, stati.item (att.value))
 					else -- elemento corrente non ha figli
-						if attached {STATO_AND} p_genitore as pg then -- elemento corrente ha genitore
-							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
-							stati.extend (stato_temp, att.value)
-							pg.add_figlio (stato_temp)
-						elseif attached {STATO_XOR} p_genitore as pg then
-							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
-							stati.extend (stato_temp, att.value)
-							pg.add_figlio (stato_temp)
-						else -- elemento corrente non ha neanche genitore
-							stati.extend (create {STATO}.make_with_id (att.value), att.value)
-						end
+--						if attached {STATO_AND} p_genitore as pg then -- elemento corrente ha genitore
+--							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+--							stati.extend (stato_temp, att.value)
+--							pg.add_figlio (stato_temp)
+--						elseif attached {STATO_XOR} p_genitore as pg then
+--							stato_temp := create {STATO}.make_with_id_and_parent (att.value, pg)
+--							stati.extend (stato_temp, att.value)
+--							pg.add_figlio (stato_temp)
+--						else -- elemento corrente non ha neanche genitore
+--							stati.extend (create {STATO}.make_with_id (att.value), att.value)
+--						end
 					end
 				end
 				lis_el.forth
