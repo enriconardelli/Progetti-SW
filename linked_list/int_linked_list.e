@@ -15,10 +15,37 @@ feature -- accesso
 	last_element: INT_LINKABLE
 			-- l'ultimo elemento della lista
 
+	active_element: INT_LINKABLE
+			-- l'elemento corrente della lista
+
 	count: INTEGER
 			-- numero di elementi nella lista
 
 feature -- comandi fondamentali
+
+	forth
+			-- Sposta `current_element' al successivo elemento, se esiste
+		do
+			if active_element /= Void and then active_element.next /= Void then
+				active_element := active_element.next
+			end
+		end
+
+	start
+			-- Sposta `current_element' al primo elemento, se esiste
+		do
+			if first_element /= Void then
+				active_element := first_element
+			end
+		end
+
+	last
+			-- Sposta `current_element' all'ultimo elemento, se esiste
+		do
+			if last_element /= Void then
+				active_element := last_element
+			end
+		end
 
 	append (a_value: INTEGER)
 			-- aggiunge `a_value' dopo l'ultimo elemento.
@@ -28,6 +55,7 @@ feature -- comandi fondamentali
 			create new_element.make (a_value)
 			if count = 0 then
 				first_element := new_element
+				active_element := first_element
 			else
 				last_element.link_to (new_element)
 			end
@@ -49,6 +77,7 @@ feature -- comandi fondamentali
 				new_element.link_to (first_element)
 			else
 				last_element := new_element
+				active_element := first_element
 			end
 			first_element := new_element
 			count := count + 1
@@ -58,27 +87,96 @@ feature -- comandi fondamentali
 			collegato: first_element.next = old first_element
 		end
 
-	remove________DA_IMPLEMENTARE (a_value: INTEGER)
-			-- DA IMPLEMENTARE
-			-- C'E' IMPLEMENTAZIONE IN SLIDE 13 STRUTTURE DATI PRESA DA IMPLEMENTAZIONE DI LINKED
-			-- LIST DI EIFFEL CHE USA IL CONCETTO DI CURSORE
---		local
---			current_element, temp: like first_element
+	remove_active
+			-- Rimuove elemento accessibile mediante `active_element' se esiste
+			-- Assegna ad `active_element' il successivo se esiste altrimenti il precedente
+		require
+			elemento_esiste: count > 0
+		local
+			current_element, pre_current: like first_element
 		do
---			from
---				current_element := first_element
---				temp := Void
---			invariant
---				not Result implies (temp /= Void implies temp.value /= a_value)
---			until
---				(current_element = Void) or Result
---			loop
---				if current_element.value = a_value then
---					Result := True
---				end
---				temp := current_element
---				current_element := current_element.next
---			end
+			if count = 1 then
+				first_element := Void
+				active_element := Void
+				last_element := Void
+			else -- la lista ha almeno due elementi
+				from
+					current_element := first_element
+					pre_current := Void
+				invariant
+					current_element /= active_element implies current_element.next /= Void
+				until
+					(current_element = active_element)
+				loop
+					pre_current := current_element
+					current_element := current_element.next
+				end
+					-- qui `current_element' coincide con `active_element'
+				if current_element = first_element then
+						-- `current_element' cioe' `active_element' e' il primo elemento della lista
+					first_element := first_element.next
+					active_element := first_element
+				elseif current_element = last_element then
+						-- `current_element' cioe' `active_element' e' l'ultimo elemento della lista
+					last_element := pre_current
+					last_element.link_to (Void)
+					active_element := last_element
+				else
+						-- `current_element' cioe' `active_element' e' elemento intermedio della lista
+					pre_current.link_to (current_element.next)
+					active_element := current_element.next
+				end
+			end
+			count := count - 1
+		ensure
+			rimosso_elemento: count = old count - 1
+			attivo_primo: old active_element = old first_element implies active_element = first_element
+			attivo_ultimo: old active_element = old last_element implies active_element = last_element
+			attivo_scorre: old active_element /= old last_element implies active_element = old active_element.next
+
+		end
+
+	remove_first (a_value: INTEGER)
+			-- Rimuove il primo elemento che contiene `a_value', se esiste
+			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
+		require
+			lista_non_vuota: count > 0
+		local
+			current_element, pre_current: like first_element
+		do
+			from
+				current_element := first_element
+				pre_current := Void
+			invariant
+				current_element /= Void implies (current_element.value /= a_value implies (pre_current /= Void implies pre_current.value /= a_value))
+			until
+				(current_element = Void) or else (current_element.value = a_value)
+			loop
+				pre_current := current_element
+				current_element := current_element.next
+			end
+			if current_element /= Void then
+			-- la lista contiene `a_value'
+				if current_element = active_element then
+					remove_active
+				else -- la lista contiene almeno due elementi
+					if current_element = first_element then
+							-- `current_element' e' il primo elemento della lista
+						first_element := first_element.next
+					elseif current_element = last_element then
+							-- `current_element' e' l'ultimo elemento della lista
+						last_element := pre_current
+						last_element.link_to (Void)
+					else
+							-- `current_element'  e' elemento intermedio della lista
+						pre_current.link_to (current_element.next)
+					end
+				count := count - 1
+				end
+			end
+		ensure
+			rimosso_elemento: count = old count - 1
+			rimosso_primo: old first_element.value = a_value implies first_element = old first_element.next
 		end
 
 	insert_after (a_value, target: INTEGER)
@@ -104,6 +202,7 @@ feature -- comandi fondamentali
 				if count = 0 then
 					first_element := new_element
 					last_element := first_element
+					active_element := first_element
 				else
 					new_element.link_after (last_element)
 					last_element := new_element
@@ -126,6 +225,7 @@ feature -- comandi fondamentali
 			if count = 0 then
 				first_element := new_element
 				last_element := first_element
+				active_element := first_element
 			else
 				if (target = first_element.value) then
 					new_element.link_to (first_element)
@@ -197,7 +297,7 @@ feature -- comandi fondamentali
 			new_element, current_element: INT_LINKABLE
 			target_exist: BOOLEAN
 		do
-			if has(target) then
+			if has (target) then
 				from
 					current_element := first_element
 				until
@@ -210,7 +310,7 @@ feature -- comandi fondamentali
 						if current_element = last_element then
 							last_element := new_element
 						end
-						-- salta elemento appena inserito
+							-- salta elemento appena inserito
 						current_element := new_element.next
 					else
 						current_element := current_element.next
@@ -218,9 +318,10 @@ feature -- comandi fondamentali
 				end
 			else -- la lista non contiene `target'
 				create new_element.make (a_value)
-				if count=0 then
+				if count = 0 then
 					first_element := new_element
 					last_element := new_element
+					active_element := first_element
 				else
 					new_element.link_after (last_element)
 					last_element := new_element
@@ -229,9 +330,9 @@ feature -- comandi fondamentali
 			end
 		ensure
 			di_piu: count > old count
-			appeso_se_non_presente: not (old has(target)) implies last_element.value = a_value
-			collegato_se_presente: old has(target) implies get_element(target).next.value = a_value
-	end
+			appeso_se_non_presente: not (old has (target)) implies last_element.value = a_value
+			collegato_se_presente: old has (target) implies get_element (target).next.value = a_value
+		end
 
 	insert_multiple_before (a_value, target: INTEGER)
 			-- inserisce `a_value' subito prima di ogni occorrenza di `target' se esiste
@@ -239,7 +340,7 @@ feature -- comandi fondamentali
 		local
 			previous_element, current_element, new_element: like first_element
 		do
-			if has(target) then
+			if has (target) then
 				from
 					previous_element := Void
 					current_element := first_element
@@ -249,11 +350,11 @@ feature -- comandi fondamentali
 					if current_element.value = target then
 						create new_element.make (a_value)
 						if current_element = first_element then
-							new_element.link_to(first_element)
+							new_element.link_to (first_element)
 							first_element := new_element
 						else
-							new_element.link_to(current_element)
-							previous_element.link_to(new_element)
+							new_element.link_to (current_element)
+							previous_element.link_to (new_element)
 						end
 						count := count + 1
 					end
@@ -265,11 +366,12 @@ feature -- comandi fondamentali
 				if count = 0 then
 					first_element := new_element
 					last_element := new_element
+					active_element := first_element
 				else
-					new_element.link_to(first_element)
+					new_element.link_to (first_element)
 					first_element := new_element
 				end
-				count := count +1
+				count := count + 1
 			end
 		ensure
 			di_piu: count > old count
@@ -277,7 +379,7 @@ feature -- comandi fondamentali
 			in_testa_se_non_presente: not (old has (target)) implies first_element.value = a_value
 			collegato_al_primo_se_non_presente: not (old has (target)) implies first_element.next = old first_element
 			collegato_al_primo_se_presente: old has (target) implies get_element (a_value).next.value = target
-			-- verificare il collegamento con le successive occorrenze di target richiede get_all_elements
+				-- verificare il collegamento con le successive occorrenze di target richiede get_all_elements
 		end
 
 	invert
@@ -310,6 +412,7 @@ feature -- comandi fondamentali
 		do
 			first_element := Void
 			last_element := Void
+			active_element := Void
 			count := 0
 		end
 
@@ -336,29 +439,29 @@ feature -- query fondamentali
 			end
 		end
 
---	get_element (a_value: INTEGER): INT_LINKABLE
---			-- Ritorna il primo elemento contenente `a_value', se esiste
---			-- Questa versione ha un invariante più semplice ma testa se trova l'elemento ad ogni iterazione
---		local
---			current_element, temp: like first_element
---		do
---			from
---				current_element := first_element
---				temp := Void
---			invariant
---				Result = Void implies (temp /= Void implies temp.value /= a_value)
---			until
---				(current_element = Void) or (Result /= Void)
---			loop
---				if current_element.value = a_value then
---					Result := current_element
---				end
---				temp := current_element
---				current_element := temp.next
---			end
---		ensure
---			(Result /= Void) implies Result.value = a_value
---		end
+		--	get_element (a_value: INTEGER): INT_LINKABLE
+		--			-- Ritorna il primo elemento contenente `a_value', se esiste
+		--			-- Questa versione ha un invariante più semplice ma testa se trova l'elemento ad ogni iterazione
+		--		local
+		--			current_element, temp: like first_element
+		--		do
+		--			from
+		--				current_element := first_element
+		--				temp := Void
+		--			invariant
+		--				Result = Void implies (temp /= Void implies temp.value /= a_value)
+		--			until
+		--				(current_element = Void) or (Result /= Void)
+		--			loop
+		--				if current_element.value = a_value then
+		--					Result := current_element
+		--				end
+		--				temp := current_element
+		--				current_element := temp.next
+		--			end
+		--		ensure
+		--			(Result /= Void) implies Result.value = a_value
+		--		end
 
 	get_element (a_value: INTEGER): INT_LINKABLE
 			-- ritorna il primo elemento contenente `a_value', se esiste
@@ -369,8 +472,7 @@ feature -- query fondamentali
 				current_element := first_element
 				previous_element := Void
 			invariant
-				current_element /= Void implies
-				  (current_element.value /= a_value implies (previous_element /= Void implies previous_element.value /= a_value))
+				current_element /= Void implies (current_element.value /= a_value implies (previous_element /= Void implies previous_element.value /= a_value))
 			until
 				(current_element = Void) or (current_element.value = a_value)
 			loop
@@ -384,27 +486,27 @@ feature -- query fondamentali
 			(Result /= Void) implies Result.value = a_value
 		end
 
---	value_follows (a_value, target: INTEGER): BOOLEAN
---			-- La lista contiene `a_value' dopo la prima occorrenza di `target'?
---			-- Questa versione ha un invariante più semplice ma testa se trova l'elemento ad ogni iterazione
---		local
---			current_element, temp: like first_element
---		do
---			from
---				current_element := get_element(target)
---				temp := Void
---			invariant
---				not Result implies (temp /= Void implies temp.value /= a_value)
---			until
---				(current_element = Void) or Result
---			loop
---				if current_element.value = a_value then
---					Result := True
---				end
---				temp := current_element
---				current_element := current_element.next
---			end
---		end
+		--	value_follows (a_value, target: INTEGER): BOOLEAN
+		--			-- La lista contiene `a_value' dopo la prima occorrenza di `target'?
+		--			-- Questa versione ha un invariante più semplice ma testa se trova l'elemento ad ogni iterazione
+		--		local
+		--			current_element, temp: like first_element
+		--		do
+		--			from
+		--				current_element := get_element(target)
+		--				temp := Void
+		--			invariant
+		--				not Result implies (temp /= Void implies temp.value /= a_value)
+		--			until
+		--				(current_element = Void) or Result
+		--			loop
+		--				if current_element.value = a_value then
+		--					Result := True
+		--				end
+		--				temp := current_element
+		--				current_element := current_element.next
+		--			end
+		--		end
 
 	value_follows (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' dopo la prima occorrenza di `target'?
@@ -412,11 +514,10 @@ feature -- query fondamentali
 			current_element, temp: like first_element
 		do
 			from
-				current_element := get_element(target)
+				current_element := get_element (target)
 				temp := Void
 			invariant
-				current_element /= Void implies
-				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
+				current_element /= Void implies (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
 			until
 				(current_element = Void) or (current_element.value = a_value)
 			loop
@@ -433,21 +534,21 @@ feature -- query fondamentali
 		local
 			current_element, temp: like first_element
 		do
---			from
---				current_element := get_element(target)
---				temp := Void
---			invariant
---				current_element /= Void implies
---				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
---			until
---				(current_element = Void) or (current_element.value = a_value)
---			loop
---				temp := current_element
---				current_element := current_element.next
---			end
---			if (current_element /= Void and then current_element.value = a_value) then
---				Result := True
---			end
+				--			from
+				--				current_element := get_element(target)
+				--				temp := Void
+				--			invariant
+				--				current_element /= Void implies
+				--				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
+				--			until
+				--				(current_element = Void) or (current_element.value = a_value)
+				--			loop
+				--				temp := current_element
+				--				current_element := current_element.next
+				--			end
+				--			if (current_element /= Void and then current_element.value = a_value) then
+				--				Result := True
+				--			end
 		end
 
 	value_precedes_______________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
@@ -456,21 +557,21 @@ feature -- query fondamentali
 		local
 			current_element, temp: like first_element
 		do
---			from
---				current_element := get_element(target)
---				temp := Void
---			invariant
---				current_element /= Void implies
---				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
---			until
---				(current_element = Void) or (current_element.value = a_value)
---			loop
---				temp := current_element
---				current_element := current_element.next
---			end
---			if (current_element /= Void and then current_element.value = a_value) then
---				Result := True
---			end
+				--			from
+				--				current_element := get_element(target)
+				--				temp := Void
+				--			invariant
+				--				current_element /= Void implies
+				--				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
+				--			until
+				--				(current_element = Void) or (current_element.value = a_value)
+				--			loop
+				--				temp := current_element
+				--				current_element := current_element.next
+				--			end
+				--			if (current_element /= Void and then current_element.value = a_value) then
+				--				Result := True
+				--			end
 		end
 
 	value_before___________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
@@ -478,21 +579,21 @@ feature -- query fondamentali
 		local
 			current_element, temp: like first_element
 		do
---			from
---				current_element := get_element(target)
---				temp := Void
---			invariant
---				current_element /= Void implies
---				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
---			until
---				(current_element = Void) or (current_element.value = a_value)
---			loop
---				temp := current_element
---				current_element := current_element.next
---			end
---			if (current_element /= Void and then current_element.value = a_value) then
---				Result := True
---			end
+				--			from
+				--				current_element := get_element(target)
+				--				temp := Void
+				--			invariant
+				--				current_element /= Void implies
+				--				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
+				--			until
+				--				(current_element = Void) or (current_element.value = a_value)
+				--			loop
+				--				temp := current_element
+				--				current_element := current_element.next
+				--			end
+				--			if (current_element /= Void and then current_element.value = a_value) then
+				--				Result := True
+				--			end
 		end
 
 	sum_of_positive: INTEGER
@@ -519,7 +620,7 @@ feature -- query fondamentali
 		local
 			temp: like first_element
 		do
-			print ("%N La lista contiene: ")
+--			print ("%N La lista contiene: ")
 			from
 				temp := first_element
 			until
@@ -532,14 +633,14 @@ feature -- query fondamentali
 			print ("%N che sono in totale ")
 			print (count)
 			print (" elementi.")
-			print ("%N")
+--			print ("%N")
 		end
 
 invariant
 	contatore_non_negativo: count >= 0
 	lista_termina_Void: last_element /= Void implies last_element.next = Void
-	consistenza_lista_vuota: count = 0 implies (first_element = last_element) and (first_element = Void)
-	consistenza_lista_mono_elemento: count = 1 implies (first_element = last_element) and (first_element /= Void)
-	consistenza_lista_pluri_elemento: count > 1 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and then (first_element.next /= Void)
+	consistenza_lista_vuota: count = 0 implies (first_element = last_element) and (first_element = Void) and (first_element = active_element)
+	consistenza_lista_mono_elemento: count = 1 implies (first_element = last_element) and (first_element /= Void) and (first_element = active_element)
+	consistenza_lista_pluri_elemento: count > 1 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and (active_element /= Void) and then (first_element.next /= Void)
 
 end
