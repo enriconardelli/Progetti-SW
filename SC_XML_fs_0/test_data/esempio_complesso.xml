@@ -47,12 +47,12 @@
 				<transition event="zt" target="C">
 					<assign location="z" expr="true" />
 					<log name="zt: da A2 a C + z := true" />
-				</transition>/>
+				</transition>
 
 				<transition event="zf" target="B">
 					<assign location="z" expr="false" />
 					<log name="zf: da A2 a B + z := false" />
-				</transition>/>
+				</transition>
 
 			</parallel>
 
