@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="1.0" initial="A">
+	<datamodel>
+		<data id="z" expr="false" />
+	</datamodel>
+		<state id="A" >
+			<state id="A1" >
+				<state id="A11" >
+					<transition event="x" condition target="A2A1">
+						<log name="x: da A11 a A2A1" />
+					</transition>
+				</state>
+				<state id="A12" >
+					<transition event="x" condition target="A2B2">
+						<log name="x: da A12 a A2B2" />
+					</transition>
+				</state>
+				<state id="A13" >
+				</state>
+
+				<transition event="x" condition target="A2A2">
+					<log name="x: da A1 a A2A2" />
+				</transition>
+			</state>
+	
+			<parallel id="A2">	
+				<state id="A2A" >
+					<state id="A2A1" >
+					</state>
+					<state id="A2A2" >
+					</state>
+				</state>
+			
+				<state id="A2B" initial="A2B1">
+					<state id="A2B1" >
+						<transition event="x" cond="z" target="A13">
+							<log name="x(z): da A2B1 a A13" />
+						</transition>
+						<transition event="x" target="A11">
+							<log name="x(-z): da A2B1 a A11" />
+						</transition>
+					</state>
+					<state id="A2B2" >
+					</state>
+				</state>	
+
+				<transition event="zt" target="C">
+					<assign location="z" expr="true" />
+					<log name="zt: da A2 a C + z := true" />
+				</transition>/>
+
+				<transition event="zf" target="B">
+					<assign location="z" expr="false" />
+					<log name="zf: da A2 a B + z := false" />
+				</transition>/>
+
+			</parallel>
+
+		</state>
+
+		<state id="B" >
+			<transition event="x" target="A2">
+				<log name="x: da B a A2" />
+			</transition>
+		</state>
+
+		<state id="C" >
+			<transition event="x" target="A2">
+				<log name="x: da C a A2" />
+			</transition>
+		</state>
+
+</scxml>
