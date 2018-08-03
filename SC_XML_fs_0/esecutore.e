@@ -116,7 +116,7 @@ feature --evoluzione SC
 					trova_default (stato.stato_default [i], nuovo_stato_corrente)
 					i := i + 1
 				end
-			else
+			elseif not nuovo_stato_corrente.has (stato) then
 				nuovo_stato_corrente.force (stato, nuovo_stato_corrente.count + 1)
 			end
 		end
