@@ -3,8 +3,8 @@
 	<datamodel>
 		<data id="z" expr="false" />
 	</datamodel>
-		<state id="A" >
-			<state id="A1" >
+		<state id="A" initial="A1">
+			<state id="A1" initial="A11" >
 				<state id="A11" >
 					<transition event="x" target="A2A1">
 						<log name="x: da A11 a A2A1" />
@@ -24,7 +24,7 @@
 			</state>
 	
 			<parallel id="A2">	
-				<state id="A2A" >
+				<state id="A2A" initial="A2A1">
 					<state id="A2A1" >
 					</state>
 					<state id="A2A2" >
