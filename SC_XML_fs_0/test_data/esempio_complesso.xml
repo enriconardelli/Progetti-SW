@@ -6,19 +6,19 @@
 		<state id="A" >
 			<state id="A1" >
 				<state id="A11" >
-					<transition event="x" condition target="A2A1">
+					<transition event="x" target="A2A1">
 						<log name="x: da A11 a A2A1" />
 					</transition>
 				</state>
 				<state id="A12" >
-					<transition event="x" condition target="A2B2">
+					<transition event="x" target="A2B2">
 						<log name="x: da A12 a A2B2" />
 					</transition>
 				</state>
 				<state id="A13" >
 				</state>
 
-				<transition event="x" condition target="A2A2">
+				<transition event="x" target="A2A2">
 					<log name="x: da A1 a A2A2" />
 				</transition>
 			</state>
