@@ -49,6 +49,7 @@ feature -- setter
 				if attached {STATO_XOR} stati_figli.item (i) as sf then
 					sf.set_stato_default (sf)
 				end
+				i:= i+1
 			end
 		end
 
