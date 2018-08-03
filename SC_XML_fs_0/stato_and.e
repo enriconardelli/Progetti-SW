@@ -38,8 +38,18 @@ feature -- setter
 	end
 
 	set_stato_default
+		local
+			i: INTEGER
 		do
-			stato_default.copy (stati_figli)
+			from
+				i:= stati_figli.lower
+			until
+				i= stati_figli.upper + 1
+			loop
+				if attached {STATO_XOR} stati_figli.item (i) as sf then
+					sf.set_stato_default (sf)
+				end
+			end
 		end
 
 end

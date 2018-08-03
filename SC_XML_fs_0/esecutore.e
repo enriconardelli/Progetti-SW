@@ -121,6 +121,32 @@ feature --evoluzione SC
 			end
 		end
 
+--	trova_stato_corrente (target: STATO)
+--	local
+--		nuovo_stato: ARRAY[STATO]
+--		stati_figli_temp: ARRAY[STATO]
+--	do
+--		create nuovo_stato.make_empty
+--		create stati_figli_temp.make_empty
+--		if attached target.stato_genitore as sg then
+--			if attached {STATO_XOR} sg.stato_genitore as sgg then
+--				nuovo_stato.force (target, nuovo_stato.count + 1)
+--				stato_corrente.copy (nuovo_stato)
+--			elseif attached {STATO_AND} sg.stato_genitore as sgg then
+--				stati_figli_temp.copy (sgg.stati_figli)
+--				nuovo_stato.force (stati_figli_temp.item (0).stato_default, nuovo_stato.count + 1)
+--				nuovo_stato.force (stati_figli_temp.item (1).stato_default, nuovo_stato.count + 1)
+--				stato_corrente.copy (nuovo_stato)
+--			else
+--				nuovo_stato.force (target, nuovo_stato.count + 1)
+--				stato_corrente.copy (nuovo_stato)
+--			end
+--		else
+--			nuovo_stato.force (target, nuovo_stato.count + 1)
+--			stato_corrente.copy (nuovo_stato)
+--		end
+--	end
+
 	esegui_azioni (transizione: TRANSIZIONE; stato: STATO)
 		local
 			contesto: detachable STATO
