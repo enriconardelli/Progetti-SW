@@ -83,6 +83,7 @@ feature --evoluzione SC
 						transizione_corrente := stato_corrente [i].transizione_abilitata (istante_corrente, condizioni_correnti)
 						if attached transizione_corrente as tc then
 							esegui_azioni (tc, stato_corrente [i])
+							aggiungi_paralleli (tc.target, nuovo_stato_corrente)
 							trova_default (tc.target, nuovo_stato_corrente)
 						else
 							nuovo_stato_corrente.force (stato_corrente [i], nuovo_stato_corrente.count + 1)
@@ -98,6 +99,27 @@ feature --evoluzione SC
 			end
 			print ("%N%NHo terminato l'elaborazione degli eventi nello stato = ")
 			stampa_stati (stato_corrente)
+		end
+
+	aggiungi_paralleli (stato: STATO; nuovo_stato_corrente: ARRAY [STATO])
+		local
+			i: INTEGER
+		do
+			if attached {STATO_AND} stato.stato_genitore as sg then
+				from
+					i := sg.stato_default.lower
+				until
+					i = sg.stato_default.upper + 1
+				loop
+					if not sg.stato_default [i].is_equal(stato) then
+						trova_default (sg.stato_default [i], nuovo_stato_corrente)
+					end
+					i := i + 1
+				end
+			end
+			if attached stato.stato_genitore as sg then
+				aggiungi_paralleli (sg, nuovo_stato_corrente)
+			end
 		end
 
 	trova_default (stato: STATO; nuovo_stato_corrente: ARRAY [STATO])

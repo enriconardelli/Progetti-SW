@@ -195,6 +195,7 @@ feature -- inizializzazione SC
 					if attached {STATO_AND} stati.item (stato.value) as st then
 						st.set_stato_default
 					end
+					set_stati_default (lis_el.item_for_iteration.elements)
 				end
 				lis_el.forth
 			end
