@@ -171,7 +171,7 @@ feature --comandi fondamentali
 			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen implies gen.value = a_value))
 		end
 
-	insert_after_using_has_e_get_element (a_value, target: G)
+	insert_after_using_has_and_get_element (a_value, target: G)
 			-- Inserisce `new' dopo la prima occorrenza di `target' se presente altrimenti inserisce `a_value' alla fine
 			-- Implementazione alternativa con has e get_element
 		local
