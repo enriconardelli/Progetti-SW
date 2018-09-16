@@ -40,6 +40,68 @@ feature {NONE} -- Initialization
 			t.insert_multiple_before (5, 8)
 			print ("%N -- RISULTATO: "); t.stampa
 
+			print("%N invoco remove_first 7:")
+			t.remove_first (7)
+			print ("%N -- RISULTATO: "); t.stampa;
+
+			print("%N invoco remove_first 5:")
+			t.remove_first (5)
+			print ("%N -- RISULTATO: "); t.stampa;
+
+			print("%N invoco insert 5 before 8 su lista vuota:")
+			t.insert_before (5, 8)
+			print ("%N -- RISULTATO: "); t.stampa
+
+
+			print("%N invoco insert 7 after 5:")
+			t.insert_after (7, 5)
+			print ("%N -- RISULTATO: "); t.stampa
+
+			print("%N invoco insert 6 before 7:")
+			t.insert_before (6, 7)
+			print ("%N -- RISULTATO: "); t.stampa
+
+			print("%N invoco last:")
+			t.last
+			print ("%N -- RISULTATO: "); print (t.active_element.value)
+
+			print("%N invoco start:")
+			t.start
+			print ("%N -- RISULTATO: "); print (t.active_element.value)
+
+			print("%N invoco remove_last 5:")
+			t.remove_last (5)
+			print ("%N -- RISULTATO: "); t.stampa
+			print ("%N -- active_element: "); print (t.active_element.value)
+
+			print("%N invoco insert 5 before 6:")
+			t.insert_before (5, 6)
+			print ("%N -- RISULTATO: "); t.stampa
+			print ("%N -- active_element: "); print (t.active_element.value)
+
+			print("%N invoco remove_last 6:")
+			t.remove_last (6)
+			print ("%N -- RISULTATO: "); t.stampa
+			print ("%N -- active_element: "); print (t.active_element.value)
+
+			print("%N invoco insert 6 after 5:")
+			t.insert_after (6, 5)
+			print ("%N -- RISULTATO: "); t.stampa
+			print ("%N -- active_element: "); print (t.active_element.value)
+
+			print("%N invoco remove_last 7:")
+			t.remove_last (7)
+			print ("%N -- RISULTATO: "); t.stampa
+			print ("%N -- active_element: "); print (t.active_element.value)
+
+			print("%N invoco insert 7 after 6:")
+			t.insert_after (7, 6)
+			print ("%N -- RISULTATO: "); t.stampa
+			print ("%N -- active_element: "); print (t.active_element.value)
+
+
+
+
 			print("%N invoco insert_multiple 5 before 5 con un solo 5:")
 			t.insert_multiple_before (5, 5)
 			print ("%N -- RISULTATO: "); t.stampa

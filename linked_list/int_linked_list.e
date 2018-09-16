@@ -148,6 +148,7 @@ feature -- comandi fondamentali
 				current_element := first_element
 				pre_current := Void
 			invariant
+				-- alternative version to the invariant in remove_last
 				current_element /= Void implies (current_element.value /= a_value implies (pre_current /= Void implies pre_current.value /= a_value))
 			until
 				(current_element = Void) or else (current_element.value = a_value)
@@ -175,8 +176,138 @@ feature -- comandi fondamentali
 				end
 			end
 		ensure
-			rimosso_elemento: count = old count - 1
-			rimosso_primo: old first_element.value = a_value implies first_element = old first_element.next
+			rimosso_elemento_se_esiste: old has(a_value) implies count = old count - 1
+			rimosso_se_primo: old first_element.value = a_value implies first_element = old first_element.next
+		end
+
+	remove_last (a_value: INTEGER)
+			-- Rimuove l'ultimo elemento che contiene `a_value', se esiste
+			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
+		require
+			lista_non_vuota: count > 0
+		local
+			current_element, pre_current: like first_element
+			candidate, pre_candidate: like first_element
+		do
+			from
+				current_element := first_element
+				pre_current := Void
+			invariant
+				-- alternative version to the invariant in remove_first
+				attached current_element as a_ce implies (a_ce.value /= a_value implies (attached pre_current as a_pc implies a_pc.value /= a_value))
+			until
+				(current_element = Void) or else (current_element.value = a_value)
+			loop
+				pre_current := current_element
+				current_element := current_element.next
+			end
+			if current_element /= Void then
+				-- la lista contiene `a_value'
+				from
+					candidate := current_element
+					pre_candidate := pre_current
+				invariant
+					-- non so bene come deve essere fatto questo invariante
+--					attached current_element as a_ce implies (a_ce.value /= a_value implies (attached pre_current as a_pc implies a_pc.value /= a_value))
+				until
+					current_element = Void
+				loop
+					pre_current := current_element
+					current_element := current_element.next
+					if attached current_element as a_ce then
+						if a_ce.value = a_value then
+							pre_candidate := pre_current
+						end
+					end
+				end
+				-- `candidate' e' l'ultimo elemento che contiene `a_value'
+				if candidate = active_element then
+					remove_active
+				else -- la lista contiene almeno due elementi
+					if candidate = first_element then
+						-- `candidate' e' il primo elemento della lista
+						first_element := first_element.next
+					elseif candidate = last_element then
+						-- `candidate' e' l'ultimo elemento della lista
+						last_element := pre_current
+						last_element.link_to (Void)
+					else
+						-- `candidate'  e' elemento intermedio della lista
+						pre_current.link_to (current_element.next)
+					end
+				count := count - 1
+				end
+			end
+		ensure
+			rimosso_elemento_se_esiste: old has(a_value) implies count = old count - 1
+		end
+
+	remove_last_WRONG (a_value: INTEGER)
+			-- Rimuove l'ultimo elemento che contiene `a_value', se esiste
+			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
+		require
+			lista_non_vuota: count > 0
+		local
+			current_element, pre_current: like first_element
+			pre_candidate: like first_element
+		do
+			from
+				current_element := first_element
+				pre_current := Void
+			invariant
+				-- alternative version to the invariant in remove_first
+				attached current_element as a_ce implies (a_ce.value /= a_value implies (attached pre_current as a_pc implies a_pc.value /= a_value))
+			until
+				(current_element = Void) or else (current_element.value = a_value)
+			loop
+				pre_current := current_element
+				current_element := current_element.next
+			end
+			if current_element /= Void then
+				-- la lista contiene `a_value'
+				from
+--					candidate := current_element
+--					pre_candidate := pre_current
+				invariant
+					-- alternative version to the invariant in remove_first
+--					attached current_element as a_ce implies (a_ce.value /= a_value implies (attached pre_current as a_pc implies a_pc.value /= a_value))
+				until
+					current_element.next = Void
+				loop
+--					pre_current := current_element
+--					current_element := current_element.next
+					if attached current_element.next as a_cen then
+						if a_cen.value = a_value then
+--  qui dentro non si entra nel caso di una lista di almeno due elementi in cui il primo
+-- e' quello che devo cancellare perche' il test e' fatto sul valore del secondo elemento
+-- il risultato è che pre_candidate (o pre_currente se si usa solo quello) rimane Void
+-- e alla prima istruzione dopo l'uscita dal loop c'è errore Void target
+							pre_candidate := current_element
+						end
+					end
+					current_element := current_element.next
+				end
+				-- `pre_candidate' precede l'ultimo elemento che contiene `a_value'
+				current_element := pre_candidate.next
+				if current_element = active_element then
+					remove_active
+				else -- la lista contiene almeno due elementi
+					if current_element = first_element then
+						-- `current_element' e' il primo elemento della lista
+						first_element := first_element.next
+					elseif current_element = last_element then
+						-- `current_element' e' l'ultimo elemento della lista
+						last_element := pre_current
+						last_element.link_to (Void)
+					else
+						-- `current_element'  e' elemento intermedio della lista
+						pre_current.link_to (current_element.next)
+					end
+				count := count - 1
+				end
+			end
+		ensure
+			rimosso_elemento_se_esiste: old has(a_value) implies count = old count - 1
 		end
 
 	insert_after (a_value, target: INTEGER)
@@ -295,7 +426,7 @@ feature -- comandi fondamentali
 			-- altrimenti inserisce `new' alla fine
 		local
 			new_element, current_element: INT_LINKABLE
-			target_exist: BOOLEAN
+			-- target_exist: BOOLEAN
 		do
 			if has (target) then
 				from
@@ -532,7 +663,7 @@ feature -- query fondamentali
 	value_after___________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito dopo la prima occorrenza di `target'?
 		local
-			current_element, temp: like first_element
+			-- current_element, temp: like first_element
 		do
 				--			from
 				--				current_element := get_element(target)
@@ -555,7 +686,7 @@ feature -- query fondamentali
 			--
 			-- la lista contiene `a_value' prima della prima occorrenza di `target'?
 		local
-			current_element, temp: like first_element
+			-- current_element, temp: like first_element
 		do
 				--			from
 				--				current_element := get_element(target)
@@ -577,7 +708,7 @@ feature -- query fondamentali
 	value_before___________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
 		local
-			current_element, temp: like first_element
+			-- current_element, temp: like first_element
 		do
 				--			from
 				--				current_element := get_element(target)
