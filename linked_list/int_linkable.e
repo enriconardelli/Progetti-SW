@@ -15,12 +15,12 @@ feature -- accesso
 	value: INTEGER
 			-- l'intero memorizzato in questo elemento
 
-	set_value (new_value: INTEGER)
-			-- assegna l'intero memorizzato in questo elemento
+	set_value (a_value: INTEGER)
+			-- memorizza `a_value' in questo elemento
 		do
-			value := new_value
+			value := a_value
 		ensure
-			value = new_value
+			value = a_value
 		end
 
 	next: INT_LINKABLE
@@ -34,24 +34,24 @@ feature -- accesso
 			value = a_value
 		end
 
-	link_to (other: INT_LINKABLE)
-			-- collega questo elemento con `other'
+	link_to (an_element: INT_LINKABLE)
+			-- collega questo elemento con `an_element'
 		do
-			next := other
+			next := an_element
 		ensure
-			next = other
+			next = an_element
 		end
 
-	link_after (other: INT_LINKABLE)
-			-- inserisce questo elemento dopo `other' conservando quello che c'era dopo di esso
+	link_after (an_element: INT_LINKABLE)
+			-- inserisce questo elemento dopo `an_element' conservando quello che c'era dopo di esso
 		require
-			other /= Void
+			an_element /= Void
 		do
-			link_to (other.next)
-			other.link_to (Current)
+			link_to (an_element.next)
+			an_element.link_to (Current)
 		ensure
-			other.next = Current
-			other.next.next = old other.next
+			an_element.next = Current
+			an_element.next.next = old an_element.next
 		end
 
 end
