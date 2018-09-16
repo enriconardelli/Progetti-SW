@@ -402,28 +402,6 @@ feature --comandi fondamentali
 			count := 0
 		end
 
-	stampa
-			-- print the entire list
-		local
-			temp: like first_element
-		do
-			print ("%N La lista contiene: ")
-			from
-				temp := first_element
-			until
-				temp = Void
-			loop
-					--io.put_string (temp.value)
-				print (temp.value)
-				print (", ")
-				temp := temp.next
-			end
-			print ("%N che sono in totale ")
-			print (count)
-			print (" elementi.")
-			print ("%N")
-		end
-
 feature --query fondamentali
 
 	has (a_value: G): BOOLEAN
@@ -570,6 +548,28 @@ feature --query fondamentali
 			end
 		ensure
 			(Result /= Void) implies Result.value = a_value
+		end
+
+	stampa
+			-- print the entire list
+		local
+			temp: like first_element
+		do
+			print ("%N La lista contiene: ")
+			from
+				temp := first_element
+			until
+				temp = Void
+			loop
+					--io.put_string (temp.value)
+				print (temp.value)
+				print (", ")
+				temp := temp.next
+			end
+			print ("%N che sono in totale ")
+			print (count)
+			print (" elementi.")
+			print ("%N")
 		end
 
 invariant
