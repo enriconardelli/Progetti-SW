@@ -10,15 +10,16 @@ create
 	make
 feature
 
+	value: G
+			-- the value stored in this cell
+
 	set_value (new_value: G)
-			-- assign the integer stored in this cell
+			-- assign the value stored in this cell
 		do
 			value := new_value
 		ensure
 			value = new_value
 		end
-
-	value: G
 
 	next: detachable MY_LINKABLE [G]
 			-- the next cell in the list
@@ -52,12 +53,6 @@ feature
 			other /= Void
 			other.next = Current
 			attached other.next as on implies (on.next = old other.next)
-		end
-
-	exec_nothing
-			-- do nothing
-		do
-			print ("%N instance of INT_LINKABLE doing nothing - to test class invariants")
 		end
 
 end
