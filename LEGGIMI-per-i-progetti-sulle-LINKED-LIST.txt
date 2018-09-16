@@ -10,3 +10,10 @@ gen_vs_linked_list deve aggiungere a my_linked list gli autotest
 
 (VS_ e gen_ sono le più "vecchie" in termini di numero di feature e organizzazione)
 
+linked_list e my_linked_list sono più o meno allineate
+
+DA_FARE
+ - allineare VS_linked_list in termini di feature usando contemporaneamente linked_list (che è non VS) e my_linked_list (che è VS)
+
+ - ristrutturare i test con le classi di test una per feature che contiene la costruzione delle istanze e l'invocazione dei test
+
