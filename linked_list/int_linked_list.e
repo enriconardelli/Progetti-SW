@@ -15,11 +15,11 @@ feature -- accesso
 	last_element: INT_LINKABLE
 			-- l'ultimo elemento della lista
 
-	active_element: INT_LINKABLE
-			-- l'elemento corrente della lista
-
 	count: INTEGER
 			-- numero di elementi nella lista
+
+	active_element: INT_LINKABLE
+			-- l'elemento corrente della lista
 
 feature -- comandi fondamentali
 
