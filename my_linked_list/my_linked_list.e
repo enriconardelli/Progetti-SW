@@ -15,6 +15,9 @@ feature --accesso
 	last_element: detachable MY_LINKABLE [G]
 			-- Last cell of the list
 
+	count: INTEGER
+			-- Number of elements in the list
+
 	attached_element (a_value: G): MY_LINKABLE [G]
 			-- Elemento sempre attached usato per creazione di nuovi elementi da aggiungere
 		do
@@ -22,9 +25,6 @@ feature --accesso
 		ensure
 			esiste_result: Result /= Void
 		end
-
-	count: INTEGER
-			-- Number of elements in the list
 
 feature --comandi fondamentali
 
