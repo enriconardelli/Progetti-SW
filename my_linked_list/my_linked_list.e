@@ -425,6 +425,29 @@ feature --query fondamentali
 			end
 		end
 
+	get_element (a_value: G): detachable MY_LINKABLE [G]
+			-- Ritorna il primo elemento contenente `a_value', se esiste
+		local
+			current_element, temp: like first_element
+		do
+			from
+				current_element := first_element;
+				temp := Void
+			invariant
+				Result = Void implies (temp /= Void implies temp.value /= a_value)
+			until
+				(current_element = Void) or (Result /= Void)
+			loop
+				if current_element.value = a_value then
+					Result := current_element
+				end
+				temp := current_element
+				current_element := temp.next
+			end
+		ensure
+			(Result /= Void) implies Result.value = a_value
+		end
+
 	value_follows (a_value, target: G): BOOLEAN
 			-- La lista contiene `a_value' dopo la prima occorrenza di `target'?
 		require
@@ -525,29 +548,6 @@ feature --query fondamentali
 					end
 				end
 			end
-		end
-
-	get_element (a_value: G): detachable MY_LINKABLE [G]
-			-- Ritorna il primo elemento contenente `a_value', se esiste
-		local
-			current_element, temp: like first_element
-		do
-			from
-				current_element := first_element;
-				temp := Void
-			invariant
-				Result = Void implies (temp /= Void implies temp.value /= a_value)
-			until
-				(current_element = Void) or (Result /= Void)
-			loop
-				if current_element.value = a_value then
-					Result := current_element
-				end
-				temp := current_element
-				current_element := temp.next
-			end
-		ensure
-			(Result /= Void) implies Result.value = a_value
 		end
 
 	stampa
