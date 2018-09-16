@@ -26,9 +26,6 @@ feature --accesso
 	count: INTEGER
 			-- Number of elements in the list
 
-	count_buffer: INTEGER
-			-- Buffer to store the number of elements in the list during test of class invariants
-
 feature --comandi fondamentali
 
 	append (a_value: G)
@@ -592,21 +589,6 @@ feature --query fondamentali
 			end
 		ensure
 			(Result /= Void) implies Result.value = a_value
-		end
-
-feature --feature di test
-
-	dummy_do
-			-- dummy feature to test class invariants
-		do
-			count_buffer := count
-			count := 0
-		end
-
-	dummy_reset
-			-- dummy feature to test class invariants
-		do
-			count := count_buffer
 		end
 
 invariant
