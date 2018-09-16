@@ -14,17 +14,17 @@ linked_list (ha commenti in italiano)
   è un po' più indietro di my_linked_list (commenti in inglese) che ha implementato feature che erano solo in bozza
   è un po' più avanti di my_linked_list perché ha il nuovo design delle liste con active_element
 
-my_linked_list è VS
-  - non c'è in MY_LINKED_LIST
+c'è in LINKED_LIST e non in MY_LINKED_LIST
     - sum_of_positive (Perché non ha senso per versione generica)
-    - active_element
-    - remove_active
-    - remove_first
-    - remove_last
-ha in più in MY_LINKED_LIST:
- - attached_element
+    - active_element (non ha senso in MY_LINKED_LIST perché relativa al nuovo design della lista con ACTIVE_ELEMENT)
+    - remove_active (non ha senso in MY_LINKED_LIST perché relativa al nuovo design della lista con ACTIVE_ELEMENT)
+    - remove_first (non ha senso in MY_LINKED_LIST perché relativa al nuovo design della lista con ACTIVE_ELEMENT)
+    - remove_last (non ha senso in MY_LINKED_LIST perché relativa al nuovo design della lista con ACTIVE_ELEMENT)
+
+c'è in MY_LINKED_LIST e non in LINKED_LIST
+ - attached_element (probabilmente non serve)
+ - remove (va inserita ma con paramentro l'elemento e non il valore )
  - implementazione di
-   - remove
    - insert_after_using_has_and_get_element
    - insert_before_using_has
    - value_after
