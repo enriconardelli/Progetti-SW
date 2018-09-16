@@ -10,11 +10,17 @@ gen_vs_linked_list deve aggiungere a my_linked list gli autotest
 
 (VS_ e gen_ sono le più "vecchie" in termini di numero di feature e organizzazione)
 
-linked_list è un po' più indietro di my_linked_list che ha implementato feature che erano solo in bozza
+linked_list (ha commenti in italiano)
+  è un po' più indietro di my_linked_list (commenti in inglese) che ha implementato feature che erano solo in bozza
+  è un po' più avanti di my_linked_list perché ha il nuovo design delle liste con active_element
 
 my_linked_list è VS
-  - non ha in MY_LINKED_LIS
+  - non c'è in MY_LINKED_LIST
     - sum_of_positive (Perché non ha senso per versione generica)
+    - active_element
+    - remove_active
+    - remove_first
+    - remove_last
 ha in più in MY_LINKED_LIST:
  - attached_element
  - implementazione di
