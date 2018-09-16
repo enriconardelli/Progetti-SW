@@ -136,25 +136,6 @@ feature --comandi fondamentali
 				--			removed: count = old count - 1
 		end
 
-	sum_of_positive: INTEGER
-			-- The sum of positive elements
-		local
-			temp: like first_element
-		do
-				--			from
-				--				temp := first_element
-				--			until
-				--				temp = Void
-				--			loop
-				--				if temp.value > 0 then
-				--					Result := Result + temp.value
-				--				end
-				--				temp := temp.next
-				--			end
-		ensure
-			Result >= 0
-		end
-
 	insert_after (a_value, target: G)
 			-- Inserisce `a_value' dopo la prima occorrenza di `target' se presente
 			-- Altrimenti inserisce `a_value' alla fine
