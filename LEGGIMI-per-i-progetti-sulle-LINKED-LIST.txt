@@ -10,7 +10,20 @@ gen_vs_linked_list deve aggiungere a my_linked list gli autotest
 
 (VS_ e gen_ sono le più "vecchie" in termini di numero di feature e organizzazione)
 
-linked_list e my_linked_list sono più o meno allineate
+linked_list è un po' più indietro di my_linked_list che ha implementato feature che erano solo in bozza
+
+my_linked_list è VS
+  - non ha in MY_LINKED_LIS
+    - sum_of_positive (Perché non ha senso per versione generica)
+ha in più in MY_LINKED_LIST:
+ - attached_element
+ - implementazione di
+   - remove
+   - insert_after_using_has_and_get_element
+   - insert_before_using_has
+   - value_after
+   - value_precedes
+   - value_before
 
 DA_FARE
  - allineare VS_linked_list in termini di feature usando contemporaneamente linked_list (che è non VS) e my_linked_list (che è VS)
