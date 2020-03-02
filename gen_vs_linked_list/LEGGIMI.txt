@@ -1,0 +1,21 @@
+
+Questa cartella
+  D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\gen_vs_linked_list
+contiene la versione generica delle classi EIFFEL di gestione di liste in versione void_safe. Compilato con opzione void safety ALL funziona
+
+È stata generata da my_linked_list di Luca Biondo (a.a. 2016-17), che era basata su
+  linked_list
+  gen_linked_list
+  VS_linked_list
+
+che ho ripulito dalle routine non più utili. 
+
+BISOGNA PERO' aggiungere le funzioni di Autotest
+
+BISOGNA RIPORTARE I COMMENTI IN ITALIANO
+
+È replicata nel repository GIT
+  https://github.com/enriconardelli/Progetti-SW
+
+
+

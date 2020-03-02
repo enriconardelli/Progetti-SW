@@ -1,11 +1,11 @@
 note
-	description: "Summary description for {MY_LINKABLE}."
+	description: "Summary description for {GEN_LINKABLE}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	MY_LINKABLE [G]
+	GEN_LINKABLE [G]
 create
 	make
 feature
@@ -20,7 +20,7 @@ feature
 
 	value: G
 
-	next: detachable MY_LINKABLE [G]
+	next: detachable GEN_LINKABLE [G]
 			-- the next cell in the list
 
 	make (a_value: G)
@@ -31,7 +31,7 @@ feature
 			value = a_value
 		end
 
-	link_to (other: detachable MY_LINKABLE [G])
+	link_to (other: detachable GEN_LINKABLE [G])
 			-- connect this cell to `other'
 		do
 			next := other
@@ -39,7 +39,7 @@ feature
 			next = other
 		end
 
-	link_after (other: detachable MY_LINKABLE [G])
+	link_after (other: detachable GEN_LINKABLE [G])
 			-- insert this cell after `other' preserving what was after it
 		require
 			other /= Void

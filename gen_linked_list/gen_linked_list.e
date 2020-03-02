@@ -5,17 +5,17 @@ note
 	revision: "$Revision$"
 
 class
-	MY_LINKED_LIST [G]
+	GEN_LINKED_LIST [G]
 
 feature
 
-	first_element: detachable MY_LINKABLE[G]
+	first_element: detachable GEN_LINKABLE[G]
 			-- First cell of the list
 
-	last_element: detachable MY_LINKABLE[G]
+	last_element: detachable GEN_LINKABLE[G]
 			-- Last cell of the list
 
-	attached_element (a_value: G): MY_LINKABLE[G]
+	attached_element (a_value: G): GEN_LINKABLE[G]
 			-- Elemento sempre attached usato per creazione di nuovi elementi da aggiungere
 		do
 			create Result.make (a_value)
@@ -93,7 +93,7 @@ feature
 			end
 		end
 
-	get_element (a_value: G): detachable MY_LINKABLE[G]
+	get_element (a_value: G): detachable GEN_LINKABLE[G]
 			-- Ritorna il primo elemento contenente `a_value', se esiste
 		local
 			current_element, temp: like first_element

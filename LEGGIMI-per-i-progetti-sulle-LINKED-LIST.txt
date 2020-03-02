@@ -2,18 +2,28 @@
 2019
   decido di ristrutturare INT_LINKED_LIST facendolo diventare VoidSafe e con ACTIVE_ELEMENT
   il nuovo progetto è in new_linked_list
+  
+  adesso a lezione e negli esercizi d'esame uso la versione new_linked_list con ACTIVE_ELEMENT e dò per scontata la void safety
 
 ================================================
 
-                genericità    autotest     void safe
-linked_list         NO            SI           NO
-VS_linked_list      NO            SI           SI
-gen_linked_list     SI            SI           NO
+                genericità    autotest     void safe   active_element
+linked_list         NO            SI           NO           NO
+VS_linked_list      NO            SI           SI           NO
+
+gen_linked_list     SI            SI           SI           NO (Più indietro, lasciar perdere)
+gen_vs_linked_list  SI            NO           SI           NO (continuare qui aggiungendo test)
+  (riflettere se continuare a sviluppare il filone generico visto che mancano gli autotest
+   e non è basata sull'active_element. potrebbe essere meglio in un momento successivo
+   generalizzare la versione con active_element)
+
 my_linked_list      SI            NO           SI (di Luca Biondo)
-new_linked_list     NO            NO           SI
+new_linked_list     NO            NO           SI           SI
 
-gen_vs_linked_list deve aggiungere a my_linked list gli autotest
+lavorare per PSI con new_linked_list aggiungendo le feature di autotest
 
+ --- vecchi commenti ---
+ 
 (VS_ e gen_ sono le più "vecchie" in termini di numero di feature e organizzazione)
 
 linked_list (ha commenti in italiano)
