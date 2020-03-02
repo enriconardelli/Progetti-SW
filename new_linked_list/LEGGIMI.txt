@@ -9,11 +9,10 @@ Quindi ho copiato INT_LINKABLE dalla versione VS_linked_list e reimplemento in m
 
 Ha i commenti in inglese (alle lezioni ed agli esami li spiego).
 
-Devo capire se userò la funzione di AutoTest di Eiffel che c'era già in linked_list, per adesso la elimino altrimenti dovrei spiegare TDD a lezione e non ho tempo. Però informalmente nella root metto dei test per ognuna feature
+Bisogna iniziare ad introdure la funzione di AutoTest di Eiffel che c'era già in linked_list. Si può fare indipendentemente dall'uso di questa versione per Fondamenti visto che i test sono una classe indipendente.
 
 E' replicata nel repository GIT
   https://github.com/enriconardelli/Progetti-SW
-AL 13 APRILE LO DEVO ANCORA FARE
   
 ELENCO FEATURE (col + le ho convertite a VoidSafe con DAFARE non sono proprio scritte)
 
