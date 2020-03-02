@@ -1,10 +1,16 @@
 
+2019
+  decido di ristrutturare INT_LINKED_LIST facendolo diventare VoidSafe e con ACTIVE_ELEMENT
+  il nuovo progetto è in new_linked_list
+
+================================================
 
                 genericità    autotest     void safe
 linked_list         NO            SI           NO
 VS_linked_list      NO            SI           SI
 gen_linked_list     SI            SI           NO
 my_linked_list      SI            NO           SI (di Luca Biondo)
+new_linked_list     NO            NO           SI
 
 gen_vs_linked_list deve aggiungere a my_linked list gli autotest
 
@@ -35,4 +41,3 @@ DA_FARE
  - allineare VS_linked_list in termini di feature usando contemporaneamente linked_list (che è non VS) e my_linked_list (che è VS)
 
  - ristrutturare i test con le classi di test una per feature che contiene la costruzione delle istanze e l'invocazione dei test
-

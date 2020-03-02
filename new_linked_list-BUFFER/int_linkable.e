@@ -1,6 +1,6 @@
 note
 	description: "Summary description for {INT_LINKABLE}."
-	author: ""
+	author: "Project new_linked_list"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -10,10 +10,23 @@ class
 create
 	make
 
-feature
+feature -- access
 
 	value: INTEGER
 			-- the integer stored in this cell
+
+	next: detachable INT_LINKABLE
+			-- the next cell in the list
+
+feature -- value processing 
+
+	make (a_value: INTEGER)
+			-- create this cell
+		do
+			value := a_value
+		ensure
+			value = a_value
+		end
 
 	set_value (new_value: INTEGER)
 			-- assign the integer stored in this cell
@@ -23,16 +36,7 @@ feature
 			value = new_value
 		end
 
-	next: detachable INT_LINKABLE
-			-- the next cell in the list
-
-	make (a_value: INTEGER)
-			-- create this cell
-		do
-			value := a_value
-		ensure
-			value = a_value
-		end
+feature -- link processing 
 
 	link_to (other: detachable INT_LINKABLE)
 			-- connect this cell to `other'

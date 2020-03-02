@@ -14,6 +14,7 @@ feature
 
 	value: INTEGER
 			-- the integer stored in this cell
+			-- commento aggiunto per prova
 
 	set_value (new_value: INTEGER)
 			-- assign the integer stored in this cell
@@ -47,13 +48,14 @@ feature
 		require
 			other /= Void
 		do
-			check attached other as o then	-- we want this Object Test to be always executed
+			check attached other as o then
 				link_to (o.next)
 				o.link_to (Current)
 			end
 		ensure
-			attached other as o implies o.next = Current
-			attached other as o implies (attached o.next as on implies on.next = old other.next)
+			other /= Void
+			other.next = Current
+			attached other.next as on implies (on.next = old other.next)
 		end
 
 end

@@ -1,0 +1,15 @@
+
+Questa cartella
+  D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\VS_linked_list
+contiene la versione del progetto per la gestione di liste di interi che ho creato come esempio dell'uso della funzione di AutoTest di Eiffel.
+
+E' stata modificata in modo da essere VOID SAFE.
+
+
+E' replicata nel repository GIT
+  https://github.com/enriconardelli/Progetti-SW
+
+
+In prospettiva nel corso di FPE va fatta solo la Void-Safety
+
+Bisogna aggiungere ai test statici e ai test dinamici gli opportuni controlli per le nuove feature aggiunte.
