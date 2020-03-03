@@ -13,7 +13,7 @@ create
 feature -- Access
 
 	value: INTEGER
-			-- the integer stored in this cell
+			-- the integer stored in this cell COMMENTO
 
 	next: detachable INT_LINKABLE
 			-- the next cell in the list
