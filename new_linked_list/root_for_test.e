@@ -20,6 +20,7 @@ feature -- single feature test
 
 	test_has
 		do
+			print("ciao")
 			print (r + "test di has" + r)
 			create t
 			print ("t e' vuota, t contiene 3? ")
