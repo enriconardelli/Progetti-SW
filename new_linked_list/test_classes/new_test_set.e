@@ -41,6 +41,25 @@ feature -- Test routines
 			assert("errore: il numero aggiunto non è last_element", attached t.last_element as le implies le.value = -4)
 		end
 
+	t_get_element
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert("errore: restituisce elemento che non esiste", t.get_element (3) = void)
+			t.append (3)
+			assert("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+			assert("errore: non restituisce il valore corretto", attached t.get_element(3) as el implies el.value = 3)
+			assert("errore: restituisce elementi che non esistono", t.get_element(4) = void)
+
+			t.append (7)
+			assert("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+			assert("errore: restituisce elemento che non esiste", t.get_element (4) = void)
+			assert("errore: non restituisce elemento che esiste", t.get_element (7) /= void)
+			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
+			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
+		end
+
 end
 
 
