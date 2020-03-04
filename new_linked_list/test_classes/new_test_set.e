@@ -60,6 +60,48 @@ feature -- Test routines
 			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
 		end
 
+	t_insert_after
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.insert_after (4, 7)
+			assert("errore: fallisce su lista vuota", t.has (4))
+			assert("errore: fallisce su lista vuota", not t.has (7))
+			assert("errore: count non aggiornato su lista vuota", t.count = 1)
+			assert("errore: l'elemento inserito non è last_element e first_element su lista vuota", (attached t.last_element as le implies le.value=4) and (attached t.first_element as fe implies fe.value=4))
+
+			t.insert_after (5, 7)
+			assert("errore: non viene inserito come ultimo valore se non ho il target", attached t.last_element as le implies le.value=5)
+
+			t.insert_after (-1, 4)
+			assert("errore: non viene inserito dopo il valore target", (attached t.get_element(4) as el and then attached el.next as eln) implies eln.value = -1)
+			assert("errore: non viene aggiornato count", t.count = 3)
+			assert("errore: first_element viene modificato", attached t.first_element as fe implies fe.value=4)
+			assert("errore: last_element viene modificato", attached t.last_element as le implies le.value=5)
+		end
+
+	t_insert_after_reusing
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.insert_after (4, 7)
+			assert("errore: fallisce su lista vuota", t.has (4))
+			assert("errore: fallisce su lista vuota", not t.has (7))
+			assert("errore: count non aggiornato su lista vuota", t.count = 1)
+			assert("errore: l'elemento inserito non è last_element e first_element su lista vuota", (attached t.last_element as le implies le.value=4) and (attached t.first_element as fe implies fe.value=4))
+
+			t.insert_after (5, 7)
+			assert("errore: non viene inserito come ultimo valore se non ho il target", attached t.last_element as le implies le.value=5)
+
+			t.insert_after (-1, 4)
+			assert("errore: non viene inserito dopo il valore target", (attached t.get_element(4) as el and then attached el.next as eln) implies eln.value = -1)
+			assert("errore: non viene aggiornato count", t.count = 3)
+			assert("errore: first_element viene modificato", attached t.first_element as fe implies fe.value=4)
+			assert("errore: last_element viene modificato", attached t.last_element as le implies le.value=5)
+		end
+
 end
 
 
