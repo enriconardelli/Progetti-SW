@@ -41,7 +41,7 @@ feature -- Test routines
 			assert("ho aggiunto 3, t contiene 4?", not t.has (4))
 		end
 
-	t_insert_after
+	t_insert_after --commento
 		local
 			t: INT_LINKED_LIST
 		do
