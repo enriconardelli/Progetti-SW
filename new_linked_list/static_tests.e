@@ -43,6 +43,21 @@ feature -- Test routines
 			assert("t contiene 0 e -4, t contiene -4?", t.has (-4))
 		end
 
+	t_first
+			-- New test routine
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (2)
+			t.append (3)
+			t.append (5)
+			t.start
+			if attached t.active_element as ae and attached t.first_element as fe then
+				assert("t contiene 1,3,5, active è 1?", ae.value=fe.value)
+			end
+		end
+
 end
 
 
