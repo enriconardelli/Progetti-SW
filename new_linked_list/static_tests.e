@@ -102,8 +102,9 @@ feature -- Test routines
 			t.append (2)
 			t.insert_after_reusing (1,  0)
 			assert("t contiene 4 elementi?", t.count = 4)
-	        assert("t non contiene il valore 0, il valore 1 è stato inserito alla fine della lista?", t.last_element.value = 1)
-
+			if attached t.last_element as le then
+	        	assert("t non contiene il valore 0, il valore 1 è stato inserito alla fine della lista?", le.value = 1)
+			end
 		end
 
 
