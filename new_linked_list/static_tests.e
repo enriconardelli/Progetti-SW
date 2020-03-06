@@ -48,10 +48,11 @@ feature -- Test routines
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (0)
-			assert("t contiene 0, t contiene 0?", t.has (0))
+			t.insert_after(5,6)
+			assert("t è vuota, t ha inseriito 5 dopo 6 anche se non c'è?", t.has(5))
 			t.append (-4)
-			assert("t contiene 0 e -4, t contiene -4?", t.has (-4))
+			t.insert_after(7,-4)
+			assert("t contiene -4, ho inserito 7 dopo 4?", t.has (7))
 		end
 
 	t_get_element
@@ -72,7 +73,7 @@ feature -- Test routines
 			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
 			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
 		end
-		
+
 	t_first
 			-- New test routine
 		local
