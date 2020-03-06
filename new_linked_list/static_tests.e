@@ -32,6 +32,7 @@ feature -- Test routines
 		end
 
 	t_append
+			-- New test routine
 		local
 			t: INT_LINKED_LIST
 		do
@@ -42,18 +43,45 @@ feature -- Test routines
 		end
 
 	t_insert_after --commento
+			t.append (0)
+			assert("t contiene 0, t contiene 0?", t.has (0))
+			t.append (-4)
+			assert("t contiene 0 e -4, t contiene -4?", t.has (-4))
+		end
+		
+	t_get_element
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.insert_after(7,4)
-			assert("la lista è vuota non ho 4, ho aggiunto 7 dopo 4?", t.has(7) and not t.has(4))
-			t.append(4)
-			t.insert_after(5,4)
-			assert("la lista ha 4, ho aggiunto 5 dopo 4?", t.has(5) and t.has (7) and t.has (4))
+			assert("errore: restituisce elemento che non esiste", t.get_element (3) = void)
+			t.append (3)
+			assert("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+			assert("errore: non restituisce il valore corretto", attached t.get_element(3) as el implies el.value = 3)
+			assert("errore: restituisce elementi che non esistono", t.get_element(4) = void)
+
+			t.append (7)
+			assert("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+			assert("errore: restituisce elemento che non esiste", t.get_element (4) = void)
+			assert("errore: non restituisce elemento che esiste", t.get_element (7) /= void)
+			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
+			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
 		end
 
-
+	t_first
+			-- New test routine
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (2)
+			t.append (3)
+			t.append (5)
+			t.start
+			if attached t.active_element as ae and attached t.first_element as fe then
+				assert("t contiene 1,3,5, active Ã¨ 1?", ae.value=fe.value)
+			end
+		end
 end
 
 
