@@ -7,7 +7,8 @@ bin
 # Eiffel compiled code directory, *.rc file and *.ecf configuration file 
 EIFGENs
 *.rc
-*.ecf
+# commentata perché forse è utile condividere i file ECF -- EN 6mar2020
+# *.ecf
 
 # Editor back-up files
 *.bak
