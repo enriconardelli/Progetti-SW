@@ -37,12 +37,42 @@ feature -- Test routines
 			t: INT_LINKED_LIST
 		do
 			create t
+			t.append (3)
+			assert("ho aggiunto 3, t contiene 3?", t.has (3))
+			assert("ho aggiunto 3, t contiene 4?", not t.has (4))
+		end
+
+	t_insert_after
+			-- Alessandro
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
 			t.append (0)
 			assert("t contiene 0, t contiene 0?", t.has (0))
 			t.append (-4)
 			assert("t contiene 0 e -4, t contiene -4?", t.has (-4))
 		end
 
+	t_get_element
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert("errore: restituisce elemento che non esiste", t.get_element (3) = void)
+			t.append (3)
+			assert("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+			assert("errore: non restituisce il valore corretto", attached t.get_element(3) as el implies el.value = 3)
+			assert("errore: restituisce elementi che non esistono", t.get_element(4) = void)
+
+			t.append (7)
+			assert("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+			assert("errore: restituisce elemento che non esiste", t.get_element (4) = void)
+			assert("errore: non restituisce elemento che esiste", t.get_element (7) /= void)
+			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
+			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
+		end
+		
 	t_first
 			-- New test routine
 		local
@@ -57,8 +87,6 @@ feature -- Test routines
 				assert("t contiene 1,3,5, active è 1?", ae.value = fe.value)
 			end
 		end
-
-
 end
 
 
