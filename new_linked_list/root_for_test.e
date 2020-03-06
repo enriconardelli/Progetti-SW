@@ -47,6 +47,7 @@ feature -- single feature test
 		end
 
 	test_append
+	-- implementata la relativa feature di test
 		do
 			print (r + "test di append" + r)
 			create t

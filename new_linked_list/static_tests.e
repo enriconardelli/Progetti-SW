@@ -31,6 +31,18 @@ feature -- Test routines
 			assert("t contiene 3 e 7, t contiene 7? ", t.has (7))
 		end
 
+	t_append
+			-- New test routine
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (0)
+			assert("t contiene 0, t contiene 0?", t.has (0))
+			t.append (-4)
+			assert("t contiene 0 e -4, t contiene -4?", t.has (-4))
+		end
+
 end
 
 
