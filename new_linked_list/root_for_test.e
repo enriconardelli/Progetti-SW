@@ -19,6 +19,7 @@ feature -- infrastructure
 feature -- single feature test
 
 	test_has
+	-- implementata la relativa feature di test
 		do
 			print("ciao")
 			print (r + "test di has" + r)
