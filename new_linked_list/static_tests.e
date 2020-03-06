@@ -37,6 +37,17 @@ feature -- Test routines
 			t: INT_LINKED_LIST
 		do
 			create t
+			t.append (3)
+			assert("ho aggiunto 3, t contiene 3?", t.has (3))
+			assert("ho aggiunto 3, t contiene 4?", not t.has (4))
+		end
+
+	t_insert_after
+			-- Alessandro
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
 			t.append (0)
 			assert("t contiene 0, t contiene 0?", t.has (0))
 			t.append (-4)
@@ -68,14 +79,15 @@ feature -- Test routines
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (2)
+			t.append (1)
 			t.append (3)
 			t.append (5)
 			t.start
 			if attached t.active_element as ae and attached t.first_element as fe then
-				assert("t contiene 1,3,5, active è 1?", ae.value=fe.value)
+				assert("t contiene 1,3,5, active è 1?", ae.value = fe.value)
 			end
 		end
+
 
 	t_insert_after_reusing
 			-- New test routine
@@ -91,6 +103,7 @@ feature -- Test routines
 	        assert("t non contiene il valore 0, il valore 1 è stato inserito alla fine della lista?", t.last_element.value = 1)
 
 		end
+
 
 end
 
