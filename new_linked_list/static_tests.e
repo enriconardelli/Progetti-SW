@@ -72,9 +72,10 @@ feature -- Test routines
 			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
 			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
 		end
-		
+
 	t_first
 			-- New test routine
+			-- Claudia
 		local
 			t: INT_LINKED_LIST
 		do
