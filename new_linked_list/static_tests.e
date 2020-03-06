@@ -72,19 +72,19 @@ feature -- Test routines
 			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
 			assert("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
 		end
-
+		
 	t_first
 			-- New test routine
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (2)
+			t.append (1)
 			t.append (3)
 			t.append (5)
 			t.start
 			if attached t.active_element as ae and attached t.first_element as fe then
-				assert("t contiene 1,3,5, active Ã¨ 1?", ae.value=fe.value)
+				assert("t contiene 1,3,5, active è 1?", ae.value = fe.value)
 			end
 		end
 end
