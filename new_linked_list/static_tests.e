@@ -76,6 +76,7 @@ feature -- Test routines
 
 	t_first
 			-- New test routine
+			-- Claudia
 		local
 			t: INT_LINKED_LIST
 		do
