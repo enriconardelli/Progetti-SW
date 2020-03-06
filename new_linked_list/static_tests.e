@@ -42,13 +42,18 @@ feature -- Test routines
 			assert("ho aggiunto 3, t contiene 4?", not t.has (4))
 		end
 
-	t_insert_after --commento
+	t_insert_after
+			-- Alessandro
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
 			t.append (0)
 			assert("t contiene 0, t contiene 0?", t.has (0))
 			t.append (-4)
 			assert("t contiene 0 e -4, t contiene -4?", t.has (-4))
 		end
-		
+
 	t_get_element
 		local
 			t: INT_LINKED_LIST
