@@ -16,7 +16,7 @@ inherit
 feature -- Test routines
 
 	t_has
-			-- New test routine
+			-- Enrico Nardelli, 2020/03/06
 		local
 			t: INT_LINKED_LIST
 		do
@@ -32,7 +32,7 @@ feature -- Test routines
 		end
 
 	t_append
-			-- New test routine
+			-- Enrico Nardelli, 2020/03/06
 		local
 			t: INT_LINKED_LIST
 		do
@@ -43,19 +43,20 @@ feature -- Test routines
 		end
 
 	t_insert_after
-			-- Alessandro
+			-- Alessandro Filippo, 2020/03/06
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
 			t.insert_after(5,6)
-			assert("t è vuota, t ha inseriito 5 dopo 6 anche se non c'è?", t.has(5))
+			assert("t è vuota, t ha inserito 5 dopo 6 anche se non c'è?", t.has(5))
 			t.append (-4)
 			t.insert_after(7,-4)
 			assert("t contiene -4, ho inserito 7 dopo 4?", t.has (7))
 		end
 
 	t_get_element
+			-- Riccardo Malandruccolo, 2020/03/06
 		local
 			t: INT_LINKED_LIST
 		do
@@ -75,8 +76,7 @@ feature -- Test routines
 		end
 
 	t_first
-			-- New test routine
-			-- Claudia
+			-- Claudia Agulini, 2020/03/06
 		local
 			t: INT_LINKED_LIST
 		do
@@ -92,7 +92,7 @@ feature -- Test routines
 
 
 	t_insert_after_reusing
-			-- New test routine
+			-- Federico Fiorini, 2020/03/06
 		local
 			t: INT_LINKED_LIST
 		do
