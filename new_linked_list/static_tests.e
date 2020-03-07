@@ -107,6 +107,7 @@ feature -- Test routines
 			end
 		end
 
+
 	t_insert_multiple_before
 		local
 			t: INT_LINKED_LIST
@@ -136,6 +137,36 @@ feature -- Test routines
 			assert("errore: il valore non viene aggiunto se non trovo il target", t.has (4))
 			assert("errore: il valore non viene aggiunto una volta se non trovo il target", t.count = 7)
 			assert("errore: il valore non viene aggiunto all'inizio se non trovo il target", attached t.first_element as fe implies fe.value = 4)
+		end
+
+
+	t_remove_active
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append(1)
+			t.append(2)
+			t.append(3)
+			-- [1,2,3]
+			-- t.active_element = 1
+
+			t.remove_active
+			-- [2,3]
+			-- t.active_element = 2
+			assert("errore: non ha eliminato l'active_element", not t.has(1))
+			assert("errore: non ha eliminato esattamente un elemento", t.count = 2)
+			assert("errore: non è stato modificato l'active_element correttamente", attached t.active_element as ae implies ae.value = 2)
+			assert("errore: non è stato modificato il first_element correttamente", attached t.first_element as fe implies fe.value = 2)
+
+			t.forth
+			-- t.active_element = 3
+			t.remove_active
+			-- [2]
+			-- t.active_element = 2
+			assert("errore: non ha eliminato l'active_element", not t.has (3))
+			assert("errore: non è stato modificato l'active_element correttamente", attached t.active_element as ae implies ae.value = 2)
+			assert("errore: non è stato modificato il last_element correttamente", attached t.last_element as le implies le.value = 2)
 		end
 
 
