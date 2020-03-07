@@ -423,57 +423,59 @@ feature -- Insertion multiple targeted
 --			collegato_se_presente: old has (target) implies get_element (target).next.value = a_value
 		end
 
-	insert_multiple_before____TO_MAKE_VOID_SAFE (a_value, target: INTEGER)
+	insert_multiple_before (a_value, target: INTEGER) --____TO_MAKE_VOID_SAFE
 			-- inserisce `a_value' subito prima di ogni occorrenza di `target' se esiste
 			-- altrimenti inserisce `a_value' all'inizio
 		local
 			previous_element, current_element, new_element: like first_element
 		do
---			if has (target) then
---				from
---					previous_element := Void
---					current_element := first_element
---				until
---					current_element = Void
---				loop
---					if current_element.value = target then
---						create new_element.make (a_value)
---						if current_element = first_element then
---							new_element.link_to (first_element)
---							first_element := new_element
---						else
---							new_element.link_to (current_element)
---							previous_element.link_to (new_element)
---						end
---						count := count + 1
---					end
---					previous_element := current_element
---					current_element := current_element.next
---				end
---			else -- la lista non contiene `target'
---				create new_element.make (a_value)
---				if count = 0 then
---					first_element := new_element
---					last_element := new_element
---					active_element := first_element
---				else
---					new_element.link_to (first_element)
---					first_element := new_element
---				end
---				count := count + 1
---			end
---		ensure
---			di_piu: count > old count
---			uno_in_piu_se_non_presente: not (old has (target)) implies count = old count + 1
---			in_testa_se_non_presente: not (old has (target)) implies first_element.value = a_value
---			collegato_al_primo_se_non_presente: not (old has (target)) implies first_element.next = old first_element
---			collegato_al_primo_se_presente: old has (target) implies get_element (a_value).next.value = target
---				-- verificare il collegamento con le successive occorrenze di target richiede get_all_elements
+			if has (target) then
+				from
+					previous_element := Void
+					current_element := first_element
+				until
+					current_element = Void
+				loop
+					if current_element.value = target then
+						create new_element.set_value(a_value)
+						if current_element = first_element then
+							new_element.link_to (first_element)
+							first_element := new_element
+						else
+							new_element.link_to (current_element)
+							if (attached previous_element as pe) then
+								pe.link_to (new_element)
+							end
+						end
+						count := count + 1
+					end
+					previous_element := current_element
+					current_element := current_element.next
+				end
+			else -- la lista non contiene `target'
+				create new_element.set_value (a_value)
+				if count = 0 then
+					first_element := new_element
+					last_element := new_element
+					active_element := first_element
+				else
+					new_element.link_to (first_element)
+					first_element := new_element
+				end
+				count := count + 1
+			end
+		ensure
+			di_piu: count > old count
+			uno_in_piu_se_non_presente: not (old has (target)) implies count = old count + 1
+			in_testa_se_non_presente: (not (old has (target)) and attached first_element as fe) implies fe.value = a_value
+			collegato_al_primo_se_non_presente: (not (old has (target)) and (attached first_element as fe)) implies fe.next = old first_element
+			collegato_al_primo_se_presente: (old has (target) and (attached get_element(a_value) as el and then attached el.next as eln)) implies eln.value = target
+				-- verificare il collegamento con le successive occorrenze di target richiede get_all_elements
 		end
 
 feature -- Removal single free
 
-	remove_active____TO_MAKE_VOID_SAFE
+	remove_active --____TO_MAKE_VOID_SAFE
 			-- Rimuove elemento accessibile mediante `active_element' se esiste
 			-- Assegna ad `active_element' il successivo se esiste altrimenti il precedente
 		require
@@ -481,45 +483,45 @@ feature -- Removal single free
 		local
 			current_element, pre_current: like first_element
 		do
-				--			if count = 1 then
-				--				first_element := Void
-				--				active_element := Void
-				--				last_element := Void
-				--			else -- la lista ha almeno due elementi
-				--				from
-				--					current_element := first_element
-				--					pre_current := Void
-				--				invariant
-				--					-- invariante da ricontrollare perche' non funziona con remove_all
-				----					current_element /= active_element implies current_element.next /= Void
-				--				until
-				--					(current_element = active_element)
-				--				loop
-				--					pre_current := current_element
-				--					current_element := current_element.next
-				--				end
-				--					-- qui `current_element' coincide con `active_element'
-				--				if current_element = first_element then
-				--						-- `current_element' cioe' `active_element' e' il primo elemento della lista
-				--					first_element := first_element.next
-				--					active_element := first_element
-				--				elseif current_element = last_element then
-				--						-- `current_element' cioe' `active_element' e' l'ultimo elemento della lista
-				--					last_element := pre_current
-				--					last_element.link_to (Void)
-				--					active_element := last_element
-				--				else
-				--						-- `current_element' cioe' `active_element' e' elemento intermedio della lista
-				--					pre_current.link_to (current_element.next)
-				--					active_element := current_element.next
-				--				end
-				--			end
-				--			count := count - 1
-				--		ensure
-				--			rimosso_elemento: count = old count - 1
-				--			attivo_primo: old active_element = old first_element implies active_element = first_element
-				--			attivo_ultimo: old active_element = old last_element implies active_element = last_element
-				--			attivo_scorre: old active_element /= old last_element implies active_element = old active_element.next
+			if count = 1 then
+				first_element := Void
+				active_element := Void
+				last_element := Void
+			else -- la lista ha almeno due elementi
+				from
+					current_element := first_element
+					pre_current := Void
+				invariant
+					--invariante da ricontrollare perche' non funziona con remove_all
+					current_element /= active_element and attached current_element as ce implies ce.next /= Void
+				until
+					(current_element = active_element)
+				loop
+					pre_current := current_element
+					if attached current_element as ce then current_element := ce.next end
+				end
+					--qui `current_element' coincide con `active_element'
+				if current_element = first_element then
+					--`current_element' cioe' `active_element' e' il primo elemento della lista
+					if attached first_element as fe then first_element := fe.next end
+					active_element := first_element
+				elseif current_element = last_element then
+					--`current_element' cioe' `active_element' e' l'ultimo elemento della lista
+					last_element := pre_current
+					if attached last_element as le then le.link_to (Void) end
+					active_element := last_element
+				else
+					--`current_element' cioe' `active_element' e' elemento intermedio della lista
+					if attached pre_current as pc and attached current_element as ce then pc.link_to (ce.next) end
+					if attached  current_element as ce then active_element := ce.next end
+				end
+			end
+			count := count - 1
+		ensure
+			rimosso_elemento: count = old count - 1
+			attivo_primo: old active_element = old first_element implies active_element = first_element
+			attivo_ultimo: old active_element = old last_element implies active_element = last_element
+			attivo_scorre: (old active_element /= old last_element and attached old active_element as oae) implies active_element = oae.next
 		end
 
 	remove_first____TO_MAKE_VOID_SAFE (a_value: INTEGER)
