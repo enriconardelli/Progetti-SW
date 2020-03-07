@@ -107,6 +107,37 @@ feature -- Test routines
 			end
 		end
 
+	t_insert_multiple_before
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.insert_multiple_before (3,10)
+			-- [3]
+			assert("errore: su lista vuota non aggiunge il valore", t.has(3))
+			assert("errore: su lista vuota l'elemento aggiunto non è first_element", attached t.first_element as fe implies fe.value=3)
+			assert("errore: su lista vuota l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value=3)
+			assert("errore: su lista vuota l'elemento aggiunto non è active_element", attached t.active_element as ae implies ae.value=3)
+
+			t.append (2)
+			t.append (1)
+			t.append (3)
+			-- [3,2,1,3]
+
+			t.insert_multiple_before (5,3)
+			-- [5,3,2,1,5,3]
+			assert("errore: non aggiunge il valore", t.has(5))
+			assert("errore: se inserisce il valore all'inizio, il first_element non cambia", attached t.first_element as fe implies fe.value = 5)
+			assert("errore: non aggiunge il valore prima del target", attached t.get_element(5) as el and then attached el.next as eln implies eln.value = 3)
+			assert("errore: non aggiunge il valore più volte", t.count = 6)
+
+			t.insert_multiple_before (4,7)
+			-- [4,5,3,2,1,5,3]
+			assert("errore: il valore non viene aggiunto se non trovo il target", t.has (4))
+			assert("errore: il valore non viene aggiunto una volta se non trovo il target", t.count = 7)
+			assert("errore: il valore non viene aggiunto all'inizio se non trovo il target", attached t.first_element as fe implies fe.value = 4)
+		end
+
 
 end
 
