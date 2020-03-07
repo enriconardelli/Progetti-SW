@@ -426,6 +426,7 @@ feature -- Insertion multiple targeted
 	insert_multiple_before (a_value, target: INTEGER) --____TO_MAKE_VOID_SAFE
 			-- inserisce `a_value' subito prima di ogni occorrenza di `target' se esiste
 			-- altrimenti inserisce `a_value' all'inizio
+			-- Riccardo Malandruccolo, 2020/03/07
 		local
 			previous_element, current_element, new_element: like first_element
 		do
@@ -478,6 +479,7 @@ feature -- Removal single free
 	remove_active --____TO_MAKE_VOID_SAFE
 			-- Rimuove elemento accessibile mediante `active_element' se esiste
 			-- Assegna ad `active_element' il successivo se esiste altrimenti il precedente
+			-- Riccardo Malandruccolo, 2020/03/07
 		require
 			elemento_esiste: count > 0
 		local
@@ -513,7 +515,7 @@ feature -- Removal single free
 				else
 					--`current_element' cioe' `active_element' e' elemento intermedio della lista
 					if attached pre_current as pc and attached current_element as ce then pc.link_to (ce.next) end
-					if attached  current_element as ce then active_element := ce.next end
+					if attached current_element as ce then active_element := ce.next end
 				end
 			end
 			count := count - 1

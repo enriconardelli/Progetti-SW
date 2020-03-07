@@ -109,6 +109,7 @@ feature -- Test routines
 
 
 	t_insert_multiple_before
+			-- Riccardo Malandruccolo, 2020/03/07
 		local
 			t: INT_LINKED_LIST
 		do
@@ -141,6 +142,7 @@ feature -- Test routines
 
 
 	t_remove_active
+			-- Riccardo Malandruccolo, 2020/03/07
 		local
 			t: INT_LINKED_LIST
 		do
