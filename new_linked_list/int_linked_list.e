@@ -210,36 +210,38 @@ feature -- Insertion single targeted
 		local
 			previous_element, new_element: like first_element
 		do
---			create new_element.set_value (a_value)
---			if count = 0 then
---				first_element := new_element
---				last_element := first_element
---				active_element := first_element
---			else
---				if (target = first_element.value) then
---					new_element.link_to (first_element)
---					first_element := new_element
---				else -- list contains at least one element and the first element is not the target
---					from
---						previous_element := first_element
---					until
---						(previous_element.next = Void) or else (previous_element.next.value = target)
---					loop
---						previous_element := previous_element.next
---					end
---					if previous_element.next /= Void then
---						new_element.link_after (previous_element)
---					else -- list does not contain `target'
---						new_element.link_to (first_element)
---						first_element := new_element
---					end
---				end
---			end
---			count := count + 1
---		ensure
---			uno_in_piu: count = old count + 1
---			in_testa_se_non_presente: not (old has (target)) implies (attached first_element as fe implies fe.value = a_value)
---				--							 questo invariante sotto si puo' usare solo se a_value e' unico  nella lista
+			create new_element.set_value (a_value)
+			if count = 0 then
+				first_element := new_element
+				last_element := first_element
+				active_element := first_element
+			else
+				if attached first_element as fe and then fe.value=target then
+					new_element.link_to (first_element)
+					first_element := new_element
+				else -- list contains at least one element and the first element is not the target
+						from
+							previous_element := first_element
+						until
+							attached previous_element as pe implies pe.next = Void
+--							or else pe.next.value=target --Perchè non funziona qui?
+						loop
+							if attached previous_element as p then previous_element := p.next end
+						end
+						if attached previous_element as pe then
+							new_element.link_after (pe)
+						else -- list does not contain `target'
+							new_element.link_to (first_element)
+							first_element := new_element
+						end
+					end
+				end
+
+			count := count + 1
+		ensure
+			uno_in_piu: count = old count + 1
+			in_testa_se_non_presente: not (old has (target)) implies (attached first_element as fe implies fe.value = a_value)
+				--							 questo invariante sotto si puo' usare solo se a_value e' unico  nella lista
 				--							 se invece posso aggiungere a_value piu' volte nella lista allora non e' piu' vero
 				--							 collegato_se_presente: old has (target) implies get_element (a_value).next.value = target
 		end
