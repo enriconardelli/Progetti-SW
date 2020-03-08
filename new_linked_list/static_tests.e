@@ -171,6 +171,26 @@ feature -- Test routines
 			assert("errore: non è stato modificato il last_element correttamente", attached t.last_element as le implies le.value = 2)
 		end
 
+		t_wipeout
+			-- Claudia Agulini, 2020/03/08
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (1)
+			t.append (3)
+			t.append (5)
+			-- [1, 3, 5]
+			-- t.count = 3
+
+			t.wipeout
+			assert("errore: non ha eliminato first_element", t.first_element = Void)
+			assert("errore: non ha eliminato active_element", t.active_element = Void)
+			assert("errore: non ha eliminato last_element", t.last_element = Void)
+			assert("errore: non ha eliminato tutti gli elementi", t.count = 0)
+
+		end
+
 
 end
 
