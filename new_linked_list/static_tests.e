@@ -172,6 +172,38 @@ feature -- Test routines
 		end
 
 
+	t_invert
+			-- Federico Fiorini, 2020/03/08
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (1)
+			t.append (2)
+			t.append (3)
+			-- [1,2,3]
+			t.invert
+			-- [3,2,1]
+			assert("errore: il numero di elementi della lista è cambiato", t.count=3)
+			t.start
+			--t.active_element.value = 3
+			if attached t.active_element as ae then
+				assert("invertita la lista [1,2,3], inizializzato active_element come primo elemento, active_element è 3?", ae.value=3)
+			end
+			t.forth
+			--t.active_element.value = 2
+			if attached t.active_element as ae then
+				assert("avanzato active element, active_element è 2?", ae.value=2)
+			end
+			t.forth
+			--t.active_element.value = 1
+			if attached t.active_element as ae then
+				assert("avanzato active element, active_element è 1?", ae.value=1)
+			end
+
+		end
+
+
 end
 
 
