@@ -289,25 +289,26 @@ feature -- Insertion single targeted
 
 feature -- Status
 
-	value_follows____TO_MAKE_VOID_SAFE (a_value, target: INTEGER): BOOLEAN
+	value_follows (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' dopo la prima occorrenza di `target'?
+			-- Claudia Agulini, 2020/03/08
 		local
 			current_element, temp: like first_element
 		do
---			from
---				current_element := get_element (target)
---				temp := Void
---			invariant
---				current_element /= Void implies (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
---			until
---				(current_element = Void) or (current_element.value = a_value)
---			loop
---				temp := current_element
---				current_element := current_element.next
---			end
---			if (current_element /= Void and then current_element.value = a_value) then
---				Result := True
---			end
+			from
+				current_element := get_element (target)
+				temp := Void
+			invariant
+				attached current_element as ce implies (ce.value /= a_value implies (attached temp as t implies t.value /= a_value))
+			until
+				(current_element = Void) or (attached current_element as ce and then ce.value = a_value)
+			loop
+				temp := current_element
+				current_element := current_element.next
+			end
+			if attached current_element as ce and then ce.value = a_value then
+				Result := True
+			end
 		end
 
 	value_after___________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN

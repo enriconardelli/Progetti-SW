@@ -186,7 +186,6 @@ feature -- Test routines
 			assert("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value=4)
 		end
 
-
 	t_invert
 			-- Federico Fiorini, 2020/03/08
 		local
@@ -215,7 +214,6 @@ feature -- Test routines
 			if attached t.active_element as ae then
 				assert("avanzato active element, active_element è 1?", ae.value=1)
 			end
-
 		end
 
 	t_sum_of_positive
@@ -230,6 +228,24 @@ feature -- Test routines
 			t.append (-1)
 			assert("la lista contiene 1 ,2 e -1, fa 3?", t.sum_of_positive=3)
 		end
+
+		t_wipeout
+			-- Claudia Agulini, 2020/03/08
+			local
+				t: INT_LINKED_LIST
+			do
+				create t
+				t.append (1)
+				t.append (3)
+				t.append (5)
+				-- [1, 3, 5]
+				-- t.count = 3
+				t.wipeout
+				assert("errore: non ha eliminato first_element", t.first_element = Void)
+				assert("errore: non ha eliminato active_element", t.active_element = Void)
+				assert("errore: non ha eliminato last_element", t.last_element = Void)
+				assert("errore: non ha eliminato tutti gli elementi", t.count = 0)
+			end
 
 end
 
