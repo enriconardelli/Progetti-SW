@@ -171,27 +171,70 @@ feature -- Test routines
 			assert("errore: non è stato modificato il last_element correttamente", attached t.last_element as le implies le.value = 2)
 		end
 
-		t_wipeout
-			-- Claudia Agulini, 2020/03/08
+	t_forth
+		-- Alessandro Filippo 2020/03/08
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert("la lista è vuota, active element è void", t.active_element=Void)
+			t.append(3)
+			t.forth
+			assert("l'active element è 3 , dopo forth è 3", t.active_element=Void)
+			t.append (4)
+			t.forth
+			assert("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value=4)
+		end
+
+	t_invert
+			-- Federico Fiorini, 2020/03/08
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
 			t.append (1)
+			t.append (2)
 			t.append (3)
-			t.append (5)
-			-- [1, 3, 5]
-			-- t.count = 3
-
-			t.wipeout
-			assert("errore: non ha eliminato first_element", t.first_element = Void)
-			assert("errore: non ha eliminato active_element", t.active_element = Void)
-			assert("errore: non ha eliminato last_element", t.last_element = Void)
-			assert("errore: non ha eliminato tutti gli elementi", t.count = 0)
-
+			-- [1,2,3]
+			t.invert
+			-- [3,2,1]
+			assert("errore: il numero di elementi della lista è cambiato", t.count=3)
+			t.start
+			--t.active_element.value = 3
+			if attached t.active_element as ae then
+				assert("invertita la lista [1,2,3], inizializzato active_element come primo elemento, active_element è 3?", ae.value=3)
+			end
+			t.forth
+			--t.active_element.value = 2
+			if attached t.active_element as ae then
+				assert("avanzato active element, active_element è 2?", ae.value=2)
+			end
+			t.forth
+			--t.active_element.value = 1
+			if attached t.active_element as ae then
+				assert("avanzato active element, active_element è 1?", ae.value=1)
+			end
 		end
 
+		t_wipeout
+			-- Claudia Agulini, 2020/03/08
+			local
+				t: INT_LINKED_LIST
+			do
+				create t
+				t.append (1)
+				t.append (3)
+				t.append (5)
+				-- [1, 3, 5]
+				-- t.count = 3
+				t.wipeout
+				assert("errore: non ha eliminato first_element", t.first_element = Void)
+				assert("errore: non ha eliminato active_element", t.active_element = Void)
+				assert("errore: non ha eliminato last_element", t.last_element = Void)
+				assert("errore: non ha eliminato tutti gli elementi", t.count = 0)
+			end
 
 end
+
 
 
