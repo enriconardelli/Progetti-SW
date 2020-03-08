@@ -171,7 +171,23 @@ feature -- Test routines
 			assert("errore: non è stato modificato il last_element correttamente", attached t.last_element as le implies le.value = 2)
 		end
 
+	t_forth
+		-- Alessandro Filippo 2020/03/08
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert("la lista è vuota, active element è void", t.active_element=Void)
+			t.append(3)
+			t.forth
+			assert("l'active element è 3 , dopo forth è 3", t.active_element=Void)
+			t.append (4)
+			t.forth
+			assert("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value=4)
+		end
+
 
 end
+
 
 
