@@ -376,48 +376,51 @@ feature -- Status
 
 feature -- Insertion multiple targeted
 
-	insert_multiple_after____TO_MAKE_VOID_SAFE (a_value, target: INTEGER)
+	insert_multiple_after (a_value, target: INTEGER)
 			-- inserisce `a_value' subito dopo ogni `target', se ne esistono
 			-- altrimenti inserisce `new' alla fine
+			-- Federico Fiorini 2020/03/08
 		local
 			new_element, current_element: INT_LINKABLE
 			-- target_exist: BOOLEAN
-		do
-				--			if has (target) then
-				--				from
-				--					current_element := first_element
-				--				until
-				--					current_element = Void
-				--				loop
-				--					if current_element.value = target then
-				--						create new_element.make (a_value)
-				--						new_element.link_after (current_element)
-				--						count := count + 1
-				--						if current_element = last_element then
-				--							last_element := new_element
-				--						end
-				--							-- salta elemento appena inserito
-				--						current_element := new_element.next
-				--					else
-				--						current_element := current_element.next
-				--					end
-				--				end
-				--			else -- la lista non contiene `target'
-				--				create new_element.make (a_value)
-				--				if count = 0 then
-				--					first_element := new_element
-				--					last_element := new_element
-				--					active_element := first_element
-				--				else
-				--					new_element.link_after (last_element)
-				--					last_element := new_element
-				--				end
-				--				count := count + 1
-				--			end
-				--		ensure
-				--			di_piu: count > old count
-				--			appeso_se_non_presente: not (old has (target)) implies last_element.value = a_value
-				--			collegato_se_presente: old has (target) implies get_element (target).next.value = a_value
+	do
+			if has (target) then
+				from
+					current_element := first_element
+				until
+					current_element = Void
+				loop
+					if current_element.value = target then
+						create new_element.set_value (a_value)
+						new_element.link_after (current_element)
+						count := count + 1
+						if current_element = last_element then
+							last_element := new_element
+						end
+							-- salta elemento appena inserito
+						current_element := new_element.next
+					else
+						current_element := current_element.next
+					end
+				end
+			else -- la lista non contiene `target'
+				create new_element.set_value (a_value)
+				if count = 0 then
+					first_element := new_element
+					last_element := new_element
+					active_element := first_element
+				else
+					if attached last_element as le then
+						new_element.link_after (le)
+					end
+					last_element := new_element
+				end
+				count := count + 1
+			end
+		ensure
+			di_piu: count > old count
+			appeso_se_non_presente: not (old has (target)) and attached last_element as le implies le.value = a_value
+			collegato_se_presente: old has (target) and attached get_element(target) as get and then attached get.next as getn implies getn.value = a_value
 		end
 
 	insert_multiple_before (a_value, target: INTEGER) --____TO_MAKE_VOID_SAFE
