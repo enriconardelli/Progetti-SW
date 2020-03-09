@@ -119,24 +119,25 @@ feature -- Insertion single free
 			linked: attached old last_element as ole implies ole.next = last_element
 		end
 
-	prepend____TO_MAKE_VOID_SAFE (a_value: INTEGER)
+	prepend(a_value: INTEGER)
 			-- aggiunge `a_value' prima del primo elemento.
+			-- Arianna Calzuola, 2020/03/10
 		local
 			new_element: like first_element
 		do
-				--			create new_element.set_value (a_value)
-				--			if count /= 0 then
-				--				new_element.link_to (first_element)
-				--			else
-				--				last_element := new_element
-				--				active_element := first_element
-				--			end
-				--			first_element := new_element
-				--			count := count + 1
-				--		ensure
-				--			uno_in_piu: count = old count + 1
-				--			intestato: first_element.value = a_value
-				--			collegato: first_element.next = old first_element
+			create new_element.set_value (a_value)
+			if count /= 0 then
+				new_element.link_to (first_element)
+			else
+				last_element := new_element
+				active_element := first_element
+			end
+			first_element := new_element
+			count := count + 1
+		ensure
+			uno_in_piu: count = old count + 1
+			intestato: attached first_element as fe implies fe.value = a_value
+			collegato: attached first_element as fe implies fe.next = old first_element
 		end
 
 feature -- Insertion single targeted

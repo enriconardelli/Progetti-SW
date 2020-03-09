@@ -247,6 +247,31 @@ feature -- Test routines
 				assert("errore: non ha eliminato tutti gli elementi", t.count = 0)
 			end
 
+		last
+		-- Arianna Calzuola, 2020/03/10
+			local
+				t: INT_LINKED_LIST
+			do
+				create t
+				t.last
+				assert("errore: la lista è vuota", t.active_element = void)
+				t.append (3)
+				t.last
+				assert("errore: la lista ha un unico elemento", t.active_element = t.first_element)
+				assert("errore: la lista ha un unico elemento", t.active_element = t.last_element)
+				if attached t.active_element as ae then
+					assert("errore: la lista ha un unico elemento", ae.value = 3)
+				end
+				t.append (2)
+				t.append (7)
+				--[3, 2, 7]
+				t.last
+				if attached t.active_element as ae then
+					assert("errore: active element non sta puntando all'ultimo elemento della lista", ae.value = 7)
+				end
+				assert("errore: il valore di active element non è il valore dell'ultimo elemento della lista" , t.active_element = t.last_element)
+			end
+
 end
 
 
