@@ -420,7 +420,7 @@ feature -- Insertion multiple targeted
 		ensure
 			di_piu: count > old count
 			appeso_se_non_presente: not (old has (target)) and attached last_element as le implies le.value = a_value
-			collegato_se_presente: old has (target) and attached get_element(target) as get and then attached get.next as getn implies getn.value = a_value
+			collegato_se_presente: old has (target) and attached get_element(target) as ge and then attached ge.next as gen implies gen.value = a_value
 		end
 
 	insert_multiple_before (a_value, target: INTEGER) --____TO_MAKE_VOID_SAFE
