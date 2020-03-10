@@ -180,8 +180,9 @@ feature -- Test routines
 			assert("la lista è vuota, active element è void", t.active_element=Void)
 			t.append(3)
 			t.forth
-			assert("l'active element è 3 , dopo forth è 3", t.active_element=Void)
+			assert("l'active element è 3 ed è il last element , dopo forth è Void?", t.active_element=Void)
 			t.append (4)
+			t.start
 			t.forth
 			assert("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value=4)
 		end
