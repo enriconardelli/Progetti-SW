@@ -39,6 +39,9 @@ feature
 			t_single_value_first (1)
 			t_single_value_middle (1)
 			t_single_value_last (1)
+			t_multiple_value_first_middle (1)
+			t_multiple_value_first_last (1)
+			t_multiple_value_middle_last (1)
 		end
 
 	t_no_value_one_element (a_value: INTEGER)
@@ -117,6 +120,57 @@ feature
 			t.remove_latest(a_value)
 			count_dopo := how_many(t, a_value)
 			assert("count prima e dopo scorretto", count_prima = count_dopo + 1)
+		end
+
+	t_multiple_value_first_middle (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+			count_prima, count_dopo: INTEGER
+		do
+			create t
+			t.append (a_value)
+			t.append (2)
+			t.append (a_value)
+			t.append (3)
+			count_prima := how_many(t, a_value)
+			t.remove_latest(a_value)
+			count_dopo := how_many(t, a_value)
+			assert("count prima e dopo scorretto", count_prima = count_dopo + 1)
+			assert("rimosso elemento sbagliato in testa", attached t.first_element as tf implies tf.value = a_value)
+		end
+
+	t_multiple_value_first_last (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+			count_prima, count_dopo: INTEGER
+		do
+			create t
+			t.append (a_value)
+			t.append (2)
+			t.append (a_value)
+			count_prima := how_many(t, a_value)
+			t.remove_latest(a_value)
+			count_dopo := how_many(t, a_value)
+			assert("count prima e dopo scorretto", count_prima = count_dopo + 1)
+			assert("rimosso elemento sbagliato in testa", attached t.first_element as tf implies tf.value = a_value)
+			assert("rimosso elemento sbagliato in coda", attached t.last_element as tl implies tl.value /= a_value)
+		end
+
+	t_multiple_value_middle_last (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+			count_prima, count_dopo: INTEGER
+		do
+			create t
+			t.append (2)
+			t.append (a_value)
+			t.append (3)
+			t.append (a_value)
+			count_prima := how_many(t, a_value)
+			t.remove_latest(a_value)
+			count_dopo := how_many(t, a_value)
+			assert("count prima e dopo scorretto", count_prima = count_dopo + 1)
+			assert("rimosso elemento sbagliato in coda", attached t.last_element as tl implies tl.value /= a_value)
 		end
 
 end
