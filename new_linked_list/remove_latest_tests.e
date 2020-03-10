@@ -33,8 +33,9 @@ feature
 
 	t_remove_latest
 		do
-			t_remove_latest_general
---			t_remove_latest_with_how_many (1)
+			t_single_value_first (1)
+			t_single_value_middle (1)
+			t_single_value_last (1)
 --			t_remove_latest_with (1)
 --			t_remove_latest_with (2)
 --			t_remove_latest_with (3)
@@ -43,34 +44,49 @@ feature
 --			t_remove_latest_not_existing (3)
 		end
 
-	t_remove_latest_general
+	t_single_value_first (a_value: INTEGER)
 		local
 			t: INT_LINKED_LIST
 			count_prima, count_dopo: INTEGER
 		do
 			create t
-			t.append (1)
+			t.append (a_value)
 			t.append (2)
-			t.append (4)
 			t.append (3)
-			t.append (5)
-			count_prima := how_many(t, 1)
-			t.remove_latest(1)
-			count_dopo := how_many(t, 1)
-			assert("count prima e dopo scorretto", count_prima = count_dopo + 1)
-		end
-
-	t_remove_latest_with_how_many (a_value: INTEGER)
-		local
-			t: INT_LINKED_LIST
-			count_prima, count_dopo: INTEGER
-		do
-			create t
-			t.append(a_value)
 			count_prima := how_many(t, a_value)
 			t.remove_latest(a_value)
 			count_dopo := how_many(t, a_value)
-			assert("implementata per lista con 1 solo elemento", count_prima = count_dopo + 1 )
+			assert("count prima e dopo scorretto", count_prima = count_dopo + 1)
+		end
+
+	t_single_value_middle (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+			count_prima, count_dopo: INTEGER
+		do
+			create t
+			t.append (2)
+			t.append (a_value)
+			t.append (3)
+			count_prima := how_many(t, a_value)
+			t.remove_latest(a_value)
+			count_dopo := how_many(t, a_value)
+			assert("count prima e dopo scorretto", count_prima = count_dopo + 1)
+		end
+
+	t_single_value_last (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+			count_prima, count_dopo: INTEGER
+		do
+			create t
+			t.append (2)
+			t.append (3)
+			t.append (a_value)
+			count_prima := how_many(t, a_value)
+			t.remove_latest(a_value)
+			count_dopo := how_many(t, a_value)
+			assert("count prima e dopo scorretto", count_prima = count_dopo + 1)
 		end
 
 	t_remove_latest_with (a_value: INTEGER)

@@ -715,17 +715,20 @@ feature -- Removal single free
 					current_element := current_element.next
 				end
 				if pre_latest = Void then
+					-- `a_value' non è presente oppure è il primo elemento
 					if attached first_element as fe and then fe.value = a_value then
 						-- c'è un sola occorrenza di a_value come primo elemento
 						if active_element = first_element then
 							active_element := fe.next
 						end
 						first_element := fe.next
-						count := count -1
+						count := count - 1
 					end
-				end
-				if attached pre_latest as pl then
-					if attached pl.next as pln then
+				else -- `a_value' è presente e non è il primo elemento
+					if attached pre_latest as pl and then attached pl.next as pln then
+						if pln.next = Void then
+							last_element := pl
+						end
 						pl.link_to(pln.next)
 						count := count-1
 					end
