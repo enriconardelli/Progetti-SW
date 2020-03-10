@@ -119,7 +119,7 @@ feature -- Insertion single free
 			linked: attached old last_element as ole implies ole.next = last_element
 		end
 
-	prepend(a_value: INTEGER)
+	prepend (a_value: INTEGER)
 			-- aggiunge `a_value' prima del primo elemento.
 			-- Arianna Calzuola, 2020/03/10
 		local
@@ -218,27 +218,27 @@ feature -- Insertion single targeted
 				last_element := first_element
 				active_element := first_element
 			else
-				if attached first_element as fe and then fe.value=target then
+				if attached first_element as fe and then fe.value = target then
 					new_element.link_to (first_element)
 					first_element := new_element
 				else -- list contains at least one element and the first element is not the target
-						from
-							previous_element := first_element
-						until
-							attached previous_element as pe implies pe.next = Void
-							or else (attached pe.next as pen implies pen.value = target)
-						loop
-							if attached previous_element as p then previous_element := p.next end
-						end
-						if attached previous_element as pe then
-							new_element.link_after (pe)
-						else -- list does not contain `target'
-							new_element.link_to (first_element)
-							first_element := new_element
+					from
+						previous_element := first_element
+					until
+						attached previous_element as pe implies pe.next = Void or else (attached pe.next as pen implies pen.value = target)
+					loop
+						if attached previous_element as p then
+							previous_element := p.next
 						end
 					end
+					if attached previous_element as pe then
+						new_element.link_after (pe)
+					else -- list does not contain `target'
+						new_element.link_to (first_element)
+						first_element := new_element
+					end
 				end
-
+			end
 			count := count + 1
 		ensure
 			uno_in_piu: count = old count + 1
@@ -385,7 +385,7 @@ feature -- Insertion multiple targeted
 		local
 			new_element, current_element: INT_LINKABLE
 			-- target_exist: BOOLEAN
-	do
+		do
 			if has (target) then
 				from
 					current_element := first_element
@@ -422,7 +422,7 @@ feature -- Insertion multiple targeted
 		ensure
 			di_piu: count > old count
 			appeso_se_non_presente: not (old has (target)) and attached last_element as le implies le.value = a_value
-			collegato_se_presente: old has (target) and attached get_element(target) as ge and then attached ge.next as gen implies gen.value = a_value
+			collegato_se_presente: old has (target) and attached get_element (target) as ge and then attached ge.next as gen implies gen.value = a_value
 		end
 
 	insert_multiple_before (a_value, target: INTEGER) --____TO_MAKE_VOID_SAFE
@@ -687,9 +687,22 @@ feature -- Removal single free
 				--			element_removed_if_first: old first_element.value = a_value implies first_element = old first_element.next
 		end
 
-	remove_latest_______________DA_IMPLEMENTARE (a_value: INTEGER)
+	remove_latest (a_value: INTEGER)
 			-- remove the last occurrence of `a_value'
+		require
+			elemento_esiste: count > 0
+		local
+			--			current_element, pre_current: like first_element
 		do
+			if count = 1 then
+				if attached first_element as fe and then fe.value = a_value then
+					first_element := Void
+					active_element := Void
+					last_element := Void
+					count := 0
+				end
+			else -- la lista ha almeno due elementi
+			end
 		end
 
 feature -- Removal single targeted
