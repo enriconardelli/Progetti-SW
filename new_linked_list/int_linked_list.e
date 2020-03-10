@@ -205,7 +205,7 @@ feature -- Insertion single targeted
 			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen implies gen.value = a_value))
 		end
 
-	insert_before____TO_MAKE_VOID_SAFE (a_value, target: INTEGER)
+	insert_before (a_value, target: INTEGER)
 			-- inserisce `a_value' subito prima della prima occorrenza di `target' se esiste
 			-- altrimenti inserisce `a_value' all'inizio
 			-- Alesandro Filippo 2020/03/08
