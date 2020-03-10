@@ -692,7 +692,7 @@ feature -- Removal single free
 		require
 			elemento_esiste: count > 0
 		local
-			--			current_element, pre_current: like first_element
+			current_element, pre_current, pre_latest: like first_element
 		do
 			if count = 1 then
 				if attached first_element as fe and then fe.value = a_value then
@@ -702,6 +702,34 @@ feature -- Removal single free
 					count := 0
 				end
 			else -- la lista ha almeno due elementi
+				from
+					current_element := first_element
+					pre_current := Void
+					pre_latest := Void
+				until current_element = Void
+				loop
+					if current_element.value = a_value then
+						pre_latest := pre_current
+					end
+					pre_current := current_element
+					current_element := current_element.next
+				end
+				if pre_latest = Void then
+					if attached first_element as fe and then fe.value = a_value then
+						-- c'è un sola occorrenza di a_value come primo elemento
+						if active_element = first_element then
+							active_element := fe.next
+						end
+						first_element := fe.next
+						count := count -1
+					end
+				end
+				if attached pre_latest as pl then
+					if attached pl.next as pln then
+						pl.link_to(pln.next)
+						count := count-1
+					end
+				end
 			end
 		end
 
