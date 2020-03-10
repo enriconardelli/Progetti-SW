@@ -226,7 +226,7 @@ feature -- Insertion single targeted
 							previous_element := first_element
 						until
 							attached previous_element as pe implies pe.next = Void
---							or else pe.next.value=target --Perchè non funziona qui?
+							or else (attached pe.next as pen implies pen.value = target)
 						loop
 							if attached previous_element as p then previous_element := p.next end
 						end
