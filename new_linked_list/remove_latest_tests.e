@@ -33,15 +33,45 @@ feature
 
 	t_remove_latest
 		do
+			t_no_value_one_element (1)
+			t_no_value_two_elements (1)
+			t_no_value_three_elements (1)
 			t_single_value_first (1)
 			t_single_value_middle (1)
 			t_single_value_last (1)
---			t_remove_latest_with (1)
---			t_remove_latest_with (2)
---			t_remove_latest_with (3)
---			t_remove_latest_not_existing (1)
---			t_remove_latest_not_existing (2)
---			t_remove_latest_not_existing (3)
+		end
+
+	t_no_value_one_element (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append(a_value)
+			t.remove_latest(2*a_value)
+			assert("rimosso elemento sbagliato", t.has (a_value))
+		end
+
+	t_no_value_two_elements (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append(a_value)
+			t.append(2*a_value)
+			t.remove_latest(3*a_value)
+			assert("rimosso elemento sbagliato", t.has (a_value))
+		end
+
+	t_no_value_three_elements (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append(a_value)
+			t.append(2*a_value)
+			t.append(3*a_value)
+			t.remove_latest(4*a_value)
+			assert("rimosso elemento sbagliato", t.has (a_value))
 		end
 
 	t_single_value_first (a_value: INTEGER)
@@ -88,26 +118,5 @@ feature
 			count_dopo := how_many(t, a_value)
 			assert("count prima e dopo scorretto", count_prima = count_dopo + 1)
 		end
-
-	t_remove_latest_with (a_value: INTEGER)
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append(a_value)
-			t.remove_latest(a_value)
-			assert("implementata per lista con 1 solo elemento", not t.has (a_value))
-		end
-
-	t_remove_latest_not_existing (a_value: INTEGER)
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append(a_value)
-			t.remove_latest(2*a_value)
-			assert("implementata per lista con 1 solo elemento", t.has (a_value))
-		end
-
 
 end
