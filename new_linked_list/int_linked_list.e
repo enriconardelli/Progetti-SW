@@ -706,7 +706,8 @@ feature -- Removal single free
 					current_element := first_element
 					pre_current := Void
 					pre_latest := Void
-				until current_element = Void
+				until
+					current_element = Void
 				loop
 					if current_element.value = a_value then
 						pre_latest := pre_current
@@ -715,9 +716,9 @@ feature -- Removal single free
 					current_element := current_element.next
 				end
 				if pre_latest = Void then
-					-- `a_value' non è presente oppure è il primo elemento
+						-- `a_value' non è presente oppure è il primo elemento
 					if attached first_element as fe and then fe.value = a_value then
-						-- c'è un sola occorrenza di a_value come primo elemento
+							-- c'è un sola occorrenza di a_value come primo elemento
 						if active_element = first_element then
 							active_element := fe.next
 						end
@@ -729,8 +730,8 @@ feature -- Removal single free
 						if pln.next = Void then
 							last_element := pl
 						end
-						pl.link_to(pln.next)
-						count := count-1
+						pl.link_to (pln.next)
+						count := count - 1
 					end
 				end
 			end
@@ -812,28 +813,54 @@ feature -- Removal multiple free
 
 feature -- Removal multiple targeted
 
-	remove_all_following_______________DA_IMPLEMENTARE (a_value, target: INTEGER)
+	remove_all_following (a_value, target: INTEGER)
 			-- remove all occurrences of `a_value' following `target'
+			-- Giulia Iezzi 2020/03/11
+		local
+			target_element: like first_element
+			current_element: like first_element
+			pre_current_element: like first_element
 		do
+			if count > 0 and has (target) then
+				target_element := get_element (target)
+				if attached target_element as te then
+					from
+						pre_current_element := te
+						current_element := te.next
+					invariant
+						attached pre_current_element as pce implies (pce /= te implies pce.value /= a_value)
+					until
+						current_element = Void or pre_current_element = Void
+					loop
+						if current_element.value = a_value then
+							current_element := current_element.next
+							pre_current_element.link_to (current_element)
+							count := count - 1
+						else
+							current_element := current_element.next
+							pre_current_element := pre_current_element.next
+						end
+					end
+				end
+			end
 		end
 
 	remove_all_preceding (a_value, target: INTEGER)
 			-- remove all occurrences of `a_value' preceding `target'
 			-- Riccardo Malandruccolo, 2020/03/11
 		require
-			count>0
+			count > 0
 			a_value /= target
 		local
 			current_element, pre_current: like first_element
 		do
-			if count=1 then
+			if count = 1 then
 				if attached first_element as fe and then fe.value = a_value then
 					first_element := void
 					active_element := void
 					last_element := void
 					count := 0
 				end
-
 			else
 				from
 					current_element := first_element
@@ -842,7 +869,6 @@ feature -- Removal multiple targeted
 					(current_element = void) or else current_element.value = target
 				loop
 					if current_element.value = a_value then
-
 						if current_element = first_element then
 							if active_element = first_element then
 								active_element := current_element.next
@@ -858,13 +884,11 @@ feature -- Removal multiple targeted
 								active_element := current_element.next
 							end
 						end
-
 						current_element := current_element.next
 						if attached pre_current as pe then
 							pe.link_to (current_element)
 						end
-						count := count-1
-
+						count := count - 1
 					else
 						pre_current := current_element
 						current_element := current_element.next
