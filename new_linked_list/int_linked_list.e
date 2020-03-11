@@ -425,7 +425,7 @@ feature -- Insertion multiple targeted
 			collegato_se_presente: old has (target) and attached get_element (target) as ge and then attached ge.next as gen implies gen.value = a_value
 		end
 
-	insert_multiple_before (a_value, target: INTEGER) --____TO_MAKE_VOID_SAFE
+	insert_multiple_before (a_value, target: INTEGER)
 			-- inserisce `a_value' subito prima di ogni occorrenza di `target' se esiste
 			-- altrimenti inserisce `a_value' all'inizio
 			-- Riccardo Malandruccolo, 2020/03/07
@@ -478,7 +478,7 @@ feature -- Insertion multiple targeted
 
 feature -- Removal single free
 
-	remove_active --____TO_MAKE_VOID_SAFE
+	remove_active
 			-- Rimuove elemento accessibile mediante `active_element' se esiste
 			-- Assegna ad `active_element' il successivo se esiste altrimenti il precedente
 			-- Riccardo Malandruccolo, 2020/03/07
@@ -817,9 +817,60 @@ feature -- Removal multiple targeted
 		do
 		end
 
-	remove_all_preceding_______________DA_IMPLEMENTARE (a_value, target: INTEGER)
+	remove_all_preceding (a_value, target: INTEGER)
 			-- remove all occurrences of `a_value' preceding `target'
+			-- Riccardo Malandruccolo, 2020/03/11
+		require
+			count>0
+			a_value /= target
+		local
+			current_element, pre_current: like first_element
 		do
+			if count=1 then
+				if attached first_element as fe and then fe.value = a_value then
+					first_element := void
+					active_element := void
+					last_element := void
+					count := 0
+				end
+
+			else
+				from
+					current_element := first_element
+					pre_current := void
+				until
+					(current_element = void) or else current_element.value = target
+				loop
+					if current_element.value = a_value then
+
+						if current_element = first_element then
+							if active_element = first_element then
+								active_element := current_element.next
+							end
+							first_element := current_element.next
+						elseif current_element = last_element then
+							if active_element = last_element then
+								active_element := pre_current
+							end
+							last_element := pre_current
+						else
+							if active_element = current_element then
+								active_element := current_element.next
+							end
+						end
+
+						current_element := current_element.next
+						if attached pre_current as pe then
+							pe.link_to (current_element)
+						end
+						count := count-1
+
+					else
+						pre_current := current_element
+						current_element := current_element.next
+					end
+				end
+			end
 		end
 
 feature -- Other
