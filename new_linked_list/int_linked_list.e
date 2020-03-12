@@ -784,9 +784,41 @@ feature -- Removal single targeted
 		old has(a_value) and has(target) implies (count=old count -1)
 		end
 
-	remove_earliest_preceding_______________DA_IMPLEMENTARE (a_value, target: INTEGER)
+	remove_earliest_preceding (a_value, target: INTEGER)
 			-- remove the first occurrence of `a_value' among those preceding `target'
+			-- Claudia Agulini, 2020/03/12
+		require
+			count > 1
+			a_value /= target
+		local
+			current_element, pre_current: like first_element
 		do
+			if value_follows (target, a_value) then
+				if attached first_element as fe and then fe.value = a_value then
+					if active_element = fe then
+						active_element := fe.next
+					end
+					first_element := fe.next
+					count := count - 1
+				else -- il primo elemento non contiene `a_value'
+					from
+						current_element := first_element
+						pre_current := Void
+					until
+						current_element = get_element(a_value) or current_element = Void
+					loop
+						pre_current := current_element
+						current_element := current_element.next
+					end
+					-- current_element.value = `a_value' oppure current_element = Void
+					if attached current_element as ce and attached pre_current as pc then
+						pc.link_to (ce.next)
+						count := count - 1
+					end
+				end
+			end
+			ensure
+				old value_follows(target, a_value) implies count = old count - 1
 		end
 
 	remove_latest_preceding_______________DA_IMPLEMENTARE (a_value, target: INTEGER)
