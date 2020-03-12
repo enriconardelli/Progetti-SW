@@ -8,7 +8,7 @@ note
 	testing: "type/manual"
 
 class
-	REMOVE_EARLIEST_FOLLOWIN_TESTS
+	REMOVE_EARLIEST_FOLLOWING_TESTS
 
 inherit
 	STATIC_TESTS
@@ -63,16 +63,17 @@ feature -- Test routines
 			assert("non ha modificato last_element", attached t.last_element as le and then le.value=target)
 		end
 
-		t_no_target_two_elements (a_value, target: INTEGER)
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append(a_value)
-			t.append(2*a_value)
-			t.remove_earliest_following(a_value, target)
-			assert("rimosso elemento nonostante non ci sia targhet", t.has (a_value))
-		end
+--		t_no_target_two_elements (a_value, target: INTEGER)
+--		ho già messo il require quindi non credo ci sia bisogno di questo test
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			t.append(a_value)
+--			t.append(2*a_value)
+--			t.remove_earliest_following(a_value, target)
+--			assert("rimosso elemento nonostante non ci sia target", t.has (a_value))
+--		end
 
 		t_two_a_value (a_value, target: INTEGER)
 		local
@@ -81,6 +82,7 @@ feature -- Test routines
 		do
 			create t
 			t.append(target)
+			t.append (4*a_value)
 			t.append(a_value)
 			t.append(2*a_value)
 			t.append(3*a_value)
@@ -89,8 +91,16 @@ feature -- Test routines
 			t.remove_earliest_following(a_value, target)
 			new_count := how_many_following(t, a_value, target)
 			assert("ha tolto tutti gli a_value", old_count - new_count = 1 )
+			assert("ha tolto a_value giusto", attached t.last_element as le implies le.value = a_value)
+		end
+
+		remove_earliest_following_tests
+		do
+			t_a_value_before_target (2, 7)
+		--	t_no_target_two_elements (2, 7)
+			t_two_elements (2, 7)
+			t_two_a_value (2, 7)
 		end
 
 end
-
 
