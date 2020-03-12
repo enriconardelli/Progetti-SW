@@ -752,7 +752,9 @@ feature -- Removal single targeted
 			current_element: like first_element
 			pre_current_element: like first_element
 			previous_element, value_element: like first_element
+			flag: BOOLEAN
 		do
+			flag:=False --suppongo di non averlo trovato
 			if count > 0 and has (target) and has(a_value) then
 				target_element := get_element (target)
 				if attached target_element as te then
@@ -765,6 +767,7 @@ feature -- Removal single targeted
 						if current_element.value = a_value then --se lo trovo
 							previous_element:=pre_current_element --mi salvo il precedente all'ultimo con a_value
 							value_element:=current_element
+							flag:=True --l'ho trovato
 						end
 							current_element := current_element.next -- scorro la lsita
 							pre_current_element := pre_current_element.next
@@ -775,13 +778,11 @@ feature -- Removal single targeted
 						if attached value_element as ve then pe.link_to (ve.next)
 						end
 					end
-
 				end
-				count := count - 1
+				if flag then count := count - 1
+				end
 			end
 
-		ensure
-		old has(a_value) and has(target) implies (count=old count -1)
 		end
 
 	remove_earliest_preceding_______________DA_IMPLEMENTARE (a_value, target: INTEGER)

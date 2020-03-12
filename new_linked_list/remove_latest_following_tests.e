@@ -76,10 +76,11 @@ feature
 			t_lista_vuota
 			t_lista_senza_value (5)
 			t_lista_senza_target (10, 5)
-			t_con_piu_value_e_piu_target (10,5)
+			t_con_value_dopo_target (10,5)
+			t_con_value_prima_di_target (10,7)
 		end
 
-	t_con_piu_value_e_piu_target (target,a_value: INTEGER)
+	t_con_value_dopo_target (target,a_value: INTEGER)
 		--la funzione deve partire dal primo target che trova e togliere l'ultimo a_value
 	local
 		t: INT_LINKED_LIST
@@ -101,5 +102,25 @@ feature
 		assert ("E' stata rimossa una occorrenza di val", how_many (t, a_value)=l-1)
 		assert ("E' stata tolta quella giusta", attached t.get_element (k_1) as t1 implies t1.next=t.get_element (k_2))
 	end
+
+	t_con_value_prima_di_target (target,a_value: INTEGER)
+		--la funzione deve partire dal primo target che trova e togliere l'ultimo a_value
+	local
+		t: INT_LINKED_LIST
+		l,k_1: INTEGER
+	do
+		create t
+		k_1:=a_value + target + 1
+
+		t.append (k_1)
+		t.append (a_value) --non deve toglierlo
+		t.append (target) --qui ho il mio target
+		t.append (k_1)
+
+		l:= how_many (t,a_value) --conto quanti ci sono all'inizio
+ 		t.remove_latest_following (a_value, target)
+		assert ("Non è stata rimossa una occorrenza di val", l=how_many(t,a_value))
+	end
+
 
 end
