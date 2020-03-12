@@ -744,9 +744,44 @@ feature -- Removal single targeted
 		do
 		end
 
-	remove_latest_following_______________DA_IMPLEMENTARE (a_value, target: INTEGER)
+	remove_latest_following (a_value, target: INTEGER)
 			-- remove the last occurrence of `a_value' following `target'
+			-- Alessandro Fiippo 2020/03/12
+		local
+			target_element: like first_element
+			current_element: like first_element
+			pre_current_element: like first_element
+			previous_element, value_element: like first_element
 		do
+			if count > 0 and has (target) and has(a_value) then
+				target_element := get_element (target)
+				if attached target_element as te then
+					from
+						pre_current_element := te
+						current_element := te.next
+					until
+						current_element = Void or pre_current_element = Void
+					loop
+						if current_element.value = a_value then --se lo trovo
+							previous_element:=pre_current_element --mi salvo il precedente all'ultimo con a_value
+							value_element:=current_element
+						end
+							current_element := current_element.next -- scorro la lsita
+							pre_current_element := pre_current_element.next
+					end
+						--sono uscito da loop quindi previous e value sono attaccati
+						--elimino value element
+					if attached previous_element as pe then
+						if attached value_element as ve then pe.link_to (ve.next)
+						end
+					end
+
+				end
+				count := count - 1
+			end
+
+		ensure
+		old has(a_value) and has(target) implies (count=old count -1)
 		end
 
 	remove_earliest_preceding_______________DA_IMPLEMENTARE (a_value, target: INTEGER)
