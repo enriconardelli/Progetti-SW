@@ -739,9 +739,44 @@ feature -- Removal single free
 
 feature -- Removal single targeted
 
-	remove_earliest_following_______________DA_IMPLEMENTARE (a_value, target: INTEGER)
+	remove_earliest_following (a_value, target: INTEGER)
 			-- remove the first occurrence of `a_value' following `target'
+		require
+			almeno_due_elementi: count > 1
+			ha_almeno_taget: has(target) --devo metterla qui questa condizione e togliere l'if oppure no?
+		local
+		a_element, current_element, pre_a_element: like first_element
 		do
+			if count > 1 and has(target) then
+				from
+					pre_a_element := get_element(target)
+					if attached pre_a_element then
+						if attached pre_a_element.next then
+						 current_element :=  pre_a_element.next
+						 end
+					end
+				until
+					current_element = Void or else current_element.value = a_value
+				loop
+					pre_a_element := current_element
+					current_element := current_element.next
+				end
+				if attached current_element then
+					count := count - 1
+					if	active_element = current_element then
+						active_element := pre_a_element
+					end
+					if current_element = last_element then
+						last_element := pre_a_element
+					else
+						if attached pre_a_element then pre_a_element.link_to (current_element.next)
+						end
+					end
+				end
+
+			end
+			ensure
+			element_removed_if_exists: old has(target) and old  has(a_value) implies count = old count - 1
 		end
 
 	remove_latest_following (a_value, target: INTEGER)
@@ -754,8 +789,10 @@ feature -- Removal single targeted
 			previous_element, value_element: like first_element
 			flag: BOOLEAN
 		do
+
 			flag:=False --suppongo di non averlo trovato
 			if count > 0 and has (target) and has(a_value) then
+
 				target_element := get_element (target)
 				if attached target_element as te then
 					from
@@ -765,17 +802,23 @@ feature -- Removal single targeted
 						current_element = Void or pre_current_element = Void
 					loop
 						if current_element.value = a_value then --se lo trovo
+
 							previous_element:=pre_current_element --mi salvo il precedente all'ultimo con a_value
 							value_element:=current_element
 							flag:=True --l'ho trovato
+
+							previous_element := pre_current_element --mi salvo il precedente all'ultimo con a_value
+							value_element := current_element
+
 						end
-							current_element := current_element.next -- scorro la lsita
-							pre_current_element := pre_current_element.next
+						current_element := current_element.next -- scorro la lsita
+						pre_current_element := pre_current_element.next
 					end
 						--sono uscito da loop quindi previous e value sono attaccati
 						--elimino value element
 					if attached previous_element as pe then
-						if attached value_element as ve then pe.link_to (ve.next)
+						if attached value_element as ve then
+							pe.link_to (ve.next)
 						end
 					end
 				end
@@ -857,7 +900,7 @@ feature -- Removal multiple targeted
 			current_element: like first_element
 			pre_current_element: like first_element
 		do
-			if count > 0 and has (target) then
+			if count > 0 and has (target) and has (a_value) then
 				target_element := get_element (target)
 				if attached target_element as te then
 					from
@@ -879,6 +922,9 @@ feature -- Removal multiple targeted
 					end
 				end
 			end
+		ensure
+			not old has (target) implies count = old count
+			not old has (a_value) implies count = old count
 		end
 
 	remove_all_preceding (a_value, target: INTEGER)
