@@ -787,8 +787,12 @@ feature -- Removal single targeted
 			current_element: like first_element
 			pre_current_element: like first_element
 			previous_element, value_element: like first_element
+			flag: BOOLEAN
 		do
+
+			flag:=False --suppongo di non averlo trovato
 			if count > 0 and has (target) and has(a_value) then
+
 				target_element := get_element (target)
 				if attached target_element as te then
 					from
@@ -798,25 +802,30 @@ feature -- Removal single targeted
 						current_element = Void or pre_current_element = Void
 					loop
 						if current_element.value = a_value then --se lo trovo
+
 							previous_element:=pre_current_element --mi salvo il precedente all'ultimo con a_value
 							value_element:=current_element
+							flag:=True --l'ho trovato
+
+							previous_element := pre_current_element --mi salvo il precedente all'ultimo con a_value
+							value_element := current_element
+
 						end
-							current_element := current_element.next -- scorro la lsita
-							pre_current_element := pre_current_element.next
+						current_element := current_element.next -- scorro la lsita
+						pre_current_element := pre_current_element.next
 					end
 						--sono uscito da loop quindi previous e value sono attaccati
 						--elimino value element
 					if attached previous_element as pe then
-						if attached value_element as ve then pe.link_to (ve.next)
+						if attached value_element as ve then
+							pe.link_to (ve.next)
 						end
 					end
-
 				end
-				count := count - 1
+				if flag then count := count - 1
+				end
 			end
 
-		ensure
-		old has(a_value) and has(target) implies (count=old count -1)
 		end
 
 	remove_earliest_preceding (a_value, target: INTEGER)
@@ -923,7 +932,7 @@ feature -- Removal multiple targeted
 			current_element: like first_element
 			pre_current_element: like first_element
 		do
-			if count > 0 and has (target) then
+			if count > 0 and has (target) and has (a_value) then
 				target_element := get_element (target)
 				if attached target_element as te then
 					from
@@ -945,6 +954,9 @@ feature -- Removal multiple targeted
 					end
 				end
 			end
+		ensure
+			not old has (target) implies count = old count
+			not old has (a_value) implies count = old count
 		end
 
 	remove_all_preceding (a_value, target: INTEGER)
