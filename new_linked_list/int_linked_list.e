@@ -747,6 +747,7 @@ feature -- Removal single targeted
 		local
 			a_element, current_element, pre_a_element: like first_element
 		do
+			if count > 1 then
 			from
 				pre_a_element := get_element (target)
 				if attached pre_a_element then
@@ -775,6 +776,7 @@ feature -- Removal single targeted
 						pre_a_element.link_to (current_element.next)
 					end
 				end
+			end
 			end
 		end
 
