@@ -16,7 +16,7 @@ inherit
 
 feature -- Test routines
 
-	how_many_before (t: INT_LINKED_LIST; a_value, target: INTEGER; before: BOOLEAN): INTEGER
+	how_many_before (t: INT_LINKED_LIST; a_value, target: INTEGER): INTEGER
 		-- return how many times `a_value' occurs in `t' before `target' if before=true
 		-- return how many times `a_value' occurs in `t' if before=false
 	local
@@ -28,7 +28,7 @@ feature -- Test routines
 			from
 				current_element := t.first_element
 			until
-				current_element = Void or else (before = true and current_element.value = target)
+				current_element = Void or else current_element.value = target
 			loop
 				if current_element.value = a_value then
 					Result := Result + 1
@@ -63,10 +63,10 @@ feature -- Test routines
 			t.append (target)
 			t.append (2)
 
-			count_tot_prima := how_many_before(t,a_value,target,false)
-			count_pre_target := how_many_before(t,a_value,target,true)
+			count_tot_prima := how_many(t,a_value)
+			count_pre_target := how_many_before(t,a_value,target)
 			t.remove_all_preceding (a_value,target)
-			count_tot_dopo := how_many_before(t,a_value,target,false)
+			count_tot_dopo := how_many(t,a_value)
 
 			assert("non ha modificato first_element", attached t.first_element as fe and then fe.value=target)
 			assert("ha rimosso più elementi", count_tot_dopo = count_tot_prima - count_pre_target)
@@ -83,10 +83,10 @@ feature -- Test routines
 			t.append (3)
 			t.append (a_value)
 
-			count_tot_prima := how_many_before(t,a_value,target,false)
-			count_pre_target := how_many_before(t,a_value,target,true)
+			count_tot_prima := how_many(t,a_value)
+			count_pre_target := how_many_before(t,a_value,target)
 			t.remove_all_preceding (a_value,target)
-			count_tot_dopo := how_many_before(t,a_value,target,false)
+			count_tot_dopo := how_many(t,a_value)
 
 			t.remove_all_preceding (a_value,target)
 			assert("ha rimosso l'elemento dopo target", count_tot_dopo = count_tot_prima-count_pre_target)
@@ -105,10 +105,10 @@ feature -- Test routines
 			t.append (target)
 			t.append (4)
 
-			count_tot_prima := how_many_before(t,a_value,target,false)
-			count_pre_target := how_many_before(t,a_value,target,true)
+			count_tot_prima := how_many(t,a_value)
+			count_pre_target := how_many_before(t,a_value,target)
 			t.remove_all_preceding (a_value,target)
-			count_tot_dopo := how_many_before(t,a_value,target,false)
+			count_tot_dopo := how_many(t,a_value)
 
 			assert("non ha rimosso l'elemento prima di target", count_tot_dopo = count_tot_prima - count_pre_target)
 		end
@@ -125,10 +125,10 @@ feature -- Test routines
 			t.append (a_value)
 			t.append (4)
 
-			count_tot_prima := how_many_before(t,a_value,target,false)
-			count_pre_target := how_many_before(t,a_value,target,true)
+			count_tot_prima := how_many(t,a_value)
+			count_pre_target := how_many_before(t,a_value,target)
 			t.remove_all_preceding (a_value,target)
-			count_tot_dopo := how_many_before(t,a_value,target,false)
+			count_tot_dopo := how_many(t,a_value)
 
 			assert("ha rimosso l'elemento dopo target", count_tot_dopo = count_tot_prima - count_pre_target)
 		end
@@ -148,10 +148,10 @@ feature -- Test routines
 			t.append (target)
 			t.append (4)
 
-			count_tot_prima := how_many_before(t,a_value,target,false)
-			count_pre_target := how_many_before(t,a_value,target,true)
+			count_tot_prima := how_many(t,a_value)
+			count_pre_target := how_many_before(t,a_value,target)
 			t.remove_all_preceding (a_value,target)
-			count_tot_dopo := how_many_before(t,a_value,target,false)
+			count_tot_dopo := how_many(t,a_value)
 
 			assert("non ha rimosso tutti gli elementi prima di target", count_tot_dopo = count_tot_prima - count_pre_target)
 			assert("non ha modificato il first_element", attached t.first_element as fe and then fe.value=2)
@@ -169,10 +169,10 @@ feature -- Test routines
 			t.append (4)
 			t.append (a_value)
 
-			count_tot_prima := how_many_before(t,a_value,target,false)
-			count_pre_target := how_many_before(t,a_value,target,true)
+			count_tot_prima := how_many(t,a_value)
+			count_pre_target := how_many_before(t,a_value,target)
 			t.remove_all_preceding (a_value,target)
-			count_tot_dopo := how_many_before(t,a_value,target,false)
+			count_tot_dopo := how_many(t,a_value)
 
 			assert("ha rimosso gli elementi dopo target", count_tot_dopo = count_tot_prima - count_pre_target)
 		end
@@ -191,13 +191,13 @@ feature -- Test routines
 			t.append (a_value)
 			t.append (5)
 
-			count_tot_prima := how_many_before(t,a_value,target,false)
-			count_pre_target := how_many_before(t,a_value,target,true)
+			count_tot_prima := how_many(t,a_value)
+			count_pre_target := how_many_before(t,a_value,target)
 			t.remove_all_preceding (a_value,target)
-			count_tot_dopo := how_many_before(t,a_value,target,false)
+			count_tot_dopo := how_many(t,a_value)
 
 			assert("non ha rimosso il giusto numero di elementi", count_tot_dopo = count_tot_prima - count_pre_target)
-			assert("non ha rimosso gli elementi prima di target", how_many_before(t,a_value,target,true) = 0)
+			assert("non ha rimosso gli elementi prima di target", how_many_before(t,a_value,target) = 0)
 		end
 
 	t_multiple_value_with_multiple_target(a_value, target: INTEGER)
@@ -215,13 +215,13 @@ feature -- Test routines
 			t.append (4)
 			t.append (a_value)
 
-			count_tot_prima := how_many_before(t,a_value,target,false)
-			count_pre_target := how_many_before(t,a_value,target,true)
+			count_tot_prima := how_many(t,a_value)
+			count_pre_target := how_many_before(t,a_value,target)
 			t.remove_all_preceding (a_value,target)
-			count_tot_dopo := how_many_before(t,a_value,target,false)
+			count_tot_dopo := how_many(t,a_value)
 
 			assert("non ha rimosso il giusto numero di elementi", count_tot_dopo = count_tot_prima - count_pre_target)
-			assert("non ha rimosso gli elementi prima del primo target", how_many_before(t,a_value,target,true) = 0)
+			assert("non ha rimosso gli elementi prima del primo target", how_many_before(t,a_value,target) = 0)
 		end
 
 	t_value_equals_target(a_value, target: INTEGER)
@@ -236,9 +236,9 @@ feature -- Test routines
 			t.append (target)
 			t.append (a_value)
 
-			count_tot_prima := how_many_before(t,a_value,target,false)
+			count_tot_prima := how_many(t,a_value)
 			t.remove_all_preceding (a_value,target)
-			count_tot_dopo := how_many_before(t,a_value,target,false)
+			count_tot_dopo := how_many(t,a_value)
 
 			assert("ha rimosso elementi", count_tot_dopo = count_tot_prima)
 		end
