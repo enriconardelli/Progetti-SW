@@ -1010,18 +1010,10 @@ feature -- Removal multiple targeted
 			-- Riccardo Malandruccolo, 2020/03/11
 		require
 			count > 0
-			a_value /= target
 		local
 			current_element, pre_current: like first_element
 		do
-			if count = 1 then
-				if attached first_element as fe and then fe.value = a_value then
-					first_element := void
-					active_element := void
-					last_element := void
-					count := 0
-				end
-			else
+			if has(target) and then has(a_value) then
 				from
 					current_element := first_element
 					pre_current := void
@@ -1032,22 +1024,14 @@ feature -- Removal multiple targeted
 				loop
 					if current_element.value = a_value then
 
+						if active_element = current_element then
+							active_element := current_element.next
+						end
 						if current_element = first_element then
-							if active_element = first_element then
-								active_element := current_element.next
-							end
 							first_element := current_element.next
-						elseif current_element = last_element then
-							if active_element = last_element then
-								active_element := pre_current
-							end
-							last_element := pre_current
-						else
-							if active_element = current_element then
-								active_element := current_element.next
-							end
 						end
 						current_element := current_element.next
+
 						if attached pre_current as pe then
 							pe.link_to (current_element)
 						end
@@ -1061,7 +1045,6 @@ feature -- Removal multiple targeted
 			end
 		ensure
 			not old has(a_value) implies count = old count
-			has(a_value) implies has(target)
 		end
 
 feature -- Other
