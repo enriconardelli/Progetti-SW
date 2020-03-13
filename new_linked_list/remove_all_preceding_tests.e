@@ -40,12 +40,12 @@ feature -- Test routines
 
 	t_remove_all_preceding
 		do
-			t_no_value_one_element(1,10)
-			t_no_value_two_element(1,10)
+--			t_no_value_one_element(1,10)
+--			t_no_value_two_element(1,10)
 
-			t_single_value_first(1,10)
-			t_single_value_last(1,10)
-			t_single_value_middle(1,10)
+--			t_single_value_first(1,10)
+--			t_single_value_last(1,10)
+--			t_single_value_middle(1,10)
 
 			t_single_value_first_with_target(1,10)
 			t_single_value_last_with_target(1,10)

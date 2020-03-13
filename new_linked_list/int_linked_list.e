@@ -1005,15 +1005,13 @@ feature -- Removal multiple targeted
 		end
 
 	remove_all_preceding (a_value, target: INTEGER)
-			-- remove all occurrences of `a_value' preceding `target'
-			-- if `target' exists otherwise does nothing
+			-- remove all occurrences of `a_value' preceding first occurrence of `target'
 			-- Riccardo Malandruccolo, 2020/03/11
 		require
-			has(target)
+			esiste_target: has(target)
 		local
 			current_element, pre_current: like first_element
 		do
-
 			if has(a_value) and then a_value /= target then
 				from
 					current_element := first_element
