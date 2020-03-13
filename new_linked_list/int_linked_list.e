@@ -967,8 +967,7 @@ feature -- Removal multiple free
 feature -- Removal multiple targeted
 
 	remove_all_following (a_value, target: INTEGER)
-			-- remove all occurrences of `a_value' following `target'
-			-- if `target' exists otherwise does nothing
+			-- remove all occurrences of `a_value' following first occurrence of `target'
 			-- Giulia Iezzi 2020/03/11
 		require
 			has (target)
