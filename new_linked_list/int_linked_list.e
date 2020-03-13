@@ -1008,11 +1008,12 @@ feature -- Removal multiple targeted
 			-- if `target' exists otherwise does nothing
 			-- Riccardo Malandruccolo, 2020/03/11
 		require
-			count > 0
+			has(target)
 		local
 			current_element, pre_current: like first_element
 		do
-			if has (target) and then has (a_value) then
+
+			if has(a_value) and then a_value /= target then
 				from
 					current_element := first_element
 					pre_current := void
