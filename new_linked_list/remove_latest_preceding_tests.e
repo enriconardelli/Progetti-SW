@@ -154,13 +154,13 @@ feature
 			t: INT_LINKED_LIST
 		do
 			create t
-			t_empty_list(1,1)
-			t_only_one_element(1,1,1)
-			t_only_one_element(2,1,1)
-		    t_no_value(1)
-		    t_no_value(2)
+--			t_empty_list(1,1)
+--			t_only_one_element(1,1,1)
+--			t_only_one_element(2,1,1)
+--		    t_no_value(1)
+--		    t_no_value(2)
 			t_no_target(0,1)
-			t_no_target(1,1)
+--			t_no_target(1,1)
 			t_single_value_first (1)
 			t_single_value_middle (1)
 			t_multiple_value(3)

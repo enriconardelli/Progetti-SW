@@ -868,6 +868,8 @@ feature -- Removal single targeted
 	remove_latest_preceding (a_value, target: INTEGER)
 			-- remove the last occurrence of `a_value' among those preceding `target'
 			-- Federico Fiorini 2020/03/12
+		require
+			a_value/=target
 		local
 			current_element: like first_element
 			pre_value: like first_element
