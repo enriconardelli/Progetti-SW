@@ -747,6 +747,7 @@ feature -- Removal single targeted
 		local
 			a_element, current_element, pre_a_element: like first_element
 		do
+			if count > 1 then
 			from
 				pre_a_element := get_element (target)
 				if attached pre_a_element then
@@ -776,13 +777,14 @@ feature -- Removal single targeted
 					end
 				end
 			end
+			end
 		end
 
 	remove_latest_following (a_value, target: INTEGER)
-			-- remove the last occurrence of `a_value' following `target' if it exists
+			-- remove the last occurrence of `a_value' following first occurence of `target'
 			-- Alessandro Fiippo 2020/03/12
 		require
-		has (target)=True
+		ha_almeno_target: has (target)
 		local
 			target_element: like first_element
 			current_element: like first_element
@@ -829,11 +831,10 @@ feature -- Removal single targeted
 		end
 
 	remove_earliest_preceding (a_value, target: INTEGER)
-			-- remove the first occurrence of `a_value' among those preceding `target'
+			-- remove the first occurrence of `a_value' among those preceding first occurrence of `target'
 			-- Claudia Agulini, 2020/03/12
 		require
-			count > 1
-			a_value /= target
+			ha_almeno_target: has(target)
 		local
 			current_element, pre_current: like first_element
 		do
@@ -866,10 +867,10 @@ feature -- Removal single targeted
 		end
 
 	remove_latest_preceding (a_value, target: INTEGER)
-			-- remove the last occurrence of `a_value' among those preceding `target'
+			-- remove the last occurrence of `a_value' among those preceding first occurrence of `target'
 			-- Federico Fiorini 2020/03/12
 		require
-			a_value /= target
+			ha_almeno_target: has(target)
 		local
 			current_element: like first_element
 			pre_value: like first_element
