@@ -779,10 +779,10 @@ feature -- Removal single targeted
 		end
 
 	remove_latest_following (a_value, target: INTEGER)
-			-- remove the last occurrence of `a_value' following `target' if it exists
+			-- remove the last occurrence of `a_value' following first occurence of `target'
 			-- Alessandro Fiippo 2020/03/12
 		require
-		has (target)=True
+		ha_almeno_target: has (target)
 		local
 			target_element: like first_element
 			current_element: like first_element
