@@ -14,6 +14,7 @@ inherit
 	STATIC_TESTS
 
 feature -- Test routines
+-- Arianna Calzuola 2020/03/12
 
 	how_many_following(t: INT_LINKED_LIST; a_value, target: INTEGER): INTEGER
 	-- return how many times `a_value' occurs in `t' following target
