@@ -740,11 +740,10 @@ feature -- Removal single free
 feature -- Removal single targeted
 
 	remove_earliest_following (a_value, target: INTEGER)
+			-- remove the first occurrence of `a_value' following first occurrence of `target'
 			-- Arianna Calzuola 2020/03/12
-			-- remove the first occurrence of `a_value' following `target'
 		require
-			almeno_due_elementi: count > 1
-			ha_almeno_taget: has (target)
+			ha_almeno_target: has (target)
 		local
 			a_element, current_element, pre_a_element: like first_element
 		do
@@ -967,8 +966,7 @@ feature -- Removal multiple free
 feature -- Removal multiple targeted
 
 	remove_all_following (a_value, target: INTEGER)
-			-- remove all occurrences of `a_value' following `target'
-			-- if `target' exists otherwise does nothing
+			-- remove all occurrences of `a_value' following first occurrence of `target'
 			-- Giulia Iezzi 2020/03/11
 		require
 			has (target)
