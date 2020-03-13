@@ -94,9 +94,9 @@ feature -- Test routines
 			t.remove_all_preceding (a_value,target)
 			count_dopo := how_many_before(t,a_value,target,false)
 
-			assert("non ha rimosso l'elemento", not t.has (a_value))
-			assert("non ha modificato first_element", attached t.first_element as fe and then fe.value=2)
-			assert("ha rimosso più elementi", count_dopo = count_prima-1)
+			assert("ha rimosso l'elemento", t.has (a_value))
+			assert("ha modificato first_element", attached t.first_element as fe and then fe.value=a_value)
+			assert("ha rimosso elementi", count_dopo = count_prima)
 		end
 
 	t_single_value_last(a_value, target: INTEGER)
@@ -113,9 +113,9 @@ feature -- Test routines
 			t.remove_all_preceding (a_value,target)
 			count_dopo := how_many_before(t,a_value,target,false)
 
-			assert("non ha rimosso l'elemento", not t.has (a_value))
-			assert("non ha modificato last_element", attached t.last_element as le and then le.value=3)
-			assert("ha rimosso più elementi", count_dopo = count_prima-1)
+			assert("ha rimosso l'elemento", t.has (a_value))
+			assert("ha modificato last_element", attached t.last_element as le and then le.value=a_value)
+			assert("ha rimosso elementi", count_dopo = count_prima)
 		end
 
 	t_single_value_middle(a_value, target: INTEGER)
@@ -132,8 +132,8 @@ feature -- Test routines
 			t.remove_all_preceding (a_value,target)
 			count_dopo := how_many_before(t,a_value,target,false)
 
-			assert("non ha rimosso l'elemento", not t.has (a_value))
-			assert("ha rimosso più elementi", count_dopo = count_prima-1)
+			assert("ha rimosso l'elemento", t.has (a_value))
+			assert("ha rimosso elementi", count_dopo = count_prima)
 		end
 
 
