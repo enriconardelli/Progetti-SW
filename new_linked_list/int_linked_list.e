@@ -865,9 +865,51 @@ feature -- Removal single targeted
 				old value_follows(target, a_value) implies count = old count - 1
 		end
 
-	remove_latest_preceding_______________DA_IMPLEMENTARE (a_value, target: INTEGER)
+	remove_latest_preceding (a_value, target: INTEGER)
 			-- remove the last occurrence of `a_value' among those preceding `target'
+			-- Federico Fiorini 2020/03/12
+		local
+			current_element: like first_element
+			pre_value: like first_element
 		do
+			if count>=2 and has(a_value) and then get_element(target)/=first_element and value_follows(target,a_value) then
+
+				from
+					current_element := first_element
+				until
+					current_element=get_element(target)
+				loop
+					if attached current_element as ce then
+						if  attached current_element.next as cen and then (cen.value=a_value and cen.value/=target) then
+							pre_value:=current_element
+						end
+						current_element:=current_element.next
+					end
+				end
+
+				if pre_value = Void then
+					--questo if parte solo se value_follows(target, a_value) restituisce true
+					--cioè se nella lista è presente prima una qualche istanza di a_value, e poi target
+					--quindi una qualche istanza di a_value deve necessariamente esistere
+					--se pre_value è ancora void, significa che l' unica ricorrenza di a_value deve essere
+					--il primo elemento della lista
+					if attached first_element as fe then
+						if active_element = first_element then
+							active_element := fe.next
+						end
+						first_element:=fe.next
+					end
+				else
+					if attached pre_value as pv and then attached pre_value.next as pvn then
+						pre_value.link_to(pvn.next)
+						if pre_value.next=active_element then
+							active_element:=pvn.next
+						end
+					end
+				end
+				count:= count - 1
+			end
+
 		end
 
 feature -- Removal multiple free
