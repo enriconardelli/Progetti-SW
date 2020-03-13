@@ -66,8 +66,6 @@ feature -- Test routines
 			t.append (a_value)
 			t.remove_all_preceding (2*a_value,target)
 			assert("ha rimosso l'elemento (senza target)", t.has (a_value))
-			t.append (target)
-			assert("ha rimosso l'elemento (con target)", t.has (a_value))
 		end
 
 	t_no_value_two_element(a_value, target: INTEGER)
@@ -79,8 +77,6 @@ feature -- Test routines
 			t.append (2*a_value)
 			t.remove_all_preceding (3*a_value,target)
 			assert("ha rimosso l'elemento", t.has (a_value))
-			t.append (target)
-			assert("ha rimosso l'elemento (con target)", t.has (a_value))
 		end
 
 

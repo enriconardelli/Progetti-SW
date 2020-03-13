@@ -979,10 +979,13 @@ feature -- Removal multiple targeted
 				from
 					current_element := first_element
 					pre_current := void
+				invariant
+					(current_element /= void and attached pre_current as pe) implies pe.value /= target
 				until
 					(current_element = void) or else current_element.value = target
 				loop
 					if current_element.value = a_value then
+
 						if current_element = first_element then
 							if active_element = first_element then
 								active_element := current_element.next
@@ -1003,12 +1006,16 @@ feature -- Removal multiple targeted
 							pe.link_to (current_element)
 						end
 						count := count - 1
+
 					else
 						pre_current := current_element
 						current_element := current_element.next
 					end
 				end
 			end
+		ensure
+			not old has(a_value) implies count = old count
+			has(a_value) implies has(target)
 		end
 
 feature -- Other
