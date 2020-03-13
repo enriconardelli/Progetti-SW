@@ -34,28 +34,29 @@ feature
 			end
 		end
 
-	t_lista_vuota
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.remove_latest_following (2, 5)
-			assert ("La lista è vuota e rimane vuota", t.count = 0)
-		end
+--	t_lista_vuota
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			t.remove_latest_following (2, 5)
+--			assert ("La lista è vuota e rimane vuota", t.count = 0)
+--		end
 
-	t_lista_senza_target (tar: INTEGER; a_value: INTEGER)
-		local
-			t: INT_LINKED_LIST
-			s: INTEGER
-		do
-			create t
-			t.append (tar + 1)
-			t.append (tar + 2)
-			t.append (tar + 1)
-			s := how_many (t, a_value)
-			t.remove_latest_following (a_value, tar)
-			assert ("Nella lista non c'è il target", s = how_many (t, a_value))
-		end
+--	t_lista_senza_target (tar: INTEGER; a_value: INTEGER)
+--		--da contratto non si può chiamare
+--		local
+--			t: INT_LINKED_LIST
+--			s: INTEGER
+--		do
+--			create t
+--			t.append (tar + 1)
+--			t.append (tar + 2)
+--			t.append (tar + 1)
+--			s := how_many (t, a_value)
+--			t.remove_latest_following (a_value, tar)
+--			assert ("Nella lista non c'è il target", s = how_many (t, a_value))
+--		end
 
 	t_lista_senza_value (a_value: INTEGER)
 		local
@@ -73,9 +74,9 @@ feature
 
 	t_remove_latest_following
 		do
-			t_lista_vuota
+			--t_lista_vuota
 			t_lista_senza_value (5)
-			t_lista_senza_target (10, 5)
+			--t_lista_senza_target (10, 5) --da contratto non si può chamare
 			t_con_value_dopo_target (10,5)
 			t_con_value_prima_di_target (10,7)
 		end

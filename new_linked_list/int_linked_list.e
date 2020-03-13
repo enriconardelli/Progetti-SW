@@ -780,8 +780,10 @@ feature -- Removal single targeted
 
 
 	remove_latest_following (a_value, target: INTEGER)
-			-- remove the last occurrence of `a_value' following `target'
+			-- remove the last occurrence of `a_value' following `target' if it exists
 			-- Alessandro Fiippo 2020/03/12
+		require
+		has (target)=True
 		local
 			target_element: like first_element
 			current_element: like first_element
@@ -791,7 +793,7 @@ feature -- Removal single targeted
 		do
 
 			flag:=False --suppongo di non averlo trovato
-			if count > 0 and has (target) and has(a_value) then
+			if count > 0 and  has(a_value) then
 
 				target_element := get_element (target)
 				if attached target_element as te then
