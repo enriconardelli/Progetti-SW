@@ -968,6 +968,7 @@ feature -- Removal multiple targeted
 
 	remove_all_following (a_value, target: INTEGER)
 			-- remove all occurrences of `a_value' following `target'
+			-- if `target' exists otherwise does nothing
 			-- Giulia Iezzi 2020/03/11
 		local
 			target_element: like first_element
@@ -1003,6 +1004,7 @@ feature -- Removal multiple targeted
 
 	remove_all_preceding (a_value, target: INTEGER)
 			-- remove all occurrences of `a_value' preceding `target'
+			-- if `target' exists otherwise does nothing
 			-- Riccardo Malandruccolo, 2020/03/11
 		require
 			count > 0
