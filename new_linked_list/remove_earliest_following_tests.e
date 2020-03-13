@@ -16,7 +16,7 @@ inherit
 feature -- Test routines
 -- Arianna Calzuola 2020/03/12
 
-	how_many_following(t: INT_LINKED_LIST; a_value, target: INTEGER): INTEGER
+	how_many_following_a_value_after_target(t: INT_LINKED_LIST; a_value, target: INTEGER): INTEGER
 	-- return how many times `a_value' occurs in `t' following target
 	local
 	current_element: INT_LINKABLE
@@ -92,9 +92,9 @@ feature -- Test routines
 			t.append(2*a_value)
 			t.append(3*a_value)
 			t.append(a_value)
-			old_count := how_many_following(t, a_value, target)
+			old_count := how_many_following_a_value_after_target(t, a_value, target)
 			t.remove_earliest_following(a_value, target)
-			new_count := how_many_following(t, a_value, target)
+			new_count := how_many_following_a_value_after_target(t, a_value, target)
 			assert("ha tolto tutti gli a_value", old_count - new_count = 1 )
 			assert("ha tolto a_value giusto", attached t.last_element as le implies le.value = a_value)
 		end
