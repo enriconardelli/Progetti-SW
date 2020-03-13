@@ -740,19 +740,19 @@ feature -- Removal single free
 feature -- Removal single targeted
 
 	remove_earliest_following (a_value, target: INTEGER)
-	-- Arianna Calzuola 2020/03/12
+			-- Arianna Calzuola 2020/03/12
 			-- remove the first occurrence of `a_value' following `target'
 		require
 			almeno_due_elementi: count > 1
-			ha_almeno_taget: has(target)
+			ha_almeno_taget: has (target)
 		local
-		a_element, current_element, pre_a_element: like first_element
+			a_element, current_element, pre_a_element: like first_element
 		do
 			from
-				pre_a_element := get_element(target)
+				pre_a_element := get_element (target)
 				if attached pre_a_element then
 					if attached pre_a_element.next then
-					 current_element :=  pre_a_element.next
+						current_element := pre_a_element.next
 					end
 				end
 			until
@@ -763,21 +763,21 @@ feature -- Removal single targeted
 			end
 			if attached current_element then
 				count := count - 1
-				if	active_element = current_element then
+				if active_element = current_element then
 					active_element := pre_a_element
 				end
 				if current_element = last_element then
 					if attached pre_a_element then
-							pre_a_element.link_to(Void)
+						pre_a_element.link_to (Void)
 					end
 					last_element := pre_a_element
 				else
-					if attached pre_a_element then pre_a_element.link_to (current_element.next)
+					if attached pre_a_element then
+						pre_a_element.link_to (current_element.next)
 					end
 				end
 			end
 		end
-
 
 	remove_latest_following (a_value, target: INTEGER)
 			-- remove the last occurrence of `a_value' following `target' if it exists
@@ -805,13 +805,12 @@ feature -- Removal single targeted
 					loop
 						if current_element.value = a_value then --se lo trovo
 
-							previous_element:=pre_current_element --mi salvo il precedente all'ultimo con a_value
-							value_element:=current_element
-							flag:=True --l'ho trovato
+							previous_element := pre_current_element --mi salvo il precedente all'ultimo con a_value
+							value_element := current_element
+							flag := True --l'ho trovato
 
 							previous_element := pre_current_element --mi salvo il precedente all'ultimo con a_value
 							value_element := current_element
-
 						end
 						current_element := current_element.next -- scorro la lsita
 						pre_current_element := pre_current_element.next
@@ -824,10 +823,10 @@ feature -- Removal single targeted
 						end
 					end
 				end
-				if flag then count := count - 1
+				if flag then
+					count := count - 1
 				end
 			end
-
 		end
 
 	remove_earliest_preceding (a_value, target: INTEGER)
@@ -851,67 +850,66 @@ feature -- Removal single targeted
 						current_element := first_element
 						pre_current := Void
 					until
-						current_element = get_element(a_value) or current_element = Void
+						current_element = get_element (a_value) or current_element = Void
 					loop
 						pre_current := current_element
 						current_element := current_element.next
 					end
-					-- current_element.value = `a_value' oppure current_element = Void
+						-- current_element.value = `a_value' oppure current_element = Void
 					if attached current_element as ce and attached pre_current as pc then
 						pc.link_to (ce.next)
 						count := count - 1
 					end
 				end
 			end
-			ensure
-				old value_follows(target, a_value) implies count = old count - 1
+		ensure
+			old value_follows (target, a_value) implies count = old count - 1
 		end
 
 	remove_latest_preceding (a_value, target: INTEGER)
 			-- remove the last occurrence of `a_value' among those preceding `target'
 			-- Federico Fiorini 2020/03/12
+		require
+			a_value /= target
 		local
 			current_element: like first_element
 			pre_value: like first_element
 		do
-			if count>=2 and has(a_value) and then get_element(target)/=first_element and value_follows(target,a_value) then
-
+			if count >= 2 and has (a_value) and then get_element (target) /= first_element and value_follows (target, a_value) then
 				from
 					current_element := first_element
 				until
-					current_element=get_element(target)
+					current_element = get_element (target)
 				loop
 					if attached current_element as ce then
-						if  attached current_element.next as cen and then (cen.value=a_value and cen.value/=target) then
-							pre_value:=current_element
+						if attached current_element.next as cen and then (cen.value = a_value and cen.value /= target) then
+							pre_value := current_element
 						end
-						current_element:=current_element.next
+						current_element := current_element.next
 					end
 				end
-
 				if pre_value = Void then
-					--questo if parte solo se value_follows(target, a_value) restituisce true
-					--cioè se nella lista è presente prima una qualche istanza di a_value, e poi target
-					--quindi una qualche istanza di a_value deve necessariamente esistere
-					--se pre_value è ancora void, significa che l' unica ricorrenza di a_value deve essere
-					--il primo elemento della lista
+						--questo if parte solo se value_follows(target, a_value) restituisce true
+						--cioè se nella lista è presente prima una qualche istanza di a_value, e poi target
+						--quindi una qualche istanza di a_value deve necessariamente esistere
+						--se pre_value è ancora void, significa che l' unica ricorrenza di a_value deve essere
+						--il primo elemento della lista
 					if attached first_element as fe then
 						if active_element = first_element then
 							active_element := fe.next
 						end
-						first_element:=fe.next
+						first_element := fe.next
 					end
 				else
 					if attached pre_value as pv and then attached pre_value.next as pvn then
-						pre_value.link_to(pvn.next)
-						if pre_value.next=active_element then
-							active_element:=pvn.next
+						pre_value.link_to (pvn.next)
+						if pre_value.next = active_element then
+							active_element := pvn.next
 						end
 					end
 				end
-				count:= count - 1
+				count := count - 1
 			end
-
 		end
 
 feature -- Removal multiple free
@@ -970,13 +968,16 @@ feature -- Removal multiple targeted
 
 	remove_all_following (a_value, target: INTEGER)
 			-- remove all occurrences of `a_value' following `target'
+			-- if `target' exists otherwise does nothing
 			-- Giulia Iezzi 2020/03/11
+		require
+			has (target)
 		local
 			target_element: like first_element
 			current_element: like first_element
 			pre_current_element: like first_element
 		do
-			if count > 0 and has (target) and has (a_value) then
+			if count > 0 and has (a_value) then
 				target_element := get_element (target)
 				if attached target_element as te then
 					from
@@ -1005,21 +1006,14 @@ feature -- Removal multiple targeted
 
 	remove_all_preceding (a_value, target: INTEGER)
 			-- remove all occurrences of `a_value' preceding `target'
+			-- if `target' exists otherwise does nothing
 			-- Riccardo Malandruccolo, 2020/03/11
 		require
 			count > 0
-			a_value /= target
 		local
 			current_element, pre_current: like first_element
 		do
-			if count = 1 then
-				if attached first_element as fe and then fe.value = a_value then
-					first_element := void
-					active_element := void
-					last_element := void
-					count := 0
-				end
-			else
+			if has (target) and then has (a_value) then
 				from
 					current_element := first_element
 					pre_current := void
@@ -1029,28 +1023,17 @@ feature -- Removal multiple targeted
 					(current_element = void) or else current_element.value = target
 				loop
 					if current_element.value = a_value then
-
+						if active_element = current_element then
+							active_element := current_element.next
+						end
 						if current_element = first_element then
-							if active_element = first_element then
-								active_element := current_element.next
-							end
 							first_element := current_element.next
-						elseif current_element = last_element then
-							if active_element = last_element then
-								active_element := pre_current
-							end
-							last_element := pre_current
-						else
-							if active_element = current_element then
-								active_element := current_element.next
-							end
 						end
 						current_element := current_element.next
 						if attached pre_current as pe then
 							pe.link_to (current_element)
 						end
 						count := count - 1
-
 					else
 						pre_current := current_element
 						current_element := current_element.next
@@ -1058,8 +1041,7 @@ feature -- Removal multiple targeted
 				end
 			end
 		ensure
-			not old has(a_value) implies count = old count
-			has(a_value) implies has(target)
+			not old has (a_value) implies count = old count
 		end
 
 feature -- Other
