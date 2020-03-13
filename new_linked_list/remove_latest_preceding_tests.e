@@ -35,27 +35,6 @@ feature
 		end
 
 
-	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
-			--ci dice quante occorrenze di value ci sono nella lista
-		local
-			current_element: INT_LINKABLE
-		do
-			if t.count = 0 then
-				Result := 0
-			else
-				from
-					current_element := t.first_element
-				until
-					current_element = Void
-				loop
-					if current_element.value = a_value then
-						Result := Result + 1
-					end
-					current_element := current_element.next
-				end
-			end
-		end
-
 	t_no_value(a_value:INTEGER)
 		local
 			t:INT_LINKED_LIST
