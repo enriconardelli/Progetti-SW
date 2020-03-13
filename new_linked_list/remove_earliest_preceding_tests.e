@@ -21,7 +21,7 @@ feature
 			t_multiple_values(1)
 			t_same_value_target (1)
 			t_multiple_value_first(1)
-	--		t_multiple_target (1)
+			t_multiple_target (1)
 		end
 
 	t_no_value_two_elements (a_value: INTEGER)
@@ -147,7 +147,7 @@ feature
 				t.append (a_value + 1)
 				count_prima := how_many (t, a_value)
 				t.remove_earliest_preceding (a_value, a_value + 1)
-				count_dopo := how_many (t, a_value + 1)
+				count_dopo := how_many (t, a_value)
 				assert("errore: count prima e dopo scorretto", count_prima = count_dopo)
 
 			end

@@ -850,13 +850,13 @@ feature -- Removal single targeted
 						current_element := first_element
 						pre_current := Void
 					until
-						(current_element = get_element (a_value) or current_element = get_element (target)) or current_element = Void
+						current_element = Void or else (current_element.value = a_value or current_element.value = target)
 					loop
 						pre_current := current_element
 						current_element := current_element.next
 					end
 					if attached current_element as ce and attached pre_current as pc then
-						if ce /= get_element (target) then -- se `a_value' e `target' sono uguali non modifico la lista
+						if ce /= get_element (target) then
 							pc.link_to (ce.next)
 							count := count - 1
 						end
