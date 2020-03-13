@@ -13,50 +13,14 @@ inherit
 
 feature
 
-	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
-			--ci dice quante occorrenze di value ci sono nella lista
-		local
-			current_element: INT_LINKABLE
+
+	t_remove_latest_following
 		do
-			if t.count = 0 then
-				Result := 0
-			else
-				from
-					current_element := t.first_element
-				until
-					current_element = Void
-				loop
-					if current_element.value = a_value then
-						Result := Result + 1
-					end
-					current_element := current_element.next
-				end
-			end
+			t_lista_senza_value (5)
+			t_con_value_dopo_target (10,5)
+			t_con_value_dopo_target (5,5) --provo se vale quando target e value coincidono
+			t_con_value_prima_di_target (10,7)
 		end
-
---	t_lista_vuota
---		local
---			t: INT_LINKED_LIST
---		do
---			create t
---			t.remove_latest_following (2, 5)
---			assert ("La lista è vuota e rimane vuota", t.count = 0)
---		end
-
---	t_lista_senza_target (tar: INTEGER; a_value: INTEGER)
---		--da contratto non si può chiamare
---		local
---			t: INT_LINKED_LIST
---			s: INTEGER
---		do
---			create t
---			t.append (tar + 1)
---			t.append (tar + 2)
---			t.append (tar + 1)
---			s := how_many (t, a_value)
---			t.remove_latest_following (a_value, tar)
---			assert ("Nella lista non c'è il target", s = how_many (t, a_value))
---		end
 
 	t_lista_senza_value (a_value: INTEGER)
 		local
@@ -72,15 +36,6 @@ feature
 			assert ("Nella lista non c'è a_value", s = how_many (t, a_value))
 		end
 
-	t_remove_latest_following
-		do
-			--t_lista_vuota
-			t_lista_senza_value (5)
-			--t_lista_senza_target (10, 5) --da contratto non si può chamare
-			t_con_value_dopo_target (10,5)
-			t_con_value_prima_di_target (10,7)
-		end
-
 	t_con_value_dopo_target (target,a_value: INTEGER)
 		--la funzione deve partire dal primo target che trova e togliere l'ultimo a_value
 	local
@@ -94,6 +49,7 @@ feature
 		t.append (a_value) --non deve toglierlo
 		t.append (target) --qui ho il mio target
 		t.append (a_value) --non deve toglierlo
+		t.append (target) --se ci sono anche più target?
 		t.append (k_1)
 		t.append (a_value) --deve togliere questo
 		t.append (k_2)
