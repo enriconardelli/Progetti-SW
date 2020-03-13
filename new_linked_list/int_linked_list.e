@@ -829,11 +829,10 @@ feature -- Removal single targeted
 		end
 
 	remove_earliest_preceding (a_value, target: INTEGER)
-			-- remove the first occurrence of `a_value' among those preceding `target'
+			-- remove the first occurrence of `a_value' among those preceding first occurrence of `target'
 			-- Claudia Agulini, 2020/03/12
 		require
-			count > 1
-			a_value /= target
+			ha_almeno_target: has(target)
 		local
 			current_element, pre_current: like first_element
 		do
