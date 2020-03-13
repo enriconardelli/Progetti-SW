@@ -64,17 +64,21 @@ feature -- Test routines
 			assert("non ha modificato last_element", attached t.last_element as le and then le.value=target)
 		end
 
---		t_no_target_two_elements (a_value, target: INTEGER)
---		ho già messo il require quindi non credo ci sia bisogno di questo test
---		local
---			t: INT_LINKED_LIST
---		do
---			create t
---			t.append(a_value)
---			t.append(2*a_value)
---			t.remove_earliest_following(a_value, target)
---			assert("rimosso elemento nonostante non ci sia target", t.has (a_value))
---		end
+		t_a_value_equal_target (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+			count: INTEGER
+
+		do
+			create t
+			t.append(a_value)
+			t.append (3*a_value)
+			t.append(a_value)
+			count := t.count
+			t.remove_earliest_following(a_value, a_value)
+			assert("ha eliminato sia il target che a_value", t.count = count - 1 )
+			assert("non ha eliminato a_value giusto", attached t.first_element as fe and then fe.value=a_value)
+		end
 
 		t_two_a_value (a_value, target: INTEGER)
 		local
@@ -98,9 +102,9 @@ feature -- Test routines
 		remove_earliest_following_tests
 		do
 			t_a_value_before_target (2, 7)
-		--	t_no_target_two_elements (2, 7)
 			t_two_elements (2, 7)
 			t_two_a_value (2, 7)
+			t_a_value_equal_target (2)
 		end
 
 end
