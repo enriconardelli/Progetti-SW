@@ -35,11 +35,12 @@ feature
 		do
 			t_no_value_two_elements(1)
 			t_no_value_three_elements(1)
-			t_no_target_two_elements(1)
-			t_no_target_three_elements(1)
 			t_value_first_two_elements(1)
 			t_value_first_three_elements(1)
 			t_multiple_values(1)
+			t_same_value_target (1)
+			t_multiple_value_first(1)
+	--		t_multiple_target (1)
 		end
 
 	t_no_value_two_elements (a_value: INTEGER)
@@ -71,34 +72,6 @@ feature
 			assert("errore: lista di tre elementi non contiene value", count_prima = count_dopo)
 		end
 
-	t_no_target_two_elements (target: INTEGER)
-		local
-			t: INT_LINKED_LIST
-			count_prima, count_dopo: INTEGER
-		do
-			create t
-			t.append (2 + target)
-			t.append (3 + target)
-			count_prima := how_many (t, 2 + target)
-			t.remove_earliest_preceding (2 + target, target)
-			count_dopo := how_many (t, 2 + target)
-			assert("errore: lista di due elementi non contiene target", count_prima = count_dopo)
-		end
-
-	t_no_target_three_elements (target: INTEGER)
-		local
-			t: INT_LINKED_LIST
-			count_prima, count_dopo: INTEGER
-		do
-			create t
-			t.append (2 + target)
-			t.append (3 + target)
-			t.append (4 + target)
-			count_prima := how_many (t, 2 + target)
-			t.remove_earliest_preceding (2 + target, target)
-			count_dopo := how_many (t, 2 + target)
-			assert("errore: lista di tre elementi non contiene target", count_prima = count_dopo)
-		end
 
 	t_value_first_two_elements (a_value: INTEGER)
 		local
@@ -148,6 +121,56 @@ feature
 			count_dopo :=  how_many(t, a_value)
 			assert("errore: lista con più occorrenze di value", count_dopo = count_prima - 1)
 		end
+
+	t_same_value_target (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+			count_prima, count_dopo: INTEGER
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 1)
+			t.append (a_value + 2)
+			count_prima := how_many (t, a_value + 1)
+			t.remove_earliest_preceding (a_value + 1, a_value + 1)
+			count_dopo := how_many (t, a_value + 1)
+			assert("errore: count prima e dopo scorretto", count_prima = count_dopo)
+		end
+
+		t_multiple_value_first (a_value: INTEGER)
+		local
+			t: INT_LINKED_LIST
+			count_prima, count_dopo: INTEGER
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 1)
+			t.append (a_value)
+			t.append (a_value + 2)
+			count_prima := how_many (t, a_value)
+			t.remove_earliest_preceding (a_value, a_value + 2)
+			count_dopo := how_many (t, a_value)
+			assert("errore: count prima e dopo scorretto", count_prima = count_dopo + 1)
+			assert("errore: rimosso elemento sbagliato in testa", attached t.first_element as fe implies fe.value /= a_value)
+		end
+
+		t_multiple_target (a_value: INTEGER)
+			local
+				t: INT_LINKED_LIST
+				count_prima, count_dopo: INTEGER
+			do
+				create t
+				t.append (a_value + 4)
+				t.append (a_value + 1)
+				t.append (a_value)
+				t.append (a_value + 1)
+				count_prima := how_many (t, a_value)
+				t.remove_earliest_preceding (a_value, a_value + 1)
+				count_dopo := how_many (t, a_value + 1)
+				assert("errore: count prima e dopo scorretto", count_prima = count_dopo)
+
+			end
+
 
 
 

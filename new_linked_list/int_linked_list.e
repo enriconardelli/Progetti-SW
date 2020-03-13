@@ -836,7 +836,7 @@ feature -- Removal single targeted
 		local
 			current_element, pre_current: like first_element
 		do
-			if value_follows (target, a_value) then
+			if count > 1 and has(a_value) then
 				if attached first_element as fe and then fe.value = a_value then
 					if active_element = fe then
 						active_element := fe.next
@@ -848,20 +848,19 @@ feature -- Removal single targeted
 						current_element := first_element
 						pre_current := Void
 					until
-						current_element = get_element (a_value) or current_element = Void
+						(current_element = get_element (a_value) or current_element = get_element (target)) or current_element = Void
 					loop
 						pre_current := current_element
 						current_element := current_element.next
 					end
-						-- current_element.value = `a_value' oppure current_element = Void
 					if attached current_element as ce and attached pre_current as pc then
-						pc.link_to (ce.next)
-						count := count - 1
+						if ce /= get_element (target) then -- se `a_value' e `target' sono uguali non modifico la lista
+							pc.link_to (ce.next)
+							count := count - 1
+						end
 					end
 				end
 			end
-		ensure
-			old value_follows (target, a_value) implies count = old count - 1
 		end
 
 	remove_latest_preceding (a_value, target: INTEGER)
