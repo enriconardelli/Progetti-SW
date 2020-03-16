@@ -748,35 +748,35 @@ feature -- Removal single targeted
 			a_element, current_element, pre_a_element: like first_element
 		do
 			if count > 1 then
-			from
-				pre_a_element := get_element (target)
-				if attached pre_a_element then
-					if attached pre_a_element.next then
-						current_element := pre_a_element.next
-					end
-				end
-			until
-				current_element = Void or else current_element.value = a_value
-			loop
-				pre_a_element := current_element
-				current_element := current_element.next
-			end
-			if attached current_element then
-				count := count - 1
-				if active_element = current_element then
-					active_element := pre_a_element
-				end
-				if current_element = last_element then
+				from
+					pre_a_element := get_element (target)
 					if attached pre_a_element then
-						pre_a_element.link_to (Void)
+						if attached pre_a_element.next then
+							current_element := pre_a_element.next
+						end
 					end
-					last_element := pre_a_element
-				else
-					if attached pre_a_element then
-						pre_a_element.link_to (current_element.next)
+				until
+					current_element = Void or else current_element.value = a_value
+				loop
+					pre_a_element := current_element
+					current_element := current_element.next
+				end
+				if attached current_element then
+					count := count - 1
+					if active_element = current_element then
+						active_element := pre_a_element
+					end
+					if current_element = last_element then
+						if attached pre_a_element then
+							pre_a_element.link_to (Void)
+						end
+						last_element := pre_a_element
+					else
+						if attached pre_a_element then
+							pre_a_element.link_to (current_element.next)
+						end
 					end
 				end
-			end
 			end
 		end
 
@@ -784,7 +784,7 @@ feature -- Removal single targeted
 			-- remove the last occurrence of `a_value' following first occurence of `target'
 			-- Alessandro Fiippo 2020/03/12
 		require
-		ha_almeno_target: has (target)
+			ha_almeno_target: has (target)
 		local
 			target_element: like first_element
 			current_element: like first_element
@@ -792,10 +792,8 @@ feature -- Removal single targeted
 			previous_element, value_element: like first_element
 			flag: BOOLEAN
 		do
-
-			flag:=False --suppongo di non averlo trovato
-			if count > 0 and  has(a_value) then
-
+			flag := False --suppongo di non averlo trovato
+			if count > 0 and has (a_value) then
 				target_element := get_element (target)
 				if attached target_element as te then
 					from
@@ -834,11 +832,11 @@ feature -- Removal single targeted
 			-- remove the first occurrence of `a_value' among those preceding first occurrence of `target'
 			-- Claudia Agulini, 2020/03/12
 		require
-			ha_almeno_target: has(target)
+			ha_almeno_target: has (target)
 		local
 			current_element, pre_current: like first_element
 		do
-			if count > 1 and has(a_value) then
+			if count > 1 and has (a_value) then
 				if attached first_element as fe and then fe.value = a_value then
 					if active_element = fe then
 						active_element := fe.next
@@ -869,7 +867,7 @@ feature -- Removal single targeted
 			-- remove the last occurrence of `a_value' among those preceding first occurrence of `target'
 			-- Federico Fiorini 2020/03/12
 		require
-			ha_almeno_target: has(target)
+			ha_almeno_target: has (target)
 		local
 			current_element: like first_element
 			pre_value: like first_element
@@ -967,6 +965,7 @@ feature -- Removal multiple targeted
 
 	remove_all_following (a_value, target: INTEGER)
 			-- remove all occurrences of `a_value' following first occurrence of `target'
+			--if active_element is removed, it's reassigned to the preceding element
 			-- Giulia Iezzi 2020/03/11
 		require
 			has (target)
@@ -987,6 +986,12 @@ feature -- Removal multiple targeted
 						current_element = Void or pre_current_element = Void
 					loop
 						if current_element.value = a_value then
+							if current_element = last_element then
+								last_element := pre_current_element
+							end
+							if current_element = active_element then
+								active_element := pre_current_element
+							end
 							current_element := current_element.next
 							pre_current_element.link_to (current_element)
 							count := count - 1
@@ -1006,11 +1011,11 @@ feature -- Removal multiple targeted
 			-- remove all occurrences of `a_value' preceding first occurrence of `target'
 			-- Riccardo Malandruccolo, 2020/03/11
 		require
-			esiste_target: has(target)
+			esiste_target: has (target)
 		local
 			current_element, pre_current: like first_element
 		do
-			if has(a_value) and then a_value /= target then
+			if has (a_value) and then a_value /= target then
 				from
 					current_element := first_element
 					pre_current := void
