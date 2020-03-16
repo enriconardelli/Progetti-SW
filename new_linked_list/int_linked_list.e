@@ -745,7 +745,7 @@ feature -- Removal single targeted
 		require
 			ha_almeno_target: has (target)
 		local
-			a_element, current_element, pre_a_element: like first_element
+			current_element, pre_a_element: like first_element
 		do
 			if count > 1 then
 				from
@@ -764,7 +764,11 @@ feature -- Removal single targeted
 				if attached current_element then
 					count := count - 1
 					if active_element = current_element then
-						active_element := pre_a_element
+						if current_element = last_element then
+							active_element := pre_a_element
+						else
+							active_element := current_element.next
+						end
 					end
 					if current_element = last_element then
 						if attached pre_a_element then
