@@ -822,7 +822,13 @@ feature -- Removal single targeted
 						--elimino value element
 					if attached previous_element as pe then
 						if attached value_element as ve then
+							if ve=active_element  then
+								active_element:=pe
+							elseif ve=last_element  then
+								last_element:=pe
+							end
 							pe.link_to (ve.next)
+
 						end
 					end
 				end
