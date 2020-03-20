@@ -105,7 +105,7 @@ feature -- Insertion single free
 			create new_element.set_value (a_value)
 			if count = 0 then
 				first_element := new_element
-				active_element := first_element
+--				active_element := first_element
 			else
 				if attached last_element as le then
 					le.link_to (new_element)
@@ -130,7 +130,7 @@ feature -- Insertion single free
 				new_element.link_to (first_element)
 			else
 				last_element := new_element
-				active_element := first_element
+--				active_element := first_element
 			end
 			first_element := new_element
 			count := count + 1
@@ -208,7 +208,7 @@ feature -- Insertion single targeted
 	insert_before (a_value, target: INTEGER)
 			-- inserisce `a_value' subito prima della prima occorrenza di `target' se esiste
 			-- altrimenti inserisce `a_value' all'inizio
-			-- Alesandro Filippo 2020/03/08
+			-- Alessandro Filippo 2020/03/08
 		local
 			previous_element, new_element: like first_element
 		do
@@ -216,7 +216,7 @@ feature -- Insertion single targeted
 			if count = 0 then
 				first_element := new_element
 				last_element := first_element
-				active_element := first_element
+--				active_element := first_element
 			else
 				if attached first_element as fe and then fe.value = target then
 					new_element.link_to (first_element)
@@ -410,7 +410,7 @@ feature -- Insertion multiple targeted
 				if count = 0 then
 					first_element := new_element
 					last_element := new_element
-					active_element := first_element
+--					active_element := first_element
 				else
 					if attached last_element as le then
 						new_element.link_after (le)
@@ -460,7 +460,7 @@ feature -- Insertion multiple targeted
 				if count = 0 then
 					first_element := new_element
 					last_element := new_element
-					active_element := first_element
+--					active_element := first_element
 				else
 					new_element.link_to (first_element)
 					first_element := new_element
@@ -479,11 +479,12 @@ feature -- Insertion multiple targeted
 feature -- Removal single free
 
 	remove_active
-			-- Rimuove elemento accessibile mediante `active_element' se esiste
+			-- Rimuove elemento accessibile mediante `active_element'
 			-- Assegna ad `active_element' il successivo se esiste altrimenti il precedente
 			-- Riccardo Malandruccolo, 2020/03/07
 		require
 			elemento_esiste: count > 0
+			active_esiste: active_element /= Void
 		local
 			current_element, pre_current: like first_element
 		do
@@ -495,9 +496,9 @@ feature -- Removal single free
 				from
 					current_element := first_element
 					pre_current := Void
-				invariant
-						--invariante da ricontrollare perche' non funziona con remove_all
-					current_element /= active_element and attached current_element as ce implies ce.next /= Void
+--				invariant
+--						--invariante da ricontrollare perche' non funziona con remove_all
+--					current_element /= active_element and attached current_element as ce implies ce.next /= Void
 				until
 					(current_element = active_element)
 				loop
@@ -689,6 +690,7 @@ feature -- Removal single free
 
 	remove_latest (a_value: INTEGER)
 			-- remove the last occurrence of `a_value'
+			-- Update `active_element', if needed, to its successor, if exists, otherwise to its predecessor
 		require
 			elemento_esiste: count > 0
 		local
@@ -727,10 +729,17 @@ feature -- Removal single free
 					end
 				else -- `a_value' è presente e non è il primo elemento
 					if attached pre_latest as pl and then attached pl.next as pln then
-						if pln.next = Void then
+						pl.link_to (pln.next)
+						if pln = last_element then
 							last_element := pl
 						end
-						pl.link_to (pln.next)
+						if pln = active_element then
+							if pln.next /= Void then
+								active_element := pln.next
+							else
+								active_element := pl
+							end
+						end
 						count := count - 1
 					end
 				end
@@ -864,8 +873,11 @@ feature -- Removal single targeted
 						current_element := current_element.next
 					end
 					if attached current_element as ce and attached pre_current as pc then
-						if ce /= get_element (target) then
+						if ce.value = a_value then
 							pc.link_to (ce.next)
+							if active_element = ce then
+								active_element := ce.next
+							end
 							count := count - 1
 						end
 					end
@@ -888,8 +900,7 @@ feature -- Removal single targeted
 				until
 					current_element = get_element (target)
 				loop
-					if attached current_element as ce then
-						if attached current_element.next as cen and then (cen.value = a_value and cen.value /= target) then
+					if attached current_element as ce then							if attached current_element.next as cen and then (cen.value = a_value and cen.value /= target) then
 							pre_value := current_element
 						end
 						current_element := current_element.next
@@ -1138,8 +1149,11 @@ invariant
 	non_negative_counter: count >= 0
 	last_reference_is_void: attached last_element as le implies le.next = Void
 	consistency_empty_list: count = 0 implies (first_element = last_element) and (first_element = Void) and (first_element = active_element)
-	consistency_mono_list: count = 1 implies (first_element = last_element) and (first_element /= Void) and (attached active_element as ae implies ae = first_element)
-	consistency_bi_list: count = 2 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and (attached active_element as ae implies ae = first_element or ae = last_element) and (attached first_element as fe implies fe.next = last_element)
-	consistency_pluri_list: count > 2 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and (attached first_element as fe implies fe.next /= last_element)
+	consistency_mono_list: count = 1 implies (first_element = last_element) and (first_element /= Void) and
+		(attached active_element as ae implies ae = first_element)
+	consistency_bi_list: count = 2 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and
+		(attached active_element as ae implies ae = first_element or ae = last_element) and (attached first_element as fe implies fe.next = last_element)
+	consistency_pluri_list: count > 2 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and
+		(attached first_element as fe implies fe.next /= last_element)
 
 end

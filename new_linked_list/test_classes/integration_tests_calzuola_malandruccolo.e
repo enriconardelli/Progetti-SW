@@ -70,13 +70,6 @@ feature -- Test routines
 			t_remove_target_equals_value(1,1)
 		end
 
-	t_misti
-		do
-			t_misto_1(8,6)
-			t_misto_2(1,10)
-			t_misto_3(71,10)
-		end
-
 	t_remove_preceding(a_value,target: INTEGER)
 		local
 			t: INT_LINKED_LIST
@@ -181,14 +174,18 @@ feature -- Test routines
 			assert("non ha eliminato tutti gli elementi successivi al target", how_many(t,a_value) = 1)
 		end
 
-	t_misto_1(a_value,target: INTEGER)
+	t_misto_1
 		local
 			t: INT_LINKED_LIST
 			count, old_count: INTEGER
 			sum, old_sum: INTEGER
+			a_value, target: INTEGER
 		do
+			a_value := 8
+			target := 6
 			create t
 			t.append (a_value)
+			t.start
 			t.append (1)
 			t.append (8)
 			assert("value_follows ha trovato a_value dopo target ma il target non è presente nella lista", not t.value_follows(a_value, target))
@@ -207,9 +204,8 @@ feature -- Test routines
 			count := how_many(t, a_value)
 			assert("non ho cancellato a_value nonostante ci sia un a_value dopo target", old_count - count = 1)
 			assert("non ha cancellato a_value dopo target", not t.value_follows(a_value, target))
-			-- assert("non ha cancellato tutti gli a_value",  t.has(a_value))
-			-- assert("non ho aggiornato active_element",  attached t.active_element as ae and then ae.value /= a_value)
-			-- non viene aggiornato active_element nella feature latest
+			assert("ha cancellato tutti gli a_value",  t.has(a_value))
+			assert("non ho aggiornato active_element",  attached t.active_element as ae and then ae.value = 3)
 			assert("non ha inserito l'elemento all'inizio", attached t.first_element as fe and then fe.value = a_value)
 
 			old_sum := t.sum_of_positive
@@ -224,12 +220,16 @@ feature -- Test routines
 
 		end
 
-	t_misto_2(a_value,target: INTEGER)
+	t_misto_2
 		local
 			t, t_inv: INT_LINKED_LIST
+			a_value, target: INTEGER
 		do
+			a_value := 1
+			target := 10
 			create t
 			t.append (a_value)
+			t.start
 			t.append (2)
 			t.append (3)
 			t.append (target)
@@ -270,13 +270,17 @@ feature -- Test routines
 			assert("non è stato spostato il first_element", attached t.first_element as fe and then fe.value = a_value)
 		end
 
-	t_misto_3(a_value,target: INTEGER)
+	t_misto_3
 		local
 			t: INT_LINKED_LIST
 			count, old_count: INTEGER
+			a_value, target: INTEGER
 		do
+			a_value := 71
+			target := 10
 			create t
 			t.append (1)
+			t.start
 			t.append (8)
 			assert("value_follows ha trovato a_value dopo target ma il target non è presente nella lista", not t.value_follows(a_value, target))
 			t.append (target)

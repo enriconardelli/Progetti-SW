@@ -19,7 +19,9 @@ feature
 		do
 			create t
 			t.append (element)
-			t.remove_latest_preceding (a_value, target)
+			if t.has (target) then
+				t.remove_latest_preceding (a_value, target)
+			end
 			assert("Errore: cambiato numero di elementi di una lista con un solo", t.count=1)
 			assert("Errore: tolto un elemento, ma la lista aveva solo quello", not(t.count=0))
 		end

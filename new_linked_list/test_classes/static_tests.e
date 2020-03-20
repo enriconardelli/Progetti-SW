@@ -166,7 +166,7 @@ feature -- Test routines
 			t.append (3)
 				-- [1,2,3]
 				-- t.active_element = 1
-
+			t.start
 			t.remove_active
 				-- [2,3]
 				-- t.active_element = 2
@@ -182,6 +182,13 @@ feature -- Test routines
 			assert ("errore: non ha eliminato l'active_element", not t.has (3))
 			assert ("errore: non è stato modificato l'active_element correttamente", attached t.active_element as ae implies ae.value = 2)
 			assert ("errore: non è stato modificato il last_element correttamente", attached t.last_element as le implies le.value = 2)
+			t.remove_active
+				-- []
+				-- t.active_element = Void
+			assert ("errore: non ha eliminato l'active_element", not t.has (2))
+			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element = Void)
+			assert ("errore: non è stato modificato il last_element correttamente", t.last_element = Void)
+
 		end
 
 	t_forth

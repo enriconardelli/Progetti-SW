@@ -170,22 +170,22 @@ feature
 			t.append (2)
 			t.append (3)
 				-- t = [1,2,3]; t.active_element.value = 1
-
+			t.start
 			t.remove_active -- t = [2,3], t.active_element.value = 2
 			assert ("errore: il numero di elementi non è corretto", t.count = 2)
-			assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 2)
+			assert ("errore_1: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 2)
 			assert ("errore: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 2)
 			t.forth -- t.active_element.value = 3
-			assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 3)
+			assert ("errore_2: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 3)
 			t.prepend (4) -- t = [4, 2, 3]
 			t.remove_active -- t = [4, 2]
 			assert ("errore: il numero di elementi non è corretto", t.count = 2)
-			assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 2)
+			assert ("errore_3: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 2)
 			assert ("errore: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 2)
-				--t.remove_latest (2) -- t = [4]
-				--assert ("errore: il numero di elementi non è corretto", t.count = 1)
-				--assert ("errore: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 4)
-				--assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 4)
+			t.remove_latest (2) -- t = [4]
+			assert ("errore: il numero di elementi non è corretto", t.count = 1)
+			assert ("errore: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 4)
+			assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 4)
 			t_remove_values (50, 42)
 		end
 
@@ -196,6 +196,7 @@ feature
 		do
 			create t
 			t.append (a_value)
+			t.start
 			t.append (3)
 			t.append (a_value)
 			t.append (a_value)
@@ -212,7 +213,7 @@ feature
 			count_dopo := how_many_before (t, a_value, target)
 			assert ("errore: count prima e dopo non corretto", count_prima = count_dopo + 1)
 			assert ("errore: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 3)
-			assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 3)
+			assert ("errore_4: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 3)
 			t.forth -- t.active_element.value = a_value
 			count_prima := how_many_before (t, a_value, target)
 			t.remove_latest_preceding (a_value, target)
@@ -223,13 +224,13 @@ feature
 				-- t.active_element.value = target
 			assert ("errore: non ha rimosso tutte le occorrenze di a_value", how_many_before (t, a_value, target) = 0)
 			assert ("errore: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 3)
-			assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = target)
+			assert ("errore_5: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = target)
 			count_prima := how_many_after (t, a_value, target)
 			t.forth -- t.active_element.value = a_value
 			t.remove_earliest_following (a_value, target) -- t = [3, target, 4, a_value, a_value], t.active_element.value = 4
 			count_dopo := how_many_after (t, a_value, target)
 			assert ("errore: count prima e dopo non corretto", count_prima = count_dopo + 1)
-			assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 4)
+			assert ("errore_6: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 4)
 			t.remove_all_following (a_value, target) -- t = [3, target, 4]
 			assert ("errore: non ha rimosso tutte le occorrenze di a_value", how_many_after (t, a_value, target) = 0)
 				--assert("errore: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 4)
