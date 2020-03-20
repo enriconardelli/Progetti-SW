@@ -1,11 +1,11 @@
 note
-	description: "Summary description for {TEST_FILIPPO_IEZZI}."
+	description: "Summary description for {INTEGRATION_TESTS_FILIPPO_IEZZI}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	TEST_FILIPPO_IEZZI
+	INTEGRATION_TESTS_FILIPPO_IEZZI
 
 inherit
 
@@ -13,7 +13,7 @@ inherit
 
 feature
 
-	t_filippo_iezzi
+	t_misto
 		--test di varie feature combinate 2020/03/17
 	local
 		t: INT_LINKED_LIST
@@ -56,7 +56,6 @@ feature
 		t.forth --l'active è 9
 		t.remove_earliest_preceding (9,7) ---- 6-7-6-9 e l'active è 7
 		assert("ho tolto il primo 9 prima di 7, 7 è active?", check_is_active(t,7))
-		assert("ho tolto il primo 9 prima di 7, è rimasto 9 è active?", not check_is_active(t,9))
 		t.insert_multiple_before (8, 6) --8-6-7-8-6-9
 		t.remove_all_following (8,8) -- 8-6-7-6-9
 		assert("ho rimosso tutti gli 8 dopo il primo 8, 8 è il first",check_is_first(t,8))
