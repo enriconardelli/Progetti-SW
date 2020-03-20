@@ -20,6 +20,7 @@ feature
 			t_con_value_dopo_target (10,5)
 			t_con_value_dopo_target (5,5) --provo se vale quando target e value coincidono
 			t_con_value_prima_di_target (10,7)
+			t_con_active_e_last(6,7)
 		end
 
 	t_lista_senza_value (a_value: INTEGER)
@@ -77,6 +78,21 @@ feature
 		l:= how_many (t,a_value) --conto quanti ci sono all'inizio
  		t.remove_latest_following (a_value, target)
 		assert ("Non è stata rimossa una occorrenza di val", l=how_many(t,a_value))
+	end
+
+	t_con_active_e_last(target,a_value: INTEGER)
+	local
+		t: INT_LINKED_LIST
+	do
+		create t
+		t.append (target +2)
+		t.append (target)
+		t.append (a_value)
+		t.last -- l'active e il last valgono value
+		t.remove_latest_following (a_value, target)
+		assert("ERRORE: cattiva gestione di active", t.active_element/=Void and then attached t.active_element as te implies te.value=target)
+		assert("ERRORE: cattiva gestione di last", t.last_element/=Void and then attached t.last_element as le implies le.value=target)
+
 	end
 
 
