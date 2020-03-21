@@ -293,4 +293,57 @@ feature -- Test routines
 			assert ("errore: il valore di active element non è il valore dell'ultimo elemento della lista", t.active_element = t.last_element)
 		end
 
+
+	t_lista_vuota
+		-- Calzuola e Malandruccolo 2020/03/21
+		local
+			t_vuota: INT_LINKED_LIST
+			a_value: INTEGER
+		do
+			create t_vuota
+			a_value := 1
+			assert("has trova il valore su lista vuota", not t_vuota.has(a_value))
+			assert("get_element restituisce un elemento su lista vuota", t_vuota.get_element (a_value) = void)
+			assert("la lista non è vuota", t_vuota.count = 0)
+		end
+
+	t_lista_un_elemento
+		-- Calzuola e Malandruccolo 2020/03/21
+		local
+			t_one_element: INT_LINKED_LIST
+			a_value: INTEGER
+			a_different: INTEGER
+		do
+			a_value:= 7
+			a_different:= 9
+			create t_one_element
+			t_one_element.append (a_value)
+			assert("non ho aggiunto il valore corretto", t_one_element.has(a_value) and not t_one_element.has(a_different))
+			assert("non ho una lista con un elemento", t_one_element.count = 1)
+			assert("first_element diverso da last_element", t_one_element.first_element = t_one_element.last_element)
+			assert("first_element diverso da a_value", attached t_one_element.first_element as fe and then fe.value = a_value)
+			assert("last_element diverso da a_value", attached t_one_element.last_element as le and then le.value = a_value)
+			assert("restituisce un void ma dovrebbe restituire a_value", t_one_element.get_element(a_value) /= void)
+			assert("non restituisce a_value", attached t_one_element.get_element(a_value) as ge and then ge.value = a_value)
+			assert("ho un valore che non dovrei avere", t_one_element.get_element(a_different) = void)
+		end
+
+	t_lista_due_elementi
+		-- Calzuola e Malandruccolo 2020/03/21
+		local
+			t_due: INT_LINKED_LIST
+			a_value : INTEGER
+		do
+			create t_due
+			a_value := 1
+			t_due.append(a_value)
+			t_due.append (2*a_value)
+			assert("has non trova il valore", t_due.has (a_value))
+			assert("get_element non trova l'elemento", t_due.get_element (a_value) /= void)
+			assert("la lista non ha due elementi", t_due.count = 2)
+			assert("il first_element non è impostato correttamente", attached t_due.first_element as fe and then fe.value = a_value)
+			assert("il last_element non è impostato correttamente", attached t_due.last_element as le and then le.value = 2*a_value)
+		end
+
+
 end
