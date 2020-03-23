@@ -843,7 +843,7 @@ feature -- Removal single targeted
 		local
 			current_element, pre_current: like first_element
 		do
-			if count > 1 and has (a_value) then
+			if count > 1 and a_value /= target then
 				if attached first_element as fe and then fe.value = a_value then
 					if active_element = fe then
 						active_element := fe.next

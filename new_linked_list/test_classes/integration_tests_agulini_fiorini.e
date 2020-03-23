@@ -11,7 +11,7 @@ inherit
 
 	STATIC_TESTS
 
-feature
+feature -- servizio
 
 	how_many_before (t: INT_LINKED_LIST; a_value, target: INTEGER): INTEGER
 			--ci dice quante occorrenze di value prima di target ci sono nella lista
@@ -62,6 +62,7 @@ feature
 			ha_contato_qualche_a_value_presente: t.value_follows (a_value, target) implies Result > 0
 			non_ha_contato_se_non_presente: not (t.value_follows (a_value, target)) implies Result = 0
 		end
+feature -- test
 
 	t_insert
 			--alcuni test sulle feature di inserimento
@@ -164,6 +165,7 @@ feature
 			-- test vari sulle feature di rimozione
 		local
 			t: INT_LINKED_LIST
+			count_prima, count_dopo, a_value, target: INTEGER
 		do
 			create t
 			t.append (1)
@@ -172,31 +174,27 @@ feature
 				-- t = [1,2,3]; t.active_element.value = 1
 			t.start
 			t.remove_active -- t = [2,3], t.active_element.value = 2
-			assert ("errore: il numero di elementi non è corretto", t.count = 2)
-			assert ("errore_1: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 2)
-			assert ("errore: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 2)
+			assert ("Errore 15.1: il numero di elementi non è corretto", t.count = 2)
+			assert ("Errore 15.2: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 2)
+			assert ("Errore 15.3: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 2)
 			t.forth -- t.active_element.value = 3
-			assert ("errore_2: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 3)
+			assert ("Errore 16: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 3)
 			t.prepend (4) -- t = [4, 2, 3]
 			t.remove_active -- t = [4, 2]
-			assert ("errore: il numero di elementi non è corretto", t.count = 2)
-			assert ("errore_3: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 2)
-			assert ("errore: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 2)
+			assert ("Errore 17.1: il numero di elementi non è corretto", t.count = 2)
+			assert ("Errore 17.2: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 2)
+			assert ("Errore 17.3: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 2)
 			t.remove_latest (2) -- t = [4]
-			assert ("errore: il numero di elementi non è corretto", t.count = 1)
-			assert ("errore: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 4)
-			assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 4)
-			t_remove_values (50, 42)
-		end
+			assert ("Errore 18.1: il numero di elementi non è corretto", t.count = 1)
+			assert ("Errore 18.2: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 4)
+			assert ("Errore 18.3: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 4)
 
-	t_remove_values (a_value, target: INTEGER)
-		local
-			t: INT_LINKED_LIST
-			count_prima, count_dopo: INTEGER
-		do
-			create t
+			t.wipeout
+			a_value := 50
+			target := 42
+
 			t.append (a_value)
-			t.start
+			t.start -- t.active_element.value = a_value
 			t.append (3)
 			t.append (a_value)
 			t.append (a_value)
@@ -207,33 +205,32 @@ feature
 			t.append (5)
 			t.append (a_value)
 			t.append (a_value) -- t = [a_value, 3, a_value, a_value, target, a_value, 4, a_value, a_value]
-				-- t.active_element.value = a_value
 			count_prima := how_many_before (t, a_value, target)
 			t.remove_earliest_preceding (a_value, target) -- t = [3, a_value, a_value, target, a_value, 4, a_value, a_value]
 			count_dopo := how_many_before (t, a_value, target)
-			assert ("errore: count prima e dopo non corretto", count_prima = count_dopo + 1)
-			assert ("errore: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 3)
-			assert ("errore_4: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 3)
+			assert ("Errore 19.1 count prima e dopo non corretto", count_prima = count_dopo + 1)
+			assert ("Errore 19.2: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 3)
+			assert ("Errore 19.3: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 3)
 			t.forth -- t.active_element.value = a_value
 			count_prima := how_many_before (t, a_value, target)
 			t.remove_latest_preceding (a_value, target)
 			count_dopo := how_many_before (t, a_value, target)
-			assert ("errore: count prima e dopo non corretto", count_prima = count_dopo + 1)
+			assert ("Errore 20: count prima e dopo non corretto", count_prima = count_dopo + 1)
 			t.prepend (a_value) -- t = [a_value, 3, a_value, target, a_value, 4, a_value, a_value]
 			t.remove_all_preceding (a_value, target) -- t = [3, target, a_value, 4, a_value, a_value]
 				-- t.active_element.value = target
-			assert ("errore: non ha rimosso tutte le occorrenze di a_value", how_many_before (t, a_value, target) = 0)
-			assert ("errore: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 3)
-			assert ("errore_5: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = target)
+			assert ("Errore 21.1: non ha rimosso tutte le occorrenze di a_value", how_many_before (t, a_value, target) = 0)
+			assert ("Errore 21.2: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 3)
+			assert ("Errore 21.3: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = target)
 			count_prima := how_many_after (t, a_value, target)
 			t.forth -- t.active_element.value = a_value
 			t.remove_earliest_following (a_value, target) -- t = [3, target, 4, a_value, a_value], t.active_element.value = 4
 			count_dopo := how_many_after (t, a_value, target)
-			assert ("errore: count prima e dopo non corretto", count_prima = count_dopo + 1)
-			assert ("errore_6: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 4)
+			assert ("Errore 22.1: count prima e dopo non corretto", count_prima = count_dopo + 1)
+			assert ("Errore 22.2: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 4)
 			t.remove_all_following (a_value, target) -- t = [3, target, 4]
-			assert ("errore: non ha rimosso tutte le occorrenze di a_value", how_many_after (t, a_value, target) = 0)
-				--assert("errore: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 4)
+			assert ("Errore 23.1: non ha rimosso tutte le occorrenze di a_value", how_many_after (t, a_value, target) = 0)
+			-- assert ("Errore 23.2: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 4)
 
 			t.append (a_value)
 			t.append (5)
@@ -242,9 +239,8 @@ feature
 			count_prima := how_many_after (t, a_value, target)
 			t.remove_latest_following (a_value, target) -- t = [3, target, 4, a_value, 5]
 			count_dopo := how_many_after (t, a_value, target)
-			assert ("errore: count prima e dopo non corretto", count_prima = count_dopo + 1)
-			assert ("errore: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 5)
-				--assert ("errore: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 5)
+			assert ("Errore 24.1: count prima e dopo non corretto", count_prima = count_dopo + 1)
+			assert ("Errore 24.2: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 5)
+			assert ("Errore 24.3: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 5)
 		end
-
 end
