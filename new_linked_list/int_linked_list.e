@@ -1083,7 +1083,69 @@ feature -- Other
 			count = old count
 		end
 
-feature -- Convenience
+feature -- Manipulation
+
+	head_list (max: INTEGER): like Current
+			-- return a list with the first `max' items
+			-- RICHIEDE DI AGGIUNGERE `index' e `go_i_th'
+		require
+			0 <= max
+			max <= count
+		local
+--			k: INTEGER
+--			i: INTEGER
+		do
+			create Result
+--			i := index
+--			from
+--				k := 1
+--				start
+--			invariant
+--				1 <= index
+--				index <= max + 1
+--				k = index
+--			until
+--				index > max
+--			loop
+--				Result.extend (item)
+--				k := k + 1
+--				forth
+--			variant
+--				count - index + 1
+--			end
+--			go_i_th (i)
+		end
+
+	tail_list_____da_implementare (max: INTEGER): like Current
+			-- return a list with the last `max' items
+	do
+		create Result
+	end
+
+feature -- Computation
+
+	highest: INTEGER
+			-- return the value of the highest item
+		local
+--			slice: like Current
+		do
+--			create slice.make
+--			from
+--				start
+--				slice := head_list (index - 1)
+--			invariant
+--				index >= 1
+--				index <= count + 1
+--				Result >= slice.highest
+--			until
+--				after
+--			loop
+--				Result := item.max (Result)
+--				forth
+--			end
+--		ensure
+--			across Current as c all c.item <= Result end
+		end
 
 	sum_of_positive: INTEGER
 			-- valore della somma degli elementi maggiori di zero
@@ -1103,6 +1165,8 @@ feature -- Convenience
 		ensure
 			Result >= 0
 		end
+
+feature -- Convenience
 
 	printout
 			-- print out the entire list
