@@ -8,8 +8,8 @@
 	<state id="one">
 		<transition event="star" cond="alfa" target="two">
 			<assign location="alfa" expr="false" />
-            <log name="una prima azione" />
-            <log name="una prima bis azione" />
+			<log name="una prima azione" />
+			<log name="una prima bis azione" />
  			<assign location="beta" expr="false" />
 		</transition>
 		<transition event="circle" cond="beta" target="three">

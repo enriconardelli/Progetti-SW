@@ -38,6 +38,7 @@ feature {NONE} -- Inizializzazione
 			create state_chart.make(nomi_files [1])
 			if verifica_eventi_esterni then
 				print ("eventi verificati, si esegue la SC %N")
+				-- TODO si puo' invocare evolvi_SC anche se ci sono eventi che la SC non conosce
 				state_chart.evolvi_SC (eventi_esterni)
 			else
 				print (" nel file ci sono eventi che la SC non conosce %N")
@@ -50,7 +51,7 @@ feature
 
 	acquisisci_eventi (nome_file_eventi: STRING)
 			-- Legge gli eventi dal file passato come secondo argomento e li inserisce in `eventi_esterni'
-
+			-- TODO non gestisce il caso in cui su una riga del file degli eventi ci sia più di un evento
 		local
 			file: PLAIN_TEXT_FILE
 			i: INTEGER
@@ -72,6 +73,7 @@ feature
 			-- Verifica che tutti gli eventi nel file compaiano effettivamente tra gli eventi di qualche transizione
 			-- Segnala l'eventuale presenza di eventi incompatibili
 		local
+			-- TODO eliminare v_new, sostituire evento_assente con Result, eliminare una tra i e j
 			eventi_nella_SC: HASH_TABLE [BOOLEAN, STRING]
 			v_new: ARRAY [STRING]
 			i, j: INTEGER
@@ -79,6 +81,7 @@ feature
 		do
 			create eventi_nella_SC.make (0)
 			-- inserisce tutti gli eventi definiti nella SC in eventi_nella_SC
+			-- TODO cambiare l'iterazione completa da esplicita ad implicita con across
 			from
 				state_chart.stati.start
 			until
@@ -99,6 +102,7 @@ feature
 				state_chart.stati.forth
 			end
 			-- verifica che ogni evento esterno sia presente nella SC
+			-- TODO cambiare l'iterazione completa da esplicita ad implicita con across
 			from
 				i := 1
 			until

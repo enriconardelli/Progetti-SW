@@ -15,6 +15,7 @@ create
 	make_with_cond_and_value
 
 feature --attributi
+	-- TODO rename di condizione in condizione_da_modificare e valore in valore_da_assegnare
 
 	condizione: STRING
 
@@ -37,6 +38,7 @@ feature -- creazione
 		local
 			boolean: STRING
 		do
+			-- TODO eliminare l'assegnazione di boolean
 			if valore then
 				boolean := "true"
 			else

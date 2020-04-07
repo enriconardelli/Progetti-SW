@@ -78,6 +78,7 @@ feature --routines
 				index_count := transizioni.lower
 				numero_di_transizioni_attivate_da_evento_corrente := 0
 			until
+				-- TODO modificare until eliminando test dopo OR
 				index_count = transizioni.upper + 1 or numero_di_transizioni_attivate_da_evento_corrente > 1
 			loop
 				if attached evento_corrente as ec then if attivabile (index_count, ec, hash_delle_condizioni) then
@@ -91,6 +92,8 @@ feature --routines
 		end
 
 	attivabile (index_count: INTEGER; evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
+		-- verifica, in caso di transizione di posto `index_count' che ha un evento se è uguale a `evento_corrente' e se la condizione e' vera
+		-- verifica, in caso di transizione di posto `index_count' senza evento se la condizione e' vera
 		do
 			if attached transizioni [index_count].evento as e then
 				if e.is_equal (evento_corrente) then
@@ -110,11 +113,12 @@ feature --routines
 		end
 
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
-		-- ritorna Void se con evento_corrente nella configurazione corrente non è attivabile alcuna transizione
-		-- ritorna lo stato a cui porta la transizione di indice massimoattivabile nella configurazione corrente con evento_corrente
+		-- ritorna Void se con `evento_corrente' nella configurazione corrente non è attivabile alcuna transizione
+		-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con `evento_corrente'
 		require
 			numero_transizioni_abilitate (evento_corrente,hash_delle_condizioni)<2
 		local
+			-- TODO sostituire target_della_transizione con Result
 			target_della_transizione: detachable STATO
 			index_count: INTEGER
 		do
@@ -124,6 +128,7 @@ feature --routines
 			until
 				index_count = transizioni.upper + 1 or target_della_transizione /= Void
 			loop
+				-- TODO semplificare il test
 				if attached transizioni [index_count].evento as ang then
 					if ang.is_equal (evento_corrente) then
 						if attached transizioni [index_count].condizione as cond then
@@ -140,10 +145,8 @@ feature --routines
 			result := target_della_transizione
 		end
 
-
-feature --cose a parte
-
 	get_transition (evento_corrente: STRING): TRANSIZIONE
+		-- ritorna la transizione abilitata con `evento_corrente'
 		local
 			index_count: INTEGER
 			index: INTEGER

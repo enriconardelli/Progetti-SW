@@ -180,6 +180,7 @@ feature -- Test routines
 		end
 
 -- Test per features senza evento
+-- TODO probabilmemte da eliminare perche' fanno riferimento a vecchia versione del codice
 
 --	t_numero_transizioni_abilitate_senza_evento_non_determinismo
 --		do
