@@ -75,7 +75,7 @@ feature
 			-- Agulini Claudia, Fiorini Federico - 2020/04/11
 		local
 			eventi_nella_SC: HASH_TABLE [BOOLEAN, STRING]
-			i, j: INTEGER
+			j: INTEGER
 		do
 			create eventi_nella_SC.make (0)
 			-- inserisce tutti gli eventi definiti nella SC in eventi_nella_SC
