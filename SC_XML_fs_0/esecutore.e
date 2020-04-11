@@ -72,22 +72,17 @@ feature
 	verifica_eventi_esterni: BOOLEAN
 			-- Verifica che tutti gli eventi nel file compaiano effettivamente tra gli eventi di qualche transizione
 			-- Segnala l'eventuale presenza di eventi incompatibili
+			-- Agulini Claudia, Fiorini Federico - 2020/04/11
 		local
-			-- TODO eliminare v_new, sostituire evento_assente con Result, eliminare una tra i e j
 			eventi_nella_SC: HASH_TABLE [BOOLEAN, STRING]
-			v_new: ARRAY [STRING]
 			i, j: INTEGER
-			evento_assente: BOOLEAN
 		do
 			create eventi_nella_SC.make (0)
 			-- inserisce tutti gli eventi definiti nella SC in eventi_nella_SC
-			-- TODO cambiare l'iterazione completa da esplicita ad implicita con across
-			from
-				state_chart.stati.start
-			until
-				state_chart.stati.after
+			across
+				state_chart.stati as st
 			loop
-				if attached state_chart.stati.item_for_iteration.transizioni as tr then
+				if attached st.item.transizioni as tr then
 					from
 						j := 1
 					until
@@ -99,22 +94,17 @@ feature
 						j := j + 1
 					end
 				end
-				state_chart.stati.forth
 			end
 			-- verifica che ogni evento esterno sia presente nella SC
-			-- TODO cambiare l'iterazione completa da esplicita ad implicita con across
-			from
-				i := 1
-			until
-				i = eventi_esterni.count + 1
+			Result := True
+			across
+				eventi_esterni as ee
 			loop
-				if not eventi_nella_SC.has (eventi_esterni [i]) then
-					print ("%N ATTENZIONE!! L'evento " + eventi_esterni [i] + " non viene utilizzato!")
-					evento_assente := True
+				if not eventi_nella_SC.has (ee.item) then
+					print ("%N ATTENZIONE!! L'evento " + ee.item + " non viene utilizzato!")
+					Result := False
 				end
-				i := i + 1
 			end
-			Result := not evento_assente
 		end
 
 end
