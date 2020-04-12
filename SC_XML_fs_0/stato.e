@@ -78,8 +78,7 @@ feature --routines
 				index_count := transizioni.lower
 				numero_di_transizioni_attivate_da_evento_corrente := 0
 			until
-				-- TODO modificare until eliminando test dopo OR
-				index_count = transizioni.upper + 1 or numero_di_transizioni_attivate_da_evento_corrente > 1
+				index_count = transizioni.upper + 1
 			loop
 				if attached evento_corrente as ec then if attivabile (index_count, ec, hash_delle_condizioni) then
 					numero_di_transizioni_attivate_da_evento_corrente := numero_di_transizioni_attivate_da_evento_corrente + 1
@@ -116,33 +115,36 @@ feature --routines
 		-- ritorna Void se con `evento_corrente' nella configurazione corrente non è attivabile alcuna transizione
 		-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con `evento_corrente'
 		require
-			numero_transizioni_abilitate (evento_corrente,hash_delle_condizioni)<2
+			numero_transizioni_abilitate (evento_corrente,hash_delle_condizioni)<2 --TODO commento o require?
 		local
-			-- TODO sostituire target_della_transizione con Result
-			target_della_transizione: detachable STATO
+
 			index_count: INTEGER
 		do
-			target_della_transizione := Void
+			Result := Void
 			from
 				index_count := transizioni.lower
 			until
-				index_count = transizioni.upper + 1 or target_della_transizione /= Void
+				index_count = transizioni.upper + 1 or Result /= Void
 			loop
 				-- TODO semplificare il test
-				if attached transizioni [index_count].evento as ang then
-					if ang.is_equal (evento_corrente) then
-						if attached transizioni [index_count].condizione as cond then
-							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
-								if cond_in_hash = TRUE then
-									target_della_transizione := transizioni [index_count].target
-								end
-							end
-						end
-					end
-				end
-				index_count := index_count + 1
+
+	        	if attivabile(index_count, evento_corrente, hash_delle_condizioni) then
+		         Result:=transizioni[index_count].target
+		        end
+--				if attached transizioni [index_count].evento as ang then
+--					if ang.is_equal (evento_corrente) then
+--						if attached transizioni [index_count].condizione as cond then
+--							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
+--								if cond_in_hash = TRUE then
+--									Result := transizioni [index_count].target
+--								end
+--							end
+--						end
+--						else Result := transizioni [index_count].target
+--					end
+--				end
+			index_count := index_count + 1
 			end
-			result := target_della_transizione
 		end
 
 	get_transition (evento_corrente: STRING): TRANSIZIONE
