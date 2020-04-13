@@ -82,10 +82,13 @@ feature --evoluzione SC
 				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "   %N")
 				-- TODO eventuale cambiamento usando transizione_abilitata invece che evento_corrente
+				-- (?)
 				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
 					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
 				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
 					-- TODO eliminare variabile locale nuovo_stato?
+					-- (nuovo_stato deve essere assegnato prima dell'esecuzione di esegui_azioni
+					-- altrimenti i risultati sono diversi)
 					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
 					esegui_azioni (evento_corrente)
 					if attached nuovo_stato as ns then
@@ -114,14 +117,10 @@ feature --evoluzione SC
 		    i: INTEGER
 		do
 			transizione := stato_corrente.get_transition (evento_corrente)
-			-- TODO sostituire iterazione completa esplicita con implicita mediante across
-			from
-				i := 1
-			until
-				i = transizione.azioni.count + 1
+			across
+				transizione.azioni as ta
 			loop
-			    transizione.azioni[i].action(condizioni)
-			    i:=i+1
+			    ta.item.action(condizioni)
 			end
 		end
 

@@ -15,37 +15,28 @@ create
 	make_with_cond_and_value
 
 feature --attributi
-	-- TODO rename di condizione in condizione_da_modificare e valore in valore_da_assegnare
 
-	condizione: STRING
+	condizione_da_modificare: STRING
 
-	valore: BOOLEAN
+	valore_da_assegnare: BOOLEAN
 
 feature -- creazione
 
 	make_with_cond_and_value (una_condizione: STRING; un_valore: BOOLEAN)
 		do
-			condizione := una_condizione
-			valore := un_valore
+			condizione_da_modificare := una_condizione
+			valore_da_assegnare := un_valore
 		end
 
 	modifica_condizioni (condizioni: HASH_TABLE [BOOLEAN, STRING])
 		do
-			condizioni.replace (valore, condizione)
+			condizioni.replace (valore_da_assegnare, condizione_da_modificare)
 		end
 
 	action (condizioni: HASH_TABLE [BOOLEAN, STRING])
-		local
-			boolean: STRING
 		do
-			-- TODO eliminare l'assegnazione di boolean
-			if valore then
-				boolean := "true"
-			else
-				boolean := "false"
-			end
-			print ("Pongo " + condizione + " = " + boolean + "%N")
-		   modifica_condizioni(condizioni)
+			print ("Pongo " + condizione_da_modificare + " = " + valore_da_assegnare.out + "%N")
+			modifica_condizioni(condizioni)
 		end
 
 end
