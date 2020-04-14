@@ -30,13 +30,13 @@ feature -- Test routines
 			nomi_files_prova [1] := "esempio_per_esecutore_test.xml"
 			nomi_files_prova [2] := "eventi_per_esecutore_test.txt"
 
-			create esecutore_prova.start (nomi_files_prova)
+			create esecutore_prova.make (nomi_files_prova)
 
 			create nomi_files_prova.make_filled ("", 1, 2)
 			nomi_files_prova[1] := "esempio_per_altro_esecutore_test.xml"
 			nomi_files_prova[2] := "eventi_per_altro_esecutore_test.txt"
 
-			create altro_esecutore_prova.start (nomi_files_prova)
+			create altro_esecutore_prova.make (nomi_files_prova)
 
 		end
 
