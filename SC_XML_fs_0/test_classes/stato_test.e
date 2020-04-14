@@ -32,6 +32,10 @@ feature {NONE} -- Events
 
 		do
 			-- creo stato di prova con evento
+			-- ha 3 transizioni che portano su 3 target distinti
+			-- la transizione con evento1 e cond1 porta a target_1
+			-- la transizione con evento2 e cond2 porta a target_2
+			-- la transizione con evento3 e cond3 porta a target_3
 			create stato_prova.make_with_id ("stato_prova")
 			create target_prova_1.make_with_id ("target_prova_1")
 			create target_prova_2.make_with_id ("target_prova_2")
@@ -58,6 +62,10 @@ feature {NONE} -- Events
     		hash_di_prova.put (False, "cond3")
 
 			--creo stato di prova senza evento
+			-- ha 3 transizioni che portano su 3 target distinti
+			-- la transizione con cond1 porta a target_1
+			-- la transizione con cond2 porta a target_2
+			-- la transizione con cond3 porta a target_3
 			create stato_prova_senza_evento.make_final_with_id ("stato_prova_senza_evento")
 			create target_prova_senza_evento_1.make_with_id ("target_prova_senza_evento_1")
 			create target_prova_senza_evento_2.make_with_id ("target_prova_senza_evento_2")
@@ -68,15 +76,15 @@ feature {NONE} -- Events
 			if attached transizione_prova_senza_evento_1 as trpse1 then
 				trpse1.set_condizione ("cond1")
 				if attached stato_prova_senza_evento as spse then spse.aggiungi_transizione (trpse1)  end
-				end
+			end
 			if attached transizione_prova_senza_evento_2 as trpse2 then
 				trpse2.set_condizione ("cond2")
 				if attached stato_prova_senza_evento as spse then spse.aggiungi_transizione (trpse2)  end
-				end
+			end
 			if attached transizione_prova_senza_evento_3 as trpse3 then
 				trpse3.set_condizione ("cond2")
 				if attached stato_prova_senza_evento as spse then spse.aggiungi_transizione (trpse3)  end
-				end
+			end
 
     		create hash_di_prova_senza_evento.make (2)
     		hash_di_prova_senza_evento.put (False, "cond1")
