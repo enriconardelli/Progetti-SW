@@ -29,7 +29,7 @@ feature {NONE} -- Inizializzazione
 			-- doppio click su spazio bianco accanto a "Arguments"
 			-- scrivere i parametri ognuno tra doppi apici
 		do
-			print ("INIZIO!%N")
+			print ("%N=========%N INIZIO!%N")
 			print ("esegue la SC in " + nomi_files [1] + "%N")
 			print ("con gli eventi in " + nomi_files [2] + "%N")
 			create eventi_esterni.make_empty
@@ -43,6 +43,7 @@ feature {NONE} -- Inizializzazione
 			end
 			print ("si esegue comunque la SC %N")
 			state_chart.evolvi_SC (eventi_esterni)
+			print ("%N FINE!%N=========%N")
 		end
 
 feature
