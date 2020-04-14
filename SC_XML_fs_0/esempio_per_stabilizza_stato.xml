@@ -18,8 +18,13 @@
 		</transition>
 	</state>
 	<state id="one_bis">
-		<transition cond="beta" target="three">
+		<transition cond="beta" target="one_tris">
 			<log name="transizione senza evento in uscita one_bis" />
+		</transition>
+	</state>
+	<state id="one_tris">
+		<transition cond="beta" target="three">
+			<log name="transizione senza evento in uscita one_tris" />
 		</transition>
 	</state>
 	<state id="two">
