@@ -8,7 +8,7 @@ class
 	ESECUTORE
 
 create
-	start --, make
+	make, start
 
 feature -- Attributi
 
@@ -19,18 +19,28 @@ feature -- Attributi
 			-- memorizza gli eventi letti dal file
 
 
-
-feature {NONE} -- Inizializzazione
+feature {NONE} -- Creazione e avvio interattivo
 
 	start (nomi_files: ARRAY [STRING])
 			-- prepara la SC e avvia la sua esecuzione
-			-- i parametri vanno scritti da Eiffel Studio con
+		do
+			make (nomi_files)
+			print ("%N=========%N EVOLUZIONE INIZIO%N")
+			state_chart.evolvi_SC (eventi_esterni)
+			print ("%N EVOLUZIONE FINE!%N=========%N")
+		end
+
+feature -- Creazione per i test
+
+	make (nomi_files: ARRAY [STRING])
+			-- prepara la SC con i parametri passati come argomento
+			-- in Eiffel Studio vanno invece scritti mediante il
 			-- menu "Execution" -> "Execution Parameters" -> "Add"
 			-- doppio click su spazio bianco accanto a "Arguments"
 			-- scrivere i parametri ognuno tra doppi apici
 		do
-			print ("%N=========%N INIZIO!%N")
-			print ("esegue la SC in " + nomi_files [1] + "%N")
+			print ("%N=========%N CREAZIONE INIZIO%N")
+			print ("crea la SC in " + nomi_files [1] + "%N")
 			print ("con gli eventi in " + nomi_files [2] + "%N")
 			create eventi_esterni.make_empty
 			acquisisci_eventi (nomi_files [2])
@@ -39,16 +49,13 @@ feature {NONE} -- Inizializzazione
 			if verifica_eventi_esterni then
 				print ("tutti gli eventi sono conosciuti dalla SC %N")
 			else
-				print (" nel file ci sono eventi che la SC non conosce %N")
+				print ("nel file ci sono eventi che la SC non conosce %N")
 			end
-			print ("si esegue comunque la SC %N")
-			state_chart.evolvi_SC (eventi_esterni)
-			print ("%N FINE!%N=========%N")
+			print ("%N CREAZIONE FINE%N=========%N")
 		end
 
-feature
 
-
+feature -- file eventi
 
 	acquisisci_eventi (nome_file_eventi: STRING)
 			-- Legge gli eventi dal file passato come secondo argomento e li inserisce in `eventi_esterni'
