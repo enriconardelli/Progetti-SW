@@ -37,12 +37,12 @@ feature {NONE} -- Inizializzazione
 			print ("acquisiti eventi %N")
 			create state_chart.make(nomi_files [1])
 			if verifica_eventi_esterni then
-				print ("eventi verificati, si esegue la SC %N")
-				-- TODO si puo' invocare evolvi_SC anche se ci sono eventi che la SC non conosce
-				state_chart.evolvi_SC (eventi_esterni)
+				print ("tutti gli eventi sono conosciuti dalla SC %N")
 			else
 				print (" nel file ci sono eventi che la SC non conosce %N")
 			end
+			print ("si esegue comunque la SC %N")
+			state_chart.evolvi_SC (eventi_esterni)
 		end
 
 feature
