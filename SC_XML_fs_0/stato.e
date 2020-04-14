@@ -74,6 +74,7 @@ feature --routines
 			index_count: INTEGER
 			numero_di_transizioni_attivate_da_evento_corrente: INTEGER
 		do
+			-- TODO convertire from loop in across loop
 			from
 				index_count := transizioni.lower
 				numero_di_transizioni_attivate_da_evento_corrente := 0
@@ -93,6 +94,7 @@ feature --routines
 	attivabile (index_count: INTEGER; evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): BOOLEAN
 		-- verifica, in caso di transizione di posto `index_count' che ha un evento se è uguale a `evento_corrente' e se la condizione e' vera
 		-- verifica, in caso di transizione di posto `index_count' senza evento se la condizione e' vera
+		-- Giulia Iezzi, Alessando Filippo 12/apr/2020
 		do
 			if attached transizioni [index_count].evento as e then
 				if e.is_equal (evento_corrente) then
@@ -100,6 +102,8 @@ feature --routines
 						if hash_delle_condizioni.item (c) = True then
 							Result := True
 						end
+					else
+						Result := True
 					end
 				end
 			else
@@ -114,35 +118,20 @@ feature --routines
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
 		-- ritorna Void se con `evento_corrente' nella configurazione corrente non è attivabile alcuna transizione
 		-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con `evento_corrente'
-		require
-			numero_transizioni_abilitate (evento_corrente,hash_delle_condizioni)<2 --TODO commento o require?
+		-- Giulia Iezzi, Alessando Filippo 12/apr/2020
 		local
-
 			index_count: INTEGER
 		do
+			-- TODO convertire from loop in across loop
 			Result := Void
 			from
 				index_count := transizioni.lower
 			until
 				index_count = transizioni.upper + 1 or Result /= Void
 			loop
-				-- TODO semplificare il test
-
 	        	if attivabile(index_count, evento_corrente, hash_delle_condizioni) then
-		         Result:=transizioni[index_count].target
+		        	Result := transizioni[index_count].target
 		        end
---				if attached transizioni [index_count].evento as ang then
---					if ang.is_equal (evento_corrente) then
---						if attached transizioni [index_count].condizione as cond then
---							if attached hash_delle_condizioni.item (cond) as cond_in_hash then
---								if cond_in_hash = TRUE then
---									Result := transizioni [index_count].target
---								end
---							end
---						end
---						else Result := transizioni [index_count].target
---					end
---				end
 			index_count := index_count + 1
 			end
 		end
