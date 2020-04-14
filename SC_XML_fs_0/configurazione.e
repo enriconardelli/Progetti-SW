@@ -88,7 +88,7 @@ feature --evoluzione SC
 					set_stato_corrente (ns)
 				end
 			end
-			print ("%N%NHo finito nello stato = " + stato_corrente.id + "%N")
+			print ("%Nterminato evolvi_SC nello stato = " + stato_corrente.id + "%N")
 		end
 
 	esegui_azioni (evento_corrente: STRING)
@@ -126,7 +126,7 @@ feature -- inizializzazione SC
 			stato_corrente_not_void: stato_corrente /= Void
 		do
 			stato_corrente := uno_stato
-			print ("%N %Nnuovo stato corrente = " + stato_corrente.id + "    %N")
+			print ("%Nnuovo stato corrente = " + stato_corrente.id + "    %N")
 		end
 
 	istanzia_condizioni (lis_data: LIST [XML_ELEMENT])
