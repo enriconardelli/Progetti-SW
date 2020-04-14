@@ -22,3 +22,14 @@ ESECUTORE
 		acquisisci eventi (ma non riguarda solo questa feature)
 		-- TODO non gestisce il caso in cui su una riga del file degli eventi ci sia più di un evento
 
+CONFIGURAZIONE
+	#237
+		assegnazione azione
+		-- TODO: creare vettore di azioni generiche
+		non si capisce bene che vuol dire...
+	#269 e #271
+	riempi_stato
+		-- TODO gestire separatamente feature di creazione transizione che torna o transizione o errore
+		-- TODO gestire fallimento del test per assenza clausola target
+
+
