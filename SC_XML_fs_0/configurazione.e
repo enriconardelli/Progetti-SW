@@ -78,35 +78,15 @@ feature --evoluzione SC
 				stato_corrente.finale or count_evento_corrente > eventi.count
 			LOOP
 				stabilizza_stato
+--				-- TODO eventuale cambiamento usando transizione_abilitata invece che evento_corrente
 				evento_corrente := eventi [count_evento_corrente]
 				count_evento_corrente := count_evento_corrente + 1
 				print ("evento corrente = " + evento_corrente + "   %N")
-				-- TODO eventuale cambiamento usando transizione_abilitata invece che evento_corrente
-				-- (?)
-				if stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 0 then
-					print ("nessuna transizione attivabile con questo evento, passo al prossimo  %N")
-				elseif stato_corrente.numero_transizioni_abilitate (evento_corrente, condizioni) = 1 then
-					-- TODO eliminare variabile locale nuovo_stato?
-					-- (nuovo_stato deve essere assegnato prima dell'esecuzione di esegui_azioni
-					-- altrimenti i risultati sono diversi)
-					nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
-					esegui_azioni (evento_corrente)
-					if attached nuovo_stato as ns then
-						set_stato_corrente (ns)
-					end
-				else
-					-- TODO in caso di non determinismo potremmo comunque far evolvere la SC eseguendo arbitariamente la prima transizione trovata
-					print ("ERRORE!!! Non c'è determinismo!!!")
+				nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
+				esegui_azioni (evento_corrente)
+				if attached nuovo_stato as ns then
+					set_stato_corrente (ns)
 				end
---				VERSIONE SEMPLIFICATA, ASSUME CHE NON CI SIA MAI NON DETERMINISMO (OVVERO LO RISOLVE ARBITARIAMENTE)
---				evento_corrente := eventi [count_evento_corrente]
---				count_evento_corrente := count_evento_corrente + 1
---				print ("evento corrente = " + evento_corrente + "   %N")
---				nuovo_stato := stato_corrente.target (evento_corrente, condizioni)
---				esegui_azioni (evento_corrente)
---				if attached nuovo_stato as ns then
---					set_stato_corrente (ns)
---				end
 			end
 			print ("%N%NHo finito nello stato = " + stato_corrente.id + "%N")
 		end
@@ -114,7 +94,6 @@ feature --evoluzione SC
 	esegui_azioni (evento_corrente: STRING)
 		local
 			transizione: TRANSIZIONE
-		    i: INTEGER
 		do
 			transizione := stato_corrente.get_transition (evento_corrente)
 			across
@@ -126,6 +105,7 @@ feature --evoluzione SC
 
 	stabilizza_stato
 		-- assicura che stato_stabile sia stabile eseguendo tutte le transizioni
+		-- TODO da sistemare, non ha bisogno di un evento
 		local evento: detachable STRING
 		-- 	require  stato_corrente.numero_transizioni_abilitate(evento,condizioni) <2
 			do

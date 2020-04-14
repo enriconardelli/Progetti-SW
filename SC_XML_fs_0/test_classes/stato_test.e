@@ -39,18 +39,18 @@ feature {NONE} -- Events
 			if attached target_prova_1 as tp1 then create transizione_prova_1.make_with_target(tp1) end
 			if attached target_prova_2 as tp2 then create transizione_prova_2.make_with_target(tp2) end
 			if attached target_prova_3 as tp3 then create transizione_prova_3.make_with_target(tp3) end
-				if attached transizione_prova_1 as trp1 then
+			if attached transizione_prova_1 as trp1 then
 				trp1.set_evento ("evento1") trp1.set_condizione ("cond1")
 				if attached stato_prova as sp then sp.aggiungi_transizione (trp1)  end
-				end
+			end
 			if attached transizione_prova_2 as trp2 then
 				trp2.set_evento ("evento2") trp2.set_condizione ("cond2")
 				if attached stato_prova as sp then sp.aggiungi_transizione (trp2)  end
-				end
+			end
 			if attached transizione_prova_3 as trp3 then
 				trp3.set_evento ("evento1") trp3.set_condizione ("cond3")
 				if attached stato_prova as sp then sp.aggiungi_transizione (trp3)  end
-				end
+			end
 
 			create hash_di_prova.make (3)
     		hash_di_prova.put (False, "cond1")
@@ -152,29 +152,29 @@ feature -- Test routines
 		do
 			set_hash_di_prova(TRUE,TRUE,FALSE)
 			if attached stato_prova as sp then
-				if attached sp.target("evento_1",hash_di_prova) as st then
-					assert ("target scorretto", st.id ~ "target_prova_1")
+				if attached sp.target("evento1",hash_di_prova) as st then
+					assert ("target diverso da atteso: prova_1", st.id ~ "target_prova_1")
 				end
-				if attached sp.target("evento_2",hash_di_prova) as st then
-					assert ("target scorretto", st.id ~ "target_prova_2")
+				if attached sp.target("evento2",hash_di_prova) as st then
+					assert ("target diverso da atteso: prova_2", st.id ~ "target_prova_2")
 				end
 			end
 			set_hash_di_prova(FALSE,TRUE,TRUE)
 			if attached stato_prova as sp then
-				if attached sp.target("evento_1",hash_di_prova) as st then
-					assert ("target scorretto", st.id ~ "target_prova_3")
+				if attached sp.target("evento1",hash_di_prova) as st then
+					assert ("target diverso da atteso: prova_3", st.id ~ "target_prova_3")
 				end
-				if attached sp.target("evento_2",hash_di_prova) as st then
-					assert ("target scorretto", st.id ~ "target_prova_2")
+				if attached sp.target("evento2",hash_di_prova) as st then
+					assert ("target diverso da atteso: prova_2", st.id ~ "target_prova_2")
 				end
 			end
 			set_hash_di_prova(FALSE,FALSE,FALSE)
 			if attached stato_prova as sp then
-				if attached sp.target("evento_1",hash_di_prova) as st then
-					assert ("target scorretto", st = Void)
+				if attached sp.target("evento1",hash_di_prova) as st then
+					assert ("target diverso da atteso: stato_prova", st.id ~ "stato_prova")
 				end
-				if attached sp.target("evento_2",hash_di_prova) as st then
-					assert ("target scorretto", st = Void)
+				if attached sp.target("evento2",hash_di_prova) as st then
+					assert ("target diverso da atteso: stato_prova", st.id ~ "stato_prova")
 				end
 			end
 		end

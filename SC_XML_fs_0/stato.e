@@ -95,6 +95,7 @@ feature --routines
 		-- verifica, in caso di transizione di posto `index_count' che ha un evento se è uguale a `evento_corrente' e se la condizione e' vera
 		-- verifica, in caso di transizione di posto `index_count' senza evento se la condizione e' vera
 		-- Giulia Iezzi, Alessando Filippo 12/apr/2020
+		-- TODO completare test per questa feature
 		do
 			if attached transizioni [index_count].evento as e then
 				if e.is_equal (evento_corrente) then
@@ -116,7 +117,7 @@ feature --routines
 		end
 
 	target (evento_corrente: STRING; hash_delle_condizioni: HASH_TABLE [BOOLEAN, STRING]): detachable STATO
-		-- ritorna Void se con `evento_corrente' nella configurazione corrente non è attivabile alcuna transizione
+		-- ritorna Current se con `evento_corrente' nella configurazione corrente non è attivabile alcuna transizione
 		-- ritorna lo stato a cui porta la transizione di indice minimo attivabile nella configurazione corrente con `evento_corrente'
 		-- Giulia Iezzi, Alessando Filippo 12/apr/2020
 		local
@@ -133,6 +134,9 @@ feature --routines
 		        	Result := transizioni[index_count].target
 		        end
 			index_count := index_count + 1
+			end
+			if Result = Void then
+				Result := Current
 			end
 		end
 
