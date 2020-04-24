@@ -1,9 +1,12 @@
 
+2020
+  nel corso di PSI faccio aggiungere i test a NEW_LINKED_LIST e completare le feature non fatte o non adattate
+
 2019
   decido di ristrutturare INT_LINKED_LIST facendolo diventare VoidSafe e con ACTIVE_ELEMENT
-  il nuovo progetto è in new_linked_list
+  il nuovo progetto è in NEW_LINKED_LIST
   
-  adesso a lezione e negli esercizi d'esame uso la versione new_linked_list con ACTIVE_ELEMENT e dò per scontata la void safety
+  adesso a lezione e negli esercizi d'esame uso la versione NEW_LINKED_LIST con ACTIVE_ELEMENT e dò per scontata la void safety
 
 ================================================
 
