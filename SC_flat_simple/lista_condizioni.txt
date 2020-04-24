@@ -1,6 +1,0 @@
-condizione_1 / 1
-
-condizione_2 / 0
-condizione_3 / 0
-condizione_4 / 0
-condizione_5 / 1
