@@ -19,7 +19,7 @@ ELENCO FEATURE (col + le ho convertite a VoidSafe con DAFARE non sono proprio sc
 Access
  + first_element
  + last_element
- + active_element
+ + active_element NB: questo può essere Void, diversamente da LINKED_LIST di Eiffel
  + count
 
 Cursor movement

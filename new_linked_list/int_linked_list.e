@@ -16,7 +16,7 @@ feature -- Access
 			-- Last element of the list.
 
 	active_element: detachable INT_LINKABLE
-			-- Current element of the list.
+			-- Current element of the list. It might be Void in a not-empty list.
 
 	count: INTEGER
 			-- Number of elements in the list.
