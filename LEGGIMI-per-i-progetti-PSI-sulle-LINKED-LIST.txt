@@ -1,3 +1,13 @@
+===============================
+==>>> leggere anche il LEGGIMI.txt in 
+==>>> D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\new_linked_list
+===============================
+
+===>> QUESTO DOC È PER IL CORSO DI PROGETTAZIONE <<===
+
+2021
+  continuo come per 2020.
+NOTA: mettere i commenti e i tag degli invarianti in italiano, perché mi serve per didattica in italiano
 
 2020
   nel corso di PSI faccio aggiungere i test a NEW_LINKED_LIST e completare le feature non fatte o non adattate
@@ -5,6 +15,10 @@
 2019
   decido di ristrutturare INT_LINKED_LIST facendolo diventare VoidSafe e con ACTIVE_ELEMENT
   il nuovo progetto è in NEW_LINKED_LIST
+  
+  ===>> ATTENZIONE <<===
+     ACTIVE_ELEMENT non viene automaticamente assegnato da inserimenti in una lista vuota
+  ===>> ATTENZIONE <<===
   
   adesso a lezione e negli esercizi d'esame uso la versione NEW_LINKED_LIST con ACTIVE_ELEMENT e dò per scontata la void safety
 

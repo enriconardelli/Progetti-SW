@@ -13,7 +13,7 @@ create
 feature -- Access
 
 	value: INTEGER
-			-- the integer stored in this cell COMMENTO
+			-- L'intero memorizzato in questo elemento.
 
 	next: detachable INT_LINKABLE
 			-- the next cell in the list
@@ -21,7 +21,7 @@ feature -- Access
 feature {NONE} -- Initialization
 
 	set_value (a_value: INTEGER)
-			-- assign the integer stored in this cell
+			-- Assegna l'intero memorizzato in questo elemento.
 		do
 			value := a_value
 		ensure
@@ -31,7 +31,7 @@ feature {NONE} -- Initialization
 feature -- Processing
 
 	link_to (other: detachable INT_LINKABLE)
-			-- connect this cell to `other'
+			-- Collega questo elmento a `other'.
 		do
 			next := other
 		ensure
@@ -39,7 +39,7 @@ feature -- Processing
 		end
 
 	link_after (other: INT_LINKABLE)
-			-- insert this cell after `other' preserving what was after it
+			-- Inserisce questo elemento dopo `other' conservando quello che c'era dopo.
 		do
 			link_to (other.next)
 			other.link_to (Current)

@@ -1,3 +1,9 @@
+===============================
+==>>> leggere anche il LEGGIMI-per-i-progetti-PSI-sulle-LINKED-LIST.txt in 
+==>>> D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW
+===============================
+
+===>> QUESTO DOC È PER IL CORSO DI FONDAMENTI <<===
 
 Questa cartella
   D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\new_linked_list
@@ -7,7 +13,7 @@ contiene la versione del progetto per la gestione di liste di interi che uso dur
 
 Quindi ho copiato INT_LINKABLE dalla versione VS_linked_list e reimplemento in modalità VS le varie feature presenti in linked_list.
 
-Ha i commenti in inglese (alle lezioni ed agli esami li spiego).
+Aveva i commenti in inglese ma li sto mettendo in italiano perché li uso negli esercizi d'esame.
 
 Bisogna iniziare ad introdurre la funzione di AutoTest di Eiffel che c'era già in linked_list. Si può fare indipendentemente dall'uso di questa versione per Fondamenti visto che i test sono una classe indipendente.
 
@@ -36,14 +42,14 @@ Search
 
 Insertion single free
  + append
-  prepend
+ + prepend
 
 Insertion single targeted
  + insert_after
   insert_before
 
 Status
-  value_follows
+ + value_follows
   value_after DAFARE
   value_precedes DAFARE
   value_before DAFARE

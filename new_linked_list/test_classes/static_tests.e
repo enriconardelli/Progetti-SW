@@ -58,8 +58,19 @@ feature -- Test routines
 		do
 			create t
 			t.append (3)
-			assert ("ho aggiunto 3, t contiene 3?", t.has (3))
-			assert ("ho aggiunto 3, t contiene 4?", not t.has (4))
+			assert ("ERRORE: ho fatto append di 3, ma t non contiene 3", t.has (3))
+			assert ("ERRORE: ho fatto append solo di 3, ma t contiene 4", not t.has (4))
+		end
+
+	t_prepend
+			-- Enrico Nardelli, 2021/03/02
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.prepend (3)
+			assert ("ERRORE: ho fatto prepend di 3, ma t non contiene 3?", t.has (3))
+			assert ("ERRORE: ho fatto prepend solo di 3, ma t contiene 4", not t.has (4))
 		end
 
 	t_insert_after
@@ -268,20 +279,20 @@ feature -- Test routines
 			assert ("errore: non ha eliminato tutti gli elementi", t.count = 0)
 		end
 
-	last
+	t_last
 			-- Arianna Calzuola, 2020/03/10
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
 			t.last
-			assert ("errore: la lista è vuota", t.active_element = void)
+			assert ("errore: la lista è vuota, ma l'elemento attivo non e' vuoto", t.active_element = void)
 			t.append (3)
 			t.last
-			assert ("errore: la lista ha un unico elemento", t.active_element = t.first_element)
-			assert ("errore: la lista ha un unico elemento", t.active_element = t.last_element)
+			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' il primo", t.active_element /= t.first_element)
+			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' l'ultimo", t.active_element = t.last_element)
 			if attached t.active_element as ae then
-				assert ("errore: la lista ha un unico elemento", ae.value = 3)
+				assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' quello inserito", ae.value = 3)
 			end
 			t.append (2)
 			t.append (7)
