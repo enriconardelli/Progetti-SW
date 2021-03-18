@@ -628,7 +628,7 @@ feature -- Removal single free
 		end
 
 	remove_last____DA_CANCELLARE (a_value: INTEGER)
-			-- VIENE RIMPIAZZATA DA REMOVE_LATEST
+			-- GIA' SOSTITUITA RIMPIAZZATA DA REMOVE_LATEST
 			-- Rimuove l'ultimo elemento che contiene `a_value', se esiste
 			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
 		require
