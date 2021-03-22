@@ -627,7 +627,7 @@ feature -- Removal single free
 				--			rimosso_se_primo: old first_element.value = a_value implies first_element = old first_element.next
 		end
 
-	remove_last____DA_CANCELLARE (a_value: INTEGER)
+	remove_last____SI_PUO_ELIMINARE (a_value: INTEGER)
 			-- VIENE RIMPIAZZATA DA REMOVE_LATEST
 			-- Rimuove l'ultimo elemento che contiene `a_value', se esiste
 			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
