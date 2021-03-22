@@ -16,8 +16,8 @@ feature -- Accesso
 			-- L'ultimo elemento della lista.
 
 	active_element: detachable INT_LINKABLE
-			-- L'elemento corrente della lista, cioè il cursore.
-			-- Può essere Void anche se la lista non è vuota.
+			-- L'elemento corrente della lista, cioï¿½ il cursore.
+			-- Puï¿½ essere Void anche se la lista non ï¿½ vuota.
 
 	count: INTEGER
 			-- Il numero di elementi della lista.
@@ -217,7 +217,7 @@ feature -- Inserimento singolo vincolato
 				if attached first_element as fe and then fe.value = target then
 					new_element.link_to (first_element)
 					first_element := new_element
-				else -- la list contiene almeno un elemento e il primo elemento non è `target'
+				else -- la list contiene almeno un elemento e il primo elemento non ï¿½ `target'
 					from
 						current_element := first_element
 					until
@@ -627,8 +627,9 @@ feature -- Removal single free
 				--			rimosso_se_primo: old first_element.value = a_value implies first_element = old first_element.next
 		end
 
-	remove_last____SI_PUO_ELIMINARE (a_value: INTEGER)
-			-- VIENE RIMPIAZZATA DA REMOVE_LATEST
+
+	remove_last____DA_CANCELLARE (a_value: INTEGER)
+			-- GIA' SOSTITUITA RIMPIAZZATA DA REMOVE_LATEST
 			-- Rimuove l'ultimo elemento che contiene `a_value', se esiste
 			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
 		require
@@ -761,16 +762,16 @@ feature -- Removal single free
 					current_element := current_element.next
 				end
 				if pre_latest = Void then
-						-- `a_value' non è presente oppure è il primo elemento
+						-- `a_value' non ï¿½ presente oppure ï¿½ il primo elemento
 					if attached first_element as fe and then fe.value = a_value then
-							-- c'è un sola occorrenza di a_value come primo elemento
+							-- c'ï¿½ un sola occorrenza di a_value come primo elemento
 						if active_element = first_element then
 							active_element := fe.next
 						end
 						first_element := fe.next
 						count := count - 1
 					end
-				else -- `a_value' è presente e non è il primo elemento
+				else -- `a_value' ï¿½ presente e non ï¿½ il primo elemento
 					if attached pre_latest as pl and then attached pl.next as pln then
 						pl.link_to (pln.next)
 						if pln = last_element then
@@ -940,9 +941,9 @@ feature -- Removal single targeted
 				end
 				if pre_value = Void then
 						--questo if parte solo se value_follows(target, a_value) restituisce true
-						--cioè se nella lista è presente prima una qualche istanza di a_value, e poi target
+						--cioï¿½ se nella lista ï¿½ presente prima una qualche istanza di a_value, e poi target
 						--quindi una qualche istanza di a_value deve necessariamente esistere
-						--se pre_value è ancora void, significa che l' unica ricorrenza di a_value deve essere
+						--se pre_value ï¿½ ancora void, significa che l' unica ricorrenza di a_value deve essere
 						--il primo elemento della lista
 					if attached first_element as fe then
 						if active_element = first_element then
@@ -976,7 +977,7 @@ feature -- Removal multiple free
 				--				current_element := first_element
 				--				pre_current := Void
 				----			invariant
-				----              -- invariante per questo è ancora da scrivere
+				----              -- invariante per questo ï¿½ ancora da scrivere
 				--			until
 				--				current_element = Void
 				--			loop
