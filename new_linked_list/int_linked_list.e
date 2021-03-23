@@ -357,20 +357,13 @@ feature -- Status
 		local
 			current_element, temp: like first_element
 		do
-			from
-				current_element := get_element(target)
-				temp := Void
-			invariant
-				current_element /= Void implies
-				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
-			until
-				(current_element = Void) or (attached current_element as ce and then ce.value = a_value)
-			loop
-				temp := current_element
-				current_element := current_element.next
-			end
-			if (current_element /= Void and then current_element.value = a_value) then
-				Result := True
+			current_element := get_element(target)
+			if attached current_element as ce then
+				if attached ce.next as cen then
+					if cen.value = a_value then
+						Result := true
+					end
+				end
 			end
 		end
 

@@ -56,7 +56,55 @@ feature -- Spostamento del cursore
 			assert ("errore: il valore di active element non è il valore dell'ultimo elemento della lista", t.active_element = t.last_element)
 		end
 
+	t_forth
+			-- Alessandro Filippo 2020/03/08
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert ("la lista è vuota, active element è void", t.active_element = Void)
+			t.append (3)
+			t.forth
+			assert ("l'active element è 3 ed è il last element , dopo forth è Void?", t.active_element = Void)
+			t.append (4)
+			t.start
+			t.forth
+			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
+		end
+
 feature -- da continuare
+
+	t_value_after
+			-- Enrico Nardelli, 2021/03/23
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert ("t e' vuota, ma t contiene 3 subito dopo 5", not t.value_after (3, 5))
+			t.append (5)
+			assert ("t contiene solo 5, ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			t.wipeout
+			t.append (4)
+			assert ("t contiene solo 4, ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			t.wipeout
+			t.append (5) ; t.append (3)
+			assert ("t vale [5, 3]', ma non trova 3 subito dopo 5", t.value_after (3, 5))
+			t.wipeout
+			t.append (5) ; t.append (4)
+			assert ("t vale [5, 4]', ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			t.wipeout
+			t.append (3) ; t.append (5)
+			assert ("t vale [3, 5]', ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			t.wipeout
+			t.append (3) ; t.append (4)
+			assert ("t vale [3, 4]', ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			t.wipeout
+			t.append (5) ; t.append (4) ; t.append (3)
+			assert ("t vale [5, 4, 3]', ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			t.wipeout
+			t.append (4) ; t.append (5) ; t.append (3)
+			assert ("t vale [4, 5, 3]', ma non trova 3 subito dopo 5", t.value_after (3, 5))
+		end
 
 	t_has
 			-- Enrico Nardelli, 2020/03/06
@@ -208,22 +256,6 @@ feature -- da continuare
 			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element = Void)
 			assert ("errore: non è stato modificato il last_element correttamente", t.last_element = Void)
 
-		end
-
-	t_forth
-			-- Alessandro Filippo 2020/03/08
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			assert ("la lista è vuota, active element è void", t.active_element = Void)
-			t.append (3)
-			t.forth
-			assert ("l'active element è 3 ed è il last element , dopo forth è Void?", t.active_element = Void)
-			t.append (4)
-			t.start
-			t.forth
-			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
 		end
 
 	t_invert
