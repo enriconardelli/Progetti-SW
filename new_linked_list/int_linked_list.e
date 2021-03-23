@@ -575,7 +575,7 @@ feature -- Removal single free
 			attivo_scorre: (old active_element /= old last_element and attached old active_element as oae) implies active_element = oae.next
 		end
 
-	remove_first____TO_MAKE_VOID_SAFE (a_value: INTEGER)
+	remove_first____da_cancellare (a_value: INTEGER)
 			-- VIENE RIMPIAZZATA DA REMOVE_EARLIEST
 			-- Rimuove il primo elemento che contiene `a_value', se esiste
 			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
