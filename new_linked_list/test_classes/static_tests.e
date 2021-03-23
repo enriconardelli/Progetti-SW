@@ -72,6 +72,8 @@ feature -- Spostamento del cursore
 			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
 		end
 
+feature -- Remove single targeted: classi di test separate
+
 feature -- da continuare
 
 	t_value_after
