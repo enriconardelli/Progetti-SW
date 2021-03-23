@@ -14,26 +14,49 @@ inherit
 
 	EQA_TEST_SET
 
-feature -- Test routines
+feature -- Spostamento del cursore
 
-	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
-		-- return how many times `a_value' occurs in `t'
-	local
-		current_element: INT_LINKABLE
-	do
-		if t.count=0 then
-			Result := 0
-		else
-			from current_element := t.first_element
-			until current_element = Void
-			loop
-				if current_element.value = a_value then
-					Result := Result + 1
-				end
-				current_element := current_element.next
+	t_first
+			-- Claudia Agulini, 2020/03/06
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (1)
+			t.append (3)
+			t.append (5)
+			t.start
+			if attached t.active_element as ae and attached t.first_element as fe then
+				assert ("t contiene 1,3,5, active è 1?", ae.value = fe.value)
 			end
 		end
-	end
+
+	t_last
+			-- Arianna Calzuola, 2020/03/10
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.last
+			assert ("errore: la lista è vuota, ma l'elemento attivo non e' vuoto", t.active_element = void)
+			t.append (3)
+			t.last
+			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' il primo", t.active_element /= t.first_element)
+			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' l'ultimo", t.active_element = t.last_element)
+			if attached t.active_element as ae then
+				assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' quello inserito", ae.value = 3)
+			end
+			t.append (2)
+			t.append (7)
+				--[3, 2, 7]
+			t.last
+			if attached t.active_element as ae then
+				assert ("errore: active element non sta puntando all'ultimo elemento della lista", ae.value = 7)
+			end
+			assert ("errore: il valore di active element non è il valore dell'ultimo elemento della lista", t.active_element = t.last_element)
+		end
+
+feature -- da continuare
 
 	t_has
 			-- Enrico Nardelli, 2020/03/06
@@ -103,21 +126,6 @@ feature -- Test routines
 			assert ("errore: non restituisce elemento che esiste", t.get_element (7) /= void)
 			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
 			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
-		end
-
-	t_first
-			-- Claudia Agulini, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (1)
-			t.append (3)
-			t.append (5)
-			t.start
-			if attached t.active_element as ae and attached t.first_element as fe then
-				assert ("t contiene 1,3,5, active è 1?", ae.value = fe.value)
-			end
 		end
 
 	t_insert_after_reusing
@@ -279,32 +287,6 @@ feature -- Test routines
 			assert ("errore: non ha eliminato tutti gli elementi", t.count = 0)
 		end
 
-	t_last
-			-- Arianna Calzuola, 2020/03/10
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.last
-			assert ("errore: la lista è vuota, ma l'elemento attivo non e' vuoto", t.active_element = void)
-			t.append (3)
-			t.last
-			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' il primo", t.active_element /= t.first_element)
-			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' l'ultimo", t.active_element = t.last_element)
-			if attached t.active_element as ae then
-				assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' quello inserito", ae.value = 3)
-			end
-			t.append (2)
-			t.append (7)
-				--[3, 2, 7]
-			t.last
-			if attached t.active_element as ae then
-				assert ("errore: active element non sta puntando all'ultimo elemento della lista", ae.value = 7)
-			end
-			assert ("errore: il valore di active element non è il valore dell'ultimo elemento della lista", t.active_element = t.last_element)
-		end
-
-
 	t_lista_vuota
 		-- Calzuola e Malandruccolo 2020/03/21
 		local
@@ -355,6 +337,28 @@ feature -- Test routines
 			assert("il first_element non è impostato correttamente", attached t_due.first_element as fe and then fe.value = a_value)
 			assert("il last_element non è impostato correttamente", attached t_due.last_element as le and then le.value = 2*a_value)
 		end
+
+feature -- Convenienza
+
+	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
+		-- return how many times `a_value' occurs in `t'
+	local
+		current_element: INT_LINKABLE
+	do
+		if t.count=0 then
+			Result := 0
+		else
+			from current_element := t.first_element
+			until current_element = Void
+			loop
+				if current_element.value = a_value then
+					Result := Result + 1
+				end
+				current_element := current_element.next
+			end
+		end
+	end
+
 
 
 end
