@@ -352,26 +352,26 @@ feature -- Status
 			end
 		end
 
-	value_after___________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
+	value_after (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito dopo la prima occorrenza di `target'?
 		local
-			-- current_element, temp: like first_element
+			current_element, temp: like first_element
 		do
-				--			from
-				--				current_element := get_element(target)
-				--				temp := Void
-				--			invariant
-				--				current_element /= Void implies
-				--				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
-				--			until
-				--				(current_element = Void) or (current_element.value = a_value)
-				--			loop
-				--				temp := current_element
-				--				current_element := current_element.next
-				--			end
-				--			if (current_element /= Void and then current_element.value = a_value) then
-				--				Result := True
-				--			end
+			from
+				current_element := get_element(target)
+				temp := Void
+			invariant
+				current_element /= Void implies
+				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
+			until
+				(current_element = Void) or (attached current_element as ce and then ce.value = a_value)
+			loop
+				temp := current_element
+				current_element := current_element.next
+			end
+			if (current_element /= Void and then current_element.value = a_value) then
+				Result := True
+			end
 		end
 
 	value_precedes_______________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
