@@ -71,10 +71,103 @@ feature -- Spostamento del cursore
 			t.forth
 			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
 		end
+feature -- Ricerca
 
-feature -- Remove single targeted: classi di test separate
+	t_has
+			-- Enrico Nardelli, 2020/03/06
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert ("t e' vuota, t contiene 3?", not t.has (3))
+			t.append (3)
+			assert ("t contiene 3, t contiene 3?", t.has (3))
+			assert ("t contiene 3, t contiene 4?", not t.has (4))
+			t.append (7)
+			assert ("t contiene 3 e 7, t contiene 3? ", t.has (3))
+			assert ("t contiene 3 e 7, t contiene 4? ", not t.has (4))
+			assert ("t contiene 3 e 7, t contiene 7? ", t.has (7))
+		end
 
-feature -- da continuare
+		t_get_element
+			-- Riccardo Malandruccolo, 2020/03/06
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert ("errore: restituisce elemento che non esiste", t.get_element (3) = void)
+			t.append (3)
+			assert ("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+			assert ("errore: non restituisce il valore corretto", attached t.get_element (3) as el implies el.value = 3)
+			assert ("errore: restituisce elementi che non esistono", t.get_element (4) = void)
+			t.append (7)
+			assert ("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+			assert ("errore: restituisce elemento che non esiste", t.get_element (4) = void)
+			assert ("errore: non restituisce elemento che esiste", t.get_element (7) /= void)
+			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
+			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
+		end
+
+feature -- Inserimento singolo libero
+
+	t_append
+			-- Enrico Nardelli, 2020/03/06
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (3)
+			assert ("ERRORE: ho fatto append di 3, ma t non contiene 3", t.has (3))
+			assert ("ERRORE: ho fatto append solo di 3, ma t contiene 4", not t.has (4))
+		end
+
+	t_prepend
+			-- Enrico Nardelli, 2021/03/02
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.prepend (3)
+			assert ("ERRORE: ho fatto prepend di 3, ma t non contiene 3?", t.has (3))
+			assert ("ERRORE: ho fatto prepend solo di 3, ma t contiene 4", not t.has (4))
+		end
+
+feature -- Inserimento singolo vincolato
+
+	t_insert_after
+			-- Alessandro Filippo, 2020/03/06
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.insert_after (5, 6)
+			assert ("t è vuota, t ha inserito 5 dopo 6 anche se non c'è?", t.has (5))
+			t.append (-4)
+			t.insert_after (7, -4)
+			assert ("t contiene -4, ho inserito 7 dopo 4?", t.has (7))
+		end
+
+
+
+	t_insert_after_reusing
+			-- Federico Fiorini, 2020/03/06
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (5)
+			t.append (7)
+			t.append (2)
+			t.insert_after_reusing (1, 0)
+			assert ("t contiene 4 elementi?", t.count = 4)
+			if attached t.last_element as le then
+				assert ("t non contiene il valore 0, il valore 1 è stato inserito alla fine della lista?", le.value = 1)
+			end
+		end
+
+		--to do: t_insert_before; t_insert_before_with_2_cursors
+
+feature --Status
 
 	t_value_after
 			-- Enrico Nardelli, 2021/03/23
@@ -108,91 +201,9 @@ feature -- da continuare
 			assert ("t vale [4, 5, 3]', ma non trova 3 subito dopo 5", t.value_after (3, 5))
 		end
 
-	t_has
-			-- Enrico Nardelli, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			assert ("t e' vuota, t contiene 3?", not t.has (3))
-			t.append (3)
-			assert ("t contiene 3, t contiene 3?", t.has (3))
-			assert ("t contiene 3, t contiene 4?", not t.has (4))
-			t.append (7)
-			assert ("t contiene 3 e 7, t contiene 3? ", t.has (3))
-			assert ("t contiene 3 e 7, t contiene 4? ", not t.has (4))
-			assert ("t contiene 3 e 7, t contiene 7? ", t.has (7))
-		end
+		--to do: t_value_follows
 
-	t_append
-			-- Enrico Nardelli, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (3)
-			assert ("ERRORE: ho fatto append di 3, ma t non contiene 3", t.has (3))
-			assert ("ERRORE: ho fatto append solo di 3, ma t contiene 4", not t.has (4))
-		end
-
-	t_prepend
-			-- Enrico Nardelli, 2021/03/02
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.prepend (3)
-			assert ("ERRORE: ho fatto prepend di 3, ma t non contiene 3?", t.has (3))
-			assert ("ERRORE: ho fatto prepend solo di 3, ma t contiene 4", not t.has (4))
-		end
-
-	t_insert_after
-			-- Alessandro Filippo, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.insert_after (5, 6)
-			assert ("t è vuota, t ha inserito 5 dopo 6 anche se non c'è?", t.has (5))
-			t.append (-4)
-			t.insert_after (7, -4)
-			assert ("t contiene -4, ho inserito 7 dopo 4?", t.has (7))
-		end
-
-	t_get_element
-			-- Riccardo Malandruccolo, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			assert ("errore: restituisce elemento che non esiste", t.get_element (3) = void)
-			t.append (3)
-			assert ("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
-			assert ("errore: non restituisce il valore corretto", attached t.get_element (3) as el implies el.value = 3)
-			assert ("errore: restituisce elementi che non esistono", t.get_element (4) = void)
-			t.append (7)
-			assert ("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
-			assert ("errore: restituisce elemento che non esiste", t.get_element (4) = void)
-			assert ("errore: non restituisce elemento che esiste", t.get_element (7) /= void)
-			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
-			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
-		end
-
-	t_insert_after_reusing
-			-- Federico Fiorini, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (5)
-			t.append (7)
-			t.append (2)
-			t.insert_after_reusing (1, 0)
-			assert ("t contiene 4 elementi?", t.count = 4)
-			if attached t.last_element as le then
-				assert ("t non contiene il valore 0, il valore 1 è stato inserito alla fine della lista?", le.value = 1)
-			end
-		end
+feature -- Insertion multiple targeted
 
 	t_insert_multiple_before
 			-- Riccardo Malandruccolo, 2020/03/07
@@ -223,6 +234,10 @@ feature -- da continuare
 			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", t.count = 7)
 			assert ("errore: il valore non viene aggiunto all'inizio se non trovo il target", attached t.first_element as fe implies fe.value = 4)
 		end
+
+		--to do: t_insert_multiple_after
+
+feature -- Remove single free
 
 	t_remove_active
 			-- Riccardo Malandruccolo, 2020/03/07
@@ -260,6 +275,30 @@ feature -- da continuare
 
 		end
 
+		--to do: t_remove_latest
+
+feature -- Remove multiple free
+
+	t_wipeout
+			-- Claudia Agulini, 2020/03/08
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (1)
+			t.append (3)
+			t.append (5)
+				-- [1, 3, 5]
+				-- t.count = 3
+			t.wipeout
+			assert ("errore: non ha eliminato first_element", t.first_element = Void)
+			assert ("errore: non ha eliminato active_element", t.active_element = Void)
+			assert ("errore: non ha eliminato last_element", t.last_element = Void)
+			assert ("errore: non ha eliminato tutti gli elementi", t.count = 0)
+		end
+
+feature --Other
+
 	t_invert
 			-- Federico Fiorini, 2020/03/08
 		local
@@ -290,6 +329,12 @@ feature -- da continuare
 			end
 		end
 
+feature -- Manipulation
+
+	--to do: t_head_list
+
+feature -- Computation
+
 	t_sum_of_positive
 			--Giulia Iezzi 2020/03/08
 		local
@@ -303,23 +348,32 @@ feature -- da continuare
 			assert ("la lista contiene 1 ,2 e -1, fa 3?", t.sum_of_positive = 3)
 		end
 
-	t_wipeout
-			-- Claudia Agulini, 2020/03/08
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (1)
-			t.append (3)
-			t.append (5)
-				-- [1, 3, 5]
-				-- t.count = 3
-			t.wipeout
-			assert ("errore: non ha eliminato first_element", t.first_element = Void)
-			assert ("errore: non ha eliminato active_element", t.active_element = Void)
-			assert ("errore: non ha eliminato last_element", t.last_element = Void)
-			assert ("errore: non ha eliminato tutti gli elementi", t.count = 0)
+		--to do: t_higest
+
+feature -- Convenience
+
+	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
+		-- return how many times `a_value' occurs in `t'
+	local
+		current_element: INT_LINKABLE
+	do
+		if t.count=0 then
+			Result := 0
+		else
+			from current_element := t.first_element
+			until current_element = Void
+			loop
+				if current_element.value = a_value then
+					Result := Result + 1
+				end
+				current_element := current_element.next
+			end
 		end
+	end
+	--to do: t_printout		
+
+
+feature -- Controllo lista
 
 	t_lista_vuota
 		-- Calzuola e Malandruccolo 2020/03/21
@@ -371,28 +425,6 @@ feature -- da continuare
 			assert("il first_element non è impostato correttamente", attached t_due.first_element as fe and then fe.value = a_value)
 			assert("il last_element non è impostato correttamente", attached t_due.last_element as le and then le.value = 2*a_value)
 		end
-
-feature -- Convenienza
-
-	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
-		-- return how many times `a_value' occurs in `t'
-	local
-		current_element: INT_LINKABLE
-	do
-		if t.count=0 then
-			Result := 0
-		else
-			from current_element := t.first_element
-			until current_element = Void
-			loop
-				if current_element.value = a_value then
-					Result := Result + 1
-				end
-				current_element := current_element.next
-			end
-		end
-	end
-
 
 
 end
