@@ -165,9 +165,70 @@ feature -- Inserimento singolo vincolato
 			end
 		end
 
-		--to do: t_insert_before; t_insert_before_with_2_cursors
+	t_insert_before
+			-- Maria Ludovica Sarandrea, 2021/03/26
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.insert_before (3, 5)
+			assert ("t era vuota, ma t non ha inserito 3", t.has (3))
+			t.wipeout
+			t.append (6)
+			t.insert_before (3,5)
+			if attached t.first_element as fe then
+				assert ("t conteneva solo 6, ma t non ha inserito 3 al primo posto", fe.value = 3)
+			end
+			t.wipeout
+			t.append (5)
+			t.insert_before (3,5)
+			if attached t.first_element as fe then
+				assert ("t conteneva solo 5, ma t non ha inserito 3 al primo posto", fe.value = 3)
+			end
+			t.wipeout
+			t.append (6); t.append (5)
+			t.insert_before (3,5)
+			assert ("t vale [6,5], ma t non ha inserito 3 prima di 5", t.value_after(5,3))
+			t.wipeout
+			t.append (4); t.append (6)
+			t.insert_before (3,5)
+			if attached t.first_element as fe then
+				assert ("t vale [4,6], ma t non ha inserito 3 al primo posto", fe.value = 3)
+			end
+		end
+
+		--to do:t_insert_before_with_2_cursors
 
 feature --Status
+
+	t_value_follows
+			--Maria Ludovica Sarandrea, 2021/03/26
+		local
+				t: INT_LINKED_LIST
+		do
+			create t
+			assert("t è vuota, ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			t.append (6)
+			assert("t contiene solo 6, ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			t.wipeout
+			t.append (5)
+			assert("t contiene solo 5, ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			t.wipeout
+			t.append (5);t.append (3)
+			assert("t vale [5,3], ma t non trova 3 dopo 5", t.value_follows (3, 5))
+			t.wipeout
+			t.append (5);t.append (4)
+			assert("t vale [5,4], ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			t.wipeout
+			t.append (6);t.append (4)
+			assert("t vale [6,4], ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			t.wipeout
+			t.append (3);t.append (5);t.append (6)
+			assert("t vale [3,5,6], ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			t.wipeout
+			t.append (5);t.append (6);t.append (3)
+			assert("t vale [5,6,3], ma t non trova 3 dopo 5", t.value_follows (3, 5))
+		end
 
 	t_value_after
 			-- Enrico Nardelli, 2021/03/23
