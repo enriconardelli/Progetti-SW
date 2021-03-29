@@ -298,7 +298,7 @@ feature -- Insertion multiple targeted
 
 		--to do: t_insert_multiple_after
 
-feature -- Remove single free
+feature -- Removal single free
 
 	t_remove_active
 			-- Riccardo Malandruccolo, 2020/03/07
@@ -336,7 +336,53 @@ feature -- Remove single free
 
 		end
 
-		--to do: t_remove_latest
+		t_remove_latest
+			-- Sara Forte, 2021/03/28
+			local
+				t: INT_LINKED_LIST
+			do
+				create t
+				t.append (2)
+				-- [2]
+				t.remove_latest (2)
+				assert("errore: non è stato rimossa l'ulnica occorrenza del numero 2", not t.has (2))
+				assert("errore: la lista è vuota, ma l'active element non è vuoto" , t.active_element = Void)
+				t.wipeout
+
+				t.append (1)
+				-- [1]
+				t.remove_latest (2)
+				assert("errore: la lista non conteneva l'elemento 2, ma è stato rimosso un elemento", t.has (1))
+				t.wipeout
+
+				t.append (1) ; t.append (2)
+				-- [1,2]
+				t.remove_latest (2)
+				assert("errore: non è stato rimossa l'ulnica occorrenza del numero 2", not t.has (2))
+				assert("errore: non è posizionato correttamente l'active element",attached t.active_element as ae implies ae.value = 1)
+				t.wipeout
+				t.append (2) ; t.append (1)
+				-- [2,1]
+				t.remove_latest (2)
+				assert("errore: non è stato rimossa l'ulnica occorrenza del numero 2", not t.has (2))
+				assert("errore: non è posizionato correttamente l'active element",attached t.active_element as ae implies ae.value = 1)
+				t.wipeout
+				t.append (2) ; t.append (3); t.append (1); t.append (2)
+				-- [2,3,1,2]
+				t.remove_latest (2)
+				assert("errore: non è stato rimosso alcun elemento ", t.count /= 4)
+				assert("errore: sono stati rimossi più di un elemento ", t.count /= 2)
+				assert("errore: non è stata rimossa l'ultima occorrenza dell'elemento 2",attached t.last_element as le implies le.value = 1)
+				assert("errore: non è posizionato correttamente l'active element",attached t.active_element as ae implies ae.value = 1)
+				assert("errore: è stata rimosa la prima occorrenza dell'elemento 2", attached t.first_element as fe implies fe.value = 2)
+
+
+
+
+
+			end
+
+
 
 feature -- Remove multiple free
 
