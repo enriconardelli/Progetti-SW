@@ -41,7 +41,7 @@ feature -- Spostamento del cursore
 			assert ("errore: la lista è vuota, ma l'elemento attivo non e' vuoto", t.active_element = void)
 			t.append (3)
 			t.last
-			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' il primo", t.active_element /= t.first_element)
+			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' il primo", t.active_element = t.first_element)
 			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' l'ultimo", t.active_element = t.last_element)
 			if attached t.active_element as ae then
 				assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' quello inserito", ae.value = 3)
@@ -64,11 +64,11 @@ feature -- Spostamento del cursore
 			create t
 			assert ("la lista è vuota, active element è void", t.active_element = Void)
 			t.append (3)
-			t.forth
+			if t.active_element /= Void then t.forth end
 			assert ("l'active element è 3 ed è il last element , dopo forth è Void?", t.active_element = Void)
 			t.append (4)
 			t.start
-			t.forth
+			if t.active_element /= Void then t.forth end
 			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
 		end
 feature -- Ricerca
@@ -274,10 +274,10 @@ feature -- Insertion multiple targeted
 			create t
 			t.insert_multiple_before (3, 10)
 				-- [3]
-			assert ("errore: su lista vuota non aggiunge il valore", t.has (3))
+			assert ("errore: su lista vuota non aggiunge il valore", how_many(t, 3) = 1)
 			assert ("errore: su lista vuota l'elemento aggiunto non è first_element", attached t.first_element as fe implies fe.value = 3)
 			assert ("errore: su lista vuota l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
-			assert ("errore: su lista vuota l'elemento aggiunto non è active_element", attached t.active_element as ae implies ae.value = 3)
+			assert ("errore: su lista vuota l'elemento aggiunto è diventato active_element", t.active_element = Void)
 			t.append (2)
 			t.append (1)
 			t.append (3)
@@ -285,13 +285,13 @@ feature -- Insertion multiple targeted
 
 			t.insert_multiple_before (5, 3)
 				-- [5,3,2,1,5,3]
-			assert ("errore: non aggiunge il valore", t.has (5))
+			assert ("errore: non aggiunge il valore due volte", how_many (t, 5) = 2)
 			assert ("errore: se inserisce il valore all'inizio, il first_element non cambia", attached t.first_element as fe implies fe.value = 5)
 			assert ("errore: non aggiunge il valore prima del target", attached t.get_element (5) as el and then attached el.next as eln implies eln.value = 3)
 			assert ("errore: non aggiunge il valore più volte", t.count = 6)
 			t.insert_multiple_before (4, 7)
 				-- [4,5,3,2,1,5,3]
-			assert ("errore: il valore non viene aggiunto se non trovo il target", t.has (4))
+			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", how_many(t, 4) = 1)
 			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", t.count = 7)
 			assert ("errore: il valore non viene aggiunto all'inizio se non trovo il target", attached t.first_element as fe implies fe.value = 4)
 		end
@@ -303,22 +303,23 @@ feature -- Insertion multiple targeted
 		do
 			create t
 			t.insert_multiple_after (3, 5)
-			assert ("errore: su lista vuota non aggiunge il valore", t.has (3))
+			assert ("errore: su lista vuota non aggiunge il valore", how_many(t, 3) = 1)
 			assert ("errore: su lista vuota l'elemento aggiunto non è first_element", attached t.first_element as fe implies fe.value = 3)
 			assert ("errore: su lista vuota l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
-			assert ("errore: su lista vuota l'elemento aggiunto non è active_element", attached t.active_element as ae implies ae.value = 3)
+			assert ("errore: su lista vuota l'elemento aggiunto è diventato active_element", t.active_element = Void)
 			t.wipeout
 			t.append (2) ; t.append (5) ;	t.append (1) ; t.append (5)
 			t.insert_multiple_after (3, 5)
-			assert ("errore: non aggiunge il valore ", t.has (3))
+			assert ("errore: non aggiunge il valore due volte", how_many (t, 3) = 2)
 			assert ("errore: se inserisce il valore alla fine, il last_element non cambia", attached t.last_element as le implies le.value = 3)
-			assert ("errore: non aggiunge il valore dopo del target", attached t.get_element (5) as el and then attached el.next as eln implies eln.value = 3)
+			assert ("errore: non aggiunge il valore dopo il target", attached t.get_element (5) as el and then attached el.next as eln implies eln.value = 3)
 			assert ("errore: non aggiunge il valore più volte", t.count = 6)
 			t.wipeout
 			t.append (2) ; t.append (4) ;	t.append (1)
 			t.insert_multiple_after (3, 5)
-			assert ("errore: non aggiunge il valore ", t.has (3))
-			assert ("errore: su lista vuota l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
+			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", how_many(t, 3) = 1)
+			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", t.count = 4)
+			assert ("errore: su lista non vuota senza target l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
 		end
 feature -- Removal single free
 
@@ -367,7 +368,7 @@ feature -- Removal single free
 				t.append (2)
 				-- [2]
 				t.remove_latest (2)
-				assert("errore: non è stato rimossa l'ulnica occorrenza del numero 2", not t.has (2))
+				assert("errore: non è stato rimossa l'unica occorrenza di 2", not t.has (2))
 				assert("errore: la lista è vuota, ma l'active element non è vuoto" , t.active_element = Void)
 				t.wipeout
 
@@ -380,25 +381,37 @@ feature -- Removal single free
 				t.append (1) ; t.append (2)
 				-- [1,2]
 				t.remove_latest (2)
-				assert("errore: non è stato rimossa l'ulnica occorrenza del numero 2", not t.has (2))
-				assert("errore: non è posizionato correttamente l'active element",attached t.active_element as ae implies ae.value = 1)
+				assert("errore: non è stato rimossa l'unica occorrenza di 2", not t.has (2))
+				assert("errore: non è posizionato correttamente l'active element", t.active_element = Void)
 				t.wipeout
+				t.append (1) ; t.append (2); t.last
+				-- [1,2]
+				t.remove_latest (2)
+				assert("errore: non è stato rimossa l'unica occorrenza di 2", not t.has (2))
+				assert("errore: non è posizionato correttamente l'active element", attached t.active_element as ta implies ta.value = 1)
+				t.wipeout
+
 				t.append (2) ; t.append (1)
 				-- [2,1]
 				t.remove_latest (2)
-				assert("errore: non è stato rimossa l'ulnica occorrenza del numero 2", not t.has (2))
-				assert("errore: non è posizionato correttamente l'active element",attached t.active_element as ae implies ae.value = 1)
+				assert("errore: non è stato rimossa l'unica occorrenza di 2", not t.has (2))
+				assert("errore: non è posizionato correttamente l'active element", t.active_element = Void)
 				t.wipeout
+				t.append (2) ; t.append (1); t.start
+				-- [2,1]
+				t.remove_latest (2)
+				assert("errore: non è stato rimossa l'unica occorrenza di 2", not t.has (2))
+				assert("errore: non è posizionato correttamente l'active element", attached t.active_element as ta implies ta.value = 1)
+				t.wipeout
+
 				t.append (2) ; t.append (3); t.append (1); t.append (2)
 				-- [2,3,1,2]
 				t.remove_latest (2)
-				assert("errore: non è stato rimosso alcun elemento ", t.count /= 4)
-				assert("errore: sono stati rimossi più di un elemento ", t.count /= 2)
-				assert("errore: non è stata rimossa l'ultima occorrenza dell'elemento 2",attached t.last_element as le implies le.value = 1)
-				assert("errore: non è posizionato correttamente l'active element",attached t.active_element as ae implies ae.value = 1)
-				assert("errore: è stata rimosa la prima occorrenza dell'elemento 2", attached t.first_element as fe implies fe.value = 2)
-
-
+				assert("errore: non è stato rimosso alcun elemento ", not (t.count > 3))
+				assert("errore: sono stati rimossi più di un elemento ", not (t.count < 3))
+				assert("errore: non è stata rimossa l'ultima occorrenza dell'elemento 2", attached t.last_element as le implies le.value = 1)
+				assert("errore: non è posizionato correttamente l'active element", t.active_element = Void)
+				assert("errore: è stata rimossa la prima occorrenza dell'elemento 2", attached t.first_element as fe implies fe.value = 2)
 			end
 
 

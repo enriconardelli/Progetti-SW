@@ -16,8 +16,10 @@ feature -- Accesso
 			-- L'ultimo elemento della lista.
 
 	active_element: detachable INT_LINKABLE
-			-- L'elemento corrente della lista, cioï¿½ il cursore.
-			-- Puï¿½ essere Void anche se la lista non ï¿½ vuota.
+			-- L'elemento corrente della lista, cioè il cursore.
+			-- Può essere Void anche se la lista non è vuota.
+			-- Viene modificato solo dalle feature di spostamento del cursore
+			-- o dalle feature di cancellazione che rimuovono l'elemento corrente.
 
 	count: INTEGER
 			-- Il numero di elementi della lista.
@@ -42,6 +44,8 @@ feature -- Spostamento del cursore
 
 	forth
 			-- Sposta l'elemento corrente, se esiste, all'elemento successivo.
+		require
+			active_element /= Void
 		do
 			if attached active_element as ae then
 				active_element := ae.next
@@ -446,7 +450,6 @@ feature -- Insertion multiple targeted
 				if count = 0 then
 					first_element := new_element
 					last_element := new_element
-						--					active_element := first_element
 				else
 					if attached last_element as le then
 						new_element.link_after (le)
@@ -496,7 +499,6 @@ feature -- Insertion multiple targeted
 				if count = 0 then
 					first_element := new_element
 					last_element := new_element
-						--					active_element := first_element
 				else
 					new_element.link_to (first_element)
 					first_element := new_element
@@ -726,8 +728,8 @@ feature -- Removal single free
 		end
 
 	remove_latest (a_value: INTEGER)
-			-- remove the last occurrence of `a_value'
-			-- Update `active_element', if needed, to its successor, if exists, otherwise to its predecessor
+			-- Rimuove l'ultima occorrenza di `a_value'
+			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
 		require
 			elemento_esiste: count > 0
 		local
@@ -755,16 +757,16 @@ feature -- Removal single free
 					current_element := current_element.next
 				end
 				if pre_latest = Void then
-						-- `a_value' non ï¿½ presente oppure ï¿½ il primo elemento
+						-- `a_value' non è presente oppure è il primo elemento
 					if attached first_element as fe and then fe.value = a_value then
-							-- c'ï¿½ un sola occorrenza di a_value come primo elemento
+							-- c'è un sola occorrenza di a_value come primo elemento
 						if active_element = first_element then
 							active_element := fe.next
 						end
 						first_element := fe.next
 						count := count - 1
 					end
-				else -- `a_value' ï¿½ presente e non ï¿½ il primo elemento
+				else -- `a_value' è presente e non è il primo elemento
 					if attached pre_latest as pl and then attached pl.next as pln then
 						pl.link_to (pln.next)
 						if pln = last_element then
