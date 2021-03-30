@@ -296,8 +296,30 @@ feature -- Insertion multiple targeted
 			assert ("errore: il valore non viene aggiunto all'inizio se non trovo il target", attached t.first_element as fe implies fe.value = 4)
 		end
 
-		--to do: t_insert_multiple_after
-
+	 t_insert_multiple_after
+	 		-- Sara Forte, 2021/03/30
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.insert_multiple_after (3, 5)
+			assert ("errore: su lista vuota non aggiunge il valore", t.has (3))
+			assert ("errore: su lista vuota l'elemento aggiunto non è first_element", attached t.first_element as fe implies fe.value = 3)
+			assert ("errore: su lista vuota l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
+			assert ("errore: su lista vuota l'elemento aggiunto non è active_element", attached t.active_element as ae implies ae.value = 3)
+			t.wipeout
+			t.append (2) ; t.append (5) ;	t.append (1) ; t.append (5)
+			t.insert_multiple_after (3, 5)
+			assert ("errore: non aggiunge il valore ", t.has (3))
+			assert ("errore: se inserisce il valore alla fine, il last_element non cambia", attached t.last_element as le implies le.value = 3)
+			assert ("errore: non aggiunge il valore dopo del target", attached t.get_element (5) as el and then attached el.next as eln implies eln.value = 3)
+			assert ("errore: non aggiunge il valore più volte", t.count = 6)
+			t.wipeout
+			t.append (2) ; t.append (4) ;	t.append (1)
+			t.insert_multiple_after (3, 5)
+			assert ("errore: non aggiunge il valore ", t.has (3))
+			assert ("errore: su lista vuota l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
+		end
 feature -- Removal single free
 
 	t_remove_active
@@ -375,9 +397,6 @@ feature -- Removal single free
 				assert("errore: non è stata rimossa l'ultima occorrenza dell'elemento 2",attached t.last_element as le implies le.value = 1)
 				assert("errore: non è posizionato correttamente l'active element",attached t.active_element as ae implies ae.value = 1)
 				assert("errore: è stata rimosa la prima occorrenza dell'elemento 2", attached t.first_element as fe implies fe.value = 2)
-
-
-
 
 
 			end
