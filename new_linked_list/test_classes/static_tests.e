@@ -262,7 +262,37 @@ feature --Status
 			assert ("t vale [4, 5, 3]', ma non trova 3 subito dopo 5", t.value_after (3, 5))
 		end
 
-		--to do: t_value_follows
+	t_value_precedes
+			--Maria Ludovica Sarandrea, 2021/04/03
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert("t è vuota, ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			t.append (5)
+			assert("t contiene solo 5, ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			t.wipeout
+			t.append (6)
+			assert("t contiene solo 6, ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			t.wipeout
+			t.append (5); t.append (3)
+			assert("t vale [5,3], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			t.wipeout
+			t.append (3); t.append (5)
+			assert("t vale [3,5], ma t non contiene 3 prima di 5", t.value_precedes (3, 5))
+			t.wipeout
+			t.append (6); t.append (5)
+			assert("t vale [6,5], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			t.wipeout
+			t.append (3); t.append (6)
+			assert("t vale [3,6], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			t.wipeout
+			t.append (3); t.append (5); t.append (6)
+			assert("t vale [3,5,6], ma t non contiene 3 prima di 5", t.value_precedes (3, 5))
+			t.wipeout
+			t.append (4); t.append (5); t.append (6)
+			assert("t vale [4,5,6], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+		end
 
 feature -- Insertion multiple targeted
 
@@ -357,6 +387,67 @@ feature -- Removal single free
 			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element = Void)
 			assert ("errore: non è stato modificato il last_element correttamente", t.last_element = Void)
 
+		end
+
+	t_remove_earliest
+		--Maria Ludovica Sarandrea, 2021/04/03
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (3)
+				--t = [3]
+			t.remove_earliest (3)
+			assert("Non è stata rimossa l'unica occorrenza di 3", not t.has (3))
+			assert("La lista è vuota, ma l'active element non è vuoto", t.active_element = Void)
+			t.wipeout
+			t.append (5)
+			-- t = [5]
+			t.remove_earliest (3)
+			assert("t non conteneva 3, ma è stato rimosso un elemento", t.has(5))
+			t.wipeout
+
+			t.append (3); t.append (5)
+			-- t = [3,5]
+			t.remove_earliest (3)
+			assert("t conteneva 3, ma 3 non è stato rimosso", not t.has (3))
+			assert("L'active element non è stato posizionato correttamente", t.active_element = Void)
+			t.wipeout
+			t.append (3); t.append (5); t.start
+			-- t = [3,5]
+			t.remove_earliest (3)
+			assert("t conteneva 3, ma 3 non è stato rimosso", not t.has (3))
+			assert("L'active element non è stato posizionato correttamente", attached t.active_element as ae implies ae.value = 5)
+			t.wipeout
+
+			t.append (5); t.append (3)
+			-- t = [5,3]
+			t.remove_earliest (3)
+			assert("t conteneva 3, ma 3 non è stato rimosso", not t.has (3))
+			assert("L'active element non è stato posizionato correttamente", t.active_element = Void)
+			t.wipeout
+			t.append (5); t.append (3); t.last
+			-- t = [5,3]
+			t.remove_earliest (3)
+			assert("t conteneva 3, ma 3 non è stato rimosso", not t.has (3))
+			assert("L'active element non è stato posizionato correttamente", attached t.active_element as ae implies ae.value = 5)
+			t.wipeout
+
+			t.append (2); t.append (3); t.append (5)
+			-- t = [2,3,5]
+			t.remove_earliest (3)
+			assert("t conteneva 3, ma 3 non è stato rimosso", not t.has (3))
+			assert("L'active element non è stato posizionato correttamente", t.active_element = Void)
+			t.wipeout
+
+			t.append (1); t.append (3); t.append (5); t.append (3); t.append (4)
+			-- t = [1,3,5,3,4]
+			t.remove_earliest (3)
+			assert("t conteneva due occorrenze di 3, ed è stato rimosso più di un elemento", not (t.count < 4))
+			assert("t conteneva due occorrenze di 3, ma 3 non è stato rimosso", not (t.count > 4))
+			assert("L'active element non è stato posizionato correttamente", t.active_element = Void)
+			assert("t conteneva due occorrenze di 3 e non è stata rimossa la prima", t.value_after (5, 1))
+			t.wipeout
 		end
 
 		t_remove_latest

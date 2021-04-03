@@ -371,27 +371,24 @@ feature -- Status
 			end
 		end
 
-	value_precedes_______________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
-			--
-			-- la lista contiene `a_value' prima della prima occorrenza di `target'?
+	value_precedes (a_value, target: INTEGER): BOOLEAN
+			--la lista contiene `a_value' prima della prima occorrenza di `target'?
+			--Maria Ludovica Sarandrea, 2021/04/03
 		local
-			-- current_element, temp: like first_element
+			current_element: like first_element
 		do
-				--			from
-				--				current_element := get_element(target)
-				--				temp := Void
-				--			invariant
-				--				current_element /= Void implies
-				--				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
-				--			until
-				--				(current_element = Void) or (current_element.value = a_value)
-				--			loop
-				--				temp := current_element
-				--				current_element := current_element.next
-				--			end
-				--			if (current_element /= Void and then current_element.value = a_value) then
-				--				Result := True
-				--			end
+			if has(target) then
+				from
+					current_element := first_element
+				until
+					attached current_element as ce implies (ce.value = target or ce.value = a_value)
+				loop
+					current_element := ce.next
+				end
+				if attached current_element as ce and then ce.value = a_value then
+					Result := True
+				end
+			end
 		end
 
 	value_before___________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
@@ -686,45 +683,54 @@ feature -- Removal single free
 				--			rimosso_elemento_se_esiste: old has(a_value) implies count = old count - 1
 		end
 
-	remove_earliest_______________DA_IMPLEMENTARE (a_value: INTEGER)
-			-- Remove the first occurrence of `a_value', if exists
-			-- Update `active_element', if needed, to its successor, if exists, otherwise to its predecessor
+	remove_earliest (a_value: INTEGER)
+			-- Rimuovere la prima occorrenza di `a_value', se esiste
+			-- Aggiornare `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
+			-- Maria Ludovica Sarandrea, 2021/04/03
 		require
 			not_empty_list: count > 0
 		local
 			current_element, pre_current: like first_element
 		do
-				--			from
-				--				current_element := first_element
-				--				pre_current := Void
-				--			invariant
-				--				-- TO CHECK alternative version to the invariant in remove_last
-				--				-- current_element /= Void implies (current_element.value /= a_value implies (pre_current /= Void implies pre_current.value /= a_value))
-				--			until
-				--				(current_element = Void) or else (current_element.value = a_value)
-				--			loop
-				--				pre_current := current_element
-				--				current_element := current_element.next
-				--			end
-				--			if current_element /= Void then
-				--			-- la lista contiene `a_value'
-				--				if current_element = active_element then
-				--					remove_active
-				--				else -- la lista contiene almeno due elementi
-				--					if current_element = first_element then
-				--						first_element := first_element.next
-				--					elseif current_element = last_element then
-				--						last_element := pre_current
-				--						last_element.link_to (Void)
-				--					else -- `current_element'  e' elemento intermedio della lista
-				--						pre_current.link_to (current_element.next)
-				--					end
-				--					count := count - 1
-				--				end
-				--			end
-				--		ensure
-				--			element_removed_if_exists: old has(a_value) implies count = old count - 1
-				--			element_removed_if_first: old first_element.value = a_value implies first_element = old first_element.next
+			if count = 1 then
+				if attached first_element as fe and then fe.value = a_value then
+					first_element := Void
+					active_element := Void
+					last_element := Void
+					count := 0
+				end
+			else
+				from
+					current_element := first_element
+					pre_current := Void
+				until
+					(current_element = Void) or (attached current_element as ce implies ce.value = a_value)
+				loop
+					pre_current := ce
+					current_element := ce.next
+				end
+				if current_element /= Void then
+					if current_element = active_element then
+						remove_active
+					else
+						if current_element = first_element then
+							if attached first_element as fe then
+								first_element:= fe.next
+							end
+						elseif current_element = last_element then
+							last_element := pre_current
+							if attached last_element as le then
+								le.link_to (Void)
+							end
+						else -- `current_element' è un elemento intermedio della lista
+							if attached pre_current as pe then
+								pe.link_to (current_element.next)
+							end
+						end
+						count := count - 1
+					end
+				end
+			end
 		end
 
 	remove_latest (a_value: INTEGER)
