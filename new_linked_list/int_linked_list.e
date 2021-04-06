@@ -1009,11 +1009,10 @@ feature -- Removal multiple free
 					pre_current := current_element
 					current_element := current_element.next
 				end
---				ensure
---					rimosso_elemento_se_esiste: old has(a_value) implies count <= (old count - 1)
---	    	 	end
-		end
-	end
+			end
+		ensure
+			rimosso_elemento_se_esiste: old has(a_value) implies count < old count
+	    end
 
 	wipeout
 			-- remove all elements

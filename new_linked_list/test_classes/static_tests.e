@@ -601,13 +601,11 @@ feature -- Removal multiple free
 				t.remove_all (3)
 				assert("errore, non è stato rimosso 3", not t.has (3))
 
-
 				t.append (3) ; t.append (1) ; t.append (2) ; t.append (3) ; t.append (1) ; t.append (3)
 				t.remove_all (3)
 				assert("errore, non è stato rimosso 3", not t.has (3))
 				assert("errore, oltre ai valori 3 sono stati rimossi altri elementi", not (t.count < 3))
 				t.wipeout
-
 
 				t.append (1) ; t.append (2)
 				t.remove_all (3)
