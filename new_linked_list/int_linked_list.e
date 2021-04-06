@@ -393,16 +393,15 @@ feature -- Status
 
 	value_before (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
+			-- Sara Forte 2021/04/03
 		local
 			 current_element, next_element: like first_element
 		do
 			current_element := get_element(a_value)
 			if attached current_element as ce then
 				next_element := ce.next
-				if attached next_element as ne then
-					if ne.value = target then
-						result := True
-					end
+				if attached next_element as ne and then ne.value = target then
+					Result := True
 				end
 			end
 		end
