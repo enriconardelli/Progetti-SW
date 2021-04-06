@@ -451,7 +451,13 @@ feature -- Removal single free
 		do
 			create t
 			t.append (3)
-				--t = [3]
+			-- t = [3]
+			t.remove_earliest (3)
+			assert("Non è stata rimossa l'unica occorrenza di 3", not t.has (3))
+			t.wipeout
+			t.append (3)
+			t.last
+			-- t = [3]
 			t.remove_earliest (3)
 			assert("Non è stata rimossa l'unica occorrenza di 3", not t.has (3))
 			assert("La lista è vuota, ma l'active element non è vuoto", t.active_element = Void)
@@ -466,7 +472,6 @@ feature -- Removal single free
 			-- t = [3,5]
 			t.remove_earliest (3)
 			assert("t conteneva 3, ma 3 non è stato rimosso", not t.has (3))
-			assert("L'active element non è stato posizionato correttamente", t.active_element = Void)
 			t.wipeout
 			t.append (3); t.append (5); t.start
 			-- t = [3,5]
@@ -479,7 +484,6 @@ feature -- Removal single free
 			-- t = [5,3]
 			t.remove_earliest (3)
 			assert("t conteneva 3, ma 3 non è stato rimosso", not t.has (3))
-			assert("L'active element non è stato posizionato correttamente", t.active_element = Void)
 			t.wipeout
 			t.append (5); t.append (3); t.last
 			-- t = [5,3]
@@ -492,7 +496,12 @@ feature -- Removal single free
 			-- t = [2,3,5]
 			t.remove_earliest (3)
 			assert("t conteneva 3, ma 3 non è stato rimosso", not t.has (3))
-			assert("L'active element non è stato posizionato correttamente", t.active_element = Void)
+			t.wipeout
+			t.append (2); t.append (3); t.append (5); t.start; t.forth
+			-- t = [2,3,5]
+			t.remove_earliest (3)
+			assert("t conteneva 3, ma 3 non è stato rimosso", not t.has (3))
+			assert("L'active element non è stato posizionato correttamente", attached t.active_element as ta implies ta.value = 5)
 			t.wipeout
 
 			t.append (1); t.append (3); t.append (5); t.append (3); t.append (4)
@@ -500,9 +509,16 @@ feature -- Removal single free
 			t.remove_earliest (3)
 			assert("t conteneva due occorrenze di 3, ed è stato rimosso più di un elemento", not (t.count < 4))
 			assert("t conteneva due occorrenze di 3, ma 3 non è stato rimosso", not (t.count > 4))
-			assert("L'active element non è stato posizionato correttamente", t.active_element = Void)
 			assert("t conteneva due occorrenze di 3 e non è stata rimossa la prima", t.value_after (5, 1))
 			t.wipeout
+			t.append (1); t.append (3); t.append (5); t.append (3); t.append (4); t.start; t.forth
+			-- t = [1,3,5,3,4]
+			t.remove_earliest (3)
+			assert("t conteneva due occorrenze di 3, ed è stato rimosso più di un elemento", not (t.count < 4))
+			assert("t conteneva due occorrenze di 3, ma 3 non è stato rimosso", not (t.count > 4))
+			assert("L'active element non è stato posizionato correttamente", attached t.active_element as ta implies ta.value = 5)
+			assert("t conteneva due occorrenze di 3 e non è stata rimossa la prima", t.value_after (5, 1))
+
 		end
 
 		t_remove_latest
@@ -512,6 +528,11 @@ feature -- Removal single free
 			do
 				create t
 				t.append (2)
+				-- [2]
+				t.remove_latest (2)
+				assert("errore: non è stato rimossa l'unica occorrenza di 2", not t.has (2))
+				t.wipeout
+				t.append (2); t.start
 				-- [2]
 				t.remove_latest (2)
 				assert("errore: non è stato rimossa l'unica occorrenza di 2", not t.has (2))
@@ -528,7 +549,6 @@ feature -- Removal single free
 				-- [1,2]
 				t.remove_latest (2)
 				assert("errore: non è stato rimossa l'unica occorrenza di 2", not t.has (2))
-				assert("errore: non è posizionato correttamente l'active element", t.active_element = Void)
 				t.wipeout
 				t.append (1) ; t.append (2); t.last
 				-- [1,2]
@@ -541,7 +561,6 @@ feature -- Removal single free
 				-- [2,1]
 				t.remove_latest (2)
 				assert("errore: non è stato rimossa l'unica occorrenza di 2", not t.has (2))
-				assert("errore: non è posizionato correttamente l'active element", t.active_element = Void)
 				t.wipeout
 				t.append (2) ; t.append (1); t.start
 				-- [2,1]
@@ -550,14 +569,22 @@ feature -- Removal single free
 				assert("errore: non è posizionato correttamente l'active element", attached t.active_element as ta implies ta.value = 1)
 				t.wipeout
 
-				t.append (2) ; t.append (3); t.append (1); t.append (2)
-				-- [2,3,1,2]
+				t.append (2) ; t.append (3); t.append (2); t.append (1)
+				-- [2,3,2,1]
 				t.remove_latest (2)
 				assert("errore: non è stato rimosso alcun elemento ", not (t.count > 3))
 				assert("errore: sono stati rimossi più di un elemento ", not (t.count < 3))
 				assert("errore: non è stata rimossa l'ultima occorrenza dell'elemento 2", attached t.last_element as le implies le.value = 1)
-				assert("errore: non è posizionato correttamente l'active element", t.active_element = Void)
 				assert("errore: è stata rimossa la prima occorrenza dell'elemento 2", attached t.first_element as fe implies fe.value = 2)
+				t.wipeout
+				t.append (2) ; t.append (3); t.append (2); t.append (1); t.start; t.forth; t.forth
+				-- [2,3,2,1]
+				t.remove_latest (2)
+				assert("errore: non è stato rimosso alcun elemento ", not (t.count > 3))
+				assert("errore: sono stati rimossi più di un elemento ", not (t.count < 3))
+				assert("errore: non è stata rimossa l'ultima occorrenza dell'elemento 2", attached t.last_element as le implies le.value = 1)
+				assert("errore: è stata rimossa la prima occorrenza dell'elemento 2", attached t.first_element as fe implies fe.value = 2)
+				assert("errore: non è posizionato correttamente l'active element", attached t.active_element as ta implies ta.value = 1)
 			end
 
 
