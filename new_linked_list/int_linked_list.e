@@ -391,26 +391,20 @@ feature -- Status
 			end
 		end
 
-	value_before___________DA_IMPLEMENTARE (a_value, target: INTEGER): BOOLEAN
+	value_before (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
 		local
-			-- current_element, temp: like first_element
+			 current_element, next_element: like first_element
 		do
-				--			from
-				--				current_element := get_element(target)
-				--				temp := Void
-				--			invariant
-				--				current_element /= Void implies
-				--				  (current_element.value /= a_value implies (temp /= Void implies temp.value /= a_value))
-				--			until
-				--				(current_element = Void) or (current_element.value = a_value)
-				--			loop
-				--				temp := current_element
-				--				current_element := current_element.next
-				--			end
-				--			if (current_element /= Void and then current_element.value = a_value) then
-				--				Result := True
-				--			end
+			current_element := get_element(a_value)
+			if attached current_element as ce then
+				next_element := ce.next
+				if attached next_element as ne then
+					if ne.value = target then
+						result := True
+					end
+				end
+			end
 		end
 
 feature -- Insertion multiple targeted
@@ -966,7 +960,7 @@ feature -- Removal single targeted
 
 feature -- Removal multiple free
 
-	remove_all____TO_MAKE_VOID_SAFE (a_value: INTEGER)
+	remove_all (a_value: INTEGER)
 			-- Rimuove tutti gli elementi della lista che contengono `a_value', se esistono
 			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
 		require
@@ -974,38 +968,53 @@ feature -- Removal multiple free
 		local
 			current_element, pre_current: like first_element
 		do
-				--			from
-				--				current_element := first_element
-				--				pre_current := Void
-				----			invariant
-				----              -- invariante per questo � ancora da scrivere
-				--			until
-				--				current_element = Void
-				--			loop
-				--				if current_element.value = a_value then
-				--					if current_element = active_element then
-				--						remove_active
-				--					else -- la lista ha almeno due elementi
-				--						if current_element = first_element then
-				--							-- `current_element' e' il primo elemento della lista che ha almeno due elementi
-				--							first_element := first_element.next
-				--						elseif current_element = last_element then
-				--							-- `current_element' e' l'ultimo elemento della lista che ha almeno due elementi
-				--							last_element := pre_current
-				--							last_element.link_to (Void)
-				--						else
-				--							-- `current_element' e' elemento intermedio della lista che ha almeno tre elementi
-				--							pre_current.link_to(current_element.next)
-				--						end
-				--						count := count - 1
-				--					end
-				--				end
-				--				pre_current := current_element
-				--				current_element := current_element.next
-				--			end
-				--		ensure
-				--			rimosso_elemento_se_esiste: old has(a_value) implies count <= old count - 1
+			if count = 1 then
+				if attached first_element as fe and then fe.value = a_value then
+					first_element := Void
+					active_element := Void
+					last_element := Void
+					count := 0
+				end
+			else -- la lista ha almeno due elementi
+				from
+					current_element := first_element
+					pre_current := Void
+				until
+					current_element = Void
+				loop
+					if current_element.value = a_value then
+						if current_element = active_element then
+							remove_active
+						else
+							if current_element = first_element then
+							-- `current_element' e' il primo elemento della lista che ha almeno due elementi
+								if attached first_element as fe and then fe.value = a_value then
+										first_element := fe.next
+								end
+							elseif current_element = last_element then
+							-- `current_element' e' l'ultimo elemento della lista che ha almeno due elementi
+									last_element := pre_current
+									if attached last_element as le then
+										le.link_to (Void)
+									end
+
+							else
+							-- `current_element' e' elemento intermedio della lista che ha almeno tre elementi
+								if attached pre_current as pc and then attached pc.next as pcn then
+									pc.link_to(pcn.next)
+								end
+							end
+							count := count - 1
+						end
+					end
+					pre_current := current_element
+					current_element := current_element.next
+				end
+--				ensure
+--					rimosso_elemento_se_esiste: old has(a_value) implies count <= (old count - 1)
+--	    	 	end
 		end
+	end
 
 	wipeout
 			-- remove all elements

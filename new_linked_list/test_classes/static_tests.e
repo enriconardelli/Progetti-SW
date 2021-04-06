@@ -294,6 +294,57 @@ feature --Status
 			assert("t vale [4,5,6], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
 		end
 
+		t_value_before
+			--Sara Forte 2021/03/31
+			local
+				t: INT_LINKED_LIST
+			do
+				create t
+				-- []
+				assert("errore: la lista è vuota ma è stato trovato 5 subito prima di 3", not t.value_before(5,3))
+
+				t.append (3)
+				-- [3]
+				assert("errore: è stato trovato 5 subito prima di 3, ma la lista contiene solo 3", not t.value_before (5, 3))
+				t.wipeout
+
+				t.append (5)
+				-- [5]
+				assert("errore: è stato trovato 5 subito prima di 3, ma la lista contiene solo 5", not t.value_before (5, 3))
+				t.wipeout
+
+				 t.append (5); t.append (3);
+				 -- [5,3]
+				 assert("errore non è stato trovato 5 subito prima di 3", t.value_before (5, 3))
+				 t.wipeout
+
+				 t.append (2); t.append (3);
+				 -- [2,3]
+				 assert("errore: è stato trovato 5 subito prima di 3, ma 5 non era nella lista", not t.value_before (5, 3))
+
+				 t.append (5)
+				 -- [2,3,5]
+				 assert("errore: è stato tovato 5 subito prima di 3, ma era dopo", not t.value_before (5, 3))
+				 t.wipeout
+
+				 t.append (3);t.append (5)
+				 -- [3,5]
+				 assert("errore: è stato tovato 5 subito prima di 3, ma era dopo", not t.value_before (5, 3))
+
+				 t.append (2); t.append (3);
+				 -- [3,5,2,3]
+				 assert("errore: è stato trovato 5 subito prima di 3, ma c'è un altro valore in mezzo", not t.value_before (5, 3))
+				 t.wipeout
+
+				 t.append (2) ; t.append (5) ; t.append (3);
+				 -- [2,5,3]
+				 assert("errore non è stato trovato 5 subito prima di 3", t.value_before (5, 3))
+
+			end
+
+
+		--to do: t_value_follows
+
 feature -- Insertion multiple targeted
 
 	t_insert_multiple_before
@@ -347,9 +398,13 @@ feature -- Insertion multiple targeted
 			t.wipeout
 			t.append (2) ; t.append (4) ;	t.append (1)
 			t.insert_multiple_after (3, 5)
+
 			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", how_many(t, 3) = 1)
 			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", t.count = 4)
 			assert ("errore: su lista non vuota senza target l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
+			assert ("errore: non aggiunge il valore ", t.has (3))
+
+			assert ("errore: su lista vuota l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
 		end
 feature -- Removal single free
 
@@ -507,7 +562,31 @@ feature -- Removal single free
 
 
 
-feature -- Remove multiple free
+feature -- Removal multiple free
+
+	t_remove_all
+		-- Sara Forte, 2021/03/31
+		local
+				t: INT_LINKED_LIST
+			do
+				create t
+				t.append (3)
+				t.remove_all (3)
+				assert("errore, non è stato rimosso 3", not t.has (3))
+
+
+				t.append (3) ; t.append (1) ; t.append (2) ; t.append (3) ; t.append (1) ; t.append (3)
+				t.remove_all (3)
+				assert("errore, non è stato rimosso 3", not t.has (3))
+				assert("errore, oltre ai valori 3 sono stati rimossi altri elementi", not (t.count < 3))
+				t.wipeout
+
+
+				t.append (1) ; t.append (2)
+				t.remove_all (3)
+				assert("errore: 3 non era presente, ma è stato rimosso un elemento", not (t.count < 2))
+
+			end
 
 	t_wipeout
 			-- Claudia Agulini, 2020/03/08
