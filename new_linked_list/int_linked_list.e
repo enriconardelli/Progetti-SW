@@ -60,10 +60,12 @@ feature -- Ricerca
 			-- La lista contiene `a_value'?
 		local
 			current_element, previous_element: like first_element
+			k: INTEGER
 		do
 			from
 				current_element := first_element
 				previous_element := Void
+				k := 0
 			invariant
 				not Result implies (previous_element /= Void implies previous_element.value /= a_value)
 				Result implies (previous_element /= Void implies previous_element.value = a_value)
@@ -75,6 +77,9 @@ feature -- Ricerca
 				end
 				previous_element := current_element
 				current_element := current_element.next
+				k := k + 1
+			variant
+				count - k
 			end
 		end
 
@@ -82,10 +87,12 @@ feature -- Ricerca
 			-- Ritorna il primo elemento che contiene `a_value', se esiste.
 		local
 			current_element, previous_element: like first_element
+			k: INTEGER
 		do
 			from
 				current_element := first_element
 				previous_element := Void
+				k := 0
 			invariant
 				previous_element /= Void implies previous_element.value /= a_value
 			until
@@ -93,6 +100,9 @@ feature -- Ricerca
 			loop
 				previous_element := current_element
 				current_element := current_element.next
+				k := k + 1
+			variant
+				count - k
 			end
 			Result := current_element
 		ensure
