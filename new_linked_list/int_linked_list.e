@@ -59,7 +59,7 @@ feature -- Ricerca
 	has (a_value: INTEGER): BOOLEAN
 			-- La lista contiene `a_value'?
 		local
-			current_element, previous_element: like first_element
+			current_element, previous_element: detachable INT_LINKABLE -- like first_element
 			k: INTEGER
 		do
 			from
@@ -81,6 +81,35 @@ feature -- Ricerca
 			variant
 				count - k
 			end
+		end
+
+	has_CON_ACTIVE (a_value: INTEGER): BOOLEAN
+			-- La lista contiene `a_value'?
+		local
+			currently_active, previous_element: like first_element
+			k: INTEGER
+		do
+			currently_active := active_element
+			from
+				start
+				previous_element := Void
+				k := 0
+			invariant
+				not Result implies (previous_element /= Void implies previous_element.value /= a_value)
+				Result implies (previous_element /= Void implies previous_element.value = a_value)
+			until
+				(active_element = Void) or Result
+			loop
+				if attached active_element as ae and then ae.value = a_value then
+					Result := True
+				end
+				previous_element := active_element
+				forth
+				k := k + 1
+			variant
+				count - k
+			end
+			active_element := currently_active
 		end
 
 	get_element (a_value: INTEGER): detachable INT_LINKABLE
@@ -347,29 +376,37 @@ feature -- Status
 	value_follows (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' in qualunque posizione dopo la prima occorrenza di `target'?
 			-- Claudia Agulini, 2020/03/08
+		require
+			contiene_il_target: has(target)
 		local
-			current_element, temp: like first_element
+			previous_element, current_element: like first_element
 		do
 			from
-				current_element := get_element (target)
-				temp := Void
+				current_element := get_element(target)
+				previous_element := Void
 			invariant
-				attached current_element as ce implies (ce.value /= a_value implies (attached temp as t implies t.value /= a_value))
+				attached current_element as ce implies
+					(ce.value /= a_value implies (attached previous_element as pe implies pe.value /= a_value))
 			until
 				(current_element = Void) or (attached current_element as ce and then ce.value = a_value)
 			loop
-				temp := current_element
+				previous_element := current_element
 				current_element := current_element.next
 			end
 			if attached current_element as ce and then ce.value = a_value then
 				Result := True
 			end
+		ensure
+--	TODO	serve una feature index_of(a_value) che fornisca l'indice della prima occorrenza di a_value e
+--	TODO	che permetta quindi di verificare che index_of(value) sia maggiore di index_of(target)
 		end
 
 	value_after (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito dopo la prima occorrenza di `target'?
+		require
+			contiene_il_target: has(target)
 		local
-			current_element, temp: like first_element
+			current_element: like first_element
 		do
 			current_element := get_element(target)
 			if attached current_element as ce then
@@ -379,31 +416,43 @@ feature -- Status
 					end
 				end
 			end
+		ensure
+			Result implies attached get_element(target) as t and then (attached t.next as tn implies tn.value = a_value)
 		end
 
 	value_precedes (a_value, target: INTEGER): BOOLEAN
 			--la lista contiene `a_value' prima della prima occorrenza di `target'?
 			--Maria Ludovica Sarandrea, 2021/04/03
+		require
+			contiene_il_target: has(target)
 		local
-			current_element: like first_element
+			previous_element, current_element: like first_element
 		do
-			if has(target) then
-				from
-					current_element := first_element
-				until
-					attached current_element as ce implies (ce.value = target or ce.value = a_value)
-				loop
-					current_element := ce.next
-				end
-				if attached current_element as ce and then ce.value = a_value then
-					Result := True
-				end
+			from
+				current_element := first_element
+				previous_element := Void
+			invariant
+				attached current_element as ce implies
+					(ce.value /= a_value and ce.value /= target)
+						implies (attached previous_element as pe implies (pe.value /= a_value and pe.value /= target))
+			until
+				attached current_element as ce implies (ce.value = a_value or ce.value = target)
+			loop
+				previous_element := current_element
+				current_element := current_element.next
 			end
+			if attached current_element as ce and then ce.value = a_value then
+				Result := True
+			end
+--	TODO	serve una feature index_of(a_value) che fornisca l'indice della prima occorrenza di a_value e
+--	TODO	che permetta quindi di verificare che index_of(value) sia minore di index_of(target)
 		end
 
 	value_before (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
 			-- Sara Forte 2021/04/03
+		require
+			contiene_il_target: has(target)
 		local
 			 current_element, next_element: like first_element
 		do
@@ -414,13 +463,15 @@ feature -- Status
 					Result := True
 				end
 			end
+		ensure
+			Result implies attached get_element(a_value) as t and then (attached t.next as tn implies tn.value = target)
 		end
 
 feature -- Insertion multiple targeted
 
 	insert_multiple_after (a_value, target: INTEGER)
 			-- inserisce `a_value' subito dopo ogni `target', se ne esistono
-			-- altrimenti inserisce `new' alla fine
+			-- altrimenti inserisce `a_value' alla fine
 			-- Federico Fiorini 2020/03/08
 		local
 			new_element, current_element: INT_LINKABLE
@@ -1040,7 +1091,7 @@ feature -- Removal multiple targeted
 			--if active_element is removed, it's reassigned to the preceding element
 			-- Giulia Iezzi 2020/03/11
 		require
-			has (target)
+			contiene_il_target: has (target)
 		local
 			target_element: like first_element
 			current_element: like first_element
@@ -1083,7 +1134,7 @@ feature -- Removal multiple targeted
 			-- remove all occurrences of `a_value' preceding first occurrence of `target'
 			-- Riccardo Malandruccolo, 2020/03/11
 		require
-			esiste_target: has (target)
+			contiene_il_target: has (target)
 		local
 			current_element, pre_current: like first_element
 		do
