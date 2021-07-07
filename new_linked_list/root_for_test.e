@@ -21,7 +21,6 @@ feature -- single feature test
 	test_has
 	-- implementata la relativa feature di test
 		do
-			print("ciao")
 			print (r + "test di has" + r)
 			create t
 			print ("t e' vuota, t contiene 3? ")
@@ -43,6 +42,33 @@ feature -- single feature test
 			print (r)
 			print ("t contiene 3 e 7, t contiene 7? ")
 			print (t.has (7))
+			print (r)
+		end
+
+	test_has_CON_ACTIVE
+	-- implementata la relativa feature di test
+		do
+			print (r + "test di has_CON_ACTIVE" + r)
+			create t
+			print ("t e' vuota, t contiene 3? ")
+			print (t.has_CON_ACTIVE (3))
+			print (r)
+			t.append (3)
+			print ("t contiene 3, t contiene 3? ")
+			print (t.has_CON_ACTIVE (3))
+			print (r)
+			print ("t contiene 3, t contiene 4? ")
+			print (t.has_CON_ACTIVE (4))
+			print (r)
+			t.append (7)
+			print ("t contiene 3 e 7, t contiene 3? ")
+			print (t.has_CON_ACTIVE (3))
+			print (r)
+			print ("t contiene 3 e 7, t contiene 4? ")
+			print (t.has_CON_ACTIVE (4))
+			print (r)
+			print ("t contiene 3 e 7, t contiene 7? ")
+			print (t.has_CON_ACTIVE (7))
 			print (r)
 		end
 
@@ -202,6 +228,7 @@ feature -- Inizialization
 			test_append
 			test_prepend
 			test_has
+			test_has_CON_ACTIVE
 			test_get_element
 			test_insert_after
 			test_insert_after_reusing
