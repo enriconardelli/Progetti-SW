@@ -10,15 +10,15 @@ class
 create
 	set_value
 
-feature -- Access
+feature -- accesso
 
 	value: INTEGER
 			-- L'intero memorizzato in questo elemento.
 
 	next: detachable INT_LINKABLE
-			-- the next cell in the list
+			-- Il successivo elemento della lista
 
-feature {NONE} -- Initialization
+feature {NONE} -- assegnazione
 
 	set_value (a_value: INTEGER)
 			-- Assegna l'intero memorizzato in questo elemento.
@@ -28,10 +28,10 @@ feature {NONE} -- Initialization
 			value = a_value
 		end
 
-feature -- Processing
+feature -- manipolazione
 
 	link_to (other: detachable INT_LINKABLE)
-			-- Collega questo elmento a `other'.
+			-- Collega questo elmento con `other'.
 		do
 			next := other
 		ensure
