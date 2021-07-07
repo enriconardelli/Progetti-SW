@@ -30,7 +30,9 @@ feature -- Test routines
 			t.start
 			t.append (1)
 			t.append (8)
-			assert("value_follows ha trovato a_value dopo target ma il target non è presente nella lista", not t.value_follows(a_value, target))
+			if t.has(target) then
+				assert("value_follows ha trovato a_value dopo target ma il target non è presente nella lista", not t.value_follows(a_value, target))
+			end
 			t.append (target)
 			t.append (2)
 			t.append (a_value)
@@ -122,11 +124,13 @@ feature -- Test routines
 			a_value := 71
 			target := 10
 			create t
-			
+
 			t.append (1)
 			t.start
 			t.append (8)
-			assert("value_follows ha trovato a_value dopo target ma il target non è presente nella lista", not t.value_follows(a_value, target))
+			if t.has(target) then
+				assert("value_follows ha trovato a_value dopo target ma il target non è presente nella lista", not t.value_follows(a_value, target))
+			end
 			t.append (target)
 			old_count := t.count
 			t.insert_after(a_value, target)

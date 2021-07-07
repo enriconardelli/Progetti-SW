@@ -207,9 +207,13 @@ feature --Status
 				t: INT_LINKED_LIST
 		do
 			create t
-			assert("t è vuota, ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			if t.has(5) then
+				assert("t è vuota, ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			end
 			t.append (6)
-			assert("t contiene solo 6, ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			if t.has(5) then
+				assert("t contiene solo 6, ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			end
 			t.wipeout
 			t.append (5)
 			assert("t contiene solo 5, ma t trova 3 dopo 5", not t.value_follows (3, 5))
@@ -221,7 +225,9 @@ feature --Status
 			assert("t vale [5,4], ma t trova 3 dopo 5", not t.value_follows (3, 5))
 			t.wipeout
 			t.append (6);t.append (4)
-			assert("t vale [6,4], ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			if t.has(5) then
+				assert("t vale [6,4], ma t trova 3 dopo 5", not t.value_follows (3, 5))
+			end
 			t.wipeout
 			t.append (3);t.append (5);t.append (6)
 			assert("t vale [3,5,6], ma t trova 3 dopo 5", not t.value_follows (3, 5))
@@ -236,12 +242,16 @@ feature --Status
 			t: INT_LINKED_LIST
 		do
 			create t
-			assert ("t e' vuota, ma t contiene 3 subito dopo 5", not t.value_after (3, 5))
+			if t.has(5) then
+				assert ("t e' vuota, ma t contiene 3 subito dopo 5", not t.value_after (3, 5))
+			end
 			t.append (5)
 			assert ("t contiene solo 5, ma contiene 3 subito dopo 5", not t.value_after (3, 5))
 			t.wipeout
 			t.append (4)
-			assert ("t contiene solo 4, ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			if t.has(5) then
+				assert ("t contiene solo 4, ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			end
 			t.wipeout
 			t.append (5) ; t.append (3)
 			assert ("t vale [5, 3]', ma non trova 3 subito dopo 5", t.value_after (3, 5))
@@ -253,7 +263,9 @@ feature --Status
 			assert ("t vale [3, 5]', ma contiene 3 subito dopo 5", not t.value_after (3, 5))
 			t.wipeout
 			t.append (3) ; t.append (4)
-			assert ("t vale [3, 4]', ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			if t.has(5) then
+				assert ("t vale [3, 4]', ma contiene 3 subito dopo 5", not t.value_after (3, 5))
+			end
 			t.wipeout
 			t.append (5) ; t.append (4) ; t.append (3)
 			assert ("t vale [5, 4, 3]', ma contiene 3 subito dopo 5", not t.value_after (3, 5))
@@ -268,12 +280,16 @@ feature --Status
 			t: INT_LINKED_LIST
 		do
 			create t
-			assert("t è vuota, ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			if t.has(5) then
+				assert("t è vuota, ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			end
 			t.append (5)
 			assert("t contiene solo 5, ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
 			t.wipeout
 			t.append (6)
-			assert("t contiene solo 6, ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			if t.has(5) then
+				assert("t contiene solo 6, ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			end
 			t.wipeout
 			t.append (5); t.append (3)
 			assert("t vale [5,3], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
@@ -285,7 +301,9 @@ feature --Status
 			assert("t vale [6,5], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
 			t.wipeout
 			t.append (3); t.append (6)
-			assert("t vale [3,6], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			if t.has(5) then
+				assert("t vale [3,6], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
+			end
 			t.wipeout
 			t.append (3); t.append (5); t.append (6)
 			assert("t vale [3,5,6], ma t non contiene 3 prima di 5", t.value_precedes (3, 5))
@@ -294,56 +312,57 @@ feature --Status
 			assert("t vale [4,5,6], ma t contiene 3 prima di 5", not t.value_precedes (3, 5))
 		end
 
-		t_value_before
-			--Sara Forte 2021/03/31
-			local
-				t: INT_LINKED_LIST
-			do
-				create t
-				-- []
+	t_value_before
+		--Sara Forte 2021/03/31
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			-- []
+			if t.has(3) then
 				assert("errore: la lista è vuota ma è stato trovato 5 subito prima di 3", not t.value_before(5,3))
-
-				t.append (3)
-				-- [3]
-				assert("errore: è stato trovato 5 subito prima di 3, ma la lista contiene solo 3", not t.value_before (5, 3))
-				t.wipeout
-
-				t.append (5)
-				-- [5]
-				assert("errore: è stato trovato 5 subito prima di 3, ma la lista contiene solo 5", not t.value_before (5, 3))
-				t.wipeout
-
-				 t.append (5); t.append (3);
-				 -- [5,3]
-				 assert("errore non è stato trovato 5 subito prima di 3", t.value_before (5, 3))
-				 t.wipeout
-
-				 t.append (2); t.append (3);
-				 -- [2,3]
-				 assert("errore: è stato trovato 5 subito prima di 3, ma 5 non era nella lista", not t.value_before (5, 3))
-
-				 t.append (5)
-				 -- [2,3,5]
-				 assert("errore: è stato tovato 5 subito prima di 3, ma era dopo", not t.value_before (5, 3))
-				 t.wipeout
-
-				 t.append (3);t.append (5)
-				 -- [3,5]
-				 assert("errore: è stato tovato 5 subito prima di 3, ma era dopo", not t.value_before (5, 3))
-
-				 t.append (2); t.append (3);
-				 -- [3,5,2,3]
-				 assert("errore: è stato trovato 5 subito prima di 3, ma c'è un altro valore in mezzo", not t.value_before (5, 3))
-				 t.wipeout
-
-				 t.append (2) ; t.append (5) ; t.append (3);
-				 -- [2,5,3]
-				 assert("errore non è stato trovato 5 subito prima di 3", t.value_before (5, 3))
-
 			end
 
+			t.append (3)
+			-- [3]
+			assert("errore: è stato trovato 5 subito prima di 3, ma la lista contiene solo 3", not t.value_before (5, 3))
+			t.wipeout
 
-		--to do: t_value_follows
+			t.append (5)
+			-- [5]
+			if t.has(3) then
+				assert("errore: è stato trovato 5 subito prima di 3, ma la lista contiene solo 5", not t.value_before (5, 3))
+			end
+			t.wipeout
+
+			t.append (5); t.append (3);
+			-- [5,3]
+			assert("errore non è stato trovato 5 subito prima di 3", t.value_before (5, 3))
+			t.wipeout
+
+			t.append (2); t.append (3);
+			-- [2,3]
+			assert("errore: è stato trovato 5 subito prima di 3, ma 5 non era nella lista", not t.value_before (5, 3))
+
+			t.append (5)
+			-- [2,3,5]
+			assert("errore: è stato trovato 5 subito prima di 3, ma era dopo", not t.value_before (5, 3))
+			t.wipeout
+
+			t.append (3);t.append (5)
+			-- [3,5]
+			assert("errore: è stato trovato 5 subito prima di 3, ma era dopo", not t.value_before (5, 3))
+
+			t.append (2); t.append (3);
+			-- [3,5,2,3]
+			assert("errore: è stato trovato 5 subito prima di 3, ma c'è un altro valore in mezzo", not t.value_before (5, 3))
+			t.wipeout
+
+			t.append (2) ; t.append (5) ; t.append (3);
+			-- [2,5,3]
+			assert("errore non è stato trovato 5 subito prima di 3", t.value_before (5, 3))
+
+		end
 
 feature -- Insertion multiple targeted
 
