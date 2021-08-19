@@ -36,9 +36,17 @@ Cursor movement
 Search
  + has
  + get_element
-  first DAFARE
-  last DAFARE
-  item DAFARE
+  first DAFARE ?? È SEMPLICEMENTE first_element.value
+  last DAFARE ?? È SEMPLICEMENTE last_element.value
+  item DAFARE ?? È SEMPLICEMENTE active_element.value
+
+Status
+ + value_follows
+ + value_after
+ + value_precedes
+ + value_before
+ + index_of
+  value_at
 
 Insertion single free
  + append
@@ -46,43 +54,53 @@ Insertion single free
 
 Insertion single targeted
  + insert_after
-  insert_before
-
-Status
- + value_follows
-  value_after DAFARE
-  value_precedes DAFARE
-  value_before DAFARE
+ + insert_after_reusing (usa get_element e append)
+ + insert_before
+ + insert_before_reusing (usa has e prepend)
+ + insert_before_with_2_cursors
 
 Insertion multiple targeted
-  insert_multiple_after
-  insert_multiple_before
+ + insert_multiple_after
+ + insert_multiple_after_reusing (usa has e append)
+ + insert_multiple_before DA RIVEDERE COME _after
+ + insert_multiple_before_without_prepend DA RIVEDERE COME _after
 
 Removal single free
-  remove_active
-  remove_first
-  remove_last
-  remove_earliest DAFARE
-  remove_latest DAFARE
+ + remove_active
+  remove_first DA CANCELLARE
+  remove_last DA CANCELLARE
+ + remove_earliest
+ + remove_latest
 
 Removal single targeted
-  remove_earliest_following DAFARE
-  remove_latest_following DAFARE
-  remove_earliest_preceding DAFARE
-  remove_latest_preceding DAFARE
+ + remove_earliest_following
+ + remove_latest_following
+ + remove_earliest_preceding
+ + remove_latest_preceding
 
 Removal multiple free
   remove_all
   wipeout
 
 Removal multiple targeted
-  remove_all_following DAFARE
-  remove_all_preceding DAFARE
+ + remove_all_following
+ + remove_all_preceding
+
+FEATURE DI MODIFICA DI VALORE IN-PLACE
 
 Other
-  invert
+ + invert
   transpose DAFARE (scambia a coppie)
 
-COnvenience
-	sum_of_positive
-  printout
+Manipulation
+ + head_list
+  tail_list DA FARE
+
+Computation
+ + count_of
+ + highest
+  lowest DA FARE
+ + sum_of_positive
+ 
+Convenience
+ + printout
