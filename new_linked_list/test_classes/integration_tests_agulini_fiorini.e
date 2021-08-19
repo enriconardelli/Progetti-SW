@@ -127,16 +127,16 @@ feature -- test
 			assert ("Errore 10.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)
 			assert ("Errore 10.3: last_element non è corretto", attached t.last_element as le and then le.value = 8)
 			assert ("Errore 10.4: active_element non è corretto", attached t.active_element as ae and then ae.value = 8)
-			t.insert_multiple_after (9, 4) --inserisce 9 dopo ogni 4
+			t.insert_multiple_after_reusing (9, 4) --inserisce 9 dopo ogni 4
 			t.start
 				--[5,2,1,4,9,6,3,7,8] active element è 5
-			t.insert_multiple_after (9, 8)
+			t.insert_multiple_after_reusing (9, 8)
 				--[5,2,1,4,9,6,3,7,8,9] active element è 5
 			assert ("Errore 11.1: il numero di elementi non è corretto", t.count = 10)
 			assert ("Errore 11.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)
 			assert ("Errore 11.3: last_element non è corretto", attached t.last_element as le and then le.value = 9)
 			assert ("Errore 11.4: active_element non è corretto", attached t.active_element as ae and then ae.value = 5)
-			t.insert_multiple_after (9, 9)
+			t.insert_multiple_after_reusing (9, 9)
 				--[5,2,1,4,9,9,6,3,7,8,9,9] active element è 5
 			assert ("Errore 12.1: il numero di elementi non è corretto", t.count = 12)
 			assert ("Errore 12.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)

@@ -31,7 +31,7 @@ feature {NONE} -- assegnazione
 feature -- manipolazione
 
 	link_to (other: detachable INT_LINKABLE)
-			-- Collega questo elmento con `other'.
+			-- Collega questo elemento con `other'.
 		do
 			next := other
 		ensure

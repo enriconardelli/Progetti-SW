@@ -187,16 +187,18 @@ feature -- Inserimento singolo vincolato
 			-- Aggiunge `a_value' subito dopo la prima occorrenza di `target', se esiste,
 			-- altrimenti lo aggiunge alla fine della lista.
 		local
-			current_element, pre_current, new_element: like first_element
+			previous_element, current_element, new_element: like first_element
 		do
 			create new_element.set_value (a_value)
 			from
-				pre_current := Void
+				previous_element := Void
 				current_element := first_element
+			invariant
+				previous_element /= Void implies previous_element.value /= target
 			until
 				current_element = Void or else current_element.value = target
 			loop
-				pre_current := current_element
+				previous_element := current_element
 				current_element := current_element.next
 			end
 			if current_element /= Void then
@@ -204,7 +206,7 @@ feature -- Inserimento singolo vincolato
 				if last_element = current_element then
 					last_element := new_element
 				end
-			else -- la list non contiene `target'
+			else -- la lista non contiene `target'
 				if count = 0 then
 					first_element := new_element
 					last_element := new_element
@@ -218,8 +220,11 @@ feature -- Inserimento singolo vincolato
 			count := count + 1
 		ensure
 			uno_in_piu: count = old count + 1
-			accodato_se_non_presente: not old has (target) implies (attached last_element as le implies le.value = a_value)
-			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen implies gen.value = a_value))
+			valore_aggiunto: has (a_value)
+			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
+			accodato_se_non_presente: (not old has (target)  and attached last_element as le) implies le.value = a_value
+			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen and then gen.value = a_value))
 		end
 
 	insert_after_reusing (a_value, target: INTEGER)
@@ -242,8 +247,11 @@ feature -- Inserimento singolo vincolato
 			end
 		ensure
 			uno_in_piu: count = old count + 1
-			accodato_se_non_presente: not old has (target) implies (attached last_element as le implies le.value = a_value)
-			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen implies gen.value = a_value))
+			valore_aggiunto: has (a_value)
+			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
+			accodato_se_non_presente: (not old has (target)  and attached last_element as le) implies le.value = a_value
+			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen and then gen.value = a_value))
 		end
 
 	insert_before (a_value, target: INTEGER)
@@ -260,7 +268,7 @@ feature -- Inserimento singolo vincolato
 				if attached first_element as fe and then fe.value = target then
 					new_element.link_to (first_element)
 					first_element := new_element
-				else -- la list contiene almeno un elemento e il primo elemento non ï¿½ `target'
+				else -- la lista contiene almeno un elemento e il primo elemento non è `target'
 					from
 						current_element := first_element
 					until
@@ -283,15 +291,51 @@ feature -- Inserimento singolo vincolato
 		ensure
 			uno_in_piu: count = old count + 1
 			valore_aggiunto: has (a_value)
-			in_testa_se_non_presente: not (old has (target)) implies (attached first_element as fe implies fe.value = a_value)
-			--	questo invariante sotto si puo' usare solo se a_value e' unico nella lista
-			--	se invece posso aggiungere a_value piu' volte nella lista allora non e' piu' vero
-			--		collegato_se_presente: old has (target) implies get_element (a_value).next.value = target
+			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
+			in_testa_se_non_presente: (not old has (target) and attached first_element as fe) implies fe.value = a_value
+			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			collegato_se_presente: old has (target) implies (attached get_element (a_value) as ge implies (attached ge.next as gen and then gen.value = target))
+		end
+
+	insert_before_reusing (a_value, target: INTEGER)
+			-- Aggiunge `a_value' subito prima della prima occorrenza di `target', se esiste,
+			-- altrimenti lo aggiunge all'inizio della lista riusando `has' e `prepend'.
+		local
+			previous_element, new_element: like first_element
+		do
+			if not has (target) then
+				prepend (a_value)
+			else
+				if attached first_element as fe and then fe.value = target then
+					prepend (a_value)
+				else -- la lista ha almeno 2 elementi e il primo non è il target
+					create new_element.set_value (a_value)
+					from
+						previous_element := first_element
+					until
+						(attached previous_element as pe and then attached pe.next as pen) implies pen.value = target
+					loop
+						previous_element := previous_element.next
+					end
+					if attached previous_element as pe then
+						new_element.link_after (pe)
+					end
+					count := count + 1
+				end
+			end
+		ensure
+			uno_in_piu: count = old count + 1
+			valore_aggiunto: has (a_value)
+			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
+			in_testa_se_non_presente: (not old has (target) and attached first_element as fe) implies fe.value = a_value
+			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			collegato_se_presente: old has (target) implies (attached get_element (a_value) as ge implies (attached ge.next as gen and then gen.value = target))
 		end
 
 	insert_before_with_2_cursors (a_value, target: INTEGER)
 			-- Aggiunge `a_value' subito prima della prima occorrenza di `target', se esiste,
 			-- altrimenti lo aggiunge all'inizio della lista.
+			-- Anche questa potrebbe essere implementata riutilizzando prepend.
 		local
 			previous_element, current_element, new_element: like first_element
 		do
@@ -322,54 +366,16 @@ feature -- Inserimento singolo vincolato
 						new_element.link_to (current_element)
 					end
 				end
---				end
 			end
 			count := count + 1
 		ensure
 			uno_in_piu: count = old count + 1
 			valore_aggiunto: has (a_value)
-			in_testa_se_non_presente: not (old has (target)) implies (attached first_element as fe implies fe.value = a_value)
-			--	questo invariante sotto si puo' usare solo se a_value e' unico nella lista
-			--	se invece posso aggiungere a_value piu' volte nella lista allora non e' piu' vero
-			--		collegato_se_presente: old has (target) implies get_element (a_value).next.value = target
+			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
+			in_testa_se_non_presente: (not old has (target) and attached first_element as fe) implies fe.value = a_value
+			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			collegato_se_presente: old has (target) implies (attached get_element (a_value) as ge implies (attached ge.next as gen and then gen.value = target))
 		end
-
-		--  ALTERNATIVE (less efficient) implementation using feature `has'
-		--	insert_before (new, target: INTEGER)
-		--			-- Insert `new' before `target' if present otherwise add `new' at the end
-		--		local
-		--			previous_element, new_element: INT_LINKABLE
-		--		do
-		--			create new_element.make (new)
-		--			if has (target) then
-		--				if target = first_element.value then
-		--					new_element.link_to (first_element)
-		--					first_element := new_element
-		--				else -- list has at least 2 elements and contains target from second position on
-		--					from
-		--						previous_element := first_element
-		--					until
-		--						previous_element.next.value = target
-		--					loop
-		--						previous_element := previous_element.next
-		--					end
-		--					new_element.insert_after (previous_element)
-		--				end
-		--			else -- list does not contain target
-		--				if count = 0 then
-		--					first_element := new_element
-		--					last_element := first_element
-		--				else
-		--					new_element.link_to (first_element)
-		--					first_element := new_element
-		--				end
-		--			end
-		--			count := count + 1
-		--		ensure
-		--			one_more: count = old count + 1
-		--			prepended_if_not_present: not (old has (target)) implies first_element.value = new
-		--			linked_if_present: old has (target) implies get_item (new).next.value = target
-		--		end
 
 feature -- Status
 
@@ -397,8 +403,7 @@ feature -- Status
 				Result := True
 			end
 		ensure
---	TODO	serve una feature index_of(a_value) che fornisca l'indice della prima occorrenza di a_value e
---	TODO	che permetta quindi di verificare che index_of(value) sia maggiore di index_of(target)
+			a_value_segue_il_target: Result implies index_of (a_value) > index_of (target)
 		end
 
 	value_after (a_value, target: INTEGER): BOOLEAN
@@ -421,10 +426,11 @@ feature -- Status
 		end
 
 	value_precedes (a_value, target: INTEGER): BOOLEAN
-			--la lista contiene `a_value' prima della prima occorrenza di `target'?
-			--Maria Ludovica Sarandrea, 2021/04/03
+			-- la lista contiene `a_value' prima della prima occorrenza di `target'?
+			-- Maria Ludovica Sarandrea, 2021/04/03
 		require
 			contiene_il_target: has(target)
+			sono_diversi: a_value /= target
 		local
 			previous_element, current_element: like first_element
 		do
@@ -433,8 +439,8 @@ feature -- Status
 				previous_element := Void
 			invariant
 				attached current_element as ce implies
-					(ce.value /= a_value and ce.value /= target)
-						implies (attached previous_element as pe implies (pe.value /= a_value and pe.value /= target))
+					((ce.value /= a_value and ce.value /= target)
+						implies (attached previous_element as pe implies (pe.value /= a_value and pe.value /= target)))
 			until
 				attached current_element as ce implies (ce.value = a_value or ce.value = target)
 			loop
@@ -444,8 +450,8 @@ feature -- Status
 			if attached current_element as ce and then ce.value = a_value then
 				Result := True
 			end
---	TODO	serve una feature index_of(a_value) che fornisca l'indice della prima occorrenza di a_value e
---	TODO	che permetta quindi di verificare che index_of(value) sia minore di index_of(target)
+		ensure
+			a_value_precede_il_target: Result implies index_of (a_value) < index_of (target)
 		end
 
 	value_before (a_value, target: INTEGER): BOOLEAN
@@ -453,6 +459,7 @@ feature -- Status
 			-- Sara Forte 2021/04/03
 		require
 			contiene_il_target: has(target)
+			sono_diversi: a_value /= target
 		local
 			 current_element, next_element: like first_element
 		do
@@ -467,15 +474,96 @@ feature -- Status
 			Result implies attached get_element(a_value) as t and then (attached t.next as tn implies tn.value = target)
 		end
 
+	index_of (a_value: INTEGER): INTEGER
+			-- ritorna la posizione dell'elemento che contiene `a_value'
+			-- EN 2021/07/29
+		require
+			contiene_il_valore: has(a_value)
+		local
+			previous_element, current_element: like first_element
+		do
+			from
+				Result := 1
+				previous_element := Void
+				current_element := first_element
+			invariant
+				attached previous_element as pe implies pe.value /= a_value
+			until
+				attached current_element as ce implies ce.value = a_value
+			loop
+				Result := Result + 1
+				previous_element := current_element
+				current_element := current_element.next
+			variant
+				count - Result
+			end
+		ensure
+			posizione_legale: 1 <= Result and Result <= count
+		end
+
+-- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
+
 feature -- Insertion multiple targeted
 
 	insert_multiple_after (a_value, target: INTEGER)
-			-- inserisce `a_value' subito dopo ogni `target', se ne esistono
-			-- altrimenti inserisce `a_value' alla fine
+			-- Aggiunge `a_value' subito dopo ogni `target', se ne esistono,
+			-- altrimenti aggiunge `a_value' alla fine della lista.
 			-- Federico Fiorini 2020/03/08
+			-- riscritta EN 2021/08/18
 		local
-			new_element, current_element: INT_LINKABLE
-			-- target_exist: BOOLEAN
+			current_element, new_element: like first_element
+			inserito: BOOLEAN
+		do
+			from
+				current_element := first_element
+			until
+				current_element = Void
+			loop
+				if current_element.value = target then
+					create new_element.set_value (a_value)
+					new_element.link_after (current_element)
+					inserito := true
+					count := count + 1
+					if current_element = last_element then
+						last_element := new_element
+					end
+						-- salta elemento appena inserito
+					current_element := new_element.next
+				else
+					current_element := current_element.next
+				end
+			end
+			if not inserito then -- la lista non contiene `target'
+				create new_element.set_value (a_value)
+				if count = 0 then
+					first_element := new_element
+					last_element := new_element
+				else
+					if attached last_element as le then
+						new_element.link_after (le)
+					end
+					last_element := new_element
+				end
+				count := count + 1
+			end
+		ensure
+			di_piu: count > old count
+			valore_aggiunto: has (a_value)
+			conteggio_incrementato: count_of (a_value) > old count_of (a_value)
+			accodato_se_non_presente: (not old has (target)  and attached last_element as le) implies le.value = a_value
+			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			collegato_se_presente: (old has (target) and attached get_element (target) as ge) implies (attached ge.next as gen and then gen.value = a_value)
+			--	il seguente invariante è una formulazione alternativa del precedente
+			collegato_se_presente_ALT: (old has (target) and attached get_element (target) as ge and then attached ge.next as gen) implies gen.value = a_value
+		end
+
+	insert_multiple_after_reusing (a_value, target: INTEGER)
+			-- Aggiunge `a_value' subito dopo ogni `target', se ne esistono,
+			-- altrimenti aggiunge `a_value' alla fine della lista.
+			-- Implementazione che riusa le feature `has' e `append'
+			-- EN 2021/08/18
+		local
+			new_element, current_element: like first_element
 		do
 			if has (target) then
 				from
@@ -497,25 +585,71 @@ feature -- Insertion multiple targeted
 					end
 				end
 			else -- la lista non contiene `target'
-				create new_element.set_value (a_value)
-				if count = 0 then
-					first_element := new_element
-					last_element := new_element
-				else
-					if attached last_element as le then
-						new_element.link_after (le)
-					end
-					last_element := new_element
-				end
-				count := count + 1
+				append (a_value)
 			end
 		ensure
 			di_piu: count > old count
-			appeso_se_non_presente: not (old has (target)) and attached last_element as le implies le.value = a_value
-			collegato_se_presente: old has (target) and attached get_element (target) as ge and then attached ge.next as gen implies gen.value = a_value
+			valore_aggiunto: has (a_value)
+			conteggio_incrementato: count_of (a_value) > old count_of (a_value)
+			accodato_se_non_presente: (not old has (target)  and attached last_element as le) implies le.value = a_value
+			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			collegato_se_presente: (old has (target) and attached get_element (target) as ge) implies (attached ge.next as gen and then gen.value = a_value)
+			--	il seguente invariante è una formulazione alternativa del precedente
+			collegato_se_presente_ALT: (old has (target) and attached get_element (target) as ge and then attached ge.next as gen) implies gen.value = a_value
 		end
 
 	insert_multiple_before (a_value, target: INTEGER)
+			-- inserisce `a_value' subito prima di ogni occorrenza di `target' se esiste
+			-- altrimenti inserisce `a_value' all'inizio usando `prepend'.
+			-- Riccardo Malandruccolo, 2020/03/07
+		local
+			previous_element, current_element, new_element: like first_element
+		do
+			if has (target) then
+				from
+					previous_element := Void
+					current_element := first_element
+				until
+					current_element = Void
+				loop
+					if current_element.value = target then
+						create new_element.set_value (a_value)
+						if current_element = first_element then
+							new_element.link_to (first_element)
+							first_element := new_element
+						else
+							new_element.link_to (current_element)
+							if (attached previous_element as pe) then
+								pe.link_to (new_element)
+							end
+						end
+						count := count + 1
+					end
+					previous_element := current_element
+					current_element := current_element.next
+				end
+			else -- la lista non contiene `target'
+				prepend (a_value)
+--				create new_element.set_value (a_value)
+--				if count = 0 then
+--					first_element := new_element
+--					last_element := new_element
+--				else
+--					new_element.link_to (first_element)
+--					first_element := new_element
+--				end
+--				count := count + 1
+			end
+		ensure
+			di_piu: count > old count
+			uno_in_piu_se_non_presente: not (old has (target)) implies count = old count + 1
+			in_testa_se_non_presente: (not (old has (target)) and attached first_element as fe) implies fe.value = a_value
+			collegato_al_primo_se_non_presente: (not (old has (target)) and (attached first_element as fe)) implies fe.next = old first_element
+			collegato_al_primo_se_presente: (old has (target) and (attached get_element (a_value) as el and then attached el.next as eln)) implies eln.value = target
+				-- verificare il collegamento con le successive occorrenze di target richiede get_all_elements
+		end
+
+	insert_multiple_before_without_prepend (a_value, target: INTEGER)
 			-- inserisce `a_value' subito prima di ogni occorrenza di `target' se esiste
 			-- altrimenti inserisce `a_value' all'inizio
 			-- Riccardo Malandruccolo, 2020/03/07
@@ -1236,6 +1370,28 @@ feature -- Manipulation
 	end
 
 feature -- Computation
+
+	count_of (target: INTEGER): INTEGER
+		-- conta quante occorrenze di `target' esistono
+		local
+			current_element: like first_element
+		do
+			from
+				current_element := first_element
+			until
+				current_element = Void
+			loop
+				if current_element.value = target then
+					Result := Result + 1
+				end
+				current_element := current_element.next
+			end
+		ensure
+			zero_se_non_presente: not old has (target) implies Result = 0
+			maggiore_di_zero_se_presente: old has (target) implies Result > 0
+		end
+
+
 
 	highest: INTEGER
 			-- return the value of the highest item

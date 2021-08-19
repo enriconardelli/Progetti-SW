@@ -216,6 +216,32 @@ feature -- single feature test
 			print (r)
 		end
 
+	test_index_of
+		do
+			print (r + "test di index_of" + r)
+			create t
+			print ("t vuota, appendo 5")
+			t.append(5)
+			-- [5]
+			print (r + "poi prependo 4")
+			t.prepend(4)
+			-- [4, 5]
+			print (r + "poi appendo 7")
+			t.append(7)
+			-- [4, 5, 7]
+			print (r + "t = ")
+			t.printout
+			print ("4 e' in posizione: ")
+			print (t.index_of (4))
+			print (r)
+			print ("5 e' in posizione: ")
+			print (t.index_of (5))
+			print (r)
+			print ("7 e' in posizione: ")
+			print (t.index_of (7))
+			print (r)
+		end
+
 feature -- Inizialization
 	make
 			-- Run application.
@@ -235,6 +261,7 @@ feature -- Inizialization
 			test_insert_before
 			test_insert_before_with_2_cursors
 			test_value_follows
+			test_index_of
 		end
 
 

@@ -46,7 +46,7 @@ feature
 		assert("ho tolto tutti gli 8 prima del primo 6, 8 dopo il primo 6 è active", check_is_active(t,8))
 		t.remove_all_preceding (8, 7) -- 5-6-7-6
 		assert("ho tolto tutti gli 8 prima del primo 7, 7 è active", check_is_active(t,7))
-		t.insert_multiple_after (9, 6) -- 5-6-9-7-6-9
+		t.insert_multiple_after_reusing (9, 6) -- 5-6-9-7-6-9
 		assert("dopo varie operazioni count è 6", t.count=6)
 		assert("ho messo 9 dopo tutti i 6, 9 è last", check_is_last(t,9))
 		t.start --l'active element è 5

@@ -103,30 +103,37 @@ feature -- Test routines
 
 			t.append (2)
 			t.append (a_value)
+			-- [2,1]
 			t.append (3)
+			-- [2,1,3]
 			t.append (target)
+			-- [2,1,3,1]
 			t.append (a_value)
+			-- [2,1,3,1,1]
 			t.append (2)
+			-- [2,1,3,1,1,2]
 			t.append (a_value)
+			-- [2,1,3,1,1,2,1]
 
-			count_prima := how_many(t,a_value)
-			t.remove_all_preceding (a_value, target)
-			t.remove_latest_preceding (a_value, target)
-		--	t.remove_earliest_preceding (a_value, target)
-		--  problema con a_value = target
-			count_dopo := how_many(t,a_value)
-			assert("qualche elemento è stato eliminato", count_prima = count_dopo)
+--			count_prima := how_many(t,a_value)
+--			t.remove_all_preceding (a_value, target)
+--			t.remove_latest_preceding (a_value, target)
+--		--	t.remove_earliest_preceding (a_value, target)
+--		--  problema con a_value = target
+--			count_dopo := how_many(t,a_value)
+--			assert("errore: qualche elemento è stato eliminato", count_prima = count_dopo)
+-- TODO: cancellare fino a qua perché bisogna inserire il require a_value /= target in remove_all_preceding e remove_latest_preceding
 
 			count_prima := how_many(t,a_value)
 			t.remove_earliest_following (a_value, target)
 			count_dopo := how_many(t,a_value)
-			assert("non ha eliminato il singolo elemento", count_prima = count_dopo + 1)
-			assert("non ha eliminato l'elemento giusto", (attached t.get_element (a_value) as ge and then attached ge.next as gen) and then gen.value = 3)
+			assert("errore: non ha eliminato il singolo elemento", count_prima = count_dopo + 1)
+			assert("errore: non ha eliminato l'elemento giusto", (attached t.get_element (a_value) as ge and then attached ge.next as gen) and then gen.value = 3)
 			t.remove_latest_following (a_value, target)
-			assert("ha rimosso l'elemento sbagliato", attached t.last_element as le and then le.value = 2)
+			assert("errore: ha rimosso l'elemento sbagliato", attached t.last_element as le and then le.value = 2)
 
 			t.remove_all_following (a_value, target)
-			assert("non ha eliminato tutti gli elementi successivi al target", how_many(t,a_value) = 1)
+			assert("errore: non ha eliminato tutti gli elementi successivi al target", how_many(t,a_value) = 1)
 		end
 
 end
