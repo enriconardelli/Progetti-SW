@@ -19,7 +19,9 @@ Bisogna iniziare ad introdurre la funzione di AutoTest di Eiffel che c'era già i
 
 E' replicata nel repository GIT
   https://github.com/enriconardelli/Progetti-SW
-  
+
+===>> BISOGNA SOSTITUIRE LA SCANSIONE ESPLICITA CON FORTH <<===
+
 ELENCO FEATURE (col + le ho convertite a VoidSafe con DAFARE non sono proprio scritte)
 
 Access
