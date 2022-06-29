@@ -103,7 +103,7 @@ feature -- test
 			assert ("Errore 6.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)
 			assert ("Errore 6.3: last_element non è corretto", attached t.last_element as le and then le.value = 3)
 			assert ("Errore 6.4: active_element non è corretto", attached t.active_element as ae and then ae.value = 4)
-			t.insert_after_reusing (6, 4) --inserisce 6 dopo 4
+			t.insert_after_using_get_element_append (6, 4) --inserisce 6 dopo 4
 				--[5,2,1,4,6,3] active element è 4
 			assert ("Errore 7.1: il numero di elementi non è corretto", t.count = 6)
 			assert ("Errore 7.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)
@@ -118,7 +118,7 @@ feature -- test
 			assert ("Errore 9.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)
 			assert ("Errore 9.3: last_element non è corretto", attached t.last_element as le and then le.value = 7)
 			assert ("Errore 9.4: active_element non è corretto", attached t.active_element as ae and then ae.value = 6)
-			t.insert_after_reusing (8, 8)
+			t.insert_after_using_get_element_append (8, 8)
 			t.forth
 			t.forth
 			t.forth
@@ -127,16 +127,16 @@ feature -- test
 			assert ("Errore 10.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)
 			assert ("Errore 10.3: last_element non è corretto", attached t.last_element as le and then le.value = 8)
 			assert ("Errore 10.4: active_element non è corretto", attached t.active_element as ae and then ae.value = 8)
-			t.insert_multiple_after_reusing (9, 4) --inserisce 9 dopo ogni 4
+			t.insert_multiple_after_using_has_append (9, 4) --inserisce 9 dopo ogni 4
 			t.start
 				--[5,2,1,4,9,6,3,7,8] active element è 5
-			t.insert_multiple_after_reusing (9, 8)
+			t.insert_multiple_after_using_has_append (9, 8)
 				--[5,2,1,4,9,6,3,7,8,9] active element è 5
 			assert ("Errore 11.1: il numero di elementi non è corretto", t.count = 10)
 			assert ("Errore 11.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)
 			assert ("Errore 11.3: last_element non è corretto", attached t.last_element as le and then le.value = 9)
 			assert ("Errore 11.4: active_element non è corretto", attached t.active_element as ae and then ae.value = 5)
-			t.insert_multiple_after_reusing (9, 9)
+			t.insert_multiple_after_using_has_append (9, 9)
 				--[5,2,1,4,9,9,6,3,7,8,9,9] active element è 5
 			assert ("Errore 12.1: il numero di elementi non è corretto", t.count = 12)
 			assert ("Errore 12.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)

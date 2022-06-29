@@ -186,35 +186,35 @@ feature -- Inserimento singolo vincolato
 		do
 			create t
 				-- []
-			t.insert_after_reusing (3, 5)
+			t.insert_after_using_get_element_append (3, 5)
 			assert ("errore: lista è vuota, ma insert_after_reusing (3,5) NON inserisce 3", t.has (3))
 			assert ("errore: lista è vuota, ma insert_after_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
 			assert ("errore: lista è vuota, ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
 			t.wipeout
 			t.append (6)
 				-- [6]
-			t.insert_after_reusing (3,5)
+			t.insert_after_using_get_element_append (3,5)
 			assert ("errore: lista contiene solo 6, ma insert_after_reusing (3,5) NON inserisce 3", t.has (3))
 			assert ("errore: lista contiene solo 6, ma insert_after_reusing (3,5) NON inserisce 3 dopo di 6", t.value_after (3,6))
 			assert ("errore: lista contiene solo 6, ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
 			t.wipeout
 			t.append (4); t.append (6)
 				-- [4, 6]
-			t.insert_after_reusing (3,5)
+			t.insert_after_using_get_element_append (3,5)
 			assert ("errore: lista vale [4, 6], ma insert_after_reusing (3,5) NON inserisce 3", t.has(3))
 			assert ("errore: lista vale [4, 6], ma insert_after_reusing (3,5) NON inserisce 3 dopo di 6 che era l'ultimo' elemento", t.value_after (3,6))
 			assert ("errore: lista vale [4,6], ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
 			t.wipeout
 			t.append (5)
 				-- [5]
-			t.insert_after_reusing (3,5)
+			t.insert_after_using_get_element_append (3,5)
 			assert ("errore: lista contiene solo 5, ma insert_after_reusing (3,5) NON inserisce 3", t.has (3))
 			assert ("errore: lista contiene solo 5, ma insert_after_reusing (3,5) NON inserisce 3 dopo di 5", t.value_after (3,5))
 			assert ("errore: lista contiene solo 5, ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
 			t.wipeout
 			t.append (6); t.append (5)
 				-- [6, 5]
-			t.insert_after_reusing (3,6)
+			t.insert_after_using_get_element_append (3,6)
 			assert ("errore: lista vale [6, 5], ma insert_after_reusing (3,6) NON inserisce 3", t.has(3))
 			assert ("errore: lista vale [6, 5], ma insert_after_reusing (3,6) NON inserisce 3 dopo di 6", t.value_after (3,6))
 			assert ("errore: lista vale [6, 5], ma insert_after_reusing (3,6) NON inserisce 3 prima di 5 che seguiva 6", t.value_before (3,5))
@@ -269,35 +269,35 @@ feature -- Inserimento singolo vincolato
 		do
 			create t
 				-- []
-			t.insert_before_reusing (3, 5)
+			t.insert_before_using_has_prepend (3, 5)
 			assert ("errore: lista è vuota, ma insert_before_reusing (3,5) NON inserisce 3", t.has (3))
 			assert ("errore: lista è vuota, ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
 			assert ("errore: lista è vuota, ma insert_before_reusing (3,5) NON assegna larst_element a 3", attached t.last_element as le implies le.value = 3)
 			t.wipeout
 			t.append (6)
 				-- [6]
-			t.insert_before_reusing (3,5)
+			t.insert_before_using_has_prepend (3,5)
 			assert ("errore: lista contiene solo 6, ma insert_before_reusing (3,5) NON inserisce 3", t.has (3))
 			assert ("errore: lista contiene solo 6, ma insert_before_reusing (3,5) NON inserisce 3 prima di 6", t.value_before (3,6))
 			assert ("errore: lista contiene solo 6, ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
 			t.wipeout
 			t.append (4); t.append (6)
 				-- [4, 6]
-			t.insert_before_reusing (3,5)
+			t.insert_before_using_has_prepend (3,5)
 			assert ("errore: lista vale [4, 6], ma insert_before_reusing (3,5) NON inserisce 3", t.has(3))
 			assert ("errore: lista vale [4, 6], ma insert_before_reusing (3,5) NON inserisce 3 prima di 4 che era il primo elemento", t.value_before (3,4))
 			assert ("errore: lista vale [4,6], ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
 			t.wipeout
 			t.append (5)
 				-- [5]
-			t.insert_before_reusing (3,5)
+			t.insert_before_using_has_prepend (3,5)
 			assert ("errore: lista contiene solo 5, ma insert_before_reusing (3,5) NON inserisce 3", t.has (3))
 			assert ("errore: lista contiene solo 5, ma insert_before_reusing (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
 			assert ("errore: lista contiene solo 5, ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
 			t.wipeout
 			t.append (6); t.append (5)
 				-- [6, 5]
-			t.insert_before_reusing (3,5)
+			t.insert_before_using_has_prepend (3,5)
 			assert ("errore: lista vale [6, 5], ma insert_before_reusing (3,5) NON inserisce 3", t.has(3))
 			assert ("errore: lista vale [6, 5], ma insert_before_reusing (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
 			assert ("errore: lista vale [6, 5], ma insert_before_reusing (3,5) NON inserisce 3 dopo di 6 che precedeva 5", t.value_after (3,6))
@@ -587,28 +587,28 @@ feature -- Insertion multiple targeted
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.insert_multiple_after_reusing (3, 5)
+			t.insert_multiple_after_using_has_append (3, 5)
 			assert ("errore: lista vuota ma insert_multiple_after_reusing (3,5) NON inserisce 3", t.has(3))
 			assert ("errore: lista vuota ma insert_multiple_after_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
 			assert ("errore: lista vuota ma insert_multiple_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
 			t.wipeout
 			t.append (6)
 				-- [6]
-			t.insert_multiple_after_reusing (3, 5)
+			t.insert_multiple_after_using_has_append (3, 5)
 			assert ("errore: lista contiene solo 6, ma insert_multiple_after_reusing (3,5) NON inserisce 3", t.has (3))
 			assert ("errore: lista contiene solo 6, ma insert_multiple_after_reusing (3,5) NON inserisce 3 dopo di 6", t.value_after (3,6))
 			assert ("errore: lista contiene solo 6, ma insert_multiple_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
 			t.wipeout
 			t.append (4); t.append (6)
 				-- [4, 6]
-			t.insert_multiple_after_reusing (3, 5)
+			t.insert_multiple_after_using_has_append (3, 5)
 			assert ("errore: lista vale [4, 6], ma insert_multiple_after_reusing (3,5) NON inserisce 3", t.has(3))
 			assert ("errore: lista vale [4, 6], ma insert_multiple_after_reusing (3,5) NON inserisce 3 dopo di 6 che era l'ultimo' elemento", t.value_after (3,6))
 			assert ("errore: lista vale [4, 6], ma insert_multiple_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
 			t.wipeout
 			t.append (2) ; t.append (5) ;	t.append (1) ; t.append (5)
 				-- [2, 5, 1, 5]
-			t.insert_multiple_after_reusing (3, 5)
+			t.insert_multiple_after_using_has_append (3, 5)
 				-- [2, 5, 3, 1, 5, 3]
 			assert ("errore: il target esiste due volte, ma insert_multiple_after_reusing (3,5) NON inserisce 3", t.has (3))
 			assert ("errore: il target esiste due volte, ma insert_multiple_after_reusing (3,5) NON inserisce 3 due volte", how_many (t, 3) = 2)
@@ -974,7 +974,7 @@ feature -- Convenience
 			t.wipeout
 			t.append (2) ; t.append (5) ;	t.append (1) ; t.append (5)
 				-- [2, 5, 1, 5]
-			t.insert_multiple_after_reusing (3, 5)
+			t.insert_multiple_after_using_has_append (3, 5)
 				-- [2, 5, 3, 1, 5, 3]
 			assert ("errore: la lista non contiene un'occorrenza di 4 ma il conteggio non è zero", t.count_of(4) = 0)
 			assert ("errore: la lista contiene un'occorrenza di 2 ma il conteggio non è uno", t.count_of(2) = 1)
