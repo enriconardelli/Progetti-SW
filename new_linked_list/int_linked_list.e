@@ -200,8 +200,8 @@ feature -- Stato
 				current_element := first_element
 				previous_element := Void
 			invariant
-				attached current_element as ce implies
-					((ce.value /= a_value and ce.value /= target)
+				attached current_element as ce implies (
+					(ce.value /= a_value and ce.value /= target)
 						implies (attached previous_element as pe implies (pe.value /= a_value and pe.value /= target)))
 			until
 				attached current_element as ce implies (ce.value = a_value or ce.value = target)
@@ -213,10 +213,10 @@ feature -- Stato
 				Result := True
 			end
 		ensure
-			a_value_precede_target: Result implies index_of (a_value) < index_of (target)
+			a_value_precede_target: Result implies index_of(a_value) < index_of(target)
 		end
 
-	value_precedes_using_start_forth (a_value, target: INTEGER): BOOLEAN
+	value_precedes_CON_start_forth (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' prima della prima occorrenza di `target'?
 			-- versione che riutilizza `start', `forth' e `active_element'
 			-- Enrico Nardelli 2022/06/29
@@ -248,6 +248,57 @@ feature -- Stato
 			a_value_precede_target: Result implies index_of (a_value) < index_of (target)
 		end
 
+	value_precedes_SENZA_has (a_value, target: INTEGER): BOOLEAN
+			-- la lista contiene `a_value' prima della prima occorrenza di `target'?
+			-- non si assume l'esistenza di `target' nella lista
+			-- Enrico Nardelli 2022/07/03
+		require
+			sono_diversi: a_value /= target
+		local
+			previous_element, currently_active: like first_element
+			target_found: BOOLEAN
+		do
+			currently_active := active_element
+			-- ricerca di `a_value'
+			from
+				start
+				previous_element := Void
+			invariant
+				attached previous_element as pe implies pe.value /= a_value
+			until
+				active_element = Void or else (attached active_element as ae implies ae.value = a_value)
+			loop
+				if ae.value = target then
+					target_found := true
+				end
+				previous_element := active_element
+				forth
+			end
+			if attached active_element and then (attached active_element as ae implies ae.value = a_value) then
+				-- se viene trovato `a_value' si cerca `target' se non era già stato trovato
+				if not target_found then
+					from
+						previous_element := Void
+					invariant
+						attached previous_element as pe implies pe.value /= target
+					until
+						active_element = Void or else (attached active_element as ae implies ae.value = target)
+					loop
+						previous_element := active_element
+						forth
+					end
+					if attached active_element and then (attached active_element as ae implies ae.value = target) then
+						Result := true
+					end
+				end
+			end
+			active_element := currently_active
+		ensure
+			correttezza_se_target_non_esiste: not has(target) implies not Result -- premessa equivalente index_of(target) = 0
+			correttezza_se_value_non_esiste: index_of(a_value) = 0 implies not Result  -- premessa equivalente not has(a_value)
+			trovato_a_value_prima_di_trovare_target: Result implies (index_of(a_value) /= 0 and index_of(a_value) < index_of(target))
+		end
+
 	value_before (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
 			-- Sara Forte 2021/04/03
@@ -271,28 +322,31 @@ feature -- Stato
 	index_of (a_value: INTEGER): INTEGER
 			-- ritorna la posizione dell'elemento che contiene `a_value'
 			-- Enrico Nardelli 2021/07/29
-		require
-			contiene_il_valore: has(a_value)
 		local
-			previous_element, current_element: like first_element
+			previous_element, currently_active: like first_element
 		do
+			currently_active := active_element
 			from
-				Result := 1
+				start
 				previous_element := Void
-				current_element := first_element
 			invariant
 				attached previous_element as pe implies pe.value /= a_value
-			until
-				attached current_element as ce implies ce.value = a_value
-			loop
-				Result := Result + 1
-				previous_element := current_element
-				forth
 			variant
 				count - Result
+			until
+				active_element = Void or else (attached active_element as ce implies ce.value = a_value)
+			loop
+				Result := Result + 1
+				previous_element := active_element
+				forth
+			end
+			if active_element = Void then
+				Result := 0
+			else
+				Result := Result + 1
 			end
 		ensure
-			posizione_legale: 1 <= Result and Result <= count
+			posizione_legale: 0 <= Result and Result <= count
 		end
 
 -- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
@@ -384,7 +438,7 @@ feature -- Inserimento singolo vincolato
 			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen and then gen.value = a_value))
 		end
 
-	insert_after_using_get_element_append (a_value, target: INTEGER)
+	insert_after_CON_get_element_append (a_value, target: INTEGER)
 			-- Aggiunge `a_value' subito dopo la prima occorrenza di `target', se esiste,
 			-- altrimenti lo aggiunge alla fine della lista.
 			-- Implementazione che riusa le feature `get_element' e `append'
@@ -454,7 +508,7 @@ feature -- Inserimento singolo vincolato
 			collegato_se_presente: old has (target) implies (attached get_element (a_value) as ge implies (attached ge.next as gen and then gen.value = target))
 		end
 
-	insert_before_using_has_prepend (a_value, target: INTEGER)
+	insert_before_CON_has_prepend (a_value, target: INTEGER)
 			-- Aggiunge `a_value' subito prima della prima occorrenza di `target', se esiste,
 			-- altrimenti lo aggiunge all'inizio della lista riusando `has' e `prepend'.
 		local
@@ -489,7 +543,7 @@ feature -- Inserimento singolo vincolato
 			collegato_se_presente: old has (target) implies (attached get_element (a_value) as ge implies (attached ge.next as gen and then gen.value = target))
 		end
 
-	insert_before_with_2_cursors (a_value, target: INTEGER)
+	insert_before_CON_2_CURSORI (a_value, target: INTEGER)
 			-- Aggiunge `a_value' subito prima della prima occorrenza di `target', se esiste,
 			-- altrimenti lo aggiunge all'inizio della lista.
 			-- Anche questa potrebbe essere implementata riutilizzando prepend.
@@ -588,7 +642,7 @@ feature -- Insertion multiple targeted
 			collegato_se_presente_ALT: (old has (target) and attached get_element (target) as ge and then attached ge.next as gen) implies gen.value = a_value
 		end
 
-	insert_multiple_after_using_has_append (a_value, target: INTEGER)
+	insert_multiple_after_CON_has_append (a_value, target: INTEGER)
 			-- Aggiunge `a_value' subito dopo ogni `target', se ne esistono,
 			-- altrimenti aggiunge `a_value' alla fine della lista.
 			-- Implementazione che riusa le feature `has' e `append'
@@ -671,7 +725,7 @@ feature -- Insertion multiple targeted
 				-- verificare il collegamento con le successive occorrenze di target richiede get_all_elements
 		end
 
-	insert_multiple_before_without_prepend (a_value, target: INTEGER)
+	insert_multiple_before_SENZA_prepend (a_value, target: INTEGER)
 			-- inserisce `a_value' subito prima di ogni occorrenza di `target' se esiste
 			-- altrimenti inserisce `a_value' all'inizio senza usare `prepend'
 			-- Riccardo Malandruccolo, 2020/03/07
@@ -1478,7 +1532,7 @@ feature -- Convenience
 				temp := temp.next
 				i := i + 1
 			end
-			print (r + "  ho stampato in totale ")
+			print ("  -- ho stampato in totale ")
 			print (i)
 			print (" elementi." + r)
 			if i /= count then
