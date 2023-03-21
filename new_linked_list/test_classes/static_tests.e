@@ -518,25 +518,25 @@ feature --Status
 			t.append (3)
 			t.printout
 			-- [3]
-			assert("errore: la lista NON contiene 3 in prima posizione", t.index_of(3) = 1)
+			assert("errore: la lista NON contiene 3 in prima posizione", t.index_earliest_of(3) = 1)
 			t.prepend (5)
 			t.printout
 			-- [5,3]
-			assert("errore: la lista NON contiene 5 in prima posizione", t.index_of(5) = 1)
-			assert("errore: la lista NON contiene 3 in seconda posizione", t.index_of(3) = 2)
+			assert("errore: la lista NON contiene 5 in prima posizione", t.index_earliest_of(5) = 1)
+			assert("errore: la lista NON contiene 3 in seconda posizione", t.index_earliest_of(3) = 2)
 			t.append (6)
 			t.printout
 			-- [5,3,6]
-			assert("errore: la lista NON contiene 5 in prima posizione", t.index_of(5) = 1)
-			assert("errore: la lista NON contiene 3 in seconda posizione", t.index_of(3) = 2)
-			assert("errore: la lista NON contiene 6 in terza posizione", t.index_of(6) = 3)
+			assert("errore: la lista NON contiene 5 in prima posizione", t.index_earliest_of(5) = 1)
+			assert("errore: la lista NON contiene 3 in seconda posizione", t.index_earliest_of(3) = 2)
+			assert("errore: la lista NON contiene 6 in terza posizione", t.index_earliest_of(6) = 3)
 			t.prepend (4)
 			t.printout
 			-- [4,5,3,6]
-			assert("errore: la lista NON contiene 4 in prima posizione", t.index_of(4) = 1)
-			assert("errore: la lista NON contiene 5 in seconda posizione", t.index_of(5) = 2)
-			assert("errore: la lista NON contiene 3 in terza posizione", t.index_of(3) = 3)
-			assert("errore: la lista NON contiene 6 in quarta posizione", t.index_of(6) = 4)
+			assert("errore: la lista NON contiene 4 in prima posizione", t.index_earliest_of(4) = 1)
+			assert("errore: la lista NON contiene 5 in seconda posizione", t.index_earliest_of(5) = 2)
+			assert("errore: la lista NON contiene 3 in terza posizione", t.index_earliest_of(3) = 3)
+			assert("errore: la lista NON contiene 6 in quarta posizione", t.index_earliest_of(6) = 4)
 		end
 
 

@@ -165,7 +165,10 @@ feature -- Stato
 				Result := True
 			end
 		ensure
-			a_value_segue_target: Result implies index_of (a_value) > index_of (target)
+--			a_value_segue_target: Result implies index_earliest_of (a_value) > index_earliest_of (target)
+-- TODO: va usata la condizione di sotto ma bisogno implementare index_latest_of()
+--			a_value_segue_target: Result implies index_latest_of (a_value) > index_earliest_of (target)
+
 		end
 
 	value_after (a_value, target: INTEGER): BOOLEAN
@@ -213,7 +216,7 @@ feature -- Stato
 				Result := True
 			end
 		ensure
-			a_value_precede_target: Result implies index_of(a_value) < index_of(target)
+			a_value_precede_target: Result implies index_earliest_of(a_value) < index_earliest_of(target)
 		end
 
 	value_precedes_CON_start_forth (a_value, target: INTEGER): BOOLEAN
@@ -245,7 +248,7 @@ feature -- Stato
 			end
 			active_element := currently_active
 		ensure
-			a_value_precede_target: Result implies index_of (a_value) < index_of (target)
+			a_value_precede_target: Result implies index_earliest_of (a_value) < index_earliest_of (target)
 		end
 
 	value_precedes_SENZA_has (a_value, target: INTEGER): BOOLEAN
@@ -295,8 +298,8 @@ feature -- Stato
 			active_element := currently_active
 		ensure
 			correttezza_se_target_non_esiste: not has(target) implies not Result -- premessa equivalente index_of(target) = 0
-			correttezza_se_value_non_esiste: index_of(a_value) = 0 implies not Result  -- premessa equivalente not has(a_value)
-			trovato_a_value_prima_di_trovare_target: Result implies (index_of(a_value) /= 0 and index_of(a_value) < index_of(target))
+			correttezza_se_value_non_esiste: index_earliest_of(a_value) = 0 implies not Result  -- premessa equivalente not has(a_value)
+			trovato_a_value_prima_di_trovare_target: Result implies (index_earliest_of(a_value) /= 0 and index_earliest_of(a_value) < index_earliest_of(target))
 		end
 
 	value_before (a_value, target: INTEGER): BOOLEAN
@@ -319,36 +322,37 @@ feature -- Stato
 			Result implies attached get_element(a_value) as t and then (attached t.next as tn implies tn.value = target)
 		end
 
-	index_of (a_value: INTEGER): INTEGER
-			-- ritorna la posizione dell'elemento che contiene `a_value'
-			-- Enrico Nardelli 2021/07/29
+	index_earliest_of (a_value: INTEGER): INTEGER
+			-- ritorna la posizione del primo elemento che contiene `a_value' oppure 0 se non esiste
+			-- Enrico Nardelli 2021/07/19 - 2022/09/14
 		local
-			previous_element, currently_active: like first_element
+			previous_element, current_element: like first_element
 		do
-			currently_active := active_element
 			from
-				start
+				current_element := first_element
 				previous_element := Void
 			invariant
 				attached previous_element as pe implies pe.value /= a_value
 			variant
 				count - Result
 			until
-				active_element = Void or else (attached active_element as ce implies ce.value = a_value)
+				current_element = Void or else (attached current_element as ce implies ce.value = a_value)
 			loop
 				Result := Result + 1
 				previous_element := active_element
-				forth
+				current_element := current_element.next
 			end
-			if active_element = Void then
+			if current_element = Void then
 				Result := 0
 			else
 				Result := Result + 1
 			end
 		ensure
-			posizione_legale: 0 <= Result and Result <= count
+			corretto_se_esiste: has(a_value) = (0 < Result and Result <= count)
+			zero_se_non_esiste: not has(a_value) = (Result = 0)
 		end
 
+-- TODO definire una feature `index_latest_of' che restituisce il valore dell'ultimo elemento  che contiene `a_value' o 0 se non esiste
 -- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
 
 feature -- Inserimento singolo libero

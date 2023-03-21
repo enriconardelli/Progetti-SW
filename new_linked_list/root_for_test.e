@@ -320,13 +320,13 @@ feature -- single feature test
 			print (t.value_precedes_SENZA_has (7,5).out + r)
 		end
 
-	test_index_of
+	test_index_earliest_of
 		do
-			print (r + "test di index_of" + r)
+			print (r + "test di index_earliest_of" + r)
 			create t
 			print ("t vuota" + r)
 			print ("3 e' in posizione: ")
-			print (t.index_of (3).out + r)
+			print (t.index_earliest_of (3).out + r)
 			print ("t vuota, appendo 5" + r)
 			t.append(5)
 			-- [5]
@@ -338,13 +338,13 @@ feature -- single feature test
 			-- [4, 5, 7]
 			t.printout
 			print ("3 e' in posizione: ")
-			print (t.index_of (3).out + r)
+			print (t.index_earliest_of (3).out + r)
 			print ("4 e' in posizione: ")
-			print (t.index_of (4).out + r)
+			print (t.index_earliest_of (4).out + r)
 			print ("5 e' in posizione: ")
-			print (t.index_of (5).out + r)
+			print (t.index_earliest_of (5).out + r)
 			print ("7 e' in posizione: ")
-			print (t.index_of (7).out + r)
+			print (t.index_earliest_of (7).out + r)
 		end
 
 feature -- Inizialization
@@ -366,10 +366,10 @@ feature -- Inizialization
 --			test_insert_before
 --			test_insert_before_CON_2_CURSORI
 --			test_value_follows
-			test_value_precedes
-			test_value_precedes_CON_start_forth
-			test_value_precedes_SENZA_has
-			test_index_of
+--			test_value_precedes
+--			test_value_precedes_CON_start_forth
+--			test_value_precedes_SENZA_has
+			test_index_earliest_of
 		end
 
 
