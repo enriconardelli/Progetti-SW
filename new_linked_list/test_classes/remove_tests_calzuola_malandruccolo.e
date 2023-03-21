@@ -115,10 +115,21 @@ feature -- Test routines
 			t.append (a_value)
 			-- [2,1,3,1,1,2,1]
 
---			count_prima := how_many(t,a_value)
---			t.remove_all_preceding (a_value, target)
---			t.remove_latest_preceding (a_value, target)
---		--	t.remove_earliest_preceding (a_value, target)
+			count_prima := how_many(t,a_value)
+			t.remove_all_preceding (a_value, target)
+			count_dopo := how_many(t,a_value)
+			assert("errore: qualche elemento è stato eliminato", count_prima = count_dopo)
+
+			t.remove_latest_preceding (a_value, target)
+			count_dopo := how_many(t,a_value)
+			assert("errore: qualche elemento è stato eliminato", count_prima = count_dopo)
+
+			t.remove_earliest_preceding (a_value, target)
+			count_dopo := how_many(t,a_value)
+			assert("errore: qualche elemento è stato eliminato", count_prima = count_dopo)
+
+--			assert("errore: qualche a_value non è stato eliminato", count_dopo > 1)
+--			assert("errore: sono stati eliminati tutti a_value", count_dopo < 1)
 --		--  problema con a_value = target
 --			count_dopo := how_many(t,a_value)
 --			assert("errore: qualche elemento è stato eliminato", count_prima = count_dopo)
