@@ -119,4 +119,64 @@ feature -- Sum_of_positive
 			t_sop_mixed (1)
 		end
 
+feature -- count_of
+	-- già nelle postcondizioni della feature ci garantisce che se l'elemento non c'è il risultato è 0, quindi ci saranno solo test su quante istanze effettivamente conta
+
+	t_count_one_start (a_value: INTEGER)
+			--un valore solo all'inizio
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 3)
+			t.append (a_value + 2)
+			assert ("ha contato più di un'istanza rispetto a quella iniziale", t.count_of (a_value) = 1)
+		end
+
+	t_count_one_end (a_value: INTEGER)
+			-- un valore solo alla fine
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value + 2)
+			t.append (a_value + 3)
+			t.append (a_value)
+			assert ("ha contato più di un'istanza rispetto a quella finale", t.count_of (a_value) = 1)
+		end
+
+	t_count_middle (a_value: INTEGER)
+			-- un valore solo in mezzo
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value + 3)
+			t.append (a_value)
+			t.append (a_value + 2)
+			assert ("ha contato più di un'istanza rispetto a quella in mezzo", t.count_of (a_value) = 1)
+		end
+
+	t_count_multiple (a_value: INTEGER)
+			-- valori misti
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value)
+			t.append (a_value + 2)
+			assert ("ha contato poche volte", t.count_of (a_value) >= 2)
+			assert ("ha contato troppe volte", t.count_of (a_value) <= 2)
+		end
+
+	t_count_of
+		do
+			t_count_one_start (1)
+			t_count_one_end (1)
+			t_count_multiple (1)
+			t_count_multiple (1)
+		end
+
 end

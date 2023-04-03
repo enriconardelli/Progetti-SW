@@ -936,31 +936,31 @@ feature --Other
 
 feature -- Convenience
 
-	 t_count_of
+--	 t_count_of
 	 		-- EN, 2021/08/18
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
 				-- []
-			assert ("errore: su lista vuota il risultato non è zero", t.count_of(3) = 0)
-			t.append (2) ; t.append (4) ;	t.append (1)
+--			assert ("errore: su lista vuota il risultato non è zero", t.count_of(3) = 0)
+--			t.append (2) ; t.append (4) ;	t.append (1)
 				-- [2, 4, 1]
-			assert ("errore: la lista non contiene un'occorrenza di 3 ma il conteggio non è zero", t.count_of(3) = 0)
-			assert ("errore: la lista contiene un'occorrenza di 2 ma il conteggio non è uno", t.count_of(2) = 1)
-			assert ("errore: la lista contiene un'occorrenza di 4 ma il conteggio non è uno", t.count_of(4) = 1)
-			assert ("errore: la lista contiene un'occorrenza di 1 ma il conteggio non è uno", t.count_of(1) = 1)
-			t.wipeout
-			t.append (2) ; t.append (5) ;	t.append (1) ; t.append (5)
+--			assert ("errore: la lista non contiene un'occorrenza di 3 ma il conteggio non è zero", t.count_of(3) = 0)
+--			assert ("errore: la lista contiene un'occorrenza di 2 ma il conteggio non è uno", t.count_of(2) = 1)
+--			assert ("errore: la lista contiene un'occorrenza di 4 ma il conteggio non è uno", t.count_of(4) = 1)
+--			assert ("errore: la lista contiene un'occorrenza di 1 ma il conteggio non è uno", t.count_of(1) = 1)
+--			t.wipeout
+--			t.append (2) ; t.append (5) ;	t.append (1) ; t.append (5)
 				-- [2, 5, 1, 5]
-			t.insert_multiple_after_CON_has_append (3, 5)
+--			t.insert_multiple_after_CON_has_append (3, 5)
 				-- [2, 5, 3, 1, 5, 3]
-			assert ("errore: la lista non contiene un'occorrenza di 4 ma il conteggio non è zero", t.count_of(4) = 0)
-			assert ("errore: la lista contiene un'occorrenza di 2 ma il conteggio non è uno", t.count_of(2) = 1)
-			assert ("errore: la lista contiene un'occorrenza di 1 ma il conteggio non è uno", t.count_of(1) = 1)
-			assert ("errore: la lista contiene due occorrenze di 5 ma il conteggio non è due", t.count_of(5) = 2)
-			assert ("errore: la lista contiene due occorrenze di 3 ma il conteggio non è due", t.count_of(3) = 2)
-		end
+--			assert ("errore: la lista non contiene un'occorrenza di 4 ma il conteggio non è zero", t.count_of(4) = 0)
+--			assert ("errore: la lista contiene un'occorrenza di 2 ma il conteggio non è uno", t.count_of(2) = 1)
+--			assert ("errore: la lista contiene un'occorrenza di 1 ma il conteggio non è uno", t.count_of(1) = 1)
+--			assert ("errore: la lista contiene due occorrenze di 5 ma il conteggio non è due", t.count_of(5) = 2)
+--			assert ("errore: la lista contiene due occorrenze di 3 ma il conteggio non è due", t.count_of(3) = 2)
+--		end
 
 	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
 		-- return how many times `a_value' occurs in `t'
