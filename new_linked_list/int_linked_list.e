@@ -1533,7 +1533,9 @@ feature -- Computation
 						--se il valore nuovo è più grande del massimo che avevamo aggiorno result
 				end
 				k := k + 1
-				forth
+				if attached active_element as ae then
+					forth
+				end
 			end
 		end
 

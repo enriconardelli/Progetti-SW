@@ -19,40 +19,40 @@ feature -- highest
 		do
 			create t
 			t.append (a_value)
-			ensure ("errore il massimo non è il primo elemento", t.highest=a_value)
+			assert ("errore il massimo non è il primo elemento", t.highest=a_value)
 		end
 
 	t_three_elements_fisrt (a_value:INTEGER)
 		local
 			t: INT_LINKED_LIST
 		do
-			create.t
+			create t
 			t.append (a_value)
 			t.append(a_value-1)
 			t.append(a_value-3)
-			ensure ("errore il massimo non è il primo elemento", t.highest=a_value)
+			assert ("errore il massimo non è il primo elemento", t.highest=a_value)
 		end
 
 	t_three_elements_last (a_value:INTEGER)
 		local
 			t: INT_LINKED_LIST
 		do
-			create.t
+			create t
 			t.append (a_value-1)
 			t.append(a_value-4)
 			t.append(a_value)
-			ensure ("errore il massimo non è l'ultimo elemento", t.highest=a_value)
+			assert ("errore il massimo non è l'ultimo elemento", t.highest=a_value)
 		end
 
 	t_three_elements_middle (a_value:INTEGER)
 		local
 			t: INT_LINKED_LIST
 		do
-			create.t
+			create t
 			t.append (a_value-1)
 			t.append(a_value)
 			t.append(a_value-4)
-			ensure ("errore il massimo non è l'ultimo elemento", t.highest=a_value)
+			assert ("errore il massimo non è l'ultimo elemento", t.highest=a_value)
 		end
 
 
@@ -64,3 +64,18 @@ feature -- highest
 			t_three_elements_last (1)
 		end
 end
+
+--feature -- Computation
+
+--	t_sum_of_positive
+			--Giulia Iezzi 2020/03/08
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			assert ("la lista è vuota, fa zero?", t.sum_of_positive = 0)
+--			t.append (1)
+--			t.append (2)
+--			t.append (-1)
+--			assert ("la lista contiene 1 ,2 e -1, fa 3?", t.sum_of_positive = 3)
+--		end

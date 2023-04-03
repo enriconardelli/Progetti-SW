@@ -934,27 +934,6 @@ feature --Other
 			end
 		end
 
-feature -- Manipulation
-
-	--to do: t_head_list
-
-feature -- Computation
-
-	t_sum_of_positive
-			--Giulia Iezzi 2020/03/08
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			assert ("la lista è vuota, fa zero?", t.sum_of_positive = 0)
-			t.append (1)
-			t.append (2)
-			t.append (-1)
-			assert ("la lista contiene 1 ,2 e -1, fa 3?", t.sum_of_positive = 3)
-		end
-
-		--to do: t_higest
-
 feature -- Convenience
 
 	 t_count_of

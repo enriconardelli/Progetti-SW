@@ -17,6 +17,7 @@ feature -- head_list
 			-- lista con solo un elemento
 		local
 			t: INT_LINKED_LIST
+			k: INTEGER
 		do
 			create t
 			t.append (a_value)
@@ -51,7 +52,7 @@ feature -- head_list
 
 	t_head_list
 		do
-			t_one_element (1)
+		    t_one_element (1)
 			t_three_element_copy_two (1)
 			t_three_element_three_coopy (1)
 		end
