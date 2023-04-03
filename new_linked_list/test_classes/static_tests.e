@@ -902,7 +902,7 @@ feature -- Removal multiple free
 			assert ("errore: non ha eliminato tutti gli elementi", t.count = 0)
 		end
 
-feature --Other
+--feature --Other
 
 --	t_invert
 			-- Federico Fiorini, 2020/03/08
@@ -984,6 +984,7 @@ feature -- Convenience
 
 
 feature -- Controllo lista
+--a me questi sembrano di tipo integrazione? (Gianluca Pastorini)
 
 	t_lista_vuota
 		-- Calzuola e Malandruccolo 2020/03/21
