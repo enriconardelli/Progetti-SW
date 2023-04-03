@@ -934,6 +934,10 @@ feature --Other
 			end
 		end
 
+feature -- Manipulation
+
+	--to do: t_head_list
+
 feature -- Computation
 
 	t_sum_of_positive
