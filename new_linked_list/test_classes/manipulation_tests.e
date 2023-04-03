@@ -33,7 +33,7 @@ feature -- head_list
 			t.append (a_value + 1)
 			t.append (a_value + 2)
 			assert ("errore: il primo elemento non coincide con quello della lista originale", attached t.head_list (1).first_element as fe implies fe.value = a_value)
-			assert ("errore: il secondo elemento non coincide con quello della lista originale",  attached t.head_list(1).last_element as fe implies fe.value = a_value+1)
+			assert ("errore: il secondo elemento non coincide con quello della lista originale",  attached t.head_list(2).last_element as fe implies fe.value = a_value+1)
 		end
 
 	t_three_element_three_coopy (a_value: INTEGER)
@@ -44,10 +44,9 @@ feature -- head_list
 			create t
 			t.append (a_value)
 			t.append (a_value + 1)
-			t.append (a_value + 2)
 			t.append (a_value + 4)
 			assert ("errore: il primo elemento non coincide con quello della lista originale", attached t.head_list (1).first_element as fe implies fe.value = a_value)
-			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached t.head_list (1).last_element as fe implies fe.value = a_value + 4)
+			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached t.head_list (3).last_element as fe implies fe.value = a_value + 4)
 		end
 
 	t_head_list

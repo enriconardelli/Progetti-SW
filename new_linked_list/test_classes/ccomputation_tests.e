@@ -44,10 +44,23 @@ feature -- highest
 			ensure ("errore il massimo non è l'ultimo elemento", t.highest=a_value)
 		end
 
+	t_three_elements_middle (a_value:INTEGER)
+		local
+			t: INT_LINKED_LIST
+		do
+			create.t
+			t.append (a_value-1)
+			t.append(a_value)
+			t.append(a_value-4)
+			ensure ("errore il massimo non è l'ultimo elemento", t.highest=a_value)
+		end
+
+
 		t_highest
 		do
 			t_one_element (1)
 			t_three_elements_fisrt (1)
+			t_three_elements_middle (1)
 			t_three_elements_last (1)
 		end
 end
