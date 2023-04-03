@@ -145,16 +145,15 @@ feature -- Stato
 			-- la lista contiene `a_value' in qualunque posizione dopo la prima occorrenza di `target'?
 			-- Claudia Agulini, 2020/03/08
 		require
-			contiene_il_target: has(target)
+			contiene_il_target: has (target)
 		local
 			previous_element, current_element: like first_element
 		do
 			from
-				current_element := get_element(target)
+				current_element := get_element (target)
 				previous_element := Void
 			invariant
-				attached current_element as ce implies
-					(ce.value /= a_value implies (attached previous_element as pe implies pe.value /= a_value))
+				attached current_element as ce implies (ce.value /= a_value implies (attached previous_element as pe implies pe.value /= a_value))
 			until
 				(current_element = Void) or (attached current_element as ce and then ce.value = a_value)
 			loop
@@ -171,11 +170,11 @@ feature -- Stato
 	value_after (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito dopo la prima occorrenza di `target'?
 		require
-			contiene_il_target: has(target)
+			contiene_il_target: has (target)
 		local
 			current_element: like first_element
 		do
-			current_element := get_element(target)
+			current_element := get_element (target)
 			if attached current_element as ce then
 				if attached ce.next as cen then
 					if cen.value = a_value then
@@ -184,14 +183,14 @@ feature -- Stato
 				end
 			end
 		ensure
-			Result implies attached get_element(target) as t and then (attached t.next as tn implies tn.value = a_value)
+			Result implies attached get_element (target) as t and then (attached t.next as tn implies tn.value = a_value)
 		end
 
 	value_precedes (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' prima della prima occorrenza di `target'?
 			-- Maria Ludovica Sarandrea, 2021/04/03
 		require
-			contiene_il_target: has(target)
+			contiene_il_target: has (target)
 			sono_diversi: a_value /= target
 		local
 			previous_element, current_element: like first_element
@@ -200,9 +199,7 @@ feature -- Stato
 				current_element := first_element
 				previous_element := Void
 			invariant
-				attached current_element as ce implies (
-					(ce.value /= a_value and ce.value /= target)
-						implies (attached previous_element as pe implies (pe.value /= a_value and pe.value /= target)))
+				attached current_element as ce implies ((ce.value /= a_value and ce.value /= target) implies (attached previous_element as pe implies (pe.value /= a_value and pe.value /= target)))
 			until
 				attached current_element as ce implies (ce.value = a_value or ce.value = target)
 			loop
@@ -213,7 +210,7 @@ feature -- Stato
 				Result := True
 			end
 		ensure
-			a_value_precede_target: Result implies index_of(a_value) < index_of(target)
+			a_value_precede_target: Result implies index_of (a_value) < index_of (target)
 		end
 
 	value_precedes_CON_start_forth (a_value, target: INTEGER): BOOLEAN
@@ -221,7 +218,7 @@ feature -- Stato
 			-- versione che riutilizza `start', `forth' e `active_element'
 			-- Enrico Nardelli 2022/06/29
 		require
-			contiene_il_target: has(target)
+			contiene_il_target: has (target)
 			sono_diversi: a_value /= target
 		local
 			previous_element, currently_active: like first_element
@@ -231,9 +228,7 @@ feature -- Stato
 				start
 				previous_element := Void
 			invariant
-				attached active_element as ae implies
-					((ae.value /= a_value and ae.value /= target)
-						implies (attached previous_element as pe implies (pe.value /= a_value and pe.value /= target)))
+				attached active_element as ae implies ((ae.value /= a_value and ae.value /= target) implies (attached previous_element as pe implies (pe.value /= a_value and pe.value /= target)))
 			until
 				attached active_element as ae implies (ae.value = a_value or ae.value = target)
 			loop
@@ -259,7 +254,7 @@ feature -- Stato
 			target_found: BOOLEAN
 		do
 			currently_active := active_element
-			-- ricerca di `a_value'
+				-- ricerca di `a_value'
 			from
 				start
 				previous_element := Void
@@ -275,7 +270,7 @@ feature -- Stato
 				forth
 			end
 			if attached active_element and then (attached active_element as ae implies ae.value = a_value) then
-				-- se viene trovato `a_value' si cerca `target' se non era già stato trovato
+					-- se viene trovato `a_value' si cerca `target' se non era già stato trovato
 				if not target_found then
 					from
 						previous_element := Void
@@ -294,21 +289,21 @@ feature -- Stato
 			end
 			active_element := currently_active
 		ensure
-			correttezza_se_target_non_esiste: not has(target) implies not Result -- premessa equivalente index_of(target) = 0
-			correttezza_se_value_non_esiste: index_of(a_value) = 0 implies not Result  -- premessa equivalente not has(a_value)
-			trovato_a_value_prima_di_trovare_target: Result implies (index_of(a_value) /= 0 and index_of(a_value) < index_of(target))
+			correttezza_se_target_non_esiste: not has (target) implies not Result -- premessa equivalente index_of(target) = 0
+			correttezza_se_value_non_esiste: index_of (a_value) = 0 implies not Result -- premessa equivalente not has(a_value)
+			trovato_a_value_prima_di_trovare_target: Result implies (index_of (a_value) /= 0 and index_of (a_value) < index_of (target))
 		end
 
 	value_before (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
 			-- Sara Forte 2021/04/03
 		require
-			contiene_il_target: has(target)
+			contiene_il_target: has (target)
 			sono_diversi: a_value /= target
 		local
-			 current_element, next_element: like first_element
+			current_element, next_element: like first_element
 		do
-			current_element := get_element(a_value)
+			current_element := get_element (a_value)
 			if attached current_element as ce then
 				next_element := ce.next
 				if attached next_element as ne and then ne.value = target then
@@ -316,7 +311,7 @@ feature -- Stato
 				end
 			end
 		ensure
-			Result implies attached get_element(a_value) as t and then (attached t.next as tn implies tn.value = target)
+			Result implies attached get_element (a_value) as t and then (attached t.next as tn implies tn.value = target)
 		end
 
 	index_of (a_value: INTEGER): INTEGER
@@ -331,14 +326,14 @@ feature -- Stato
 				previous_element := Void
 			invariant
 				attached previous_element as pe implies pe.value /= a_value
-			variant
-				count - Result
 			until
 				active_element = Void or else (attached active_element as ce implies ce.value = a_value)
 			loop
 				Result := Result + 1
 				previous_element := active_element
 				forth
+			variant
+				count - Result
 			end
 			if active_element = Void then
 				Result := 0
@@ -349,7 +344,7 @@ feature -- Stato
 			posizione_legale: 0 <= Result and Result <= count
 		end
 
--- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
+		-- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
 
 feature -- Inserimento singolo libero
 
@@ -433,8 +428,8 @@ feature -- Inserimento singolo vincolato
 			uno_in_piu: count = old count + 1
 			valore_aggiunto: has (a_value)
 			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
-			accodato_se_non_presente: (not old has (target)  and attached last_element as le) implies le.value = a_value
-			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			accodato_se_non_presente: (not old has (target) and attached last_element as le) implies le.value = a_value
+				--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
 			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen and then gen.value = a_value))
 		end
 
@@ -460,8 +455,8 @@ feature -- Inserimento singolo vincolato
 			uno_in_piu: count = old count + 1
 			valore_aggiunto: has (a_value)
 			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
-			accodato_se_non_presente: (not old has (target)  and attached last_element as le) implies le.value = a_value
-			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			accodato_se_non_presente: (not old has (target) and attached last_element as le) implies le.value = a_value
+				--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
 			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen and then gen.value = a_value))
 		end
 
@@ -489,7 +484,7 @@ feature -- Inserimento singolo vincolato
 					end
 					if attached current_element as ce then
 						if ce.next = Void then
-							 -- la lista non contiene `target'
+								-- la lista non contiene `target'
 							new_element.link_to (first_element)
 							first_element := new_element
 						else
@@ -504,7 +499,7 @@ feature -- Inserimento singolo vincolato
 			valore_aggiunto: has (a_value)
 			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
 			in_testa_se_non_presente: (not old has (target) and attached first_element as fe) implies fe.value = a_value
-			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+				--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
 			collegato_se_presente: old has (target) implies (attached get_element (a_value) as ge implies (attached ge.next as gen and then gen.value = target))
 		end
 
@@ -539,7 +534,7 @@ feature -- Inserimento singolo vincolato
 			valore_aggiunto: has (a_value)
 			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
 			in_testa_se_non_presente: (not old has (target) and attached first_element as fe) implies fe.value = a_value
-			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+				--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
 			collegato_se_presente: old has (target) implies (attached get_element (a_value) as ge implies (attached ge.next as gen and then gen.value = target))
 		end
 
@@ -565,7 +560,7 @@ feature -- Inserimento singolo vincolato
 					current_element := current_element.next
 				end
 				if current_element = Void then
-					 -- la lista non contiene `target'
+						-- la lista non contiene `target'
 					new_element.link_to (first_element)
 					first_element := new_element
 				else -- `current_element' contiene `target'
@@ -584,7 +579,7 @@ feature -- Inserimento singolo vincolato
 			valore_aggiunto: has (a_value)
 			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
 			in_testa_se_non_presente: (not old has (target) and attached first_element as fe) implies fe.value = a_value
-			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+				--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
 			collegato_se_presente: old has (target) implies (attached get_element (a_value) as ge implies (attached ge.next as gen and then gen.value = target))
 		end
 
@@ -635,10 +630,10 @@ feature -- Insertion multiple targeted
 			di_piu: count > old count
 			valore_aggiunto: has (a_value)
 			conteggio_incrementato: count_of (a_value) > old count_of (a_value)
-			accodato_se_non_presente: (not old has (target)  and attached last_element as le) implies le.value = a_value
-			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			accodato_se_non_presente: (not old has (target) and attached last_element as le) implies le.value = a_value
+				--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
 			collegato_se_presente: (old has (target) and attached get_element (target) as ge) implies (attached ge.next as gen and then gen.value = a_value)
-			--	il seguente invariante è una formulazione alternativa del precedente
+				--	il seguente invariante è una formulazione alternativa del precedente
 			collegato_se_presente_ALT: (old has (target) and attached get_element (target) as ge and then attached ge.next as gen) implies gen.value = a_value
 		end
 
@@ -676,10 +671,10 @@ feature -- Insertion multiple targeted
 			di_piu: count > old count
 			valore_aggiunto: has (a_value)
 			conteggio_incrementato: count_of (a_value) > old count_of (a_value)
-			accodato_se_non_presente: (not old has (target)  and attached last_element as le) implies le.value = a_value
-			--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			accodato_se_non_presente: (not old has (target) and attached last_element as le) implies le.value = a_value
+				--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
 			collegato_se_presente: (old has (target) and attached get_element (target) as ge) implies (attached ge.next as gen and then gen.value = a_value)
-			--	il seguente invariante è una formulazione alternativa del precedente
+				--	il seguente invariante è una formulazione alternativa del precedente
 			collegato_se_presente_ALT: (old has (target) and attached get_element (target) as ge and then attached ge.next as gen) implies gen.value = a_value
 		end
 
@@ -883,7 +878,6 @@ feature -- Removal single free
 				--			rimosso_se_primo: old first_element.value = a_value implies first_element = old first_element.next
 		end
 
-
 	remove_last____DA_CANCELLARE (a_value: INTEGER)
 			-- GIA' SOSTITUITA RIMPIAZZATA DA REMOVE_LATEST
 			-- Rimuove l'ultimo elemento che contiene `a_value', se esiste
@@ -979,7 +973,7 @@ feature -- Removal single free
 					else
 						if current_element = first_element then
 							if attached first_element as fe then
-								first_element:= fe.next
+								first_element := fe.next
 							end
 						elseif current_element = last_element then
 							last_element := pre_current
@@ -1257,21 +1251,20 @@ feature -- Removal multiple free
 							remove_active
 						else
 							if current_element = first_element then
-							-- `current_element' e' il primo elemento della lista che ha almeno due elementi
+									-- `current_element' e' il primo elemento della lista che ha almeno due elementi
 								if attached first_element as fe and then fe.value = a_value then
-										first_element := fe.next
+									first_element := fe.next
 								end
 							elseif current_element = last_element then
-							-- `current_element' e' l'ultimo elemento della lista che ha almeno due elementi
-									last_element := pre_current
-									if attached last_element as le then
-										le.link_to (Void)
-									end
-
+									-- `current_element' e' l'ultimo elemento della lista che ha almeno due elementi
+								last_element := pre_current
+								if attached last_element as le then
+									le.link_to (Void)
+								end
 							else
-							-- `current_element' e' elemento intermedio della lista che ha almeno tre elementi
+									-- `current_element' e' elemento intermedio della lista che ha almeno tre elementi
 								if attached pre_current as pc and then attached pc.next as pcn then
-									pc.link_to(pcn.next)
+									pc.link_to (pcn.next)
 								end
 							end
 							count := count - 1
@@ -1282,8 +1275,8 @@ feature -- Removal multiple free
 				end
 			end
 		ensure
-			rimosso_elemento_se_esiste: old has(a_value) implies count < old count
-	    end
+			rimosso_elemento_se_esiste: old has (a_value) implies count < old count
+		end
 
 	wipeout
 			-- remove all elements
@@ -1409,46 +1402,75 @@ feature -- Other
 feature -- Manipulation
 
 	head_list (max: INTEGER): like Current
-			-- return a list with the first `max' items
+			-- return a list with the first `max' values
 			-- RICHIEDE DI AGGIUNGERE `index' e `go_i_th'
+			--		require
+			--			0 <= max
+			--			max <= count
+			--		local
+			--			k: INTEGER
+			--			i: INTEGER
+			--		do
+			--			create Result
+			--			i := index_of
+			--			from
+			--				k := 1
+			--				start
+			--			invariant
+			--				1 <= index
+			--				index <= max + 1
+			--				k = index
+			--			until
+			--				index > max
+			--			loop
+			--				Result.append (value)
+			--				k := k + 1
+			--				forth
+			--			variant
+			--				count - index + 1
+			--			end
+			--			go_i_th (i)
+			--		end
+
+			-- versione alternativa senza index e go_i_th
 		require
 			0 <= max
 			max <= count
 		local
---			k: INTEGER
---			i: INTEGER
+			k: INTEGER
+			i: INTEGER
 		do
 			create Result
---			i := index
---			from
---				k := 1
---				start
---			invariant
---				1 <= index
---				index <= max + 1
---				k = index
---			until
---				index > max
---			loop
---				Result.extend (item)
---				k := k + 1
---				forth
---			variant
---				count - index + 1
---			end
---			go_i_th (i)
+			i := index_of
+			from
+				k := 1
+				start
+			invariant
+				1 <= index
+				index <= max + 1
+				k = index
+			until
+				index > max
+			loop
+				Result.append (value)
+				k := k + 1
+				forth
+			variant
+				count - index + 1
+			end
+			go_i_th (i)
 		end
 
 	tail_list_____da_implementare (max: INTEGER): like Current
-			-- return a list with the last `max' items
-	do
-		create Result
-	end
+			-- return a list with the last `max' values
+		do
+			create Result
+		end
 
 feature -- Computation
 
 	count_of (target: INTEGER): INTEGER
-		-- conta quante occorrenze di `target' esistono
+			-- conta quante occorrenze di `target' esistono
 		local
 			current_element: like first_element
 		do
@@ -1467,29 +1489,27 @@ feature -- Computation
 			maggiore_di_zero_se_presente: old has (target) implies Result > 0
 		end
 
-
-
 	highest: INTEGER
-			-- return the value of the highest item
+			-- return the value of the highest value
 		local
---			slice: like Current
+			--			slice: like Current
 		do
---			create slice.make
---			from
---				start
---				slice := head_list (index - 1)
---			invariant
---				index >= 1
---				index <= count + 1
---				Result >= slice.highest
---			until
---				after
---			loop
---				Result := item.max (Result)
---				forth
---			end
---		ensure
---			across Current as c all c.item <= Result end
+				--			create slice.make
+				--			from
+				--				start
+				--				slice := head_list (index - 1)
+				--			invariant
+				--				index >= 1
+				--				index <= count + 1
+				--				Result >= slice.highest
+				--			until
+				--				after
+				--			loop
+				--				Result := item.max (Result)
+				--				forth
+				--			end
+				--		ensure
+				--			across Current as c all c.value <= Result end
 		end
 
 	sum_of_positive: INTEGER
