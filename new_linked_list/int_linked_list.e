@@ -1489,25 +1489,52 @@ feature -- Computation
 
 	highest: INTEGER
 			-- return the value of the highest item
-		local
+			--		local
 			--			slice: like Current
+			--		do
+			--			create slice.make
+			--			from
+			--				start
+			--				slice := head_list (index - 1)
+			--			invariant
+			--				index >= 1
+			--				index <= count + 1
+			--				Result >= slice.highest
+			--			until
+			--				after
+			--			loop
+			--				Result := item.max (Result)
+			--				forth
+			--			end
+			--		ensure
+			--			across Current as c all c.item <= Result end
+			--		end
+
+			-- nuova versione senza index
+		require
+			count > 0
+		local
+			k: INTEGER
 		do
-				--			create slice.make
-				--			from
-				--				start
-				--				slice := head_list (index - 1)
-				--			invariant
-				--				index >= 1
-				--				index <= count + 1
-				--				Result >= slice.highest
-				--			until
-				--				after
-				--			loop
-				--				Result := item.max (Result)
-				--				forth
-				--			end
-				--		ensure
-				--			across Current as c all c.item <= Result end
+			from
+				start
+				k := 1
+				if attached first_element as fe then
+					result := fe.value
+				end
+					--bisogna dare un valore a result all'inizio altrimenti non ho con cosa confrontarlo
+			until
+				k > count + 1
+			loop
+				if attached active_element as ae then
+					if ae.value > result then
+						result := ae.value
+					end
+						--se il valore nuovo è più grande del massimo che avevamo aggiorno result
+				end
+				k := k + 1
+				forth
+			end
 		end
 
 	sum_of_positive: INTEGER
