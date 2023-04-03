@@ -16,20 +16,20 @@ inherit
 
 feature -- Spostamento del cursore
 
-	t_first
+--	t_first
 			-- Claudia Agulini, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (1)
-			t.append (3)
-			t.append (5)
-			t.start
-			if attached t.active_element as ae and attached t.first_element as fe then
-				assert ("t contiene 1,3,5, active è 1?", ae.value = fe.value)
-			end
-		end
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			t.append (1)
+---			t.append (3)
+--			t.append (5)
+--			t.start
+--			if attached t.active_element as ae and attached t.first_element as fe then
+--				assert ("t contiene 1,3,5, active è 1?", ae.value = fe.value)
+--			end
+--		end
 
 	t_last
 			-- Arianna Calzuola, 2020/03/10

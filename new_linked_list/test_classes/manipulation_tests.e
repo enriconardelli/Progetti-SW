@@ -1,5 +1,5 @@
 note
-	description: "Test per le feature di tipo Manipulation"
+	description: "Test per le feature di tipo MANIPULATION"
 	author: "Gianluca Pastorini"
 	date: "$03/04/23"
 	revision: "$Revision$"

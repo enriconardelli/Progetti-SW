@@ -1,5 +1,5 @@
 note
-	description: "Test per le feature di tipo Manipulation"
+	description: "Test per le feature di tipo SPOSTAMENTO DEL CURSORE"
 	author: "Gianluca Pastorini"
 	date: "$03/04/23"
 	revision: "$Revision$"
@@ -15,6 +15,7 @@ feature --first
 	-- Claudia Agulini, 2020/03/06
 
 	t_first_one_element (a_value: INTEGER)
+	-- test su lista da un elemento solo
 		local
 			t: INT_LINKED_LIST
 		do
@@ -24,10 +25,12 @@ feature --first
 			if attached t.active_element as ae and attached t.first_element as fe then
 				assert ("l'unico elemento della lista non è considerato come primo", ae.value = fe.value)
 			end
-			assert ("il primo elemento risulta vuoto", t.first_element = void)
+			assert ("il primo elemento risulta vuoto", t.first_element /= void)
+			--la listta non è vuota quindi il primo elemento non deve essere associato a void
 		end
 
 	t_first_multiple_element (a_value: INTEGER)
+	-- test su lista con più di un elemento
 		local
 			t: INT_LINKED_LIST
 		do
@@ -39,7 +42,7 @@ feature --first
 			if attached t.active_element as ae and attached t.first_element as fe then
 				assert ("il primo elemto della lista risulta sbagliato", ae.value = fe.value)
 			end
-			assert ("il primo elemento risulta vuoto", t.first_element = void)
+			assert ("il primo elemento risulta vuoto", t.first_element /= void)
 		end
 
 	t_first_void (a_value: INTEGER) -- inserisco comunque una variabile così il test lo esegue solo sotto, insieme agli altri
@@ -47,7 +50,7 @@ feature --first
 			t: INT_LINKED_LIST
 		do
 			create t
-			assert ("il primo elemento non risulta vuoto", t.firt.element = void)
+			assert ("il primo elemento non risulta vuoto", t.first_element = void)
 		end
 
 		t_first
