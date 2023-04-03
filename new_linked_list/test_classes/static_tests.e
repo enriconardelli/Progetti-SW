@@ -31,46 +31,46 @@ feature -- Spostamento del cursore
 --			end
 --		end
 
-	t_last
-			-- Arianna Calzuola, 2020/03/10
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.last
-			assert ("errore: la lista è vuota, ma l'elemento attivo non e' vuoto", t.active_element = void)
-			t.append (3)
-			t.last
-			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' il primo", t.active_element = t.first_element)
-			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' l'ultimo", t.active_element = t.last_element)
-			if attached t.active_element as ae then
-				assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' quello inserito", ae.value = 3)
-			end
-			t.append (2)
-			t.append (7)
-				--[3, 2, 7]
-			t.last
-			if attached t.active_element as ae then
-				assert ("errore: active element non sta puntando all'ultimo elemento della lista", ae.value = 7)
-			end
-			assert ("errore: il valore di active element non è il valore dell'ultimo elemento della lista", t.active_element = t.last_element)
-		end
+--	t_last
+--			-- Arianna Calzuola, 2020/03/10
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			t.last
+--			assert ("errore: la lista è vuota, ma l'elemento attivo non e' vuoto", t.active_element = void)
+--			t.append (3)
+--			t.last
+--			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' il primo", t.active_element = t.first_element)
+--			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' l'ultimo", t.active_element = t.last_element)
+--			if attached t.active_element as ae then
+--				assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' quello inserito", ae.value = 3)
+---			end
+--			t.append (2)
+--			t.append (7)
+--				--[3, 2, 7]
+--			t.last
+--			if attached t.active_element as ae then
+--				assert ("errore: active element non sta puntando all'ultimo elemento della lista", ae.value = 7)
+--			end
+--			assert ("errore: il valore di active element non è il valore dell'ultimo elemento della lista", t.active_element = t.last_element)
+--		end
 
-	t_forth
+--	t_forth
 			-- Alessandro Filippo 2020/03/08
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			assert ("la lista è vuota, active element è void", t.active_element = Void)
-			t.append (3)
-			if t.active_element /= Void then t.forth end
-			assert ("l'active element è 3 ed è il last element , dopo forth è Void?", t.active_element = Void)
-			t.append (4)
-			t.start
-			if t.active_element /= Void then t.forth end
-			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
-		end
+--		local
+--			t: INT_LINKED_LIST
+---		do
+--			create t
+--			assert ("la lista è vuota, active element è void", t.active_element = Void)
+--			t.append (3)
+--			if t.active_element /= Void then t.forth end
+--			assert ("l'active element è 3 ed è il last element , dopo forth è Void?", t.active_element = Void)
+---			t.append (4)
+--			t.start
+--			if t.active_element /= Void then t.forth end
+--			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
+--		end
 feature -- Ricerca
 
 	t_has

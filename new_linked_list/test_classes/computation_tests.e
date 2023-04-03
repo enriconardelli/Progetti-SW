@@ -14,6 +14,7 @@ inherit
 feature -- highest
 
 	t_one_element (a_value: INTEGER)
+	-- test con lista di un elemento
 		local
 			t: INT_LINKED_LIST
 		do
@@ -23,6 +24,7 @@ feature -- highest
 		end
 
 	t_three_elements_fisrt (a_value: INTEGER)
+	-- test con lista di tre elementi e valore più alto all'inizio
 		local
 			t: INT_LINKED_LIST
 		do
@@ -34,6 +36,7 @@ feature -- highest
 		end
 
 	t_three_elements_last (a_value: INTEGER)
+	-- test con lista di tre elementi e valore più alto alla fine
 		local
 			t: INT_LINKED_LIST
 		do
@@ -45,6 +48,7 @@ feature -- highest
 		end
 
 	t_three_elements_middle (a_value: INTEGER)
+	-- test con lista di tre elementi e valore più alto in mezzo
 		local
 			t: INT_LINKED_LIST
 		do
@@ -56,6 +60,7 @@ feature -- highest
 		end
 
 	t_highest
+	-- fa tutti i test elencati sopra con possibilità di cambiare il parametro
 		do
 			t_one_element (1)
 			t_three_elements_fisrt (1)
@@ -112,6 +117,7 @@ feature -- Sum_of_positive
 		end
 
 	t_sum_of_positive
+	-- fa tutti i test elencati sopra con possibilità di cambiare il parametro
 		do
 			t_sop_negativ (1)
 			t_sop_vuota (1)
@@ -172,6 +178,7 @@ feature -- count_of
 		end
 
 	t_count_of
+	-- fa tutti i test elencati sopra con possibilità di cambiare il parametro
 		do
 			t_count_one_start (1)
 			t_count_one_end (1)
