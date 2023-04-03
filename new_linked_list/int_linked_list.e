@@ -1376,7 +1376,9 @@ feature -- Removal multiple targeted
 			not old has (a_value) implies count = old count
 		end
 
-feature -- Other
+feature -- Manipulation
+
+		--feature -- Other
 
 	invert
 			-- invert the entire list
@@ -1402,8 +1404,6 @@ feature -- Other
 		ensure
 			count = old count
 		end
-
-feature -- Manipulation
 
 	head_list (max: INTEGER): like Current
 			-- return a list with the first `max' items
