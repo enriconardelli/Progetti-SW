@@ -127,7 +127,7 @@ feature -- forth
 			create t
 			t.append (a_value)
 			t.start
-			-- serve t.start perché append non sposta active element, quindi se non lo inzializzi sta su void
+				-- serve t.start perché append non sposta active element, quindi se non lo inzializzi sta su void
 			t.forth
 				-- active_element era anche il last_element quindi dopo di lui ci dovrebbe essere void
 			assert ("il forth non ha portato active element a void", t.active_element = Void)
@@ -141,7 +141,7 @@ feature -- forth
 			t.append (a_value)
 			t.append (a_value - 2)
 			t.start
-			-- porto il cursore all'inizio
+				-- porto il cursore all'inizio
 			t.forth
 			t.forth
 				-- ho spostato di due volte quindi dopo ci dovrebbe essere void

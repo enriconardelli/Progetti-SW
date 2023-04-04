@@ -14,7 +14,7 @@ inherit
 
 	EQA_TEST_SET
 
-feature -- Spostamento del cursore
+--feature -- Spostamento del cursore
 
 --	t_first
 			-- Claudia Agulini, 2020/03/06

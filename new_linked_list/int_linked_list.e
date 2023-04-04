@@ -24,22 +24,38 @@ feature -- Accesso
 	count: INTEGER
 			-- Il numero di elementi della lista.
 
+	index: INTEGER
+			-- L'intero che corrisponde alla posizione di active_element
+			-- E' 0 se active_element è void
+
 feature -- Spostamento del cursore
 
 	start
 			-- Sposta il cursore al primo elemento.
 		do
 			active_element := first_element
+			if count = 0 then
+					-- se la lista è vuota first_element è void quindi active va su void quindi index deve essere 0
+				index := 0
+			else
+					-- se la lista non è vuota index deve valere 1
+				index := 1
+			end
 		ensure
 			active_element = first_element
+			count = 0 implies index = 0
+			count /= 0 implies index = 1
 		end
 
 	last
 			-- Sposta il cursore all'ultimo elemento.
 		do
 			active_element := last_element
+			index := count
+				-- se la lista è vuota count è 0 quindi va bene come valore di index
 		ensure
 			active_element = last_element
+			index = count
 		end
 
 	forth
@@ -50,8 +66,17 @@ feature -- Spostamento del cursore
 			if attached active_element as ae then
 				active_element := ae.next
 			end
+			if attached active_element as ae then
+					-- se active_element è ancora attached allora posso aumentare l'indice
+				index := index + 1
+			else
+					-- se active_element è finito a void metto index 0
+				index := 0
+			end
 		ensure
 			attached old active_element as ae implies active_element = ae.next
+			attached active_element as ae implies index = old index + 1
+			active_element = void implies index = 0
 		end
 
 feature -- Ricerca
@@ -85,6 +110,8 @@ feature -- Ricerca
 
 	has_CON_ACTIVE (a_value: INTEGER): BOOLEAN
 			-- La lista contiene `a_value'?
+
+			-- Qui si usa currently active per salvare la posizione di active_element, una volta introdotti index e go_i_th forse si può sostituire con quelli?
 		local
 			currently_active, previous_element: like first_element
 			k: INTEGER
@@ -110,7 +137,11 @@ feature -- Ricerca
 				count - k
 			end
 			active_element := currently_active
-		end
+		ensure
+			old active_element = active_element
+			old index = index
+			-- avendo manipolato active element devo assicurarmi che né lui né index siano cambiati
+			end
 
 	get_element (a_value: INTEGER): detachable INT_LINKABLE
 			-- Ritorna il primo elemento che contiene `a_value', se esiste.
@@ -1448,13 +1479,13 @@ feature -- Manipulation
 				k > max
 			loop
 				if attached active_element as ae then
-					result.append (ae.value)
+					Result.append (ae.value)
 				end
 				k := k + 1
 				forth
 			end
 		ensure
-			result.count = max
+			Result.count = max
 				-- the list contains 'max' elements
 		end
 
@@ -1520,17 +1551,17 @@ feature -- Computation
 				start
 				k := 1
 				if attached first_element as fe then
-					result := fe.value
+					Result := fe.value
 				end
-					--bisogna dare un valore a result all'inizio altrimenti non ho con cosa confrontarlo
+					--bisogna dare un valore a Result all'inizio altrimenti non ho con cosa confrontarlo
 			until
-				k > count + 1
+				k > count
 			loop
 				if attached active_element as ae then
-					if ae.value > result then
+					if ae.value > Result then
 						result := ae.value
 					end
-						--se il valore nuovo è più grande del massimo che avevamo aggiorno result
+						--se il valore nuovo è più grande del massimo che avevamo aggiorno Result
 				end
 				k := k + 1
 				if attached active_element as ae then
