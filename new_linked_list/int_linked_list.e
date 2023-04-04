@@ -386,9 +386,8 @@ feature -- Stato
 
 	is_before (an_element, a_target: detachable INT_LINKABLE): BOOLEAN
 			-- funzione che ritorna vero se an_element è prima di a_target
-		require
-			an_element /= void
-			-- la lista deve contenere l'elemento che sto cercando
+			-- se an_emlement= a_target ritorna falso
+			-- se an_element=Void ritorna falso
 		local
 			current_element: like first_element
 		do
@@ -397,8 +396,9 @@ feature -- Stato
 			until
 				result or current_element = a_target
 			loop
-				if current_element = an_element then
+				if current_element = an_element and an_element/=Void then
 						-- se sono arrivato ad an_element allora metto vero
+						-- se invece an_element=Void lui non c'era nella lista quindi non voglio mettere vero
 					Result := True
 				end
 				if attached current_element as ce then
@@ -406,10 +406,12 @@ feature -- Stato
 				end
 			end
 		ensure
-			a_target = void implies result
-				-- se il target non c'è nella lista aalora sicuramente an_element sarà prima del target
-			not result and a_target /= void implies has (a_target.value)
-				-- se torna falso vuol dire che la lista ha il valore contenuto nel target
+			a_target = void and an_element/=Void implies result
+				-- se il target non c'è nella lista ma an_element c'è allora sicuramente an_element sarà prima del target
+		--	not result implies attached a_target as ae implies has (ae.value) or an_element=Void -- non riesco a scriverla bene questa post condizione
+				-- se torna falso vuol dire che la lista ha il valore contenuto nel target oppure an_element non è nella lista
+		--	a_target = an_element implies false
+				-- consideriamo before come disuguaglianza stretta, quindi se sono uguali vogliamo falso
 		end
 			-- TODO definire una feature `index_latest_of' che restituisce il valore dell'ultimo elemento  che contiene `a_value' o 0 se non esiste
 			-- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
@@ -707,7 +709,6 @@ feature -- Insertion multiple targeted
 		do
 			from
 				current_element := first_element
-
 			until
 				current_element = Void
 			loop
@@ -817,10 +818,17 @@ feature -- Insertion multiple targeted
 						if current_element = first_element then
 							new_element.link_to (first_element)
 							first_element := new_element
+							if index /= 0 then
+								index := index + 1
+							end
 						else
 							new_element.link_to (current_element)
 							if (attached previous_element as pe) then
 								pe.link_to (new_element)
+								if is_before (new_element, active_element) and active_element /= Void then
+										-- se ho inserito prima di active_element
+									index := index + 1
+								end
 							end
 						end
 						count := count + 1
@@ -830,6 +838,9 @@ feature -- Insertion multiple targeted
 				end
 			else -- la lista non contiene `target'
 				prepend (a_value)
+				if index /= 0 then
+					index := index + 1
+				end
 			end
 		ensure
 			di_piu: count > old count
@@ -859,10 +870,17 @@ feature -- Insertion multiple targeted
 						if current_element = first_element then
 							new_element.link_to (first_element)
 							first_element := new_element
+							if index /= 0 then
+								index := index + 1
+							end
 						else
 							new_element.link_to (current_element)
 							if (attached previous_element as pe) then
 								pe.link_to (new_element)
+								if is_before (new_element, active_element) and active_element /= Void then
+										-- se ho inserito prima di active_element
+									index := index + 1
+								end
 							end
 						end
 						count := count + 1
@@ -878,6 +896,9 @@ feature -- Insertion multiple targeted
 				else
 					new_element.link_to (first_element)
 					first_element := new_element
+					if index /= 0 then
+						index := index + 1
+					end
 				end
 				count := count + 1
 			end
@@ -906,6 +927,7 @@ feature -- Removal single free
 				first_element := Void
 				active_element := Void
 				last_element := Void
+				index := 0
 			else -- la lista ha almeno due elementi
 				from
 					current_element := first_element
@@ -931,6 +953,8 @@ feature -- Removal single free
 				elseif current_element = last_element then
 						--`current_element' cioe' `active_element' e' l'ultimo elemento della lista
 					last_element := pre_current
+					index := index - 1
+						-- se active_element era l'ultimo elemento gli assegno il precendente, quindi l'indice scala di uno, negli altri casi rimane invariato
 					if attached last_element as le then
 						le.link_to (Void)
 					end
@@ -944,10 +968,6 @@ feature -- Removal single free
 						active_element := ce.next
 					end
 				end
-			end
-			if index = count then
-					-- se active_element era l'ultimo elemento gli assegno il precendente, quindi l'indice scala din uno, negli altri casi rimane invariato
-				index := index - 1
 			end
 			count := count - 1
 		ensure
@@ -1080,6 +1100,7 @@ feature -- Removal single free
 					active_element := Void
 					last_element := Void
 					count := 0
+					index := 0
 				end
 			else
 				from
@@ -1098,6 +1119,10 @@ feature -- Removal single free
 						if current_element = first_element then
 							if attached first_element as fe then
 								first_element := fe.next
+								if index /= 0 then
+										-- visto che active_element non è il primo allora devo scalare l'indice di uno
+									index := index - 1
+								end
 							end
 						elseif current_element = last_element then
 							last_element := pre_current
@@ -1107,6 +1132,10 @@ feature -- Removal single free
 						else -- `current_element' è un elemento intermedio della lista
 							if attached pre_current as pe then
 								pe.link_to (current_element.next)
+								if is_before (current_element.next, active_element) and active_element /= Void then
+										-- se ho tolto prima di active_element
+									index := index - 1
+								end
 							end
 						end
 						count := count - 1
@@ -1150,6 +1179,11 @@ feature -- Removal single free
 							-- c'è un sola occorrenza di a_value come primo elemento
 						if active_element = first_element then
 							active_element := fe.next
+						else
+							if index/=0 then
+								index := index - 1
+								-- se active_element non è il primo elemento ed non è Void allora index scala di uno
+							end
 						end
 						first_element := fe.next
 						count := count - 1
@@ -1157,6 +1191,10 @@ feature -- Removal single free
 				else -- `a_value' è presente e non è il primo elemento
 					if attached pre_latest as pl and then attached pl.next as pln then
 						pl.link_to (pln.next)
+						if is_before (pre_latest.next, active_element) and active_element /= Void then
+															-- se ho tolto prima di active_element
+														index := index - 1
+													end
 						if pln = last_element then
 							last_element := pl
 						end
@@ -1409,6 +1447,7 @@ feature -- Removal multiple free
 			last_element := Void
 			active_element := Void
 			count := 0
+			index := 0
 		end
 
 feature -- Removal multiple targeted
@@ -1717,5 +1756,6 @@ invariant
 	consistency_mono_list: count = 1 implies (first_element = last_element) and (first_element /= Void) and (attached active_element as ae implies ae = first_element)
 	consistency_bi_list: count = 2 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and (attached active_element as ae implies ae = first_element or ae = last_element) and (attached first_element as fe implies fe.next = last_element)
 	consistency_pluri_list: count > 2 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and (attached first_element as fe implies fe.next /= last_element)
-
+	active_element=Void implies index=0
+	index=0 implies active_element=void
 end
