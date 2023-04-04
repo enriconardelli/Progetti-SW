@@ -140,8 +140,8 @@ feature -- Ricerca
 		ensure
 			old active_element = active_element
 			old index = index
-			-- avendo manipolato active element devo assicurarmi che né lui né index siano cambiati
-			end
+				-- avendo manipolato active element devo assicurarmi che né lui né index siano cambiati
+		end
 
 	get_element (a_value: INTEGER): detachable INT_LINKABLE
 			-- Ritorna il primo elemento che contiene `a_value', se esiste.
@@ -275,6 +275,9 @@ feature -- Stato
 			active_element := currently_active
 		ensure
 			a_value_precede_target: Result implies index_earliest_of (a_value) < index_earliest_of (target)
+			old active_element = active_element
+			old index = index
+				-- avendo manipolato active element devo assicurarmi che né lui né index siano cambiati
 		end
 
 	value_precedes_SENZA_has (a_value, target: INTEGER): BOOLEAN
@@ -326,6 +329,9 @@ feature -- Stato
 			correttezza_se_target_non_esiste: not has (target) implies not Result -- premessa equivalente index_of(target) = 0
 			correttezza_se_value_non_esiste: index_earliest_of (a_value) = 0 implies not Result -- premessa equivalente not has(a_value)
 			trovato_a_value_prima_di_trovare_target: Result implies (index_earliest_of (a_value) /= 0 and index_earliest_of (a_value) < index_earliest_of (target))
+			old active_element = active_element
+			old index = index
+				-- avendo manipolato active element devo assicurarmi che né lui né index siano cambiati
 		end
 
 	value_before (a_value, target: INTEGER): BOOLEAN
@@ -379,7 +385,7 @@ feature -- Stato
 		end
 
 	is_before (an_element, a_target: detachable INT_LINKABLE): BOOLEAN
-			-- funzione che ritorna vero se an_element ï¿½ prima di a_target
+			-- funzione che ritorna vero se an_element è prima di a_target
 		require
 			an_element /= void
 			-- la lista deve contenere l'elemento che sto cercando
@@ -401,7 +407,7 @@ feature -- Stato
 			end
 		ensure
 			a_target = void implies result
-				-- se il target non c'ï¿½ nella lista aalora sicuramente an_element sarï¿½ prima del target
+				-- se il target non c'è nella lista aalora sicuramente an_element sarà prima del target
 			not result and a_target /= void implies has (a_target.value)
 				-- se torna falso vuol dire che la lista ha il valore contenuto nel target
 		end
@@ -444,6 +450,10 @@ feature -- Inserimento singolo libero
 			end
 			first_element := new_element
 			count := count + 1
+			if index /= 0 then
+					-- inserisco alli'inizio quindi se active_element è assegnato scala di uno
+				index := index + 1
+			end
 		ensure
 			uno_in_piu: count = old count + 1
 			messo_in_testa: attached first_element as fe implies fe.value = a_value
@@ -474,6 +484,10 @@ feature -- Inserimento singolo vincolato
 				new_element.link_after (current_element)
 				if last_element = current_element then
 					last_element := new_element
+				end
+				if is_before (new_element, active_element) and active_element /= Void then
+						-- se ho inserito prima di active_element
+					index := index + 1
 				end
 			else -- la lista non contiene `target'
 				if count = 0 then
@@ -506,6 +520,10 @@ feature -- Inserimento singolo vincolato
 			if current_element /= Void then
 				create new_element.set_value (a_value)
 				new_element.link_after (current_element)
+				if is_before (new_element, active_element) and active_element /= Void then
+						-- se ho inserito prima di active_element
+					index := index + 1
+				end
 				if current_element = last_element then
 					last_element := new_element
 				end
@@ -536,6 +554,9 @@ feature -- Inserimento singolo vincolato
 				if attached first_element as fe and then fe.value = target then
 					new_element.link_to (first_element)
 					first_element := new_element
+					if index /= 0 then
+						index := index + 1
+					end
 				else -- la lista contiene almeno un elemento e il primo elemento non è `target'
 					from
 						current_element := first_element
@@ -549,8 +570,15 @@ feature -- Inserimento singolo vincolato
 								-- la lista non contiene `target'
 							new_element.link_to (first_element)
 							first_element := new_element
+							if index /= 0 then
+								index := index + 1
+							end
 						else
 							new_element.link_after (ce)
+							if is_before (new_element, active_element) and active_element /= Void then
+									-- se ho inserito prima di active_element
+								index := index + 1
+							end
 						end
 					end
 				end
@@ -573,9 +601,16 @@ feature -- Inserimento singolo vincolato
 		do
 			if not has (target) then
 				prepend (a_value)
+				if index /= 0 then
+					index := index + 1
+				end
+					-- se lo metto all'inizio se active_element è attaccato allora avanzo index
 			else
 				if attached first_element as fe and then fe.value = target then
 					prepend (a_value)
+					if index /= 0 then
+						index := index + 1
+					end
 				else -- la lista ha almeno 2 elementi e il primo non è il target
 					create new_element.set_value (a_value)
 					from
@@ -587,6 +622,10 @@ feature -- Inserimento singolo vincolato
 					end
 					if attached previous_element as pe then
 						new_element.link_after (pe)
+						if is_before (new_element, active_element) and active_element /= Void then
+								-- se ho inserito prima di active_element
+							index := index + 1
+						end
 					end
 					count := count + 1
 				end
@@ -611,7 +650,7 @@ feature -- Inserimento singolo vincolato
 			if count = 0 then
 				first_element := new_element
 				last_element := first_element
-			else -- la list contiene almeno un elemento
+			else -- la lista contiene almeno un elemento
 				from
 					previous_element := Void
 					current_element := first_element
@@ -625,13 +664,23 @@ feature -- Inserimento singolo vincolato
 						-- la lista non contiene `target'
 					new_element.link_to (first_element)
 					first_element := new_element
+					if index /= 0 then
+						index := index + 1
+					end
 				else -- `current_element' contiene `target'
 					if previous_element = Void then
 						new_element.link_to (first_element)
 						first_element := new_element
+						if index /= 0 then
+							index := index + 1
+						end
 					else
 						previous_element.link_to (new_element)
 						new_element.link_to (current_element)
+						if is_before (new_element, active_element) and active_element /= Void then
+								-- se ho inserito prima di active_element
+							index := index + 1
+						end
 					end
 				end
 			end
@@ -658,12 +707,17 @@ feature -- Insertion multiple targeted
 		do
 			from
 				current_element := first_element
+
 			until
 				current_element = Void
 			loop
 				if current_element.value = target then
 					create new_element.set_value (a_value)
 					new_element.link_after (current_element)
+					if is_before (new_element, active_element) and active_element /= Void then
+							-- se ho inserito prima di active_element
+						index := index + 1
+					end
 					inserito := true
 					count := count + 1
 					if current_element = last_element then
@@ -716,6 +770,10 @@ feature -- Insertion multiple targeted
 					if current_element.value = target then
 						create new_element.set_value (a_value)
 						new_element.link_after (current_element)
+						if is_before (new_element, active_element) and active_element /= Void then
+								-- se ho inserito prima di active_element
+							index := index + 1
+						end
 						count := count + 1
 						if current_element = last_element then
 							last_element := new_element
@@ -886,6 +944,10 @@ feature -- Removal single free
 						active_element := ce.next
 					end
 				end
+			end
+			if index = count then
+					-- se active_element era l'ultimo elemento gli assegno il precendente, quindi l'indice scala din uno, negli altri casi rimane invariato
+				index := index - 1
 			end
 			count := count - 1
 		ensure
