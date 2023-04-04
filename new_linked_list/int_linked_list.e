@@ -378,8 +378,35 @@ feature -- Stato
 			zero_se_non_esiste: not has (a_value) = (Result = 0)
 		end
 
-		-- TODO definire una feature `index_latest_of' che restituisce il valore dell'ultimo elemento  che contiene `a_value' o 0 se non esiste
-		-- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
+	is_before (an_element, a_target: detachable INT_LINKABLE): BOOLEAN
+			-- funzione che ritorna vero se an_element � prima di a_target
+		require
+			an_element /= void
+			-- la lista deve contenere l'elemento che sto cercando
+		local
+			current_element: like first_element
+		do
+			from
+				current_element := first_element
+			until
+				result or current_element = a_target
+			loop
+				if current_element = an_element then
+						-- se sono arrivato ad an_element allora metto vero
+					Result := True
+				end
+				if attached current_element as ce then
+					current_element := ce.next
+				end
+			end
+		ensure
+			a_target = void implies result
+				-- se il target non c'� nella lista aalora sicuramente an_element sar� prima del target
+			not result and a_target /= void implies has (a_target.value)
+				-- se torna falso vuol dire che la lista ha il valore contenuto nel target
+		end
+			-- TODO definire una feature `index_latest_of' che restituisce il valore dell'ultimo elemento  che contiene `a_value' o 0 se non esiste
+			-- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
 
 feature -- Inserimento singolo libero
 
