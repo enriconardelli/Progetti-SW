@@ -386,19 +386,19 @@ feature -- Stato
 
 	is_before (an_element, a_target: detachable INT_LINKABLE): BOOLEAN
 			-- funzione che ritorna vero se an_element è prima di a_target
-			-- se an_emlement= a_target ritorna falso
-			-- se an_element=Void ritorna falso
+			-- se an_element = a_target ritorna falso
+			-- se an_element = Void ritorna falso
+		require
+			target_exists: a_target /= Void
 		local
 			current_element: like first_element
 		do
 			from
 				current_element := first_element
 			until
-				Result or current_element = a_target or current_element = Void
+				Result or current_element = a_target
 			loop
-				if current_element = an_element and an_element /= Void then
-						-- se sono arrivato ad an_element allora metto vero
-						-- se invece an_element=Void lui non c'era nella lista quindi non voglio mettere vero
+				if current_element = an_element then
 					Result := True
 				end
 				if attached current_element as ce then
@@ -406,12 +406,7 @@ feature -- Stato
 				end
 			end
 		ensure
-			a_target = void and an_element /= Void implies result
-				-- se il target non c'è nella lista ma an_element c'è allora sicuramente an_element sarà prima del target
-				--	not result implies attached a_target as ae implies has (ae.value) or an_element=Void -- non riesco a scriverla bene questa post condizione
-				-- se torna falso vuol dire che la lista ha il valore contenuto nel target oppure an_element non è nella lista
-			a_target = an_element implies Result = False
-				-- consideriamo before come disuguaglianza stretta, quindi se sono uguali vogliamo falso
+			an_element = a_target implies Result = False
 		end
 			-- TODO definire una feature `index_latest_of' che restituisce il valore dell'ultimo elemento  che contiene `a_value' o 0 se non esiste
 			-- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
@@ -453,7 +448,7 @@ feature -- Inserimento singolo libero
 			first_element := new_element
 			count := count + 1
 			if index /= 0 then
-					-- inserisco alli'inizio quindi se active_element è assegnato scala di uno
+					-- inserisco all'inizio quindi se active_element è assegnato scala di uno
 				index := index + 1
 			end
 		ensure
@@ -487,8 +482,7 @@ feature -- Inserimento singolo vincolato
 				if last_element = current_element then
 					last_element := new_element
 				end
-				if is_before (new_element, active_element) and active_element /= Void then
-						-- se ho inserito prima di active_element
+				if active_element /= Void and then is_before (new_element, active_element) then
 					index := index + 1
 				end
 			else -- la lista non contiene `target'
@@ -715,7 +709,7 @@ feature -- Insertion multiple targeted
 				if current_element.value = target then
 					create new_element.set_value (a_value)
 					new_element.link_after (current_element)
-					if is_before (new_element, active_element) and active_element /= Void then
+					if active_element /= Void and then is_before (new_element, active_element) then
 							-- se ho inserito prima di active_element
 						index := index + 1
 					end
@@ -1192,7 +1186,7 @@ feature -- Removal single free
 				else -- `a_value' è presente e non è il primo elemento
 					if attached pre_latest as pl and then attached pl.next as pln then
 						pl.link_to (pln.next)
-						if is_before (pre_latest.next, active_element) and active_element /= Void then
+						if active_element /= Void and then is_before (pre_latest.next, active_element) then
 								-- se ho tolto prima di active_element
 							index := index - 1
 						end
