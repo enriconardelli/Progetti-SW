@@ -12,8 +12,9 @@ inherit
 	STATIC_TESTS
 
 feature -- head_list
+a_value:INTEGER=1
 
-	t_one_element (a_value: INTEGER)
+	t_one_element
 			-- lista con solo un elemento
 		local
 			t: INT_LINKED_LIST
@@ -23,7 +24,7 @@ feature -- head_list
 			assert ("errore: l'unico elemento non coincide con quello della lista originale", attached t.head_list (1).first_element as fe implies fe.value = a_value)
 		end
 
-	t_three_element_copy_two (a_value: INTEGER)
+	t_three_element_copy_two
 			-- lista con tre elementi e ne copio due
 		local
 			t: INT_LINKED_LIST
@@ -36,7 +37,7 @@ feature -- head_list
 			assert ("errore: il secondo elemento non coincide con quello della lista originale", attached t.head_list (2).last_element as fe implies fe.value = a_value + 1)
 		end
 
-	t_three_element_three_coopy (a_value: INTEGER)
+	t_three_element_three_coopy
 			-- lista con tre elementi e ne copio tre
 		local
 			t: INT_LINKED_LIST
@@ -49,19 +50,12 @@ feature -- head_list
 			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached t.head_list (3).last_element as fe implies fe.value = a_value + 4)
 		end
 
-	t_head_list
-			-- fa tutti i test sopra con possibilità di parametrizzare
-		do
-			t_one_element (1)
-			t_three_element_copy_two (1)
-			t_three_element_three_coopy (1)
-		end
 
 feature -- invert
-	-- la postcondizione giaà mi garantisce che il numero degli elementi rimane quello
+	-- la postcondizione già mi garantisce che il numero degli elementi rimane quello
 	-- Federico Fiorini, 2020/03/08
 
-	t_four_elements_invert (a_value: INTEGER)
+	t_four_elements_invert
 		local
 			t: INT_LINKED_LIST
 		do
@@ -94,7 +88,7 @@ feature -- invert
 			end
 		end
 
-	t_three_elements_invert (a_value: INTEGER)
+	t_three_elements_invert
 		local
 			t: INT_LINKED_LIST
 		do
@@ -119,12 +113,6 @@ feature -- invert
 			if attached t.active_element as ae then
 				assert ("l'ultimo elemento della lista non risulta il primo dell'originale", ae.value = a_value)
 			end
-		end
-
-	t_invert
-		do
-			t_four_elements_invert (1)
-			t_three_elements_invert (1)
 		end
 
 end

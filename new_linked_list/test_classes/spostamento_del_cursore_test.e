@@ -14,7 +14,9 @@ inherit
 feature --first
 	-- Claudia Agulini, 2020/03/06
 
-	t_first_one_element (a_value: INTEGER)
+	a_value: INTEGER = 1
+
+	t_first_one_element
 			-- test su lista da un elemento solo
 		local
 			t: INT_LINKED_LIST
@@ -29,7 +31,7 @@ feature --first
 				-- la listta non è vuota quindi il primo elemento non deve essere associato a void
 		end
 
-	t_first_multiple_element (a_value: INTEGER)
+	t_first_multiple_element
 			-- test su lista con più di un elemento
 		local
 			t: INT_LINKED_LIST
@@ -46,7 +48,7 @@ feature --first
 				-- la lista non è vuota quindi il primo elemento non deve essere associato a void
 		end
 
-	t_first_void (a_value: INTEGER) -- inserisco comunque una variabile così il test lo esegue solo sotto, insieme agli altri
+	t_first_void
 		local
 			t: INT_LINKED_LIST
 		do
@@ -56,18 +58,10 @@ feature --first
 				-- la lista è vuota quindi il primo elemento deve essere associato a void
 		end
 
-	t_first
-			-- fa tutti i test elencati sopra con possibilità di cambiare il parametro
-		do
-			t_first_one_element (1)
-			t_first_multiple_element (1)
-			t_first_void (1)
-		end
-
 feature --last
 	-- Arianna Calzuola, 2020/03/10
 
-	t_last_one_element (a_value: INTEGER)
+	t_last_one_element
 			-- test su lista da un elemento solo
 		local
 			t: INT_LINKED_LIST
@@ -82,7 +76,7 @@ feature --last
 				-- la listta non è vuota quindi l'ultimo elemento non deve essere associato a void
 		end
 
-	t_last_multiple_element (a_value: INTEGER)
+	t_last_multiple_element
 			-- test su lista con più di un elemento
 		local
 			t: INT_LINKED_LIST
@@ -99,7 +93,7 @@ feature --last
 				-- la lista non è vuota quindi l'ultimo elemento non deve essere associato a void
 		end
 
-	t_last_void (a_value: INTEGER) -- inserisco comunque una variabile così il test lo esegue solo sotto, insieme agli altri
+	t_last_void
 		local
 			t: INT_LINKED_LIST
 		do
@@ -109,18 +103,10 @@ feature --last
 				-- la lista è vuota quindi l'ultimo elemento deve essere associato a void
 		end
 
-	t_last
-			-- fa tutti i test elencati sopra con possibilità di cambiare il parametro
-		do
-			t_last_one_element (1)
-			t_last_multiple_element (1)
-			t_last_void (1)
-		end
-
 feature -- forth
 	-- Alessandro Filippo 2020/03/08
 
-	t_forth_to_void_one_element (a_value: INTEGER)
+	t_forth_to_void_one_element
 		local
 			t: INT_LINKED_LIST
 		do
@@ -133,7 +119,7 @@ feature -- forth
 			assert ("il forth non ha portato active element a void", t.active_element = Void)
 		end
 
-	t_forth_to_void_multiple_element (a_value: INTEGER)
+	t_forth_to_void_multiple_element
 		local
 			t: INT_LINKED_LIST
 		do
@@ -148,7 +134,7 @@ feature -- forth
 			assert ("il forth non ha portato active element a void", t.active_element = Void)
 		end
 
-	t_forth_to_not_void (a_value: INTEGER)
+	t_forth_to_not_void
 		local
 			t: INT_LINKED_LIST
 		do
@@ -161,14 +147,6 @@ feature -- forth
 				-- porto il cursore al secondo elemento che quindi non dovrebbe essere né void né il primo
 			assert ("il forth ha portato active element a void", t.active_element /= Void)
 			assert ("il forth non ha spostato il cursore", t.active_element /= t.first_element)
-		end
-
-	t_forth
-			-- fa tutti i test elencati sopra con possibilità di cambiare il parametro
-		do
-			t_forth_to_void_one_element (1)
-			t_forth_to_void_multiple_element (1)
-			t_forth_to_not_void (1)
 		end
 
 end
