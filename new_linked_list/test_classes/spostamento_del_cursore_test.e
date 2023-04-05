@@ -1,7 +1,7 @@
 note
 	description: "Test per le feature di tipo SPOSTAMENTO DEL CURSORE"
 	author: "Gianluca Pastorini"
-	date: "$03/04/23"
+	date: "03/04/23"
 	revision: "$Revision$"
 
 class

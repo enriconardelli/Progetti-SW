@@ -1,7 +1,7 @@
 note
 	description: "Test per le feature di tipo remove_single_free."
 	author: "Gianluca Pastorini"
-	date: "05/04/23$"
+	date: "05/04/23"
 	revision: "$Revision$"
 
 class
