@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	SPOSTAMENTO_DE_CURSORE_TESTS
+	SPOSTAMENTO_DEL_CURSORE_TESTS
 
 inherit
 
