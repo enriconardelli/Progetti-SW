@@ -394,9 +394,9 @@ feature -- Stato
 			from
 				current_element := first_element
 			until
-				result or current_element = a_target
+				Result or current_element = a_target or current_element = Void
 			loop
-				if current_element = an_element and an_element/=Void then
+				if current_element = an_element and an_element /= Void then
 						-- se sono arrivato ad an_element allora metto vero
 						-- se invece an_element=Void lui non c'era nella lista quindi non voglio mettere vero
 					Result := True
@@ -406,11 +406,11 @@ feature -- Stato
 				end
 			end
 		ensure
-			a_target = void and an_element/=Void implies result
+			a_target = void and an_element /= Void implies result
 				-- se il target non c'è nella lista ma an_element c'è allora sicuramente an_element sarà prima del target
-		--	not result implies attached a_target as ae implies has (ae.value) or an_element=Void -- non riesco a scriverla bene questa post condizione
+				--	not result implies attached a_target as ae implies has (ae.value) or an_element=Void -- non riesco a scriverla bene questa post condizione
 				-- se torna falso vuol dire che la lista ha il valore contenuto nel target oppure an_element non è nella lista
-		--	a_target = an_element implies false
+			a_target = an_element implies Result = False
 				-- consideriamo before come disuguaglianza stretta, quindi se sono uguali vogliamo falso
 		end
 			-- TODO definire una feature `index_latest_of' che restituisce il valore dell'ultimo elemento  che contiene `a_value' o 0 se non esiste
@@ -1158,6 +1158,7 @@ feature -- Removal single free
 					active_element := Void
 					last_element := Void
 					count := 0
+					index := 0
 				end
 			else -- la lista ha almeno due elementi
 				from
@@ -1180,9 +1181,9 @@ feature -- Removal single free
 						if active_element = first_element then
 							active_element := fe.next
 						else
-							if index/=0 then
+							if index /= 0 then
 								index := index - 1
-								-- se active_element non è il primo elemento ed non è Void allora index scala di uno
+									-- se active_element non è il primo elemento ed non è Void allora index scala di uno
 							end
 						end
 						first_element := fe.next
@@ -1192,9 +1193,9 @@ feature -- Removal single free
 					if attached pre_latest as pl and then attached pl.next as pln then
 						pl.link_to (pln.next)
 						if is_before (pre_latest.next, active_element) and active_element /= Void then
-															-- se ho tolto prima di active_element
-														index := index - 1
-													end
+								-- se ho tolto prima di active_element
+							index := index - 1
+						end
 						if pln = last_element then
 							last_element := pl
 						end
@@ -1756,6 +1757,7 @@ invariant
 	consistency_mono_list: count = 1 implies (first_element = last_element) and (first_element /= Void) and (attached active_element as ae implies ae = first_element)
 	consistency_bi_list: count = 2 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and (attached active_element as ae implies ae = first_element or ae = last_element) and (attached first_element as fe implies fe.next = last_element)
 	consistency_pluri_list: count > 2 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and (attached first_element as fe implies fe.next /= last_element)
-	active_element=Void implies index=0
-	index=0 implies active_element=void
+	active_element = Void implies index = 0
+	index = 0 implies active_element = void
+
 end
