@@ -149,4 +149,58 @@ feature -- forth
 			assert ("il forth non ha spostato il cursore", t.active_element /= t.first_element)
 		end
 
+feature -- go_i_th
+
+	t_go_i_th_zero
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 3)
+			t.append (a_value - 2)
+			t.go_i_th (0)
+			assert ("active non è stato spostato a Void", t.active_element = Void)
+			assert ("index non è stato messo ad 0", t.index = 0)
+		end
+
+	t_go_i_th_first
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 3)
+			t.append (a_value - 2)
+			t.go_i_th (1)
+			assert ("active non è stato spostato a first", t.active_element = t.first_element)
+			assert ("index non è stato messo ad 1", t.index = 1)
+		end
+
+	t_go_i_th_last
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 3)
+			t.append (a_value - 2)
+			t.go_i_th (t.count)
+			assert ("active non è stato spostato a first", t.active_element = t.last_element)
+			assert ("index non è stato messo a 3", t.index = t.count)
+		end
+
+	t_go_i_th_middle
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 3)
+			t.append (a_value - 2)
+			t.go_i_th (2)
+			assert ("active non è stato spostato a first", t.active_element = t.get_element(a_value +3))
+			assert ("index non è stato messo ad 2", t.index = 2)
+		end
+
 end
