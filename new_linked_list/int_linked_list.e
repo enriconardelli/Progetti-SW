@@ -76,7 +76,33 @@ feature -- Spostamento del cursore
 		ensure
 			attached old active_element as ae implies active_element = ae.next
 			attached active_element as ae implies index = old index + 1
-			active_element = void implies index = 0
+		end
+
+	go_i_th (i: INTEGER)
+			-- sposta l'elemento corrente alla posizione iesima
+		require
+			i >= 0 --  se metto i=0 allora assegna ad active_element Void
+			i <= count
+		local
+			k: INTEGER
+		do
+			if i = 0 then
+				active_element := Void
+			else
+				from
+					k := 1
+					active_element := first_element
+				until
+					k = i
+				loop
+					forth
+					k := k + 1
+				end
+			end
+			index := i
+		ensure
+			i > 0 implies attached active_element
+			i = 0 implies active_element = Void
 		end
 
 feature -- Ricerca
@@ -516,7 +542,7 @@ feature -- Inserimento singolo vincolato
 			if current_element /= Void then
 				create new_element.set_value (a_value)
 				new_element.link_after (current_element)
-				if is_before (new_element, active_element) and active_element /= Void then
+				if active_element /= Void and then is_before (new_element, active_element) then
 						-- se ho inserito prima di active_element
 					index := index + 1
 				end
@@ -571,7 +597,7 @@ feature -- Inserimento singolo vincolato
 							end
 						else
 							new_element.link_after (ce)
-							if is_before (new_element, active_element) and active_element /= Void then
+							if active_element /= Void and then is_before (new_element, active_element) then
 									-- se ho inserito prima di active_element
 								index := index + 1
 							end
@@ -618,7 +644,7 @@ feature -- Inserimento singolo vincolato
 					end
 					if attached previous_element as pe then
 						new_element.link_after (pe)
-						if is_before (new_element, active_element) and active_element /= Void then
+						if active_element /= Void and then is_before (new_element, active_element) then
 								-- se ho inserito prima di active_element
 							index := index + 1
 						end
@@ -673,7 +699,7 @@ feature -- Inserimento singolo vincolato
 					else
 						previous_element.link_to (new_element)
 						new_element.link_to (current_element)
-						if is_before (new_element, active_element) and active_element /= Void then
+						if active_element /= Void and then is_before (new_element, active_element) then
 								-- se ho inserito prima di active_element
 							index := index + 1
 						end
@@ -765,7 +791,7 @@ feature -- Insertion multiple targeted
 					if current_element.value = target then
 						create new_element.set_value (a_value)
 						new_element.link_after (current_element)
-						if is_before (new_element, active_element) and active_element /= Void then
+						if active_element /= Void and then is_before (new_element, active_element) then
 								-- se ho inserito prima di active_element
 							index := index + 1
 						end
@@ -819,7 +845,7 @@ feature -- Insertion multiple targeted
 							new_element.link_to (current_element)
 							if (attached previous_element as pe) then
 								pe.link_to (new_element)
-								if is_before (new_element, active_element) and active_element /= Void then
+								if active_element /= Void and then is_before (new_element, active_element) then
 										-- se ho inserito prima di active_element
 									index := index + 1
 								end
@@ -871,7 +897,7 @@ feature -- Insertion multiple targeted
 							new_element.link_to (current_element)
 							if (attached previous_element as pe) then
 								pe.link_to (new_element)
-								if is_before (new_element, active_element) and active_element /= Void then
+								if active_element /= Void and then is_before (new_element, active_element) then
 										-- se ho inserito prima di active_element
 									index := index + 1
 								end
@@ -1126,7 +1152,7 @@ feature -- Removal single free
 						else -- `current_element' è un elemento intermedio della lista
 							if attached pre_current as pe then
 								pe.link_to (current_element.next)
-								if is_before (current_element.next, active_element) and active_element /= Void then
+								if active_element /= Void and then is_before (current_element.next, active_element) then
 										-- se ho tolto prima di active_element
 									index := index - 1
 								end
@@ -1232,9 +1258,15 @@ feature -- Removal single targeted
 				end
 				if attached current_element then
 					count := count - 1
+					if active_element /= Void and then is_before (current_element, active_element) then
+							-- se ho tolto prima di active_element
+						index := index - 1
+					end
 					if active_element = current_element then
 						if current_element = last_element then
 							active_element := pre_a_element
+							index := index - 1
+								-- se sto togliendo active_element ed è l'ultimo elemento allora devo scalare l'indice di uno
 						else
 							active_element := current_element.next
 						end
@@ -1288,6 +1320,10 @@ feature -- Removal single targeted
 						if ve = last_element then
 							last_element := pe
 						end
+						if active_element /= Void and then is_before (ve, active_element) then
+								-- se ho tolto prima di active_element
+							index := index - 1
+						end
 						pe.link_to (ve.next)
 						count := count - 1
 					end
@@ -1309,6 +1345,10 @@ feature -- Removal single targeted
 						active_element := fe.next
 					end
 					first_element := fe.next
+					if index > 1 then
+							-- se active_element è assegnato e non è il primo l'index deve scendere di uno
+						index := index - 1
+					end
 					count := count - 1
 				else -- il primo elemento non contiene `a_value'
 					from
@@ -1322,6 +1362,10 @@ feature -- Removal single targeted
 					end
 					if attached current_element as ce and attached pre_current as pc then
 						if ce.value = a_value then
+							if active_element /= Void and then is_before (ce, active_element) then
+									-- se ho tolto prima di active_element
+								index := index - 1
+							end
 							pc.link_to (ce.next)
 							if active_element = ce then
 								active_element := ce.next
@@ -1357,18 +1401,26 @@ feature -- Removal single targeted
 				end
 				if pre_value = Void then
 						--questo if parte solo se value_follows(target, a_value) restituisce true
-						--cioï¿½ se nella lista ï¿½ presente prima una qualche istanza di a_value, e poi target
+						--cioé se nella lista è presente prima una qualche istanza di a_value, e poi target
 						--quindi una qualche istanza di a_value deve necessariamente esistere
-						--se pre_value ï¿½ ancora void, significa che l' unica ricorrenza di a_value deve essere
+						--se pre_value è ancora void, significa che l' unica ricorrenza di a_value deve essere
 						--il primo elemento della lista
 					if attached first_element as fe then
 						if active_element = first_element then
 							active_element := fe.next
 						end
+						if index > 1 then
+								-- se active_element è assegnato e non è il primo allora index deve scalare di uno
+							index := index - 1
+						end
 						first_element := fe.next
 					end
 				else
 					if attached pre_value as pv and then attached pre_value.next as pvn then
+						if active_element /= Void and then is_before (pvn, active_element) then
+								-- se ho tolto prima di active_element
+							index := index - 1
+						end
 						pre_value.link_to (pvn.next)
 						if pre_value.next = active_element then
 							active_element := pvn.next
@@ -1395,6 +1447,7 @@ feature -- Removal multiple free
 					active_element := Void
 					last_element := Void
 					count := 0
+					index := 0
 				end
 			else -- la lista ha almeno due elementi
 				from
@@ -1411,6 +1464,9 @@ feature -- Removal multiple free
 									-- `current_element' e' il primo elemento della lista che ha almeno due elementi
 								if attached first_element as fe and then fe.value = a_value then
 									first_element := fe.next
+									if index > 1 then
+										index := index - 1
+									end
 								end
 							elseif current_element = last_element then
 									-- `current_element' e' l'ultimo elemento della lista che ha almeno due elementi
@@ -1421,6 +1477,10 @@ feature -- Removal multiple free
 							else
 									-- `current_element' e' elemento intermedio della lista che ha almeno tre elementi
 								if attached pre_current as pc and then attached pc.next as pcn then
+									if active_element /= Void and then is_before (current_element, active_element) then
+											-- se ho tolto prima di active_element
+										index := index - 1
+									end
 									pc.link_to (pcn.next)
 								end
 							end
@@ -1475,6 +1535,12 @@ feature -- Removal multiple targeted
 							end
 							if current_element = active_element then
 								active_element := pre_current_element
+								index := index - 1
+							else
+								if active_element /= Void and then is_before (current_element, active_element) then
+										-- se ho tolto prima di active_element
+									index := index - 1
+								end
 							end
 							current_element := current_element.next
 							pre_current_element.link_to (current_element)
@@ -1509,6 +1575,10 @@ feature -- Removal multiple targeted
 					(current_element = void) or else current_element.value = target
 				loop
 					if current_element.value = a_value then
+						if active_element /= Void and then is_before (current_element, active_element) then
+								-- se ho tolto prima di active_element
+							index := index - 1
+						end
 						if active_element = current_element then
 							active_element := current_element.next
 						end
@@ -1555,6 +1625,10 @@ feature -- Manipulation
 			end
 			first_element := rev
 			last_element := new_last_element
+			if index /= 0 then
+					-- se l'indice non è 0 devo invertire anche lui
+				index := count - index.abs
+			end
 		ensure
 			count = old count
 		end
