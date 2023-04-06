@@ -12,7 +12,8 @@ inherit
 	STATIC_TESTS
 
 feature -- head_list
-a_value:INTEGER=1
+
+	a_value: INTEGER = 1
 
 	t_one_element
 			-- lista con solo un elemento
@@ -50,9 +51,7 @@ a_value:INTEGER=1
 			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached t.head_list (3).last_element as fe implies fe.value = a_value + 4)
 		end
 
-
 feature -- invert
-	-- la postcondizione già mi garantisce che il numero degli elementi rimane quello
 	-- Federico Fiorini, 2020/03/08
 
 	t_four_elements_invert
@@ -65,7 +64,7 @@ feature -- invert
 			t.append (a_value - 2)
 			t.append (- a_value)
 			t.invert
-				--			assert ("errore: il numero di elementi della lista è cambiato", t.count = 3) -- questo test abbiamo detto di averlo già verificato nella postcondizione
+			assert ("errore: il numero di elementi della lista è cambiato", t.count = 4)
 			t.start
 				--siamo al primo elemento
 			if attached t.active_element as ae then
@@ -113,6 +112,31 @@ feature -- invert
 			if attached t.active_element as ae then
 				assert ("l'ultimo elemento della lista non risulta il primo dell'originale", ae.value = a_value)
 			end
+		end
+
+	t_invert_index
+		local
+			t: INT_LINKED_LIST
+			k: INTEGER
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 2)
+			t.append (a_value - 4)
+			t.start
+			t.invert
+			assert ("l'indice non è stato invertito dal primo elemento all'ultimo", t.index = t.count)
+			t.invert
+				--ritorno alla lista originale
+			t.forth
+			k := t.index
+			t.invert
+			assert ("l'indice sarebbe dovuto rimanere fermo", t.index = k)
+			t.invert
+				--ritorno alla lista originale
+			t.forth
+			t.invert
+			assert ("l'indice non è stato invertito dall'ultimo al primo", t.index = 1)
 		end
 
 end

@@ -58,7 +58,7 @@ feature -- highest
 			t.append (a_value - 1)
 			t.append (a_value)
 			t.append (a_value - 4)
-			assert ("errore il massimo non è l'ultimo elemento", t.highest = a_value)
+			assert ("errore il massimo non è il secondo elemento", t.highest = a_value)
 		end
 
 feature -- Sum_of_positive

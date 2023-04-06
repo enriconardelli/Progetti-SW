@@ -1627,7 +1627,7 @@ feature -- Manipulation
 			last_element := new_last_element
 			if index /= 0 then
 					-- se l'indice non è 0 devo invertire anche lui
-				index := count - index.abs
+				index := (count - index + 1).abs
 			end
 		ensure
 			count = old count
@@ -1639,48 +1639,31 @@ feature -- Manipulation
 		require
 			0 <= max
 			max <= count
-			--		local
-			--			k: INTEGER
-			--			i: INTEGER
-			--		do
-			--			create Result
-			--			i := index
-			--			from
-			--				k := 1
-			--				start
-			--			invariant
-			--				1 <= index
-			--				index <= max + 1
-			--				k = index
-			--			until
-			--				index > max
-			--			loop
-			--				Result.extend (item)
-			--				k := k + 1
-			--				forth
-			--			variant
-			--				count - index + 1
-			--			end
-			--			go_i_th (i)
-			--		end
 		local
 			k: INTEGER
+			i: INTEGER
 		do
 			create Result
+			i := index
 			from
 				k := 1
 				start
 			invariant
-				k <= max + 1
+				--				1 <= index         -- gli invarianti non sono compatibili con la corrente implementazione di index
+				--				index <= max + 1   -- in particolare se max=count l'ultimo forth porta active a Void quindi index a 0
+				--				k = index          -- e se index va a 0 tutti gli invarianti non sono più veri
 			until
-				k > max
+				index > max or index = 0
 			loop
 				if attached active_element as ae then
 					Result.append (ae.value)
 				end
 				k := k + 1
 				forth
+					--			variant
+					--				count - index + 1
 			end
+			go_i_th (i)
 		ensure
 			Result.count = max
 				-- the list contains 'max' elements
@@ -1738,33 +1721,30 @@ feature -- Computation
 			--			across Current as c all c.item <= Result end
 			--		end
 
-			-- nuova versione senza index
 		require
 			count > 0
 		local
 			k: INTEGER
 		do
+			k := index
 			from
 				start
-				k := 1
 				if attached first_element as fe then
 					Result := fe.value
 				end
 					--bisogna dare un valore a Result all'inizio altrimenti non ho con cosa confrontarlo
 			until
-				k > count
+				active_element = Void
 			loop
 				if attached active_element as ae then
 					if ae.value > Result then
-						result := ae.value
+						Result := ae.value
 					end
-						--se il valore nuovo è più grande del massimo che avevamo aggiorno Result
 				end
-				k := k + 1
-				if attached active_element as ae then
-					forth
-				end
+					--se il valore nuovo è più grande del massimo che avevamo aggiorno Result
+				forth
 			end
+			go_i_th (k)
 		end
 
 	sum_of_positive: INTEGER

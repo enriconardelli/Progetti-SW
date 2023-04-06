@@ -199,7 +199,7 @@ feature -- go_i_th
 			t.append (a_value + 3)
 			t.append (a_value - 2)
 			t.go_i_th (2)
-			assert ("active non è stato spostato a first", t.active_element = t.get_element(a_value +3))
+			assert ("active non è stato spostato a first", t.active_element = t.get_element (a_value + 3))
 			assert ("index non è stato messo ad 2", t.index = 2)
 		end
 

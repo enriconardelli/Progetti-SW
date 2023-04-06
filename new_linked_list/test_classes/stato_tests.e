@@ -55,7 +55,7 @@ feature -- is_before
 			t.append (a_value + 4)
 			t.append (a_value)
 			assert ("il primo valore di a_value è prima del primo valore di a_value + 4", t.is_before (t.get_element (a_value), t.get_element (a_value + 4)))
-			assert ("il primo valore di a_value 2 4 è dopo il primo valore di a_value + 2", not t.is_before (t.get_element (a_value+4), t.get_element (a_value+2)))
+			assert ("il primo valore di a_value 2 4 è dopo il primo valore di a_value + 2", not t.is_before (t.get_element (a_value + 4), t.get_element (a_value + 2)))
 		end
 
 end
