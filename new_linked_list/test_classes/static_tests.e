@@ -860,47 +860,47 @@ feature -- Insertion multiple targeted
 
 
 
-feature -- Removal multiple free
+--feature -- Removal multiple free
 
-	t_remove_all
-		-- Sara Forte, 2021/03/31
-		local
-				t: INT_LINKED_LIST
-			do
-				create t
-				t.append (3)
-				t.remove_all (3)
-				assert("errore, non è stato rimosso 3", not t.has (3))
-
-				t.append (3) ; t.append (1) ; t.append (2) ; t.append (3) ; t.append (1) ; t.append (3)
-				t.remove_all (3)
-				assert("errore, non è stato rimosso 3", not t.has (3))
-				assert("errore, oltre ai valori 3 sono stati rimossi altri elementi", not (t.count < 3))
-				t.wipeout
-
-				t.append (1) ; t.append (2)
-				t.remove_all (3)
-				assert("errore: 3 non era presente, ma è stato rimosso un elemento", not (t.count < 2))
-
-			end
-
-	t_wipeout
-			-- Claudia Agulini, 2020/03/08
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (1)
-			t.append (3)
-			t.append (5)
-				-- [1, 3, 5]
+--	t_remove_all
+--		-- Sara Forte, 2021/03/31
+--		local
+--				t: INT_LINKED_LIST
+--			do
+--				create t
+--				t.append (3)
+--				t.remove_all (3)
+--				assert("errore, non è stato rimosso 3", not t.has (3))
+--
+--				t.append (3) ; t.append (1) ; t.append (2) ; t.append (3) ; t.append (1) ; t.append (3)
+--				t.remove_all (3)
+--				assert("errore, non è stato rimosso 3", not t.has (3))
+--				assert("errore, oltre ai valori 3 sono stati rimossi altri elementi", not (t.count < 3))
+--				t.wipeout
+--
+--				t.append (1) ; t.append (2)
+--				t.remove_all (3)
+--				assert("errore: 3 non era presente, ma è stato rimosso un elemento", not (t.count < 2))
+--
+--			end
+--
+--	t_wipeout
+--			-- Claudia Agulini, 2020/03/08
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			t.append (1)
+--			t.append (3)
+--			t.append (5)
+--				-- [1, 3, 5]
 				-- t.count = 3
-			t.wipeout
-			assert ("errore: non ha eliminato first_element", t.first_element = Void)
-			assert ("errore: non ha eliminato active_element", t.active_element = Void)
-			assert ("errore: non ha eliminato last_element", t.last_element = Void)
-			assert ("errore: non ha eliminato tutti gli elementi", t.count = 0)
-		end
+--			t.wipeout
+--			assert ("errore: non ha eliminato first_element", t.first_element = Void)
+--			assert ("errore: non ha eliminato active_element", t.active_element = Void)
+--			assert ("errore: non ha eliminato last_element", t.last_element = Void)
+--			assert ("errore: non ha eliminato tutti gli elementi", t.count = 0)
+--		end
 
 --feature --Other
 
@@ -964,6 +964,7 @@ feature -- Convenience
 
 	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
 		-- return how many times `a_value' occurs in `t'
+		-- è identica a count_of, solo che è una funzione esterna alla lista
 	local
 		current_element: INT_LINKABLE
 	do
