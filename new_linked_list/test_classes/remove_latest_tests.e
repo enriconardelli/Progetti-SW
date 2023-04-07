@@ -14,6 +14,11 @@ feature
 
 -- CLASSE DA CANCELLARE, I TEST SONO STATI SPOSTATI IN REMOVE_SINGLE_FREE_TEST
 
+
+
+
+
+
 --	a_value: INTEGER = 1
 
 --	t_remove_latest
