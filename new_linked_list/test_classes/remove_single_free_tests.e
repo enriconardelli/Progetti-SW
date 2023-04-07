@@ -28,8 +28,8 @@ feature -- remove_active
 			t.remove_active
 			assert ("errore: non ha eliminato l'active_element", not t.has (a_value))
 			assert ("errore: non ha eliminato esattamente un elemento", t.count = 2)
-			assert ("errore: non è stato modificato l'active_element correttamente", attached t.active_element as ae implies ae.value = a_value + 4)
-			assert ("errore: non è stato modificato il first_element correttamente", attached t.first_element as fe implies fe.value = a_value + 4)
+			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element/=Void and attached t.active_element as ae implies ae.value = a_value + 4)
+			assert ("errore: non è stato modificato il first_element correttamente", t.first_element/=Void and attached t.first_element as fe implies fe.value = a_value + 4)
 			assert ("index è stato modificato anche se active è ancora il primo elemento", t.index = 1)
 		end
 
@@ -45,8 +45,8 @@ feature -- remove_active
 			t.remove_active
 			assert ("errore: non ha eliminato l'active_element", not t.has (a_value + 2))
 			assert ("errore: non ha eliminato esattamente un elemento", t.count = 2)
-			assert ("errore: non è stato modificato l'active_element correttamente", attached t.active_element as ae implies ae.value = a_value + 4)
-			assert ("errore: non è stato modificato il first_element correttamente", attached t.last_element as le implies le.value = a_value + 4)
+			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element/=Void and attached t.active_element as ae implies ae.value = a_value + 4)
+			assert ("errore: non è stato modificato il last_element correttamente", t.last_element/=Void and attached t.last_element as le implies le.value = a_value + 4)
 			assert ("index non è stato modificato correttamente", t.index = 2)
 		end
 
@@ -62,9 +62,10 @@ feature -- remove_active
 			t.remove_active
 			assert ("errore: non ha eliminato l'active_element", not t.has (a_value + 4))
 			assert ("errore: non ha eliminato esattamente un elemento", t.count = 2)
-			assert ("errore: non è stato modificato l'active_element correttamente", attached t.first_element as fe implies fe.value = a_value)
-			assert ("errore: non è stato modificato il first_element correttamente", attached t.last_element as le implies le.value = a_value + 2)
-			assert ("index non è stato modificato correttamente", t.index = 2)
+			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element/=Void and attached t.active_element as ae implies ae.value = a_value + 2)
+			assert ("errore: è stato modificato last-element", t.last_element/=Void and attached t.last_element as le implies le.value = a_value + 2)
+			assert ("errore: è stato modificato first-element", t.first_element/=Void and attached t.first_element as fe implies fe.value = a_value)
+			assert ("index è stato modificato anche se active è rimasto il secondo elemento", t.index = 2)
 		end
 
 	t_remove_active_one_element
@@ -124,9 +125,9 @@ feature -- remove_earliest
 			t.remove_earliest (a_value)
 			assert ("non ha eliminato un elemento con il valore a_value", not t.has (a_value))
 			assert ("non ha eliminato nessun elemento", t.count = 2)
-			assert ("non ha spostato correttamente l'active_element", attached t.active_element as ae implies ae.value = a_value + 3)
-			assert ("non ha spostato correttamente il first_element", attached t.first_element as fe implies fe.value = a_value + 3)
-			assert ("ha modificato index", t.index = 1)
+			assert ("non ha spostato correttamente l'active_element", t.active_element/=Void and attached t.active_element as ae implies ae.value = a_value + 3)
+			assert ("non ha spostato correttamente il first_element", t.first_element/=Void and attached t.first_element as fe implies fe.value = a_value + 3)
+			assert ("ha modificato index nonostante active sia ancora il primo elemento", t.index = 1)
 		end
 
 	t_remove_earliest_multiple_element_single_value_last
@@ -141,8 +142,8 @@ feature -- remove_earliest
 			t.remove_earliest (a_value)
 			assert ("non ha eliminato un elemento con il valore a_value", not t.has (a_value))
 			assert ("non ha eliminato nessun elemento", t.count = 2)
-			assert ("non ha spostato correttamente l'active_element", attached t.active_element as ae implies ae.value = a_value + 3)
-			assert ("non ha spostato correttamente il first_element", attached t.last_element as fe implies fe.value = a_value + 3)
+			assert ("non ha spostato correttamente l'active_element", t.active_element/=Void and attached t.active_element as ae implies ae.value = a_value + 3)
+			assert ("non ha spostato correttamente il last_element", t.last_element/=Void and attached t.last_element as le implies le.value = a_value + 3)
 			assert ("non ha modificato correttamente index", t.index = 2)
 		end
 
@@ -158,8 +159,8 @@ feature -- remove_earliest
 			t.remove_earliest (a_value)
 			assert ("non ha eliminato un elemento con il valore a_value", not t.has (a_value))
 			assert ("non ha eliminato nessun elemento", t.count = 2)
-			assert ("non ha spostato correttamente l'active_element", attached t.active_element as ae implies ae.value = a_value + 3)
-			assert ("non ha modificato correttamente index", t.index = 2)
+			assert ("non ha spostato correttamente l'active_element", t.active_element/=Void and attached t.active_element as ae implies ae.value = a_value + 3)
+			assert ("ha modificato index nonostante active sia ancora il secondo elemento", t.index = 2)
 		end
 
 	t_remove_earliest_multiple_element_two_value_last
@@ -174,8 +175,8 @@ feature -- remove_earliest
 			t.remove_earliest (a_value)
 			assert ("ha tolto tutti i valori con a_value", t.has (a_value))
 			assert ("non ha eliminato nessun elemento", t.count = 2)
-			assert ("non ha spostato correttamente l'active_element", attached t.active_element as ae implies ae.value = a_value)
-			assert ("non ha modificato correttamente index", t.index = 2)
+			assert ("non ha spostato correttamente l'active_element", t.active_element/=Void and attached t.active_element as ae implies ae.value = a_value)
+			assert ("ha modificato index nonostante active sia ancora il secondo elemento", t.index = 2)
 		end
 
 	t_remove_earliest_multiple_element_two_value_first
@@ -191,10 +192,10 @@ feature -- remove_earliest
 			t.remove_earliest (a_value)
 			assert ("ha tolto tutti i valori con a_value", t.has (a_value))
 			assert ("non ha eliminato nessun elemento", t.count = 3)
-			assert ("non ha spostato correttamente l'active_element", attached t.active_element as ae implies ae.value = a_value - 2)
-			assert ("ha modificato index", t.index = 1)
-			assert ("ha aggiornato correttamente first_element", attached t.first_element as fe implies fe.value = a_value - 2)
-			assert ("ha lasciato inalterato il secondo elemento contenente a_value", t.value_after (a_value, a_value - 2) and t.value_before (a_value, a_value - 3))
+			assert ("non ha spostato correttamente l'active_element", t.active_element/=Void and attached t.active_element as ae implies ae.value = a_value-2)
+			assert ("ha modificato index nonostante active sia ancora il primo elemento", t.index = 1)
+			assert ("non ha aggiornato correttamente first_element", t.first_element/=Void and attached t.first_element as fe implies fe.value = a_value-2)
+			assert ("non ha lasciato inalterato il secondo elemento contenente a_value", t.value_after (a_value, a_value - 2) and t.value_before (a_value, a_value - 3))
 		end
 
 feature -- remove_latest
