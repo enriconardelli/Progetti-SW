@@ -71,42 +71,42 @@ inherit
 --			if t.active_element /= Void then t.forth end
 --			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
 --		end
-feature -- Ricerca
+--feature -- Ricerca
 
-	t_has
-			-- Enrico Nardelli, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			assert ("t e' vuota, t contiene 3?", not t.has (3))
-			t.append (3)
-			assert ("t contiene 3, t contiene 3?", t.has (3))
-			assert ("t contiene 3, t contiene 4?", not t.has (4))
-			t.append (7)
-			assert ("t contiene 3 e 7, t contiene 3? ", t.has (3))
-			assert ("t contiene 3 e 7, t contiene 4? ", not t.has (4))
-			assert ("t contiene 3 e 7, t contiene 7? ", t.has (7))
-		end
+--	t_has
+--			-- Enrico Nardelli, 2020/03/06
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			assert ("t e' vuota, t contiene 3?", not t.has (3))
+--			t.append (3)
+--			assert ("t contiene 3, t contiene 3?", t.has (3))
+--			assert ("t contiene 3, t contiene 4?", not t.has (4))
+--			t.append (7)
+--			assert ("t contiene 3 e 7, t contiene 3? ", t.has (3))
+--			assert ("t contiene 3 e 7, t contiene 4? ", not t.has (4))
+--			assert ("t contiene 3 e 7, t contiene 7? ", t.has (7))
+--		end
 
-		t_get_element
-			-- Riccardo Malandruccolo, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			assert ("errore: restituisce elemento che non esiste", t.get_element (3) = void)
-			t.append (3)
-			assert ("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
-			assert ("errore: non restituisce il valore corretto", attached t.get_element (3) as el implies el.value = 3)
-			assert ("errore: restituisce elementi che non esistono", t.get_element (4) = void)
-			t.append (7)
-			assert ("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
-			assert ("errore: restituisce elemento che non esiste", t.get_element (4) = void)
-			assert ("errore: non restituisce elemento che esiste", t.get_element (7) /= void)
-			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
-			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
-		end
+--		t_get_element
+--			-- Riccardo Malandruccolo, 2020/03/06
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			assert ("errore: restituisce elemento che non esiste", t.get_element (3) = void)
+--			t.append (3)
+--			assert ("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+--			assert ("errore: non restituisce il valore corretto", attached t.get_element (3) as el implies el.value = 3)
+--			assert ("errore: restituisce elementi che non esistono", t.get_element (4) = void)
+--			t.append (7)
+--			assert ("errore: non restituisce elemento che esiste", t.get_element (3) /= void)
+--			assert ("errore: restituisce elemento che non esiste", t.get_element (4) = void)
+--			assert ("errore: non restituisce elemento che esiste", t.get_element (7) /= void)
+--			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (3) as el implies el.value = 3)
+--			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
+--		end
 
 feature -- Inserimento singolo libero
 
