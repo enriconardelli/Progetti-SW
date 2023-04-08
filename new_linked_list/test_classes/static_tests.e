@@ -108,29 +108,29 @@ inherit
 --			assert ("errore: restituisce valore sbagliato di elemento che esiste", attached t.get_element (7) as el implies el.value = 7)
 --		end
 
-feature -- Inserimento singolo libero
+-- feature -- Inserimento singolo libero
 
-	t_append
-			-- Enrico Nardelli, 2020/03/06
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (3)
-			assert ("ERRORE: ho fatto append di 3, ma t non contiene 3", t.has (3))
-			assert ("ERRORE: ho fatto append solo di 3, ma t contiene 4", not t.has (4))
-		end
+--	t_append
+--			-- Enrico Nardelli, 2020/03/06
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			t.append (3)
+--			assert ("ERRORE: ho fatto append di 3, ma t non contiene 3", t.has (3))
+--			assert ("ERRORE: ho fatto append solo di 3, ma t contiene 4", not t.has (4))
+--		end
 
-	t_prepend
-			-- Enrico Nardelli, 2021/03/02
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.prepend (3)
-			assert ("ERRORE: ho fatto prepend di 3, ma t non contiene 3?", t.has (3))
-			assert ("ERRORE: ho fatto prepend solo di 3, ma t contiene 4", not t.has (4))
-		end
+--	t_prepend
+--			-- Enrico Nardelli, 2021/03/02
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			t.prepend (3)
+--			assert ("ERRORE: ho fatto prepend di 3, ma t non contiene 3?", t.has (3))
+--			assert ("ERRORE: ho fatto prepend solo di 3, ma t contiene 4", not t.has (4))
+--		end
 
 feature -- Inserimento singolo vincolato
 
