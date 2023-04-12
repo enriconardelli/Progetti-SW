@@ -439,6 +439,19 @@ feature -- Stato
 			zero_se_non_esiste: not has (a_value) = (Result = 0)
 		end
 
+	index_latest_of (a_value: INTEGER): INTEGER
+			-- ritorna la posizione dell'ultimo elemento che contiene `a_value' oppure 0 se non esiste
+		do
+			invert
+			if has (a_value) then
+				Result := count - index_earliest_of (a_value) + 1
+			end
+			invert -- questo ultimo invert è per rimettere la lista apposto
+		ensure
+			corretto_se_esiste: has (a_value) = (0 < Result and Result <= count)
+			zero_se_non_esiste: not has (a_value) = (Result = 0)
+		end
+
 	is_before (an_element, a_target: detachable INT_LINKABLE): BOOLEAN
 			-- funzione che ritorna vero se an_element è prima di a_target
 			-- se an_element = a_target ritorna falso
@@ -463,7 +476,6 @@ feature -- Stato
 		ensure
 			an_element = a_target implies Result = False
 		end
-			-- TODO definire una feature `index_latest_of' che restituisce il valore dell'ultimo elemento  che contiene `a_value' o 0 se non esiste
 			-- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
 
 feature -- Inserimento singolo libero

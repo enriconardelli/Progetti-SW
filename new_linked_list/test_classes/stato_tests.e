@@ -354,6 +354,64 @@ feature -- index__earliest_of
 			assert ("ha selezionato la seconda istanza di a_value", t.index_earliest_of (a_value) /= 3)
 		end
 
+feature -- index__latest_of
+
+	t_index_latest_of_no_value
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value - 4)
+			assert ("la lista non contiene a_value eppure index_latest non è 0", t.index_latest_of (a_value) = 0)
+		end
+
+	t_index_latest_of_single_value_first
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value - 3)
+			t.append (a_value + 2)
+			assert ("la lista contiene a_value come primo eppure index_latest non è 1", t.index_latest_of (a_value) = 1)
+		end
+
+	t_index_latest_of_single_value_last
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value - 3)
+			t.append (a_value + 2)
+			t.append (a_value)
+			assert ("la lista contiene a_value come ultimo eppure index_latest non è count", t.index_latest_of (a_value) = t.count)
+		end
+
+	t_index_latest_of_single_value_middle
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value - 3)
+			t.append (a_value)
+			t.append (a_value + 2)
+			assert ("la lista contiene a_value in seconda posizione eppure index_latest non è 2", t.index_latest_of (a_value) = 2)
+		end
+
+	t_index_latest_of_multiple_value
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value - 3)
+			t.append (a_value)
+			t.append (a_value)
+			t.append (a_value + 2)
+			assert ("la lista contiene a_value in seconda posizione eppure index_latest non è 3", t.index_latest_of (a_value) = 3)
+			assert ("ha selezionato la seconda istanza di a_value", t.index_latest_of (a_value) /= 2)
+		end
+
+
 feature -- is_before
 
 	t_is_before_one_element
