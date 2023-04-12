@@ -15,6 +15,28 @@ feature -- servizio
 
 		-- parte di AGULINI_FIORINI
 
+	how_many (t: INT_LINKED_LIST; value: INTEGER): INTEGER
+			-- return how many times `a_value' occurs in `t'
+			-- è identica a count_of, solo che è una funzione esterna alla lista
+		local
+			current_element: INT_LINKABLE
+		do
+			if t.count = 0 then
+				Result := 0
+			else
+				from
+					current_element := t.first_element
+				until
+					current_element = Void
+				loop
+					if current_element.value = value then
+						Result := Result + 1
+					end
+					current_element := current_element.next
+				end
+			end
+		end
+
 	how_many_before (t: INT_LINKED_LIST; a_value, target: INTEGER): INTEGER
 			--ci dice quante occorrenze di value prima di target ci sono nella lista
 		require

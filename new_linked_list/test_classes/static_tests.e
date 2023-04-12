@@ -14,6 +14,15 @@ inherit
 
 	EQA_TEST_SET
 
+
+
+	-- CLASSE DA CANCELLARE, I TEST SONO STATI SMISTATI NELLE LORO OPPORTUNE CATEGORIE
+	--ATTENZIONE! TUTTI I TEST SONO CONSIDERATI SOTTOCLASSI DI STATIC_TESTS QUINDI PRIMA DI ELIMINARE QUESTA CLASSE BISOGNA CAPIRE
+	-- BENE COME GESTIRE LA QUESTIONE DELL'ERIDITARIETA'
+
+
+
+
 	--feature -- Spostamento del cursore
 
 	--	t_first
@@ -951,7 +960,7 @@ feature --Status
 		--			end
 		--		end
 
-feature -- Convenience
+--feature -- Convenience
 
 		--	 t_count_of
 		-- EN, 2021/08/18
@@ -979,27 +988,27 @@ feature -- Convenience
 		--			assert ("errore: la lista contiene due occorrenze di 3 ma il conteggio non è due", t.count_of(3) = 2)
 		--		end
 
-	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
-			-- return how many times `a_value' occurs in `t'
-			-- è identica a count_of, solo che è una funzione esterna alla lista
-		local
-			current_element: INT_LINKABLE
-		do
-			if t.count = 0 then
-				Result := 0
-			else
-				from
-					current_element := t.first_element
-				until
-					current_element = Void
-				loop
-					if current_element.value = a_value then
-						Result := Result + 1
-					end
-					current_element := current_element.next
-				end
-			end
-		end
+--	how_many (t: INT_LINKED_LIST; a_value: INTEGER): INTEGER
+--			-- return how many times `a_value' occurs in `t'
+--			-- è identica a count_of, solo che è una funzione esterna alla lista
+--		local
+--			current_element: INT_LINKABLE
+--		do
+--			if t.count = 0 then
+--				Result := 0
+--			else
+--				from
+--					current_element := t.first_element
+--				until
+--					current_element = Void
+--				loop
+--					if current_element.value = a_value then
+--						Result := Result + 1
+--					end
+--					current_element := current_element.next
+--				end
+--			end
+--		end
 			--to do: t_printout
 
 --feature -- Controllo lista
