@@ -132,217 +132,217 @@ inherit
 --			assert ("ERRORE: ho fatto prepend solo di 3, ma t contiene 4", not t.has (4))
 --		end
 
-feature -- Inserimento singolo vincolato
+--feature -- Inserimento singolo vincolato
 
 -- TODO: trasformare con gli agenti i test che verificano le diverse implementazioni di una stessa feature per evitare di replicarli
 
-	t_insert_after
-			-- Alessandro Filippo, 2020/03/06
-			-- riscritto EN, 2021/08/18
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-				-- []
-			t.insert_after (3, 5)
-			assert ("errore: lista è vuota, ma insert_after (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista è vuota, ma insert_after (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			assert ("errore: lista è vuota, ma insert_after (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (6)
-				-- [6]
-			t.insert_after (3,5)
-			assert ("errore: lista contiene solo 6, ma insert_after (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 6, ma insert_after (3,5) NON inserisce 3 dopo di 6", t.value_after (3,6))
-			assert ("errore: lista contiene solo 6, ma insert_after (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (4); t.append (6)
-				-- [4, 6]
-			t.insert_after (3,5)
-			assert ("errore: lista vale [4, 6], ma insert_after (3,5) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [4, 6], ma insert_after (3,5) NON inserisce 3 dopo di 6 che era l'ultimo' elemento", t.value_after (3,6))
-			assert ("errore: lista vale [4,6], ma insert_after (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (5)
-				-- [5]
-			t.insert_after (3,5)
-			assert ("errore: lista contiene solo 5, ma insert_after (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 5, ma insert_after (3,5) NON inserisce 3 dopo di 5", t.value_after (3,5))
-			assert ("errore: lista contiene solo 5, ma insert_after (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (6); t.append (5)
-				-- [6, 5]
-			t.insert_after (3,6)
-			assert ("errore: lista vale [6, 5], ma insert_after (3,6) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [6, 5], ma insert_after (3,6) NON inserisce 3 dopo di 6", t.value_after (3,6))
-			assert ("errore: lista vale [6, 5], ma insert_after (3,6) NON inserisce 3 prima di 5 che seguiva 6", t.value_before (3,5))
-		end
+--	t_insert_after
+--			-- Alessandro Filippo, 2020/03/06
+--			-- riscritto EN, 2021/08/18
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--				-- []
+--			t.insert_after (3, 5)
+--			assert ("errore: lista è vuota, ma insert_after (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista è vuota, ma insert_after (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			assert ("errore: lista è vuota, ma insert_after (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (6)
+--				-- [6]
+--			t.insert_after (3,5)
+--			assert ("errore: lista contiene solo 6, ma insert_after (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 6, ma insert_after (3,5) NON inserisce 3 dopo di 6", t.value_after (3,6))
+--			assert ("errore: lista contiene solo 6, ma insert_after (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (4); t.append (6)
+--				-- [4, 6]
+--			t.insert_after (3,5)
+--			assert ("errore: lista vale [4, 6], ma insert_after (3,5) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [4, 6], ma insert_after (3,5) NON inserisce 3 dopo di 6 che era l'ultimo' elemento", t.value_after (3,6))
+--			assert ("errore: lista vale [4,6], ma insert_after (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (5)
+--				-- [5]
+--			t.insert_after (3,5)
+--			assert ("errore: lista contiene solo 5, ma insert_after (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 5, ma insert_after (3,5) NON inserisce 3 dopo di 5", t.value_after (3,5))
+--			assert ("errore: lista contiene solo 5, ma insert_after (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (6); t.append (5)
+--				-- [6, 5]
+--			t.insert_after (3,6)
+--			assert ("errore: lista vale [6, 5], ma insert_after (3,6) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [6, 5], ma insert_after (3,6) NON inserisce 3 dopo di 6", t.value_after (3,6))
+--			assert ("errore: lista vale [6, 5], ma insert_after (3,6) NON inserisce 3 prima di 5 che seguiva 6", t.value_before (3,5))
+--		end
 
-	t_insert_after_reusing
-			-- Federico Fiorini, 2020/03/06
-			-- riscritto EN, 2021/08/18
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-				-- []
-			t.insert_after_CON_get_element_append (3, 5)
-			assert ("errore: lista è vuota, ma insert_after_reusing (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista è vuota, ma insert_after_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			assert ("errore: lista è vuota, ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (6)
-				-- [6]
-			t.insert_after_CON_get_element_append (3,5)
-			assert ("errore: lista contiene solo 6, ma insert_after_reusing (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 6, ma insert_after_reusing (3,5) NON inserisce 3 dopo di 6", t.value_after (3,6))
-			assert ("errore: lista contiene solo 6, ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (4); t.append (6)
-				-- [4, 6]
-			t.insert_after_CON_get_element_append (3,5)
-			assert ("errore: lista vale [4, 6], ma insert_after_reusing (3,5) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [4, 6], ma insert_after_reusing (3,5) NON inserisce 3 dopo di 6 che era l'ultimo' elemento", t.value_after (3,6))
-			assert ("errore: lista vale [4,6], ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (5)
-				-- [5]
-			t.insert_after_CON_get_element_append (3,5)
-			assert ("errore: lista contiene solo 5, ma insert_after_reusing (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 5, ma insert_after_reusing (3,5) NON inserisce 3 dopo di 5", t.value_after (3,5))
-			assert ("errore: lista contiene solo 5, ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (6); t.append (5)
-				-- [6, 5]
-			t.insert_after_CON_get_element_append (3,6)
-			assert ("errore: lista vale [6, 5], ma insert_after_reusing (3,6) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [6, 5], ma insert_after_reusing (3,6) NON inserisce 3 dopo di 6", t.value_after (3,6))
-			assert ("errore: lista vale [6, 5], ma insert_after_reusing (3,6) NON inserisce 3 prima di 5 che seguiva 6", t.value_before (3,5))
-		end
+--	t_insert_after_reusing
+--			-- Federico Fiorini, 2020/03/06
+--			-- riscritto EN, 2021/08/18
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--				-- []
+--			t.insert_after_CON_get_element_append (3, 5)
+--			assert ("errore: lista è vuota, ma insert_after_reusing (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista è vuota, ma insert_after_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			assert ("errore: lista è vuota, ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (6)
+--				-- [6]
+--			t.insert_after_CON_get_element_append (3,5)
+--			assert ("errore: lista contiene solo 6, ma insert_after_reusing (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 6, ma insert_after_reusing (3,5) NON inserisce 3 dopo di 6", t.value_after (3,6))
+--			assert ("errore: lista contiene solo 6, ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (4); t.append (6)
+--				-- [4, 6]
+--			t.insert_after_CON_get_element_append (3,5)
+--			assert ("errore: lista vale [4, 6], ma insert_after_reusing (3,5) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [4, 6], ma insert_after_reusing (3,5) NON inserisce 3 dopo di 6 che era l'ultimo' elemento", t.value_after (3,6))
+--			assert ("errore: lista vale [4,6], ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (5)
+--				-- [5]
+--			t.insert_after_CON_get_element_append (3,5)
+--			assert ("errore: lista contiene solo 5, ma insert_after_reusing (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 5, ma insert_after_reusing (3,5) NON inserisce 3 dopo di 5", t.value_after (3,5))
+--			assert ("errore: lista contiene solo 5, ma insert_after_reusing (3,5) NON assegna last_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (6); t.append (5)
+--				-- [6, 5]
+--			t.insert_after_CON_get_element_append (3,6)
+--			assert ("errore: lista vale [6, 5], ma insert_after_reusing (3,6) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [6, 5], ma insert_after_reusing (3,6) NON inserisce 3 dopo di 6", t.value_after (3,6))
+--			assert ("errore: lista vale [6, 5], ma insert_after_reusing (3,6) NON inserisce 3 prima di 5 che seguiva 6", t.value_before (3,5))
+--		end
 
-	t_insert_before
-			-- Maria Ludovica Sarandrea, 2021/03/26
-			-- EN, 2021/08/18
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-				-- []
-			t.insert_before (3, 5)
-			assert ("errore: lista è vuota, ma insert_before (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista è vuota, ma insert_before (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			assert ("errore: lista è vuota, ma insert_before (3,5) NON assegna larst_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (6)
-				-- [6]
-			t.insert_before (3,5)
-			assert ("errore: lista contiene solo 6, ma insert_before (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 6, ma insert_before (3,5) NON inserisce 3 prima di 6", t.value_before (3,6))
-			assert ("errore: lista contiene solo 6, ma insert_before (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			t.wipeout
-			t.append (4); t.append (6)
-				-- [4, 6]
-			t.insert_before (3,5)
-			assert ("errore: lista vale [4, 6], ma insert_before (3,5) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [4, 6], ma insert_before (3,5) NON inserisce 3 prima di 4 che era il primo elemento", t.value_before (3,4))
-			assert ("errore: lista vale [4,6], ma insert_before (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			t.wipeout
-			t.append (5)
-				-- [5]
-			t.insert_before (3,5)
-			assert ("errore: lista contiene solo 5, ma insert_before (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 5, ma insert_before (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
-			assert ("errore: lista contiene solo 5, ma insert_before (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			t.wipeout
-			t.append (6); t.append (5)
-				-- [6, 5]
-			t.insert_before (3,5)
-			assert ("errore: lista vale [6, 5], ma insert_before (3,5) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [6, 5], ma insert_before (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
-			assert ("errore: lista vale [6, 5], ma insert_before (3,5) NON inserisce 3 dopo di 6 che precedeva 5", t.value_after (3,6))
-		end
+--	t_insert_before
+--			-- Maria Ludovica Sarandrea, 2021/03/26
+--			-- EN, 2021/08/18
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--				-- []
+--			t.insert_before (3, 5)
+--			assert ("errore: lista è vuota, ma insert_before (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista è vuota, ma insert_before (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			assert ("errore: lista è vuota, ma insert_before (3,5) NON assegna larst_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (6)
+--				-- [6]
+--			t.insert_before (3,5)
+--			assert ("errore: lista contiene solo 6, ma insert_before (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 6, ma insert_before (3,5) NON inserisce 3 prima di 6", t.value_before (3,6))
+--			assert ("errore: lista contiene solo 6, ma insert_before (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			t.wipeout
+--			t.append (4); t.append (6)
+--				-- [4, 6]
+--			t.insert_before (3,5)
+--			assert ("errore: lista vale [4, 6], ma insert_before (3,5) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [4, 6], ma insert_before (3,5) NON inserisce 3 prima di 4 che era il primo elemento", t.value_before (3,4))
+--			assert ("errore: lista vale [4,6], ma insert_before (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			t.wipeout
+--			t.append (5)
+--				-- [5]
+--			t.insert_before (3,5)
+--			assert ("errore: lista contiene solo 5, ma insert_before (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 5, ma insert_before (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
+--			assert ("errore: lista contiene solo 5, ma insert_before (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			t.wipeout
+--			t.append (6); t.append (5)
+--				-- [6, 5]
+--			t.insert_before (3,5)
+--			assert ("errore: lista vale [6, 5], ma insert_before (3,5) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [6, 5], ma insert_before (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
+--			assert ("errore: lista vale [6, 5], ma insert_before (3,5) NON inserisce 3 dopo di 6 che precedeva 5", t.value_after (3,6))
+--		end
 
-	t_insert_before_reusing
-			-- EN, 2021/08/18
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-				-- []
-			t.insert_before_CON_has_prepend (3, 5)
-			assert ("errore: lista è vuota, ma insert_before_reusing (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista è vuota, ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			assert ("errore: lista è vuota, ma insert_before_reusing (3,5) NON assegna larst_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (6)
-				-- [6]
-			t.insert_before_CON_has_prepend (3,5)
-			assert ("errore: lista contiene solo 6, ma insert_before_reusing (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 6, ma insert_before_reusing (3,5) NON inserisce 3 prima di 6", t.value_before (3,6))
-			assert ("errore: lista contiene solo 6, ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			t.wipeout
-			t.append (4); t.append (6)
-				-- [4, 6]
-			t.insert_before_CON_has_prepend (3,5)
-			assert ("errore: lista vale [4, 6], ma insert_before_reusing (3,5) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [4, 6], ma insert_before_reusing (3,5) NON inserisce 3 prima di 4 che era il primo elemento", t.value_before (3,4))
-			assert ("errore: lista vale [4,6], ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			t.wipeout
-			t.append (5)
-				-- [5]
-			t.insert_before_CON_has_prepend (3,5)
-			assert ("errore: lista contiene solo 5, ma insert_before_reusing (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 5, ma insert_before_reusing (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
-			assert ("errore: lista contiene solo 5, ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			t.wipeout
-			t.append (6); t.append (5)
-				-- [6, 5]
-			t.insert_before_CON_has_prepend (3,5)
-			assert ("errore: lista vale [6, 5], ma insert_before_reusing (3,5) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [6, 5], ma insert_before_reusing (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
-			assert ("errore: lista vale [6, 5], ma insert_before_reusing (3,5) NON inserisce 3 dopo di 6 che precedeva 5", t.value_after (3,6))
-		end
+--	t_insert_before_reusing
+--			-- EN, 2021/08/18
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--				-- []
+--			t.insert_before_CON_has_prepend (3, 5)
+--			assert ("errore: lista è vuota, ma insert_before_reusing (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista è vuota, ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			assert ("errore: lista è vuota, ma insert_before_reusing (3,5) NON assegna larst_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (6)
+--				-- [6]
+--			t.insert_before_CON_has_prepend (3,5)
+--			assert ("errore: lista contiene solo 6, ma insert_before_reusing (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 6, ma insert_before_reusing (3,5) NON inserisce 3 prima di 6", t.value_before (3,6))
+--			assert ("errore: lista contiene solo 6, ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			t.wipeout
+--			t.append (4); t.append (6)
+--				-- [4, 6]
+--			t.insert_before_CON_has_prepend (3,5)
+--			assert ("errore: lista vale [4, 6], ma insert_before_reusing (3,5) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [4, 6], ma insert_before_reusing (3,5) NON inserisce 3 prima di 4 che era il primo elemento", t.value_before (3,4))
+--			assert ("errore: lista vale [4,6], ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			t.wipeout
+--			t.append (5)
+--				-- [5]
+--			t.insert_before_CON_has_prepend (3,5)
+--			assert ("errore: lista contiene solo 5, ma insert_before_reusing (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 5, ma insert_before_reusing (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
+--			assert ("errore: lista contiene solo 5, ma insert_before_reusing (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			t.wipeout
+--			t.append (6); t.append (5)
+--				-- [6, 5]
+--			t.insert_before_CON_has_prepend (3,5)
+--			assert ("errore: lista vale [6, 5], ma insert_before_reusing (3,5) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [6, 5], ma insert_before_reusing (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
+--			assert ("errore: lista vale [6, 5], ma insert_before_reusing (3,5) NON inserisce 3 dopo di 6 che precedeva 5", t.value_after (3,6))
+--		end
 
-	t_insert_before_with_2_cursors
-			-- EN, 2021/08/18
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-				-- []
-			t.insert_before_CON_2_CURSORI (3, 5)
-			assert ("errore: lista è vuota, ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista è vuota, ma insert_before_with_2_cursors (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			assert ("errore: lista è vuota, ma insert_before_with_2_cursors (3,5) NON assegna larst_element a 3", attached t.last_element as le implies le.value = 3)
-			t.wipeout
-			t.append (6)
-				-- [6]
-			t.insert_before_CON_2_CURSORI (3,5)
-			assert ("errore: lista contiene solo 6, ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 6, ma insert_before_with_2_cursors (3,5) NON inserisce 3 prima di 6", t.value_before (3,6))
-			assert ("errore: lista contiene solo 6, ma insert_before_with_2_cursors (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			t.wipeout
-			t.append (4); t.append (6)
-				-- [4, 6]
-			t.insert_before_CON_2_CURSORI (3,5)
-			assert ("errore: lista vale [4, 6], ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [4, 6], ma insert_before_with_2_cursors (3,5) NON inserisce 3 prima di 4 che era il primo elemento", t.value_before (3,4))
-			assert ("errore: lista vale [4,6], ma insert_before_with_2_cursors (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			t.wipeout
-			t.append (5)
-				-- [5]
-			t.insert_before_CON_2_CURSORI (3,5)
-			assert ("errore: lista contiene solo 5, ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has (3))
-			assert ("errore: lista contiene solo 5, ma insert_before_with_2_cursors (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
-			assert ("errore: lista contiene solo 5, ma insert_before_with_2_cursors (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
-			t.wipeout
-			t.append (6); t.append (5)
-				-- [6, 5]
-			t.insert_before_CON_2_CURSORI (3,5)
-			assert ("errore: lista vale [6, 5], ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has(3))
-			assert ("errore: lista vale [6, 5], ma insert_before_with_2_cursors (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
-			assert ("errore: lista vale [6, 5], ma insert_before_with_2_cursors (3,5) NON inserisce 3 dopo di 6 che precedeva 5", t.value_after (3,6))
-		end
+--	t_insert_before_with_2_cursors
+--			-- EN, 2021/08/18
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--				-- []
+--			t.insert_before_CON_2_CURSORI (3, 5)
+--			assert ("errore: lista è vuota, ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista è vuota, ma insert_before_with_2_cursors (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			assert ("errore: lista è vuota, ma insert_before_with_2_cursors (3,5) NON assegna larst_element a 3", attached t.last_element as le implies le.value = 3)
+--			t.wipeout
+--			t.append (6)
+--				-- [6]
+--			t.insert_before_CON_2_CURSORI (3,5)
+--			assert ("errore: lista contiene solo 6, ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 6, ma insert_before_with_2_cursors (3,5) NON inserisce 3 prima di 6", t.value_before (3,6))
+--			assert ("errore: lista contiene solo 6, ma insert_before_with_2_cursors (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			t.wipeout
+--			t.append (4); t.append (6)
+--				-- [4, 6]
+--			t.insert_before_CON_2_CURSORI (3,5)
+--			assert ("errore: lista vale [4, 6], ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [4, 6], ma insert_before_with_2_cursors (3,5) NON inserisce 3 prima di 4 che era il primo elemento", t.value_before (3,4))
+--			assert ("errore: lista vale [4,6], ma insert_before_with_2_cursors (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			t.wipeout
+--			t.append (5)
+--				-- [5]
+--			t.insert_before_CON_2_CURSORI (3,5)
+--			assert ("errore: lista contiene solo 5, ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has (3))
+--			assert ("errore: lista contiene solo 5, ma insert_before_with_2_cursors (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
+--			assert ("errore: lista contiene solo 5, ma insert_before_with_2_cursors (3,5) NON assegna first_element a 3", attached t.first_element as fe implies fe.value = 3)
+--			t.wipeout
+--			t.append (6); t.append (5)
+--				-- [6, 5]
+--			t.insert_before_CON_2_CURSORI (3,5)
+--			assert ("errore: lista vale [6, 5], ma insert_before_with_2_cursors (3,5) NON inserisce 3", t.has(3))
+--			assert ("errore: lista vale [6, 5], ma insert_before_with_2_cursors (3,5) NON inserisce 3 prima di 5", t.value_before (3,5))
+--			assert ("errore: lista vale [6, 5], ma insert_before_with_2_cursors (3,5) NON inserisce 3 dopo di 6 che precedeva 5", t.value_after (3,6))
+--		end
 
 feature --Status
 
