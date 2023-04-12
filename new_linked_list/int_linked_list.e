@@ -1666,7 +1666,6 @@ feature -- Manipulation
 			-- return a list with the first `max' items
 			-- nota che cambiamenti alla lista non modificano la nuova lista creata e viceversa
 		require
-			0 <= max
 			max <= count
 		local
 				--		k: INTEGER
@@ -1702,7 +1701,6 @@ feature -- Manipulation
 			-- return a list with the last `max' items
 			-- nota che cambiamenti alla lista non modificano la nuova lista creata e viceversa
 		require
-			0 <= max
 			max <= count
 		local
 			i: INTEGER
@@ -1738,6 +1736,30 @@ feature -- Computation
 		ensure
 			zero_se_non_presente: not old has (target) implies Result = 0
 			maggiore_di_zero_se_presente: old has (target) implies Result > 0
+		end
+
+	count_of_before (a_value, target: INTEGER): INTEGER
+			--ci dice quante occorrenze di a_value prima di target ci sono nella lista
+		require
+			contiene_il_target: has (target)
+		local
+			r: like current
+		do
+			r := head_list (index_earliest_of (target) - 1)
+				-- ho creato una lista ausiliaria che contiene tutti i valori fino a target escluso
+			Result := r.count_of (a_value)
+		end
+
+	count_of_after (a_value, target: INTEGER): INTEGER
+			--ci dice quante occorrenze di a_value dopo la prima occorrenza di target ci sono nella lista
+		require
+			contiene_il_target: has (target)
+		local
+			r: like current
+		do
+			r := tail_list (count - index_earliest_of (target))
+				-- ho creato una lista ausiliaria che contiene tutti i valori da target escluso in poi
+			Result := r.count_of (a_value)
 		end
 
 		--	highest: INTEGER
