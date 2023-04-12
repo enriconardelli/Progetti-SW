@@ -1664,18 +1664,18 @@ feature -- Manipulation
 
 	head_list (max: INTEGER): like Current
 			-- return a list with the first `max' items
-			-- RICHIEDE DI AGGIUNGERE `index' e `go_i_th'
+			-- nota che cambiamenti alla lista non modificano la nuova lista creata e viceversa
 		require
 			0 <= max
 			max <= count
 		local
-			k: INTEGER
+				--		k: INTEGER
 			i: INTEGER
 		do
 			create Result
 			i := index
 			from
-				k := 1
+					--		k := 1
 				start
 			invariant
 				--				1 <= index         -- gli invarianti non sono compatibili con la corrente implementazione di index
@@ -1687,7 +1687,7 @@ feature -- Manipulation
 				if attached active_element as ae then
 					Result.append (ae.value)
 				end
-				k := k + 1
+					--	k := k + 1
 				forth
 					--			variant
 					--				count - index + 1
@@ -1699,10 +1699,23 @@ feature -- Manipulation
 		end
 
 	tail_list (max: INTEGER): like Current
-			--	da_implementare
 			-- return a list with the last `max' items
+			-- nota che cambiamenti alla lista non modificano la nuova lista creata e viceversa
+		require
+			0 <= max
+			max <= count
+		local
+			i: INTEGER
 		do
 			create Result
+			i := index
+			Result := deep_twin
+			Result.invert
+			Result := Result.head_list (max)
+			Result.invert
+		ensure
+			Result.count = max
+				-- the list contains 'max' elements
 		end
 
 feature -- Computation
@@ -1727,29 +1740,32 @@ feature -- Computation
 			maggiore_di_zero_se_presente: old has (target) implies Result > 0
 		end
 
-	highest: INTEGER
-			-- return the value of the highest item
-			--		local
-			--			slice: like Current
-			--		do
-			--			create slice.make
-			--			from
-			--				start
-			--				slice := head_list (index - 1)
-			--			invariant
-			--				index >= 1
-			--				index <= count + 1
-			--				Result >= slice.highest
-			--			until
-			--				after
-			--			loop
-			--				Result := item.max (Result)
-			--				forth
-			--			end
-			--		ensure
-			--			across Current as c all c.item <= Result end
-			--		end
+		--	highest: INTEGER
+		-- return the value of the highest item
+		--		local
+		--			slice: like Current
+		--		do
+		--			create slice.make
+		--			from
+		--				start
+		--				slice := head_list (index - 1)
+		--			invariant
+		--				index >= 1
+		--				index <= count + 1
+		--				Result >= slice.highest
+		--			until
+		--				after
+		--			loop
+		--				Result := item.max (Result)
+		--				forth
+		--			end
+		--		ensure
+		--			across Current as c all c.item <= Result end
+		--		end
 
+		--QUESTA E' UNA VERSIONE OBSOLETA CHE USA SINTASSI VECCHIE
+
+	highest: INTEGER
 		require
 			count > 0
 		local

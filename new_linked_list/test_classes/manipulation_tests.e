@@ -15,48 +15,10 @@ feature -- parametri
 
 	a_value: INTEGER = 1
 
-feature -- head_list
-
-	t_one_element
-			-- lista con solo un elemento
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (a_value)
-			assert ("errore: l'unico elemento non coincide con quello della lista originale", attached t.head_list (1).first_element as fe implies fe.value = a_value)
-		end
-
-	t_three_element_copy_two
-			-- lista con tre elementi e ne copio due
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (a_value)
-			t.append (a_value + 1)
-			t.append (a_value + 2)
-			assert ("errore: il primo elemento non coincide con quello della lista originale", attached t.head_list (1).first_element as fe implies fe.value = a_value)
-			assert ("errore: il secondo elemento non coincide con quello della lista originale", attached t.head_list (2).last_element as fe implies fe.value = a_value + 1)
-		end
-
-	t_three_element_three_coopy
-			-- lista con tre elementi e ne copio tre
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.append (a_value)
-			t.append (a_value + 1)
-			t.append (a_value + 4)
-			assert ("errore: il primo elemento non coincide con quello della lista originale", attached t.head_list (1).first_element as fe implies fe.value = a_value)
-			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached t.head_list (3).last_element as fe implies fe.value = a_value + 4)
-		end
-
 feature -- invert
 	-- Federico Fiorini, 2020/03/08
 
-	t_four_elements_invert
+	t_invert_four_elements_invert
 		local
 			t: INT_LINKED_LIST
 		do
@@ -89,7 +51,7 @@ feature -- invert
 			end
 		end
 
-	t_three_elements_invert
+	t_invert_three_elements_invert
 		local
 			t: INT_LINKED_LIST
 		do
@@ -139,6 +101,153 @@ feature -- invert
 			t.forth
 			t.invert
 			assert ("l'indice non è stato invertito dall'ultimo al primo", t.index = 1)
+		end
+
+feature -- head_list
+
+	t_head_list_one_element
+			-- lista con solo un elemento
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			assert ("errore: l'unico elemento non coincide con quello della lista originale", attached t.head_list (1).first_element as fe implies fe.value = a_value)
+		end
+
+	t_head_list_three_element_copy_two
+			-- lista con tre elementi e ne copio due
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 1)
+			t.append (a_value + 2)
+			assert ("errore: il primo elemento non coincide con quello della lista originale", attached t.head_list (2).first_element as fe implies fe.value = a_value)
+			assert ("errore: il secondo elemento non coincide con quello della lista originale", attached t.head_list (2).last_element as fe implies fe.value = a_value + 1)
+		end
+
+	t_head_list_three_element_three_coopy
+			-- lista con tre elementi e ne copio tre
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 1)
+			t.append (a_value + 4)
+			assert ("errore: il primo elemento non coincide con quello della lista originale", attached t.head_list (3).first_element as fe implies fe.value = a_value)
+			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached t.head_list (3).last_element as fe implies fe.value = a_value + 4)
+		end
+
+	t_head_list_does_not_copy_changes
+			-- questo test serve per vedere che cambiamenti sulla lista originale non portano cambiamenti sulla nuova lista
+		local
+			t: INT_LINKED_LIST
+			r: INT_LINKED_LIST
+		do
+			create t
+			create r
+			t.append (a_value)
+			t.append (a_value + 1)
+			t.append (a_value + 4)
+			t.append (a_value - 6)
+			t.append (a_value + 2)
+			r := t.head_list (3)
+			t.prepend (a_value - 6)
+			assert ("Il primo elemento della testa è stato modificato", r.first_element /= Void and then attached r.first_element as fe implies fe.value = a_value)
+		end
+
+	t_head_list_does_not_change_original
+			-- questo test serve per vedere che cambiamenti sulla nuova lista non portano cambiamenti sull'originale
+		local
+			t: INT_LINKED_LIST
+			r: INT_LINKED_LIST
+		do
+			create t
+			create r
+			t.append (a_value)
+			t.append (a_value + 1)
+			t.append (a_value + 4)
+			t.append (a_value - 6)
+			t.append (a_value + 2)
+			r := t.head_list (3)
+			r.prepend (a_value - 6)
+			assert ("Il primo elemento dell'originale è stato modificato", t.first_element /= Void and then attached t.first_element as fe implies fe.value = a_value)
+		end
+
+feature -- tail_list
+
+	t_tail_list_one_element
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			assert ("errore: l'unico elemento non coincide con quello della lista originale", attached t.tail_list (1).first_element as fe implies fe.value = a_value)
+		end
+
+	t_tail_list_three_element_copy_two
+			-- lista con tre elementi e ne copio due
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 1)
+			t.append (a_value + 2)
+			assert ("errore: il penultimo elemento non coincide con quello della lista originale", t.tail_list (2).first_element /= Void and attached t.tail_list (2).first_element as fe implies fe.value = a_value + 1)
+			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached t.tail_list (2).last_element as fe implies fe.value = a_value + 2)
+		end
+
+	t_tail_list_three_element_three_coopy
+			-- lista con tre elementi e ne copio tre
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 1)
+			t.append (a_value + 4)
+			assert ("errore: il primo elemento non coincide con quello della lista originale", attached t.tail_list (3).first_element as fe implies fe.value = a_value)
+			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached t.tail_list (3).last_element as fe implies fe.value = a_value + 4)
+		end
+
+	t_tail_list_does_not_copy_changes
+			-- questo test serve per vedere che cambiamenti sulla lista originale non portano cambiamenti sulla nuova lista
+		local
+			t: INT_LINKED_LIST
+			r: INT_LINKED_LIST
+		do
+			create t
+			create r
+			t.append (a_value - 4)
+			t.append (a_value + 1)
+			t.append (a_value + 4)
+			t.append (a_value - 6)
+			t.append (a_value + 2)
+			r := t.tail_list (3)
+			t.append (a_value)
+			assert ("L'ultimo elemento della coda è stato modificato", r.last_element /= Void and then attached r.last_element as le implies le.value = a_value + 2)
+		end
+
+	t_tail_list_does_not_change_original
+			-- questo test serve per vedere che cambiamenti sulla nuova lista non portano cambiamenti sull'originale
+		local
+			t: INT_LINKED_LIST
+			r: INT_LINKED_LIST
+		do
+			create t
+			create r
+			t.append (a_value)
+			t.append (a_value + 1)
+			t.append (a_value + 4)
+			t.append (a_value - 6)
+			t.append (a_value + 2)
+			r := t.tail_list (3)
+			r.append (a_value - 6)
+			assert ("L'ultimo elemento dell'originale è stato modificato", t.last_element /= Void and then attached t.last_element as le implies le.value = a_value + 2)
 		end
 
 end
