@@ -559,7 +559,7 @@ feature --Status
 			assert ("errore: la lista NON contiene 6 in quarta posizione", t.index_earliest_of (6) = 4)
 		end
 
-feature -- Insertion multiple targeted
+--feature -- Insertion multiple targeted
 
 		--	 t_insert_multiple_after
 		--	 		-- Sara Forte, 2021/03/30
@@ -666,35 +666,35 @@ feature -- Insertion multiple targeted
 		--			assert ("errore: il valore non viene aggiunto all'inizio se non trovo il target", attached t.first_element as fe implies fe.value = 4)
 		--		end
 
-	t_insert_multiple_before_without_prepend
-			-- Riccardo Malandruccolo, 2020/03/07
-		local
-			t: INT_LINKED_LIST
-		do
-			create t
-			t.insert_multiple_before_SENZA_prepend (3, 10)
-				-- [3]
-			assert ("errore: su lista vuota non aggiunge il valore", how_many (t, 3) = 1)
-			assert ("errore: su lista vuota l'elemento aggiunto non è first_element", attached t.first_element as fe implies fe.value = 3)
-			assert ("errore: su lista vuota l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
-			assert ("errore: su lista vuota l'elemento aggiunto è diventato active_element", t.active_element = Void)
-			t.append (2)
-			t.append (1)
-			t.append (3)
-				-- [3,2,1,3]
+--	t_insert_multiple_before_without_prepend
+--			-- Riccardo Malandruccolo, 2020/03/07
+--		local
+--			t: INT_LINKED_LIST
+--		do
+--			create t
+--			t.insert_multiple_before_SENZA_prepend (3, 10)
+--				-- [3]
+--			assert ("errore: su lista vuota non aggiunge il valore", how_many (t, 3) = 1)
+--			assert ("errore: su lista vuota l'elemento aggiunto non è first_element", attached t.first_element as fe implies fe.value = 3)
+--			assert ("errore: su lista vuota l'elemento aggiunto non è last_element", attached t.last_element as le implies le.value = 3)
+--			assert ("errore: su lista vuota l'elemento aggiunto è diventato active_element", t.active_element = Void)
+--			t.append (2)
+--			t.append (1)
+--			t.append (3)
+--				-- [3,2,1,3]
 
-			t.insert_multiple_before_SENZA_prepend (5, 3)
-				-- [5,3,2,1,5,3]
-			assert ("errore: non aggiunge il valore due volte", how_many (t, 5) = 2)
-			assert ("errore: se inserisce il valore all'inizio, il first_element non cambia", attached t.first_element as fe implies fe.value = 5)
-			assert ("errore: non aggiunge il valore prima del target", attached t.get_element (5) as el and then attached el.next as eln implies eln.value = 3)
-			assert ("errore: non aggiunge il valore più volte", t.count = 6)
-			t.insert_multiple_before_SENZA_prepend (4, 7)
-				-- [4,5,3,2,1,5,3]
-			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", how_many (t, 4) = 1)
-			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", t.count = 7)
-			assert ("errore: il valore non viene aggiunto all'inizio se non trovo il target", attached t.first_element as fe implies fe.value = 4)
-		end
+--			t.insert_multiple_before_SENZA_prepend (5, 3)
+--				-- [5,3,2,1,5,3]
+--			assert ("errore: non aggiunge il valore due volte", how_many (t, 5) = 2)
+--			assert ("errore: se inserisce il valore all'inizio, il first_element non cambia", attached t.first_element as fe implies fe.value = 5)
+--			assert ("errore: non aggiunge il valore prima del target", attached t.get_element (5) as el and then attached el.next as eln implies eln.value = 3)
+--			assert ("errore: non aggiunge il valore più volte", t.count = 6)
+--			t.insert_multiple_before_SENZA_prepend (4, 7)
+--				-- [4,5,3,2,1,5,3]
+--			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", how_many (t, 4) = 1)
+--			assert ("errore: il valore non viene aggiunto una volta se non trovo il target", t.count = 7)
+--			assert ("errore: il valore non viene aggiunto all'inizio se non trovo il target", attached t.first_element as fe implies fe.value = 4)
+--		end
 
 		-- feature -- Removal single free
 
@@ -1002,58 +1002,57 @@ feature -- Convenience
 		end
 			--to do: t_printout
 
-feature -- Controllo lista
-	--a me questi sembrano di tipo integrazione? (Gianluca Pastorini)
+--feature -- Controllo lista
+--	
+--	t_lista_vuota
+--			-- Calzuola e Malandruccolo 2020/03/21
+--		local
+--			t_vuota: INT_LINKED_LIST
+--			a_value: INTEGER
+--		do
+--			create t_vuota
+--			a_value := 1
+--			assert ("has trova il valore su lista vuota", not t_vuota.has (a_value))
+--			assert ("get_element restituisce un elemento su lista vuota", t_vuota.get_element (a_value) = void)
+--			assert ("la lista non è vuota", t_vuota.count = 0)
+--		end
 
-	t_lista_vuota
-			-- Calzuola e Malandruccolo 2020/03/21
-		local
-			t_vuota: INT_LINKED_LIST
-			a_value: INTEGER
-		do
-			create t_vuota
-			a_value := 1
-			assert ("has trova il valore su lista vuota", not t_vuota.has (a_value))
-			assert ("get_element restituisce un elemento su lista vuota", t_vuota.get_element (a_value) = void)
-			assert ("la lista non è vuota", t_vuota.count = 0)
-		end
+--	t_lista_un_elemento
+--			-- Calzuola e Malandruccolo 2020/03/21
+--		local
+--			t_one_element: INT_LINKED_LIST
+--			a_value: INTEGER
+--			a_different: INTEGER
+--		do
+--			a_value := 7
+--			a_different := 9
+--			create t_one_element
+--			t_one_element.append (a_value)
+--			assert ("non ho aggiunto il valore corretto", t_one_element.has (a_value) and not t_one_element.has (a_different))
+--			assert ("non ho una lista con un elemento", t_one_element.count = 1)
+--			assert ("first_element diverso da last_element", t_one_element.first_element = t_one_element.last_element)
+--			assert ("first_element diverso da a_value", attached t_one_element.first_element as fe and then fe.value = a_value)
+--			assert ("last_element diverso da a_value", attached t_one_element.last_element as le and then le.value = a_value)
+--			assert ("restituisce un void ma dovrebbe restituire a_value", t_one_element.get_element (a_value) /= void)
+--			assert ("non restituisce a_value", attached t_one_element.get_element (a_value) as ge and then ge.value = a_value)
+--			assert ("ho un valore che non dovrei avere", t_one_element.get_element (a_different) = void)
+--		end
 
-	t_lista_un_elemento
-			-- Calzuola e Malandruccolo 2020/03/21
-		local
-			t_one_element: INT_LINKED_LIST
-			a_value: INTEGER
-			a_different: INTEGER
-		do
-			a_value := 7
-			a_different := 9
-			create t_one_element
-			t_one_element.append (a_value)
-			assert ("non ho aggiunto il valore corretto", t_one_element.has (a_value) and not t_one_element.has (a_different))
-			assert ("non ho una lista con un elemento", t_one_element.count = 1)
-			assert ("first_element diverso da last_element", t_one_element.first_element = t_one_element.last_element)
-			assert ("first_element diverso da a_value", attached t_one_element.first_element as fe and then fe.value = a_value)
-			assert ("last_element diverso da a_value", attached t_one_element.last_element as le and then le.value = a_value)
-			assert ("restituisce un void ma dovrebbe restituire a_value", t_one_element.get_element (a_value) /= void)
-			assert ("non restituisce a_value", attached t_one_element.get_element (a_value) as ge and then ge.value = a_value)
-			assert ("ho un valore che non dovrei avere", t_one_element.get_element (a_different) = void)
-		end
-
-	t_lista_due_elementi
-			-- Calzuola e Malandruccolo 2020/03/21
-		local
-			t_due: INT_LINKED_LIST
-			a_value: INTEGER
-		do
-			create t_due
-			a_value := 1
-			t_due.append (a_value)
-			t_due.append (2 * a_value)
-			assert ("has non trova il valore", t_due.has (a_value))
-			assert ("get_element non trova l'elemento", t_due.get_element (a_value) /= void)
-			assert ("la lista non ha due elementi", t_due.count = 2)
-			assert ("il first_element non è impostato correttamente", attached t_due.first_element as fe and then fe.value = a_value)
-			assert ("il last_element non è impostato correttamente", attached t_due.last_element as le and then le.value = 2 * a_value)
-		end
+--	t_lista_due_elementi
+--			-- Calzuola e Malandruccolo 2020/03/21
+--		local
+--			t_due: INT_LINKED_LIST
+--			a_value: INTEGER
+--		do
+--			create t_due
+--			a_value := 1
+--			t_due.append (a_value)
+--			t_due.append (2 * a_value)
+--			assert ("has non trova il valore", t_due.has (a_value))
+--			assert ("get_element non trova l'elemento", t_due.get_element (a_value) /= void)
+--			assert ("la lista non ha due elementi", t_due.count = 2)
+--			assert ("il first_element non è impostato correttamente", attached t_due.first_element as fe and then fe.value = a_value)
+--			assert ("il last_element non è impostato correttamente", attached t_due.last_element as le and then le.value = 2 * a_value)
+--		end
 
 end
