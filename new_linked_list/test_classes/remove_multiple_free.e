@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	REMOVE_MULTIPLE_FREE
+	REMOVE_MULTIPLE_FREE_TESTS
 
 inherit
 
