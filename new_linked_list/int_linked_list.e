@@ -360,24 +360,53 @@ feature -- Stato
 				-- avendo manipolato active element devo assicurarmi che né lui né index siano cambiati
 		end
 
+		--	value_before (a_value, target: INTEGER): BOOLEAN
+		--			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
+		--			-- Sara Forte 2021/04/03
+		--		require
+		--			contiene_il_target: has (target)
+		--			sono_diversi: a_value /= target
+		--		local
+		--			current_element, next_element: like first_element
+		--		do
+		--			current_element := get_element (a_value)
+		--			if attached current_element as ce then
+		--				next_element := ce.next
+		--				if attached next_element as ne and then ne.value = target then
+		--					Result := True
+		--				end
+		--			end
+		--		ensure
+		--			Result implies attached get_element (a_value) as t and then (attached t.next as tn implies tn.value = target)
+		--		end
+		-- QUESTA SOPRA E' UN'IMPLEMENTAZIONE SBAGLIATA INFATTI NON SUPERA ALCUNI TEST
+		-- si ferma al primo a_value che trova e guarda a cosa c'è prima, quindi se per esempio c'è un a_value
+		-- prima del primo target l'algoritmo si ferma e vede cosa c'è prima di a_value, se non c'è un a_target ritorna falso,
+		-- mentre potrebbe ancora esserci un a_value subito prima del primo a_target
+
 	value_before (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
-			-- Sara Forte 2021/04/03
+			-- Gianluca Pastorini 12/04/23
 		require
 			contiene_il_target: has (target)
 			sono_diversi: a_value /= target
 		local
-			current_element, next_element: like first_element
+			current_element, previous_element: like first_element
 		do
-			current_element := get_element (a_value)
-			if attached current_element as ce then
-				next_element := ce.next
-				if attached next_element as ne and then ne.value = target then
-					Result := True
+			from
+				current_element := first_element
+				previous_element := Void
+			until
+				current_element /= Void and then current_element.value = target
+			loop
+				previous_element := current_element
+				if attached current_element as ce then
+					current_element := ce.next
 				end
 			end
-		ensure
-			Result implies attached get_element (a_value) as t and then (attached t.next as tn implies tn.value = target)
+			if previous_element /= Void and then previous_element.value = a_value then
+				Result := True
+			end
 		end
 
 	index_earliest_of (a_value: INTEGER): INTEGER
