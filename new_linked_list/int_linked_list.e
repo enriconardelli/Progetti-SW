@@ -26,7 +26,7 @@ feature -- Accesso
 
 	index: INTEGER
 			-- L'intero che corrisponde alla posizione di active_element
-			-- E' 0 se active_element è void
+			-- E' 0 se active_element è Void
 
 feature -- Spostamento del cursore
 
@@ -1345,6 +1345,7 @@ feature -- Removal single targeted
 							--gestione last e active
 						if ve = active_element then
 							active_element := pe
+							index := index - 1
 						end
 						if ve = last_element then
 							last_element := pe
@@ -1874,5 +1875,6 @@ invariant
 	consistency_pluri_list: count > 2 implies (first_element /= last_element) and (first_element /= Void) and (last_element /= Void) and (attached first_element as fe implies fe.next /= last_element)
 	active_element = Void implies index = 0
 	index = 0 implies active_element = void
+	index <= count
 
 end
