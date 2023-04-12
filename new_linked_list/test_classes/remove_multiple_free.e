@@ -11,10 +11,12 @@ inherit
 
 	STATIC_TESTS
 
-feature -- t_remove_all
-	-- Sara Forte, 2021/03/31
+feature -- parametri
 
 	a_value: INTEGER = 1
+
+feature -- t_remove_all
+	-- Sara Forte, 2021/03/31
 
 	t_remove_all_no_value
 		local

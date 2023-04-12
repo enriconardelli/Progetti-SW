@@ -11,6 +11,10 @@ inherit
 
 	STATIC_TESTS
 
+feature -- parametri
+
+	a_value: INTEGER = 1
+
 feature -- supporto
 
 	how_many (t: INT_LINKED_LIST; value: INTEGER): INTEGER
@@ -37,8 +41,6 @@ feature -- supporto
 
 feature -- remove_active
 	-- Riccardo Malandruccolo, 2020/03/07
-
-	a_value: INTEGER = 1
 
 	t_remove_active_first
 		local

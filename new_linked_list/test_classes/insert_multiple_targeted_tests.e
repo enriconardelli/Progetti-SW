@@ -11,13 +11,15 @@ inherit
 
 	STATIC_TESTS
 
-feature -- t_insert_multiple_after
-	-- Sara Forte, 2021/03/30
-	-- EN, 2021/08/18
+feature -- parametri
 
 	a_value: INTEGER = 1
 
 	a_target: INTEGER = 2
+
+feature -- t_insert_multiple_after
+	-- Sara Forte, 2021/03/30
+	-- EN, 2021/08/18
 
 	t_insert_multiple_after_empty
 		local

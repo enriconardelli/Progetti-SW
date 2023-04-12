@@ -11,6 +11,12 @@ inherit
 
 	STATIC_TESTS
 
+feature -- parametri
+
+	a_value: INTEGER = 1
+
+	a_target: INTEGER = 2
+
 feature -- supporto
 
 	how_many (t: INT_LINKED_LIST; value: INTEGER): INTEGER
@@ -38,10 +44,6 @@ feature -- supporto
 feature -- insert_after
 	-- Alessandro Filippo, 2020/03/06
 	-- riscritto EN, 2021/08/18
-
-	a_value: INTEGER = 1
-
-	a_target: INTEGER = 2
 
 	t_insert_after_void
 		local

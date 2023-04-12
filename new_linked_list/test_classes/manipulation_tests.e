@@ -11,9 +11,11 @@ inherit
 
 	STATIC_TESTS
 
-feature -- head_list
+feature -- parametri
 
 	a_value: INTEGER = 1
+
+feature -- head_list
 
 	t_one_element
 			-- lista con solo un elemento

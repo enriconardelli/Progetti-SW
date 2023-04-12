@@ -11,10 +11,12 @@ inherit
 
 	STATIC_TESTS
 
-feature -- has
-	-- Enrico Nardelli, 2020/03/06
+feature -- parametri
 
 	a_value: INTEGER = 1
+
+feature -- has
+	-- Enrico Nardelli, 2020/03/06
 
 	t_has_empty
 		local

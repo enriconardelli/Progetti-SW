@@ -11,10 +11,12 @@ inherit
 
 	STATIC_TESTS
 
-feature -- append
-	-- Enrico Nardelli, 2020/03/06
+feature -- parametri
 
 	a_value: INTEGER = 1
+
+feature -- append
+	-- Enrico Nardelli, 2020/03/06
 
 	t_append_empty
 		local

@@ -11,12 +11,14 @@ inherit
 
 	STATIC_TESTS
 
-feature -- supporto
+feature -- parametri
 
-	a_value: INTEGER = 2
+	a_value: INTEGER = 1
 
 	a_target: INTEGER = 7
 			-- ATTENZIONE NON INSERIRE a_target=2*a_value/3*a_value/4*a_value per come sono scritti i test
+
+feature -- supporto
 
 	how_many (t: INT_LINKED_LIST; value: INTEGER): INTEGER
 			-- return how many times `a_value' occurs in `t'

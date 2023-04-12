@@ -11,9 +11,11 @@ inherit
 
 	STATIC_TESTS
 
-feature -- highest
+feature -- parametri
 
 	a_value: INTEGER = 1
+
+feature -- highest
 
 	t__highest_one_element
 			-- test con lista di un elemento

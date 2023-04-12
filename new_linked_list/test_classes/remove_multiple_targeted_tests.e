@@ -11,11 +11,13 @@ inherit
 
 	STATIC_TESTS
 
-feature -- supporto
+feature -- parametri
 
 	a_value: INTEGER = 1
 
 	a_target: INTEGER = 2
+
+feature -- supporto
 
 	how_many (t: INT_LINKED_LIST; value: INTEGER): INTEGER
 			-- return how many times `a_value' occurs in `t'

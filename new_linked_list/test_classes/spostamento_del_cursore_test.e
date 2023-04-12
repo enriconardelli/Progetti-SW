@@ -11,10 +11,12 @@ inherit
 
 	STATIC_TESTS
 
-feature --first
-	-- Claudia Agulini, 2020/03/06
+feature -- parametri
 
 	a_value: INTEGER = 1
+
+feature --first
+	-- Claudia Agulini, 2020/03/06
 
 	t_first_one_element
 			-- test su lista da un elemento solo
