@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	REMOVE_ALL_FOLLOWING_TESTS_DA_CANCELLARE
+	DA_CANCELLARE_REMOVE_ALL_FOLLOWING_TESTS
 	--Giulia Iezzi 2020/03/11
 
 

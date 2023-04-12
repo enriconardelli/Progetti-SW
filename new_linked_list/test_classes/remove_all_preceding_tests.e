@@ -8,7 +8,7 @@ note
 	testing: "type/manual"
 
 class
-	REMOVE_ALL_PRECEDING_TESTS_DA_CANCELLARE
+	DA_CANCELLARE_REMOVE_ALL_PRECEDING_TESTS
 	-- Riccardo Malandruccolo, 2020/03/11
 
 
