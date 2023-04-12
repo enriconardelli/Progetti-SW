@@ -1,11 +1,11 @@
 note
-	description: "Test per feature del tipo inserimento singolo libero"
+	description: "Test per feature del tipo inserimento singolo vincolato"
 	author: "Gianluca Pastorini"
 	date: "12/04/23"
 	revision: "$Revision$"
 
 class
-	INSERT_SINGLE_TARGETED
+	INSERT_SINGLE_TARGETED_TESTS
 
 inherit
 
