@@ -476,7 +476,27 @@ feature -- Stato
 		ensure
 			an_element = a_target implies Result = False
 		end
-			-- TODO definire una feature simmetrica `value_at' che restituisce il valore dell'elemento nella posizione fornita come parametro
+
+	value_at (position: INTEGER): INTEGER
+			-- ritorna il valore dell'elemento collocato alla posizione data come variabile
+			-- ritorna 0 se si è data come position=0
+		require
+			position <= count
+			position >= 0
+		local
+			i: INTEGER
+		do
+			i := index
+			go_i_th (position)
+			if attached active_element as ae then
+				Result := ae.value
+			end
+			go_i_th (i)
+		ensure
+			position = 0 implies Result = 0
+			active_non_modificato: old active_element=active_element
+			index_non_modificato: old index=index
+		end
 
 feature -- Inserimento singolo libero
 

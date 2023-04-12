@@ -411,6 +411,27 @@ feature -- index__latest_of
 			assert ("ha selezionato la seconda istanza di a_value", t.index_latest_of (a_value) /= 2)
 		end
 
+feature -- value_at
+
+t_value_at_zero
+local
+	t:INT_LINKED_LIST
+	do
+		create t
+		t.append (a_value)
+		assert("l'elemento ha posizione 0 non è 0", t.value_at (0)=0)
+	end
+
+t_value_at_first
+local
+	t:INT_LINKED_LIST
+	do
+		create t
+		t.append (a_value)
+		t.append (a_value+3)
+		t.append (a_value-4)
+		assert("l'elemento ha posizione 1 non è a_value", t.value_at (1)=a_value)
+	end
 
 feature -- is_before
 
