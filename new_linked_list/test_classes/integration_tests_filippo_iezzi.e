@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	INTEGRATION_TESTS_FILIPPO_IEZZI
+	INTEGRATION_TESTS_FILIPPO_IEZZI_DA_CANCELLARE
 
 inherit
 

@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	INTEGRATION_TESTS_AGULINI_FIORINI
+	INTEGRATION_TESTS_AGULINI_FIORINI_DA_CANCELLARE
 
 inherit
 

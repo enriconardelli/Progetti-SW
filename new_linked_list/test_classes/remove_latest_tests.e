@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	REMOVE_LATEST_TESTS
+	REMOVE_LATEST_TESTS_DA_CANCELLARE
 
 inherit
 	STATIC_TESTS
