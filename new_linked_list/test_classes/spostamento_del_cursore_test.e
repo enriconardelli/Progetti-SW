@@ -29,8 +29,9 @@ feature --first
 			if attached t.active_element as ae and attached t.first_element as fe then
 				assert ("l'unico elemento della lista non è considerato come primo", ae.value = fe.value)
 			end
-			assert ("il primo elemento risulta vuoto", t.first_element /= void)
+			assert ("il primo elemento risulta vuoto", t.first_element /= Void)
 				-- la listta non è vuota quindi il primo elemento non deve essere associato a void
+			assert ("l'indice non è stato spostato ad 1", t.index = 1)
 		end
 
 	t_first_multiple_element
@@ -48,6 +49,7 @@ feature --first
 			end
 			assert ("il primo elemento risulta vuoto", t.first_element /= void)
 				-- la lista non è vuota quindi il primo elemento non deve essere associato a void
+			assert ("l'indice non è stato spostato ad 1", t.index = 1)
 		end
 
 	t_first_void
@@ -58,6 +60,7 @@ feature --first
 			t.start
 			assert ("il primo elemento non risulta vuoto", t.first_element = void)
 				-- la lista è vuota quindi il primo elemento deve essere associato a void
+			assert ("l'indice non è 0 nonostante la lista sia vuota", t.index = 0)
 		end
 
 feature --last
@@ -76,6 +79,7 @@ feature --last
 			end
 			assert ("l'ultimo elemento risulta vuoto", t.last_element /= void)
 				-- la listta non è vuota quindi l'ultimo elemento non deve essere associato a void
+			assert ("l'indice non è stato spostato ad count", t.index = t.count)
 		end
 
 	t_last_multiple_element
@@ -93,6 +97,7 @@ feature --last
 			end
 			assert ("l'ultimo elemento risulta vuoto", t.last_element /= void)
 				-- la lista non è vuota quindi l'ultimo elemento non deve essere associato a void
+			assert ("l'indice non è stato spostato ad count", t.index = t.count)
 		end
 
 	t_last_void
@@ -103,6 +108,7 @@ feature --last
 			t.last
 			assert ("l'ultimo elemento non risulta vuoto", t.last_element = void)
 				-- la lista è vuota quindi l'ultimo elemento deve essere associato a void
+			assert ("l'indice non è 0 nonostante la lista sia vuota", t.index = 0)
 		end
 
 feature -- forth
@@ -119,6 +125,7 @@ feature -- forth
 			t.forth
 				-- active_element era anche il last_element quindi dopo di lui ci dovrebbe essere void
 			assert ("il forth non ha portato active element a void", t.active_element = Void)
+			assert ("l'indice non è 0 nonostante active sia Void", t.index = 0)
 		end
 
 	t_forth_to_void_multiple_element
@@ -133,7 +140,8 @@ feature -- forth
 			t.forth
 			t.forth
 				-- ho spostato di due volte quindi dopo ci dovrebbe essere void
-			assert ("il forth non ha portato active element a void", t.active_element = Void)
+			assert ("il forth non ha portato active element a Void", t.active_element = Void)
+			assert ("l'indice non è 0 nonostante active sia Void", t.index = 0)
 		end
 
 	t_forth_to_not_void
@@ -149,6 +157,8 @@ feature -- forth
 				-- porto il cursore al secondo elemento che quindi non dovrebbe essere né void né il primo
 			assert ("il forth ha portato active element a void", t.active_element /= Void)
 			assert ("il forth non ha spostato il cursore", t.active_element /= t.first_element)
+			assert ("il forth non ha portato active a last element", t.active_element = t.last_element)
+			assert ("l'indice non è count nonostante active sia last element", t.index = t.count)
 		end
 
 feature -- go_i_th
