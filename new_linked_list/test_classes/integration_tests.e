@@ -15,6 +15,9 @@ feature -- servizio
 
 		-- parte di AGULINI_FIORINI
 
+		-- TO DO: le funzioni di supporto how_many/how_many_after/how_many_before possono essere sostituite dalle feature interne
+		-- di INT_LINKED_LIST count_of/count_of_after/count_of_before
+
 	how_many (t: INT_LINKED_LIST; value: INTEGER): INTEGER
 			-- return how many times `a_value' occurs in `t'
 			-- è identica a count_of, solo che è una funzione esterna alla lista
@@ -85,6 +88,34 @@ feature -- servizio
 		ensure
 			ha_contato_qualche_a_value_presente: t.value_follows (a_value, target) implies Result > 0
 			non_ha_contato_se_non_presente: not (t.value_follows (a_value, target)) implies Result = 0
+		end
+
+	check_is_last (t: INT_LINKED_LIST; a_value: INTEGER): BOOLEAN
+			--controlla che a_value è l'ultimo
+		do
+			Result := t.last_element /= Void and then (attached t.last_element as le implies le.value = a_value)
+		end
+
+	check_is_active (t: INT_LINKED_LIST; a_value: INTEGER): BOOLEAN
+			--controlla che a_value è l'active
+		do
+			Result := t.active_element /= Void and then (attached t.active_element as ae implies ae.value = a_value)
+		end
+
+	check_is_first (t: INT_LINKED_LIST; a_value: INTEGER): BOOLEAN
+			--controlla se first_element punta a a_value
+		do
+			if t.first_element = Void then
+				Result := False
+			else
+				if attached t.first_element as fe then
+					if fe.value = a_value then
+						Result := True
+					else
+						Result := False
+					end
+				end
+			end
 		end
 
 feature -- test
@@ -447,34 +478,6 @@ feature
 			t.remove_all_following (8, 8) -- 8-6-7-6-9
 			assert ("ho rimosso tutti gli 8 dopo il primo 8, 8 è il first", check_is_first (t, 8))
 			assert ("dopo varie operazioni il count è 5", t.count = 5)
-		end
-
-	check_is_last (t: INT_LINKED_LIST; a_value: INTEGER): BOOLEAN
-			--controlla che a_value è l'ultimo
-		do
-			Result := t.last_element /= Void and then (attached t.last_element as le implies le.value = a_value)
-		end
-
-	check_is_active (t: INT_LINKED_LIST; a_value: INTEGER): BOOLEAN
-			--controlla che a_value è l'active
-		do
-			Result := t.active_element /= Void and then (attached t.active_element as ae implies ae.value = a_value)
-		end
-
-	check_is_first (t: INT_LINKED_LIST; a_value: INTEGER): BOOLEAN
-			--controlla se first_element punta a a_value
-		do
-			if t.first_element = Void then
-				Result := False
-			else
-				if attached t.first_element as fe then
-					if fe.value = a_value then
-						Result := True
-					else
-						Result := False
-					end
-				end
-			end
 		end
 
 feature -- Test routines

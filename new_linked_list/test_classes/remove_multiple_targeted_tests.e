@@ -19,6 +19,9 @@ feature -- parametri
 
 feature -- supporto
 
+		-- TO DO: le funzioni di supporto how_many/how_many_after/how_many_before possono essere sostituite dalle feature interne
+		-- di INT_LINKED_LIST count_of/count_of_after/count_of_before
+
 	how_many (t: INT_LINKED_LIST; value: INTEGER): INTEGER
 			-- return how many times `a_value' occurs in `t'
 			-- è identica a count_of, solo che è una funzione esterna alla lista

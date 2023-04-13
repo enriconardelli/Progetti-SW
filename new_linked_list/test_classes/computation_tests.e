@@ -252,7 +252,7 @@ feature -- Sum_of_positive
 
 		--Giulia Iezzi 2020/03/08, parametrizzato Gianluca Pastorini 03/04/23
 
-	t_sop_negativ
+	t_sop_negative
 			--somma con elementi negativi
 		local
 			t: INT_LINKED_LIST
@@ -265,7 +265,7 @@ feature -- Sum_of_positive
 		end
 
 	t_sop_vuota
-			--somMa con lista vuota
+			--somma con lista vuota
 		local
 			t: INT_LINKED_LIST
 		do
