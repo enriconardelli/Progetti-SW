@@ -547,7 +547,8 @@ feature -- position_of
 			create r
 			t.append (a_value)
 			r.append (a_value)
-			assert ("gli elementi di r appartengono a quelli di t", r.position_of (t.first_element) = 0)
+			assert ("gli elementi di r appartengono a quelli di t", t.position_of (r.first_element) = 0)
+			assert ("gli elementi di t appartengono a quelli di r", r.position_of (t.first_element) = 0)
 		end
 
 end
