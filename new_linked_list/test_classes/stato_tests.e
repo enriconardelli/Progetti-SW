@@ -351,7 +351,7 @@ feature -- index__earliest_of
 			t.append (a_value)
 			t.append (a_value + 2)
 			assert ("la lista contiene a_value in seconda posizione eppure index_earliest non è 2", t.index_earliest_of (a_value) = 2)
-			assert ("ha selezionato la seconda istanza di a_value", t.index_earliest_of (a_value) /= 3)
+			assert ("ha selezionato la terza istanza di a_value", t.index_earliest_of (a_value) /= 3)
 		end
 
 feature -- index__latest_of
@@ -407,7 +407,7 @@ feature -- index__latest_of
 			t.append (a_value)
 			t.append (a_value)
 			t.append (a_value + 2)
-			assert ("la lista contiene a_value in seconda posizione eppure index_latest non è 3", t.index_latest_of (a_value) = 3)
+			assert ("la lista contiene a_value in terza posizione eppure index_latest non è 3", t.index_latest_of (a_value) = 3)
 			assert ("ha selezionato la seconda istanza di a_value", t.index_latest_of (a_value) /= 2)
 		end
 
@@ -419,7 +419,7 @@ local
 	do
 		create t
 		t.append (a_value)
-		assert("l'elemento ha posizione 0 non è 0", t.value_at (0)=0)
+		assert("l'elemento a posizione 0 non è 0", t.value_at (0)=0)
 	end
 
 t_value_at_first
@@ -430,7 +430,29 @@ local
 		t.append (a_value)
 		t.append (a_value+3)
 		t.append (a_value-4)
-		assert("l'elemento ha posizione 1 non è a_value", t.value_at (1)=a_value)
+		assert("l'elemento a posizione 1 non è a_value", t.value_at (1)=a_value)
+	end
+
+t_value_at_last
+local
+	t:INT_LINKED_LIST
+	do
+		create t
+		t.append (a_value-2)
+		t.append (a_value+3)
+		t.append (a_value)
+		assert("l'elemento a posizione count non è a_value", t.value_at (t.count)=a_value)
+	end
+
+	t_value_at_middle
+local
+	t:INT_LINKED_LIST
+	do
+		create t
+		t.append (a_value-3)
+		t.append (a_value)
+		t.append (a_value-4)
+		assert("l'elemento ha posizione 2 non è a_value", t.value_at (2)=a_value)
 	end
 
 feature -- is_before
