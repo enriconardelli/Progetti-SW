@@ -413,47 +413,47 @@ feature -- index__latest_of
 
 feature -- value_at
 
-t_value_at_zero
-local
-	t:INT_LINKED_LIST
-	do
-		create t
-		t.append (a_value)
-		assert("l'elemento a posizione 0 non è 0", t.value_at (0)=0)
-	end
+	t_value_at_zero
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			assert ("l'elemento a posizione 0 non è 0", t.value_at (0) = 0)
+		end
 
-t_value_at_first
-local
-	t:INT_LINKED_LIST
-	do
-		create t
-		t.append (a_value)
-		t.append (a_value+3)
-		t.append (a_value-4)
-		assert("l'elemento a posizione 1 non è a_value", t.value_at (1)=a_value)
-	end
+	t_value_at_first
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value + 3)
+			t.append (a_value - 4)
+			assert ("l'elemento a posizione 1 non è a_value", t.value_at (1) = a_value)
+		end
 
-t_value_at_last
-local
-	t:INT_LINKED_LIST
-	do
-		create t
-		t.append (a_value-2)
-		t.append (a_value+3)
-		t.append (a_value)
-		assert("l'elemento a posizione count non è a_value", t.value_at (t.count)=a_value)
-	end
+	t_value_at_last
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value - 2)
+			t.append (a_value + 3)
+			t.append (a_value)
+			assert ("l'elemento a posizione count non è a_value", t.value_at (t.count) = a_value)
+		end
 
 	t_value_at_middle
-local
-	t:INT_LINKED_LIST
-	do
-		create t
-		t.append (a_value-3)
-		t.append (a_value)
-		t.append (a_value-4)
-		assert("l'elemento ha posizione 2 non è a_value", t.value_at (2)=a_value)
-	end
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value - 3)
+			t.append (a_value)
+			t.append (a_value - 4)
+			assert ("l'elemento ha posizione 2 non è a_value", t.value_at (2) = a_value)
+		end
 
 feature -- is_before
 
@@ -498,6 +498,56 @@ feature -- is_before
 			t.append (a_value)
 			assert ("il primo valore di a_value è prima del primo valore di a_value + 4", t.is_before (t.get_element (a_value), t.get_element (a_value + 4)))
 			assert ("il primo valore di a_value 2 4 è dopo il primo valore di a_value + 2", not t.is_before (t.get_element (a_value + 4), t.get_element (a_value + 2)))
+		end
+
+feature -- position_of
+
+	t_position_of_empty
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			assert ("il primo elemento non esiste eppure la sua posizione non è 0", t.position_of (t.first_element) = 0)
+			assert ("l'ultimo elemento non esiste eppure la sua posizione non è 0", t.position_of (t.last_element) = 0)
+			assert ("active element non esiste eppure la sua posizione non è 0", t.position_of (t.active_element) = 0)
+		end
+
+	t_position_of_one_element
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			assert ("il primo elemento è il primo eppure la sua posizione non è 1", t.position_of (t.first_element) = 1)
+			assert ("l'ultimo elemento l'ultimo eppure la sua posizione non è 1", t.position_of (t.last_element) = 1)
+			assert ("active element non esiste eppure la sua posizione non è 0", t.position_of (t.active_element) = 0)
+		end
+
+	t_position_of_multiple_element
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (a_value - 2)
+			t.append (a_value - 4)
+			assert ("il primo elemento non esiste eppure la sua posizione non è 1", t.position_of (t.first_element) = 1)
+			assert ("l'ultimo elemento non esiste eppure la sua posizione non è 3", t.position_of (t.last_element) = 3)
+			assert ("active element non esiste eppure la sua posizione non è 0", t.position_of (t.active_element) = 0)
+			t.go_i_th (2)
+			assert ("active element è in seconda posizione ma la sua posizione non è 2", t.position_of (t.active_element) = 2)
+		end
+
+	t_position_of_with_external
+		local
+			t: INT_LINKED_LIST
+			r: INT_LINKED_LIST
+		do
+			create t
+			create r
+			t.append (a_value)
+			r.append (a_value)
+			assert ("gli elementi di r appartengono a quelli di t", r.position_of (t.first_element) = 0)
 		end
 
 end

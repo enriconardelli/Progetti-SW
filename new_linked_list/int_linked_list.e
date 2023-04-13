@@ -448,6 +448,7 @@ feature -- Stato
 			end
 			invert -- questo ultimo invert è per rimettere la lista apposto
 		ensure
+			invert_corretti: first_element = old first_element and last_element = old last_element and active_element = old active_element
 			corretto_se_esiste: has (a_value) = (0 < Result and Result <= count)
 			zero_se_non_esiste: not has (a_value) = (Result = 0)
 		end
@@ -494,8 +495,34 @@ feature -- Stato
 			go_i_th (i)
 		ensure
 			position = 0 implies Result = 0
-			active_non_modificato: old active_element=active_element
-			index_non_modificato: old index=index
+			active_non_modificato: old active_element = active_element
+			index_non_modificato: old index = index
+		end
+
+	position_of (element: detachable INT_LINKABLE): INTEGER
+			-- ritorna la posizione dell'elemento dato come variabile
+			-- ritorna 0 se è Void o non appartiene alla lista
+		local
+			i: INTEGER
+		do
+			i := index
+			from
+				start
+			until
+				active_element = Void or active_element = element
+			loop
+				forth
+			end
+			if active_element /= Void then
+				Result := index
+			end
+			go_i_th (i)
+		ensure
+			active_non_modificato: active_element = old active_element
+			index_non_modificato: index = old index
+			primo: element = first_element and first_element /= Void implies Result = 1
+			ultimo: element = last_element implies Result = count
+			attivo: element = active_element implies Result = index
 		end
 
 feature -- Inserimento singolo libero
