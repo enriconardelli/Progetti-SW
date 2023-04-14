@@ -15,6 +15,10 @@ feature -- parametri
 
 	a_value: INTEGER = 1
 
+	other_element_1: INTEGER = 5
+
+	other_element_2: INTEGER = 7
+
 feature --first
 	-- Claudia Agulini, 2020/03/06
 
@@ -41,13 +45,13 @@ feature --first
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 3)
-			t.append (a_value - 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.start
 			if attached t.active_element as ae and attached t.first_element as fe then
 				assert ("il primo elemto della lista risulta sbagliato", ae.value = fe.value)
 			end
-			assert ("il primo elemento risulta vuoto", t.first_element /= void)
+			assert ("il primo elemento risulta vuoto", t.first_element /= Void)
 				-- la lista non è vuota quindi il primo elemento non deve essere associato a void
 			assert ("l'indice non è stato spostato ad 1", t.index = 1)
 		end
@@ -58,7 +62,7 @@ feature --first
 		do
 			create t
 			t.start
-			assert ("il primo elemento non risulta vuoto", t.first_element = void)
+			assert ("il primo elemento non risulta vuoto", t.first_element = Void)
 				-- la lista è vuota quindi il primo elemento deve essere associato a void
 			assert ("l'indice non è 0 nonostante la lista sia vuota", t.index = 0)
 		end
@@ -89,13 +93,13 @@ feature --last
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 3)
-			t.append (a_value - 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.last
 			if attached t.active_element as ae and attached t.last_element as fe then
 				assert ("l'ultimo elemto della lista risulta sbagliato", ae.value = fe.value)
 			end
-			assert ("l'ultimo elemento risulta vuoto", t.last_element /= void)
+			assert ("l'ultimo elemento risulta vuoto", t.last_element /= Void)
 				-- la lista non è vuota quindi l'ultimo elemento non deve essere associato a void
 			assert ("l'indice non è stato spostato ad count", t.index = t.count)
 		end
@@ -106,7 +110,7 @@ feature --last
 		do
 			create t
 			t.last
-			assert ("l'ultimo elemento non risulta vuoto", t.last_element = void)
+			assert ("l'ultimo elemento non risulta vuoto", t.last_element = Void)
 				-- la lista è vuota quindi l'ultimo elemento deve essere associato a void
 			assert ("l'indice non è 0 nonostante la lista sia vuota", t.index = 0)
 		end
@@ -134,7 +138,7 @@ feature -- forth
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 2)
+			t.append (other_element_1)
 			t.start
 				-- porto il cursore all'inizio
 			t.forth
@@ -150,7 +154,7 @@ feature -- forth
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 4)
+			t.append (other_element_1)
 			t.start
 				-- porto il cursore all'inzio
 			t.forth
@@ -169,8 +173,8 @@ feature -- go_i_th
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 3)
-			t.append (a_value - 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.go_i_th (0)
 			assert ("active non è stato spostato a Void", t.active_element = Void)
 			assert ("index non è stato messo ad 0", t.index = 0)
@@ -182,8 +186,8 @@ feature -- go_i_th
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 3)
-			t.append (a_value - 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.go_i_th (1)
 			assert ("active non è stato spostato a first", t.active_element = t.first_element)
 			assert ("index non è stato messo ad 1", t.index = 1)
@@ -195,10 +199,10 @@ feature -- go_i_th
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 3)
-			t.append (a_value - 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.go_i_th (t.count)
-			assert ("active non è stato spostato a first", t.active_element = t.last_element)
+			assert ("active non è stato spostato all'ultimo elemento", t.active_element = t.last_element)
 			assert ("index non è stato messo a 3", t.index = t.count)
 		end
 
@@ -208,10 +212,10 @@ feature -- go_i_th
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 3)
-			t.append (a_value - 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.go_i_th (2)
-			assert ("active non è stato spostato a first", t.active_element = t.get_element (a_value + 3))
+			assert ("active non è stato spostato al secondo elemento", t.active_element = t.get_element (other_element_1))
 			assert ("index non è stato messo ad 2", t.index = 2)
 		end
 

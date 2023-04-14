@@ -17,6 +17,10 @@ feature -- parametri
 
 	a_target: INTEGER = 2
 
+	other_element_1: INTEGER = 5
+
+	other_element_2: INTEGER = 7
+
 feature -- count_of
 	-- già nelle postcondizioni della feature ci garantisce che se l'elemento non c'è il risultato è 0, quindi ci saranno solo test su quante istanze effettivamente conta
 
@@ -27,8 +31,8 @@ feature -- count_of
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 3)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			assert ("ha contato più di un'istanza rispetto a quella iniziale", t.count_of (a_value) = 1)
 		end
 
@@ -38,8 +42,8 @@ feature -- count_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value + 2)
-			t.append (a_value + 3)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.append (a_value)
 			assert ("ha contato più di un'istanza rispetto a quella finale", t.count_of (a_value) = 1)
 		end
@@ -50,9 +54,9 @@ feature -- count_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value + 3)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_value + 2)
+			t.append (other_element_2)
 			assert ("ha contato più di un'istanza rispetto a quella in mezzo", t.count_of (a_value) = 1)
 		end
 
@@ -64,7 +68,7 @@ feature -- count_of
 			create t
 			t.append (a_value)
 			t.append (a_value)
-			t.append (a_value + 2)
+			t.append (other_element_1)
 			assert ("ha contato poche volte", t.count_of (a_value) >= 2)
 			assert ("ha contato troppe volte", t.count_of (a_value) <= 2)
 		end
@@ -86,7 +90,7 @@ feature -- count_of_before
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 4)
+			t.append (other_element_1)
 			t.append (a_target)
 			t.append (a_value)
 			assert ("ha contato troppe volte", t.count_of_before (a_value, a_target) = 0)
@@ -110,7 +114,7 @@ feature -- count_of_before
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 5)
+			t.append (other_element_1)
 			t.append (a_value)
 			t.append (a_target)
 			t.append (a_value)
@@ -124,7 +128,7 @@ feature -- count_of_before
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 5)
+			t.append (other_element_1)
 			t.append (a_value)
 			t.append (a_target)
 			t.append (a_value)
@@ -152,7 +156,7 @@ feature -- count_of_after
 			create t
 			t.append (a_value)
 			t.append (a_target)
-			t.append (a_value - 4)
+			t.append (other_element_1)
 			assert ("ha contato troppe volte", t.count_of_after (a_value, a_target) = 0)
 		end
 
@@ -174,10 +178,10 @@ feature -- count_of_after
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 5)
+			t.append (other_element_1)
 			t.append (a_target)
 			t.append (a_value)
-			t.append (a_value - 5)
+			t.append (other_element_2)
 			t.append (a_value)
 			assert ("ha contato poche volte", t.count_of_after (a_value, a_target) >= 2)
 			assert ("ha contato troppe volte", t.count_of_after (a_value, a_target) <= 2)
@@ -189,13 +193,13 @@ feature -- count_of_after
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 5)
+			t.append (other_element_1)
 			t.append (a_value)
 			t.append (a_target)
 			t.append (a_value)
 			t.append (a_target)
 			t.append (a_value)
-			t.append (a_value - 5)
+			t.append (other_element_2)
 			assert ("ha contato poche volte", t.count_of_before (a_value, a_target) >= 2)
 			assert ("ha contato troppe volte", t.count_of_before (a_value, a_target) <= 2)
 		end
@@ -259,8 +263,8 @@ feature -- Sum_of_positive
 		do
 			create t
 			t.append (- a_value.abs)
-			t.append (- a_value.abs - 2)
-			t.append (- a_value.abs - 3)
+			t.append (- other_element_1.abs)
+			t.append (- other_element_1.abs)
 			assert ("ha sommato dei numeri negativi", t.sum_of_positive = 0)
 		end
 
@@ -280,8 +284,8 @@ feature -- Sum_of_positive
 		do
 			create t
 			t.append (a_value.abs)
-			t.append (a_value.abs)
-			assert ("non ha svolto la somma positiva correttamente", t.sum_of_positive = 2 * a_value.abs)
+			t.append (other_element_1.abs)
+			assert ("non ha svolto la somma positiva correttamente", t.sum_of_positive = a_value.abs + other_element_1.abs)
 		end
 
 	t_sop_mixed
@@ -291,9 +295,9 @@ feature -- Sum_of_positive
 		do
 			create t
 			t.append (a_value.abs)
-			t.append (a_value.abs)
+			t.append (other_element_1.abs)
 			t.append (- a_value.abs)
-			assert ("non ha svolto la somma mista correttamente", t.sum_of_positive = 2 * a_value.abs)
+			assert ("non ha svolto la somma mista correttamente", t.sum_of_positive = a_value.abs + other_element_1.abs)
 		end
 
 end

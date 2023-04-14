@@ -17,6 +17,10 @@ feature -- parametri
 
 	a_target: INTEGER = 3
 
+	other_element_1: INTEGER = 5
+
+	other_element_2: INTEGER = 7
+
 feature -- value_follows
 	--Maria Ludovica Sarandrea, 2021/03/26
 
@@ -80,16 +84,16 @@ feature -- value_follows
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_target - 12)
+			t.append (other_element_1)
 			t.append (a_target)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
+			t.append (other_element_2)
+			t.append (other_element_1)
+			t.append (other_element_2)
+			t.append (other_element_1)
+			t.append (other_element_2)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_target - 12)
+			t.append (other_element_2)
 			assert (" non trova a_value dopo a_target", t.value_follows (a_value, a_target))
 		end
 
@@ -145,7 +149,7 @@ feature -- value_after
 		do
 			create t
 			t.append (a_value)
-			t.append (a_target - 10)
+			t.append (other_element_1)
 			t.append (a_target)
 			t.append (a_value)
 			assert ("non trova a_value subito dopo il primo a_target", t.value_after (a_value, a_target))
@@ -215,14 +219,14 @@ feature -- value_precedes
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_target - 12)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
-			t.append (a_target - 12)
+			t.append (other_element_2)
+			t.append (other_element_1)
+			t.append (other_element_2)
+			t.append (other_element_1)
+			t.append (other_element_2)
+			t.append (other_element_1)
 			t.append (a_target)
 			assert (" non trova a_value prima di a_target", t.value_precedes (a_value, a_target))
 		end
@@ -278,7 +282,7 @@ feature -- value_before
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 5)
+			t.append (other_element_1)
 			t.append (a_target)
 			t.append (a_value)
 			t.append (a_target)
@@ -291,7 +295,7 @@ feature -- value_before
 		do
 			create t
 			t.append (a_value)
-			t.append (a_target - 10)
+			t.append (other_element_1)
 			t.append (a_value)
 			t.append (a_target)
 			assert ("non trova a_value subito prima del primo a_target", t.value_before (a_value, a_target))
@@ -304,7 +308,7 @@ feature -- index__earliest_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 4)
+			t.append (other_element_1)
 			assert ("la lista non contiene a_value eppure index_earliest non è 0", t.index_earliest_of (a_value) = 0)
 		end
 
@@ -314,8 +318,8 @@ feature -- index__earliest_of
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 3)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			assert ("la lista contiene a_value come primo eppure index_earliest non è 1", t.index_earliest_of (a_value) = 1)
 		end
 
@@ -324,8 +328,8 @@ feature -- index__earliest_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.append (a_value)
 			assert ("la lista contiene a_value come ultimo eppure index_earliest non è count", t.index_earliest_of (a_value) = t.count)
 		end
@@ -335,9 +339,9 @@ feature -- index__earliest_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_value + 2)
+			t.append (other_element_2)
 			assert ("la lista contiene a_value in seconda posizione eppure index_earliest non è 2", t.index_earliest_of (a_value) = 2)
 		end
 
@@ -346,10 +350,10 @@ feature -- index__earliest_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
+			t.append (other_element_1)
 			t.append (a_value)
 			t.append (a_value)
-			t.append (a_value + 2)
+			t.append (other_element_2)
 			assert ("la lista contiene a_value in seconda posizione eppure index_earliest non è 2", t.index_earliest_of (a_value) = 2)
 			assert ("ha selezionato la terza istanza di a_value", t.index_earliest_of (a_value) /= 3)
 		end
@@ -361,7 +365,7 @@ feature -- index__latest_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 4)
+			t.append (other_element_1)
 			assert ("la lista non contiene a_value eppure index_latest non è 0", t.index_latest_of (a_value) = 0)
 		end
 
@@ -371,8 +375,8 @@ feature -- index__latest_of
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 3)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			assert ("la lista contiene a_value come primo eppure index_latest non è 1", t.index_latest_of (a_value) = 1)
 		end
 
@@ -381,8 +385,8 @@ feature -- index__latest_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.append (a_value)
 			assert ("la lista contiene a_value come ultimo eppure index_latest non è count", t.index_latest_of (a_value) = t.count)
 		end
@@ -392,9 +396,9 @@ feature -- index__latest_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_value + 2)
+			t.append (other_element_2)
 			assert ("la lista contiene a_value in seconda posizione eppure index_latest non è 2", t.index_latest_of (a_value) = 2)
 		end
 
@@ -403,10 +407,10 @@ feature -- index__latest_of
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
+			t.append (other_element_1)
 			t.append (a_value)
 			t.append (a_value)
-			t.append (a_value + 2)
+			t.append (other_element_2)
 			assert ("la lista contiene a_value in terza posizione eppure index_latest non è 3", t.index_latest_of (a_value) = 3)
 			assert ("ha selezionato la seconda istanza di a_value", t.index_latest_of (a_value) /= 2)
 		end
@@ -428,8 +432,8 @@ feature -- value_at
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 3)
-			t.append (a_value - 4)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			assert ("l'elemento a posizione 1 non è a_value", t.value_at (1) = a_value)
 		end
 
@@ -438,8 +442,8 @@ feature -- value_at
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 2)
-			t.append (a_value + 3)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.append (a_value)
 			assert ("l'elemento a posizione count non è a_value", t.value_at (t.count) = a_value)
 		end
@@ -449,9 +453,9 @@ feature -- value_at
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_value - 4)
+			t.append (other_element_2)
 			assert ("l'elemento ha posizione 2 non è a_value", t.value_at (2) = a_value)
 		end
 
@@ -473,8 +477,8 @@ feature -- is_before
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 1)
-			t.append (a_value + 3)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.last
 				-- imposto active_element a last_element
 			assert ("last_element dovrebbe essere dopo first_element", t.is_before (t.first_element, t.active_element))
@@ -493,11 +497,11 @@ feature -- is_before
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 2)
-			t.append (a_value + 4)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.append (a_value)
-			assert ("il primo valore di a_value è prima del primo valore di a_value + 4", t.is_before (t.get_element (a_value), t.get_element (a_value + 4)))
-			assert ("il primo valore di a_value 2 4 è dopo il primo valore di a_value + 2", not t.is_before (t.get_element (a_value + 4), t.get_element (a_value + 2)))
+			assert ("il primo valore di a_value è prima del primo valore di other_element_1", t.is_before (t.get_element (a_value), t.get_element (other_element_1)))
+			assert ("il primo valore di other_element_2 è dopo il primo valore di other_element_1", not t.is_before (t.get_element (other_element_2), t.get_element (other_element_1)))
 		end
 
 feature -- position_of
@@ -529,8 +533,8 @@ feature -- position_of
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 2)
-			t.append (a_value - 4)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			assert ("il primo elemento non esiste eppure la sua posizione non è 1", t.position_of (t.first_element) = 1)
 			assert ("l'ultimo elemento non esiste eppure la sua posizione non è 3", t.position_of (t.last_element) = 3)
 			assert ("active element non esiste eppure la sua posizione non è 0", t.position_of (t.active_element) = 0)

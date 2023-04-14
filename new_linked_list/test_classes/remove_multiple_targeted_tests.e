@@ -17,6 +17,10 @@ feature -- parametri
 
 	a_target: INTEGER = 2
 
+	other_element_1: INTEGER = 5
+
+	other_element_2: INTEGER = 7
+
 feature -- supporto
 
 		-- TO DO: le funzioni di supporto how_many/how_many_after/how_many_before possono essere sostituite dalle feature interne
@@ -98,11 +102,11 @@ feature -- remove_all_following
 			s: INTEGER
 		do
 			create t
-			t.append (a_value + 1)
-			t.append (a_value + 3)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (a_target)
+			t.append (other_element_1)
 			s := how_many (t, a_value)
-			t.remove_all_following (a_value, a_value + 3)
+			t.remove_all_following (a_value, a_target)
 			assert ("Nella lista non c'è a_value", s = how_many (t, a_value))
 		end
 
@@ -134,7 +138,7 @@ feature --remove_all_preceding
 			create t
 			t.append (a_value)
 			t.append (a_target)
-			t.append (2)
+			t.append (other_element_1)
 			count_tot_prima := how_many (t, a_value)
 			count_pre_target := how_many_before (t, a_value, a_target)
 			t.remove_all_preceding (a_value, a_target)
@@ -149,9 +153,9 @@ feature --remove_all_preceding
 			count_tot_prima, count_pre_target, count_tot_dopo: INTEGER
 		do
 			create t
-			t.append (10)
+			t.append (other_element_1)
 			t.append (a_target)
-			t.append (11)
+			t.append (other_element_2)
 			t.append (a_value)
 			count_tot_prima := how_many (t, a_value)
 			count_pre_target := how_many_before (t, a_value, a_target)
@@ -168,11 +172,11 @@ feature --remove_all_preceding
 			count_tot_prima, count_pre_target, count_tot_dopo: INTEGER
 		do
 			create t
-			t.append (10)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (11)
+			t.append (other_element_2)
 			t.append (a_target)
-			t.append (12)
+			t.append (other_element_1)
 			count_tot_prima := how_many (t, a_value)
 			count_pre_target := how_many_before (t, a_value, a_target)
 			t.remove_all_preceding (a_value, a_target)
@@ -186,11 +190,11 @@ feature --remove_all_preceding
 			count_tot_prima, count_pre_target, count_tot_dopo: INTEGER
 		do
 			create t
-			t.append (10)
+			t.append (other_element_1)
 			t.append (a_target)
-			t.append (11)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (12)
+			t.append (other_element_2)
 			count_tot_prima := how_many (t, a_value)
 			count_pre_target := how_many_before (t, a_value, a_target)
 			t.remove_all_preceding (a_value, a_target)
@@ -205,18 +209,18 @@ feature --remove_all_preceding
 		do
 			create t
 			t.append (a_value)
-			t.append (10)
+			t.append (other_element_1)
 			t.append (a_value)
 			t.append (a_value)
-			t.append (11)
+			t.append (other_element_2)
 			t.append (a_target)
-			t.append (12)
+			t.append (other_element_1)
 			count_tot_prima := how_many (t, a_value)
 			count_pre_target := how_many_before (t, a_value, a_target)
 			t.remove_all_preceding (a_value, a_target)
 			count_tot_dopo := how_many (t, a_value)
 			assert ("non ha rimosso tutti gli elementi prima di target", count_tot_dopo = count_tot_prima - count_pre_target)
-			assert ("non ha modificato il first_element", attached t.first_element as fe and then fe.value = 10)
+			assert ("non ha modificato il first_element", attached t.first_element as fe and then fe.value = other_element_1)
 		end
 
 	t_multiple_value_with_target_before
@@ -225,10 +229,10 @@ feature --remove_all_preceding
 			count_tot_prima, count_pre_target, count_tot_dopo: INTEGER
 		do
 			create t
-			t.append (10)
+			t.append (other_element_1)
 			t.append (a_target)
 			t.append (a_value)
-			t.append (12)
+			t.append (other_element_2)
 			t.append (a_value)
 			count_tot_prima := how_many (t, a_value)
 			count_pre_target := how_many_before (t, a_value, a_target)
@@ -244,12 +248,12 @@ feature --remove_all_preceding
 		do
 			create t
 			t.append (a_value)
-			t.append (10)
+			t.append (other_element_1)
 			t.append (a_value)
 			t.append (a_target)
-			t.append (12)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (13)
+			t.append (other_element_2)
 			count_tot_prima := how_many (t, a_value)
 			count_pre_target := how_many_before (t, a_value, a_target)
 			t.remove_all_preceding (a_value, a_target)
@@ -265,12 +269,12 @@ feature --remove_all_preceding
 		do
 			create t
 			t.append (a_value)
-			t.append (10)
+			t.append (other_element_1)
 			t.append (a_target)
 			t.append (a_value)
-			t.append (11)
+			t.append (other_element_2)
 			t.append (a_target)
-			t.append (12)
+			t.append (other_element_1)
 			t.append (a_value)
 			count_tot_prima := how_many (t, a_value)
 			count_pre_target := how_many_before (t, a_value, a_target)
@@ -286,9 +290,9 @@ feature --remove_all_preceding
 			count_tot_prima, count_tot_dopo: INTEGER
 		do
 			create t
-			t.append (10)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (11)
+			t.append (other_element_2)
 			t.append (a_value)
 			t.append (a_value)
 			count_tot_prima := how_many (t, a_value)

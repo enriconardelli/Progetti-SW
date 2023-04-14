@@ -15,6 +15,10 @@ feature -- parametri
 
 	a_value: INTEGER = 1
 
+	other_element_1: INTEGER = 5
+
+	other_element_2: INTEGER = 7
+
 feature -- supporto
 
 		-- TO DO: le funzioni di supporto how_many/how_many_after/how_many_before possono essere sostituite dalle feature interne
@@ -51,14 +55,14 @@ feature -- remove_active
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 4)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.start
 			t.remove_active
 			assert ("errore: non ha eliminato l'active_element", not t.has (a_value))
 			assert ("errore: non ha eliminato esattamente un elemento", t.count = 2)
-			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 4)
-			assert ("errore: non è stato modificato il first_element correttamente", t.first_element /= Void and attached t.first_element as fe implies fe.value = a_value + 4)
+			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_1)
+			assert ("errore: non è stato modificato il first_element correttamente", t.first_element /= Void and attached t.first_element as fe implies fe.value = other_element_1)
 			assert ("index è stato modificato anche se active è ancora il primo elemento", t.index = 1)
 		end
 
@@ -68,14 +72,14 @@ feature -- remove_active
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 4)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.last
 			t.remove_active
-			assert ("errore: non ha eliminato l'active_element", not t.has (a_value + 2))
+			assert ("errore: non ha eliminato l'active_element", not t.has (other_element_2))
 			assert ("errore: non ha eliminato esattamente un elemento", t.count = 2)
-			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 4)
-			assert ("errore: non è stato modificato il last_element correttamente", t.last_element /= Void and attached t.last_element as le implies le.value = a_value + 4)
+			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_1)
+			assert ("errore: non è stato modificato il last_element correttamente", t.last_element /= Void and attached t.last_element as le implies le.value = other_element_1)
 			assert ("index non è stato modificato correttamente", t.index = 2)
 		end
 
@@ -85,14 +89,14 @@ feature -- remove_active
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 4)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.go_i_th (2)
 			t.remove_active
-			assert ("errore: non ha eliminato l'active_element", not t.has (a_value + 4))
+			assert ("errore: non ha eliminato l'active_element", not t.has (other_element_1))
 			assert ("errore: non ha eliminato esattamente un elemento", t.count = 2)
-			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 2)
-			assert ("errore: è stato modificato last-element", t.last_element /= Void and attached t.last_element as le implies le.value = a_value + 2)
+			assert ("errore: non è stato modificato l'active_element correttamente", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_2)
+			assert ("errore: è stato modificato last-element", t.last_element /= Void and attached t.last_element as le implies le.value = other_element_2)
 			assert ("errore: è stato modificato first-element", t.first_element /= Void and attached t.first_element as fe implies fe.value = a_value)
 			assert ("index è stato modificato anche se active è rimasto il secondo elemento", t.index = 2)
 		end
@@ -120,9 +124,9 @@ feature -- remove_earliest
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 2)
+			t.append (other_element_1)
 			t.remove_earliest (a_value)
-			assert ("ha eliminato un elemento con il valore sbagliato", t.has (a_value - 2))
+			assert ("ha eliminato un elemento con il valore sbagliato", t.has (other_element_1))
 			assert ("ha eliminato un elemento anche se la lista non conteneva a_value", t.count = 1)
 		end
 
@@ -148,14 +152,14 @@ feature -- remove_earliest
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 3)
-			t.append (a_value - 3)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.start
 			t.remove_earliest (a_value)
 			assert ("non ha eliminato un elemento con il valore a_value", not t.has (a_value))
 			assert ("non ha eliminato nessun elemento", t.count = 2)
-			assert ("non ha spostato correttamente l'active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 3)
-			assert ("non ha spostato correttamente il first_element", t.first_element /= Void and attached t.first_element as fe implies fe.value = a_value + 3)
+			assert ("non ha spostato correttamente l'active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_1)
+			assert ("non ha spostato correttamente il first_element", t.first_element /= Void and attached t.first_element as fe implies fe.value = other_element_1)
 			assert ("ha modificato index nonostante active sia ancora il primo elemento", t.index = 1)
 		end
 
@@ -164,15 +168,15 @@ feature -- remove_earliest
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
-			t.append (a_value + 3)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.append (a_value)
 			t.last
 			t.remove_earliest (a_value)
 			assert ("non ha eliminato un elemento con il valore a_value", not t.has (a_value))
 			assert ("non ha eliminato nessun elemento", t.count = 2)
-			assert ("non ha spostato correttamente l'active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 3)
-			assert ("non ha spostato correttamente il last_element", t.last_element /= Void and attached t.last_element as le implies le.value = a_value + 3)
+			assert ("non ha spostato correttamente l'active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_2)
+			assert ("non ha spostato correttamente il last_element", t.last_element /= Void and attached t.last_element as le implies le.value = other_element_2)
 			assert ("non ha modificato correttamente index", t.index = 2)
 		end
 
@@ -181,14 +185,14 @@ feature -- remove_earliest
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_value + 3)
+			t.append (other_element_2)
 			t.go_i_th (2)
 			t.remove_earliest (a_value)
 			assert ("non ha eliminato un elemento con il valore a_value", not t.has (a_value))
 			assert ("non ha eliminato nessun elemento", t.count = 2)
-			assert ("non ha spostato correttamente l'active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 3)
+			assert ("non ha spostato correttamente l'active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_2)
 			assert ("ha modificato index nonostante active sia ancora il secondo elemento", t.index = 2)
 		end
 
@@ -197,7 +201,7 @@ feature -- remove_earliest
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 3)
+			t.append (other_element_1)
 			t.append (a_value)
 			t.append (a_value)
 			t.go_i_th (2)
@@ -214,17 +218,17 @@ feature -- remove_earliest
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 2)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_value - 3)
+			t.append (other_element_2)
 			t.start
 			t.remove_earliest (a_value)
 			assert ("ha tolto tutti i valori con a_value", t.has (a_value))
 			assert ("non ha eliminato nessun elemento", t.count = 3)
-			assert ("non ha spostato correttamente l'active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value - 2)
+			assert ("non ha spostato correttamente l'active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_1)
 			assert ("ha modificato index nonostante active sia ancora il primo elemento", t.index = 1)
-			assert ("non ha aggiornato correttamente first_element", t.first_element /= Void and attached t.first_element as fe implies fe.value = a_value - 2)
-			assert ("non ha lasciato inalterato il secondo elemento contenente a_value", t.value_after (a_value, a_value - 2) and t.value_before (a_value, a_value - 3))
+			assert ("non ha aggiornato correttamente first_element", t.first_element /= Void and attached t.first_element as fe implies fe.value = other_element_1)
+			assert ("non ha lasciato inalterato il secondo elemento contenente a_value", t.value_after (a_value, other_element_1) and t.value_before (a_value, other_element_2))
 		end
 
 feature -- remove_latest
@@ -241,13 +245,12 @@ feature -- remove_latest
 		end
 
 	t_latest_no_value_one_element
-			-- non inserire 0 come a_value
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
 			t.append (a_value)
-			t.remove_latest (2 * a_value)
+			t.remove_latest (other_element_1)
 			if attached t.active_element as ta then
 				ta.link_to (Void)
 			end
@@ -256,28 +259,28 @@ feature -- remove_latest
 		end
 
 	t_latest_no_value_two_elements
-			-- non inserire 0 come a_value
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
 			t.append (a_value)
-			t.append (2 * a_value)
-			t.remove_latest (3 * a_value)
+			t.append (other_element_1)
+			t.remove_latest (other_element_2)
 			assert ("rimosso elemento sbagliato", t.has (a_value))
+			assert ("ha rimosso un elemento anche se la lista non contiente other_element_2", t.count = 2)
 		end
 
 	t_latest_no_value_three_elements
-			-- non inserire 0 come a_value
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
 			t.append (a_value)
-			t.append (2 * a_value)
-			t.append (3 * a_value)
-			t.remove_latest (4 * a_value)
+			t.append (other_element_1)
+			t.append (other_element_1)
+			t.remove_latest (other_element_2)
 			assert ("rimosso elemento sbagliato", t.has (a_value))
+			assert ("ha rimosso un elemento anche se la lista non contiente other_element_2", t.count = 3)
 		end
 
 	t_latest_single_value_first
@@ -287,8 +290,8 @@ feature -- remove_latest
 		do
 			create t
 			t.append (a_value)
-			t.append (2)
-			t.append (3)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			count_prima := how_many (t, a_value)
 			t.remove_latest (a_value)
 			count_dopo := how_many (t, a_value)
@@ -301,9 +304,9 @@ feature -- remove_latest
 			count_prima, count_dopo: INTEGER
 		do
 			create t
-			t.append (2)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (3)
+			t.append (other_element_2)
 			count_prima := how_many (t, a_value)
 			t.remove_latest (a_value)
 			count_dopo := how_many (t, a_value)
@@ -316,8 +319,8 @@ feature -- remove_latest
 			count_prima, count_dopo: INTEGER
 		do
 			create t
-			t.append (2)
-			t.append (3)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.append (a_value)
 			count_prima := how_many (t, a_value)
 			t.remove_latest (a_value)
@@ -332,9 +335,9 @@ feature -- remove_latest
 		do
 			create t
 			t.append (a_value)
-			t.append (2)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (3)
+			t.append (other_element_2)
 			count_prima := how_many (t, a_value)
 			t.remove_latest (a_value)
 			count_dopo := how_many (t, a_value)
@@ -349,7 +352,7 @@ feature -- remove_latest
 		do
 			create t
 			t.append (a_value)
-			t.append (2)
+			t.append (other_element_1)
 			t.append (a_value)
 			count_prima := how_many (t, a_value)
 			t.remove_latest (a_value)
@@ -365,9 +368,9 @@ feature -- remove_latest
 			count_prima, count_dopo: INTEGER
 		do
 			create t
-			t.append (2)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (3)
+			t.append (other_element_2)
 			t.append (a_value)
 			count_prima := how_many (t, a_value)
 			t.remove_latest (a_value)

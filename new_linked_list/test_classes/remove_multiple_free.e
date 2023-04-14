@@ -15,6 +15,10 @@ feature -- parametri
 
 	a_value: INTEGER = 1
 
+	other_element_1: INTEGER = 5
+
+	other_element_2: INTEGER = 7
+
 feature -- t_remove_all
 	-- Sara Forte, 2021/03/31
 
@@ -23,8 +27,8 @@ feature -- t_remove_all
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 2)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.remove_all (a_value)
 			assert ("è stato rimosso qualche elemento nonostante la lista non abbia a_value", t.count = 2)
 		end
@@ -35,14 +39,14 @@ feature -- t_remove_all
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 2)
-			t.append (a_value - 4)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.start
 			t.remove_all (a_value)
 			assert ("non è stato rimosso nessun elemento", t.count < 3)
 			assert ("sono stati rimossi troppi elementi", t.count >= 2)
-			assert ("non è stato aggiornato first_element", t.first_element /= Void and attached t.first_element as fe implies fe.value = a_value + 2)
-			assert ("non è stato aggiornato active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 2)
+			assert ("non è stato aggiornato first_element", t.first_element /= Void and attached t.first_element as fe implies fe.value = other_element_1)
+			assert ("non è stato aggiornato active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_1)
 			assert ("index è stato modificato nonostante active sia ancora il primo elemento", t.index = 1)
 		end
 
@@ -51,14 +55,14 @@ feature -- t_remove_all
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 2)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_value + 2)
+			t.append (other_element_2)
 			t.go_i_th (2)
 			t.remove_all (a_value)
 			assert ("non è stato rimosso nessun elemento", t.count < 3)
 			assert ("sono stati rimossi troppi elementi", t.count >= 2)
-			assert ("non è stato aggiornato active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 2)
+			assert ("non è stato aggiornato active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_2)
 			assert ("index è stato modificato nonostante active sia ancora il secondo elemento", t.index = 2)
 		end
 
@@ -67,15 +71,15 @@ feature -- t_remove_all
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 2)
-			t.append (a_value + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.append (a_value)
 			t.last
 			t.remove_all (a_value)
 			assert ("non è stato rimosso nessun elemento", t.count < 3)
 			assert ("sono stati rimossi troppi elementi", t.count >= 2)
-			assert ("non è stato aggiornato last_element", t.last_element /= Void and attached t.last_element as le implies le.value = a_value + 2)
-			assert ("non è stato aggiornato active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 2)
+			assert ("non è stato aggiornato last_element", t.last_element /= Void and attached t.last_element as le implies le.value = other_element_2)
+			assert ("non è stato aggiornato active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_2)
 			assert ("index non è stato modificato correttamente", t.index = 2)
 		end
 
@@ -84,16 +88,16 @@ feature -- t_remove_all
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value - 2)
+			t.append (other_element_1)
 			t.append (a_value)
-			t.append (a_value + 2)
+			t.append (other_element_2)
 			t.append (a_value)
 			t.go_i_th (2)
 			t.remove_all (a_value)
 			assert ("non è stato rimosso nessun elemento", t.count < 4)
 			assert ("sono stati rimossi troppi elementi", t.count >= 2)
-			assert ("non è stato aggiornato last_element", t.last_element /= Void and attached t.last_element as le implies le.value = a_value + 2)
-			assert ("non è stato aggiornato active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = a_value + 2)
+			assert ("non è stato aggiornato last_element", t.last_element /= Void and attached t.last_element as le implies le.value = other_element_2)
+			assert ("non è stato aggiornato active_element", t.active_element /= Void and attached t.active_element as ae implies ae.value = other_element_2)
 			assert ("index è stato modificato nonostante active sia ancora il secondo elemento", t.index = 2)
 		end
 
@@ -106,8 +110,8 @@ feature -- t_wipeout
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value + 3)
-			t.append (a_value - 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.start
 			t.wipeout
 			assert ("errore: non ha eliminato first_element", t.first_element = Void)

@@ -17,6 +17,10 @@ feature -- parametri
 
 	a_target: INTEGER = 2
 
+	other_element_1: INTEGER = 5
+
+	other_element_2: INTEGER = 7
+
 feature -- supporto
 
 		-- TO DO: le funzioni di supporto how_many/how_many_after/how_many_before possono essere sostituite dalle feature interne
@@ -64,8 +68,8 @@ feature -- insert_after
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_target - 2)
-			t.append (a_target + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.insert_after (a_value, a_target)
 			assert ("errore: insert_after NON inserisce a_value", t.has (a_value))
 			assert ("errore: non c'è a_target ma insert_after NON assegna last_element a a_value", attached t.last_element as le implies le.value = a_value)
@@ -76,9 +80,9 @@ feature -- insert_after
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_target - 2)
+			t.append (other_element_1)
 			t.append (a_target)
-			t.append (a_target - 4)
+			t.append (other_element_2)
 			t.insert_after (a_value, a_target)
 			assert ("errore: insert_after NON inserisce a_value", t.has (a_value))
 			assert ("errore: non inserisce a_value subito dopo a_target", t.value_after (a_value, a_target))
@@ -89,8 +93,8 @@ feature -- insert_after
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_target - 2)
-			t.append (a_target - 3)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.append (a_target)
 			t.insert_after (a_value, a_target)
 			assert ("errore: insert_after NON inserisce a_value", t.has (a_value))
@@ -103,7 +107,7 @@ feature -- insert_after
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_target - 2)
+			t.append (other_element_1)
 			t.append (a_target)
 			t.append (a_target)
 			t.insert_after (a_value, a_target)
@@ -133,8 +137,8 @@ feature -- insert_before
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_target - 2)
-			t.append (a_target + 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.insert_before (a_value, a_target)
 			assert ("errore: insert_before NON inserisce a_value", t.has (a_value))
 			assert ("errore: non c'è a_target ma insert_before NON assegna first_element a a_value", attached t.first_element as fe implies fe.value = a_value)
@@ -145,9 +149,9 @@ feature -- insert_before
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_target - 2)
+			t.append (other_element_1)
 			t.append (a_target)
-			t.append (a_target - 4)
+			t.append (other_element_2)
 			t.insert_before (a_value, a_target)
 			assert ("errore: insert_before NON inserisce a_value", t.has (a_value))
 			assert ("errore: non inserisce a_value subito prima a_target", t.value_before (a_value, a_target))
@@ -159,8 +163,8 @@ feature -- insert_before
 		do
 			create t
 			t.append (a_target)
-			t.append (a_target - 3)
-			t.append (a_target - 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.insert_before (a_value, a_target)
 			assert ("errore: insert_before NON inserisce a_value", t.has (a_value))
 			assert ("errore: non inserisce a_value subito prima a_target", t.value_before (a_value, a_target))
@@ -172,13 +176,13 @@ feature -- insert_before
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_target - 3)
+			t.append (other_element_1)
 			t.append (a_target)
 			t.append (a_target)
 			t.insert_before (a_value, a_target)
 			assert ("errore: insert_before NON inserisce a_value", t.has (a_value))
 			assert ("errore: non inserisce a_value subito prima a_target", t.value_before (a_value, a_target))
-			assert ("errore: non ha inserito a_value prima la PRIMA istanza di a_target", t.value_before (a_target - 3, a_value))
+			assert ("errore: non ha inserito a_value prima la PRIMA istanza di a_target", t.value_before (other_element_1, a_value))
 		end
 
 end
