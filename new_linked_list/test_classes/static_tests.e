@@ -10,9 +10,9 @@ note
 class
 	STATIC_TESTS
 
-inherit
+--inherit
 
-	EQA_TEST_SET
+--	EQA_TEST_SET
 
 
 

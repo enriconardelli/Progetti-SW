@@ -9,7 +9,7 @@ class
 
 inherit
 
-	STATIC_TESTS
+	EQA_TEST_SET
 
 feature -- parametri
 
