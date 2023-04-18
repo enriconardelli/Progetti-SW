@@ -442,11 +442,11 @@ feature -- Stato
 	index_latest_of (a_value: INTEGER): INTEGER
 			-- ritorna la posizione dell'ultimo elemento che contiene `a_value' oppure 0 se non esiste
 		do
-			invert
 			if has (a_value) then
+				invert
 				Result := count - index_earliest_of (a_value) + 1
+				invert
 			end
-			invert -- questo ultimo invert è per rimettere la lista apposto
 		ensure
 			invert_corretti: first_element = old first_element and last_element = old last_element and active_element = old active_element
 			corretto_se_esiste: has (a_value) = (0 < Result and Result <= count)
@@ -485,19 +485,23 @@ feature -- Stato
 			position <= count
 			position >= 0
 		local
-			i: INTEGER
+			current_index: INTEGER
 		do
-			i := index
+			current_index := index
 			go_i_th (position)
 			if attached active_element as ae then
 				Result := ae.value
 			end
-			go_i_th (i)
+			go_i_th (current_index)
 		ensure
 			position = 0 implies Result = 0
 			active_non_modificato: old active_element = active_element
 			index_non_modificato: old index = index
 		end
+
+feature {STATO_TESTS} -- non viene messa a disposizione perche' gestisce gli indirizzi assoluti degli elementi
+	-- puo' invece essere invocata dalle altre feature in modo unqualified
+	-- viene ovviamente esportata verso la classe di test
 
 	position_of (element: detachable INT_LINKABLE): INTEGER
 			-- ritorna la posizione dell'elemento dato come variabile
