@@ -499,7 +499,8 @@ feature -- Stato
 			index_non_modificato: old index = index
 		end
 
-feature {STATO_TESTS} -- non viene messa a disposizione perche' gestisce gli indirizzi assoluti degli elementi
+feature {STATO_TESTS} -- Private
+	-- non viene messa a disposizione perche' gestisce gli indirizzi assoluti degli elementi
 	-- puo' invece essere invocata dalle altre feature in modo unqualified
 	-- viene ovviamente esportata verso la classe di test
 
@@ -1803,53 +1804,28 @@ feature -- Computation
 		end
 
 	count_of_before (a_value, target: INTEGER): INTEGER
-			--ci dice quante occorrenze di a_value prima di target ci sono nella lista
+			-- ci dice quante occorrenze di a_value ci sono prima della prima occorrenza di target
 		require
 			contiene_il_target: has (target)
 		local
-			r: like current
+			aux_list: like current
 		do
-			r := head_list (index_earliest_of (target) - 1)
+			aux_list := head_list (index_earliest_of (target) - 1)
 				-- ho creato una lista ausiliaria che contiene tutti i valori fino a target escluso
-			Result := r.count_of (a_value)
+			Result := aux_list.count_of (a_value)
 		end
 
 	count_of_after (a_value, target: INTEGER): INTEGER
-			--ci dice quante occorrenze di a_value dopo la prima occorrenza di target ci sono nella lista
+			-- ci dice quante occorrenze di a_value ci sono dopo la prima occorrenza di target
 		require
 			contiene_il_target: has (target)
 		local
-			r: like current
+			aux_list: like current
 		do
-			r := tail_list (count - index_earliest_of (target))
+			aux_list := tail_list (count - index_earliest_of (target))
 				-- ho creato una lista ausiliaria che contiene tutti i valori da target escluso in poi
-			Result := r.count_of (a_value)
+			Result := aux_list.count_of (a_value)
 		end
-
-		--	highest: INTEGER
-		-- return the value of the highest item
-		--		local
-		--			slice: like Current
-		--		do
-		--			create slice.make
-		--			from
-		--				start
-		--				slice := head_list (index - 1)
-		--			invariant
-		--				index >= 1
-		--				index <= count + 1
-		--				Result >= slice.highest
-		--			until
-		--				after
-		--			loop
-		--				Result := item.max (Result)
-		--				forth
-		--			end
-		--		ensure
-		--			across Current as c all c.item <= Result end
-		--		end
-
-		--QUESTA E' UNA VERSIONE OBSOLETA CHE USA SINTASSI VECCHIE
 
 	highest: INTEGER
 		require
