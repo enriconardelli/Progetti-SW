@@ -429,31 +429,6 @@ feature -- Stato
 			zero_se_non_esiste: not has (a_value) = (Result = 0)
 		end
 
-	is_before (an_element, a_target: detachable INT_LINKABLE): BOOLEAN
-			-- funzione che ritorna vero se an_element è prima di a_target
-			-- se an_element = a_target ritorna falso
-			-- se an_element = Void ritorna falso
-		require
-			target_exists: a_target /= Void
-		local
-			current_element: like first_element
-		do
-			from
-				current_element := first_element
-			until
-				Result or current_element = a_target
-			loop
-				if current_element = an_element then
-					Result := True
-				end
-				if attached current_element as ce then
-					current_element := ce.next
-				end
-			end
-		ensure
-			an_element = a_target implies Result = False
-		end
-
 	value_at (position: INTEGER): INTEGER
 			-- ritorna il valore dell'elemento collocato alla posizione data come variabile
 			-- ritorna 0 se si è data come position=0
@@ -479,6 +454,31 @@ feature {STATO_TESTS} -- Private
 	-- non viene messa a disposizione perche' gestisce gli indirizzi assoluti degli elementi
 	-- puo' invece essere invocata dalle altre feature in modo unqualified
 	-- viene ovviamente esportata verso la classe di test
+
+	is_before (an_element, a_target: detachable INT_LINKABLE): BOOLEAN
+			-- funzione che ritorna vero se an_element è prima di a_target
+			-- se an_element = a_target ritorna falso
+			-- se an_element = Void ritorna falso
+		require
+			target_exists: a_target /= Void
+		local
+			current_element: like first_element
+		do
+			from
+				current_element := first_element
+			until
+				Result or current_element = a_target
+			loop
+				if current_element = an_element then
+					Result := True
+				end
+				if attached current_element as ce then
+					current_element := ce.next
+				end
+			end
+		ensure
+			an_element = a_target implies Result = False
+		end
 
 	position_of (element: detachable INT_LINKABLE): INTEGER
 			-- ritorna la posizione dell'elemento dato come variabile
