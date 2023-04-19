@@ -360,30 +360,6 @@ feature -- Stato
 				-- avendo manipolato active element devo assicurarmi che né lui né index siano cambiati
 		end
 
-		--	value_before (a_value, target: INTEGER): BOOLEAN
-		--			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
-		--			-- Sara Forte 2021/04/03
-		--		require
-		--			contiene_il_target: has (target)
-		--			sono_diversi: a_value /= target
-		--		local
-		--			current_element, next_element: like first_element
-		--		do
-		--			current_element := get_element (a_value)
-		--			if attached current_element as ce then
-		--				next_element := ce.next
-		--				if attached next_element as ne and then ne.value = target then
-		--					Result := True
-		--				end
-		--			end
-		--		ensure
-		--			Result implies attached get_element (a_value) as t and then (attached t.next as tn implies tn.value = target)
-		--		end
-		-- QUESTA SOPRA E' UN'IMPLEMENTAZIONE SBAGLIATA INFATTI NON SUPERA ALCUNI TEST
-		-- si ferma al primo a_value che trova e guarda a cosa c'è prima, quindi se per esempio c'è un a_value
-		-- prima del primo target l'algoritmo si ferma e vede cosa c'è prima di a_value, se non c'è un a_target ritorna falso,
-		-- mentre potrebbe ancora esserci un a_value subito prima del primo a_target
-
 	value_before (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito prima della prima occorrenza di `target'?
 			-- Gianluca Pastorini 12/04/23
@@ -1090,114 +1066,6 @@ feature -- Removal single free
 			attivo_scorre: (old active_element /= old last_element and attached old active_element as oae) implies active_element = oae.next
 		end
 
-	remove_first____da_cancellare (a_value: INTEGER)
-			-- VIENE RIMPIAZZATA DA REMOVE_EARLIEST
-			-- Rimuove il primo elemento che contiene `a_value', se esiste
-			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
-		require
-			lista_non_vuota: count > 0
-		local
-			current_element, pre_current: like first_element
-		do
-				--			from
-				--				current_element := first_element
-				--				pre_current := Void
-				--			invariant
-				--				-- alternative version to the invariant in remove_last
-				--				current_element /= Void implies (current_element.value /= a_value implies (pre_current /= Void implies pre_current.value /= a_value))
-				--			until
-				--				(current_element = Void) or else (current_element.value = a_value)
-				--			loop
-				--				pre_current := current_element
-				--				current_element := current_element.next
-				--			end
-				--			if current_element /= Void then
-				--			-- la lista contiene `a_value'
-				--				if current_element = active_element then
-				--					remove_active
-				--				else -- la lista contiene almeno due elementi
-				--					if current_element = first_element then
-				--							-- `current_element' e' il primo elemento della lista
-				--						first_element := first_element.next
-				--					elseif current_element = last_element then
-				--							-- `current_element' e' l'ultimo elemento della lista
-				--						last_element := pre_current
-				--						last_element.link_to (Void)
-				--					else
-				--							-- `current_element'  e' elemento intermedio della lista
-				--						pre_current.link_to (current_element.next)
-				--					end
-				--				count := count - 1
-				--				end
-				--			end
-				--		ensure
-				--			rimosso_elemento_se_esiste: old has(a_value) implies count = old count - 1
-				--			rimosso_se_primo: old first_element.value = a_value implies first_element = old first_element.next
-		end
-
-	remove_last____DA_CANCELLARE (a_value: INTEGER)
-			-- GIA' SOSTITUITA RIMPIAZZATA DA REMOVE_LATEST
-			-- Rimuove l'ultimo elemento che contiene `a_value', se esiste
-			-- Aggiorna `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
-		require
-			lista_non_vuota: count > 0
-		local
-			current_element, pre_current: like first_element
-			candidate, pre_candidate: like first_element
-		do
-				--			from
-				--				current_element := first_element
-				--				pre_current := Void
-				--			invariant
-				--				-- alternative version to the invariant in remove_first
-				--				attached current_element as a_ce implies (a_ce.value /= a_value implies (attached pre_current as a_pc implies a_pc.value /= a_value))
-				--			until
-				--				(current_element = Void) or else (current_element.value = a_value)
-				--			loop
-				--				pre_current := current_element
-				--				current_element := current_element.next
-				--			end
-				--			if current_element /= Void then
-				--				-- la lista contiene `a_value'
-				--				from
-				--					candidate := current_element
-				--					pre_candidate := pre_current
-				--				invariant
-				--					-- non so bene come deve essere fatto questo invariante
-				----					attached current_element as a_ce implies (a_ce.value /= a_value implies (attached pre_current as a_pc implies a_pc.value /= a_value))
-				--				until
-				--					current_element = Void
-				--				loop
-				--					pre_current := current_element
-				--					current_element := current_element.next
-				--					if attached current_element as a_ce then
-				--						if a_ce.value = a_value then
-				--							pre_candidate := pre_current
-				--						end
-				--					end
-				--				end
-				--				-- `candidate' e' l'ultimo elemento che contiene `a_value'
-				--				if candidate = active_element then
-				--					remove_active
-				--				else -- la lista contiene almeno due elementi
-				--					if candidate = first_element then
-				--						-- `candidate' e' il primo elemento della lista
-				--						first_element := first_element.next
-				--					elseif candidate = last_element then
-				--						-- `candidate' e' l'ultimo elemento della lista
-				--						last_element := pre_current
-				--						last_element.link_to (Void)
-				--					else
-				--						-- `candidate'  e' elemento intermedio della lista
-				--						pre_current.link_to (current_element.next)
-				--					end
-				--				count := count - 1
-				--				end
-				--			end
-				--		ensure
-				--			rimosso_elemento_se_esiste: old has(a_value) implies count = old count - 1
-		end
-
 	remove_earliest (a_value: INTEGER)
 			-- Rimuovere la prima occorrenza di `a_value', se esiste
 			-- Aggiornare `active_element', se necessario, al suo successore, se esiste, altrimenti al suo predecessore
@@ -1739,22 +1607,14 @@ feature -- Manipulation
 			create Result
 			i := index
 			from
-					--		k := 1
 				start
-			invariant
-				--				1 <= index         -- gli invarianti non sono compatibili con la corrente implementazione di index
-				--				index <= max + 1   -- in particolare se max=count l'ultimo forth porta active a Void quindi index a 0
-				--				k = index          -- e se index va a 0 tutti gli invarianti non sono più veri
 			until
 				index > max or index = 0
 			loop
 				if attached active_element as ae then
 					Result.append (ae.value)
 				end
-					--	k := k + 1
 				forth
-					--			variant
-					--				count - index + 1
 			end
 			go_i_th (i)
 		ensure
