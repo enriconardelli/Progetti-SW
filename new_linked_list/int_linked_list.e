@@ -396,8 +396,8 @@ feature -- Stato
 				previous_element := Void
 			invariant
 				attached previous_element as pe implies pe.value /= a_value
-				--			variant
-				--				count - Result
+			variant
+				count - Result
 			until
 				current_element = Void or else (attached current_element as ce implies ce.value = a_value)
 			loop
