@@ -1,20 +1,29 @@
 note
-	description: "Test per le feature di tipo Manipulation"
+	description: "Test per le feature di tipo SPOSTAMENTO DEL CURSORE"
 	author: "Gianluca Pastorini"
-	date: "$03/04/23"
+	date: "03/04/23"
 	revision: "$Revision$"
 
 class
-	SPOSTAMENTO_DE_CURSORE_TESTS
+	SPOSTAMENTO_DEL_CURSORE_TESTS
 
 inherit
 
-	STATIC_TESTS
+	EQA_TEST_SET
+
+feature -- parametri
+
+	a_value: INTEGER = 1
+
+	other_element_1: INTEGER = 5
+
+	other_element_2: INTEGER = 7
 
 feature --first
 	-- Claudia Agulini, 2020/03/06
 
-	t_first_one_element (a_value: INTEGER)
+	t_first_one_element
+			-- test su lista da un elemento solo
 		local
 			t: INT_LINKED_LIST
 		do
@@ -24,86 +33,119 @@ feature --first
 			if attached t.active_element as ae and attached t.first_element as fe then
 				assert ("l'unico elemento della lista non è considerato come primo", ae.value = fe.value)
 			end
-			assert ("il primo elemento risulta vuoto", t.first_element = void)
+			assert ("il primo elemento risulta vuoto", t.first_element /= Void)
+				-- la listta non è vuota quindi il primo elemento non deve essere associato a void
+			assert ("l'indice non è stato spostato ad 1", t.index = 1)
 		end
 
-	t_first_multiple_element (a_value: INTEGER)
+	t_first_multiple_element
+			-- test su lista con più di un elemento
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
 			t.append (a_value)
-			t.append (a_value - 3)
-			t.append (a_value - 2)
+			t.append (other_element_1)
+			t.append (other_element_2)
 			t.start
 			if attached t.active_element as ae and attached t.first_element as fe then
 				assert ("il primo elemto della lista risulta sbagliato", ae.value = fe.value)
 			end
-			assert ("il primo elemento risulta vuoto", t.first_element = void)
+			assert ("il primo elemento risulta vuoto", t.first_element /= Void)
+				-- la lista non è vuota quindi il primo elemento non deve essere associato a void
+			assert ("l'indice non è stato spostato ad 1", t.index = 1)
 		end
 
-	t_first_void (a_value: INTEGER) -- inserisco comunque una variabile così il test lo esegue solo sotto, insieme agli altri
+	t_first_void
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
-			assert ("il primo elemento non risulta vuoto", t.first_element = void)
-		end
-
-		t_first
-		do
-			t_first_one_element (1)
-			t_first_multiple_element (1)
-			t_first_void (1)
+			t.start
+			assert ("il primo elemento non risulta vuoto", t.first_element = Void)
+				-- la lista è vuota quindi il primo elemento deve essere associato a void
+			assert ("l'indice non è 0 nonostante la lista sia vuota", t.index = 0)
 		end
 
 feature --last
 	-- Arianna Calzuola, 2020/03/10
 
 	t_last_one_element
+			-- test su lista da un elemento solo
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.last
+			if attached t.active_element as ae and attached t.last_element as fe then
+				assert ("l'unico elemento della lista non è considerato come ultimo", ae.value = fe.value)
+			end
+			assert ("l'ultimo elemento risulta vuoto", t.last_element /= void)
+				-- la listta non è vuota quindi l'ultimo elemento non deve essere associato a void
+			assert ("l'indice non è stato spostato ad count", t.index = t.count)
+		end
+
+	t_last_multiple_element
+			-- test su lista con più di un elemento
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (other_element_1)
+			t.append (other_element_2)
+			t.last
+			if attached t.active_element as ae and attached t.last_element as fe then
+				assert ("l'ultimo elemto della lista risulta sbagliato", ae.value = fe.value)
+			end
+			assert ("l'ultimo elemento risulta vuoto", t.last_element /= Void)
+				-- la lista non è vuota quindi l'ultimo elemento non deve essere associato a void
+			assert ("l'indice non è stato spostato ad count", t.index = t.count)
+		end
+
+	t_last_void
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
 			t.last
-			assert ("errore: la lista è vuota, ma l'elemento attivo non e' vuoto", t.active_element = void)
-			t.append (3)
-			t.last
-			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' il primo", t.active_element = t.first_element)
-			assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' l'ultimo", t.active_element = t.last_element)
-			if attached t.active_element as ae then
-				assert ("errore: la lista ha un unico elemento, ma l'elemento attivo non e' quello inserito", ae.value = 3)
-			end
-			t.append (2)
-			t.append (7)
-				--[3, 2, 7]
-			t.last
-			if attached t.active_element as ae then
-				assert ("errore: active element non sta puntando all'ultimo elemento della lista", ae.value = 7)
-			end
-			assert ("errore: il valore di active element non è il valore dell'ultimo elemento della lista", t.active_element = t.last_element)
+			assert ("l'ultimo elemento non risulta vuoto", t.last_element = Void)
+				-- la lista è vuota quindi l'ultimo elemento deve essere associato a void
+			assert ("l'indice non è 0 nonostante la lista sia vuota", t.index = 0)
 		end
 
 feature -- forth
 	-- Alessandro Filippo 2020/03/08
 
-	t_forth_to_void
+	t_forth_to_void_one_element
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
-			assert ("la lista è vuota, active element è void", t.active_element = Void)
-			t.append (3)
-			if t.active_element /= Void then
-				t.forth
-			end
-			assert ("l'active element è 3 ed è il last element , dopo forth è Void?", t.active_element = Void)
-			t.append (4)
+			t.append (a_value)
 			t.start
-			if t.active_element /= Void then
-				t.forth
-			end
-			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
+				-- serve t.start perché append non sposta active element, quindi se non lo inzializzi sta su void
+			t.forth
+				-- active_element era anche il last_element quindi dopo di lui ci dovrebbe essere void
+			assert ("il forth non ha portato active element a void", t.active_element = Void)
+			assert ("l'indice non è 0 nonostante active sia Void", t.index = 0)
+		end
+
+	t_forth_to_void_multiple_element
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (other_element_1)
+			t.start
+				-- porto il cursore all'inizio
+			t.forth
+			t.forth
+				-- ho spostato di due volte quindi dopo ci dovrebbe essere void
+			assert ("il forth non ha portato active element a Void", t.active_element = Void)
+			assert ("l'indice non è 0 nonostante active sia Void", t.index = 0)
 		end
 
 	t_forth_to_not_void
@@ -111,18 +153,70 @@ feature -- forth
 			t: INT_LINKED_LIST
 		do
 			create t
-			assert ("la lista è vuota, active element è void", t.active_element = Void)
-			t.append (3)
-			if t.active_element /= Void then
-				t.forth
-			end
-			assert ("l'active element è 3 ed è il last element , dopo forth è Void?", t.active_element = Void)
-			t.append (4)
+			t.append (a_value)
+			t.append (other_element_1)
 			t.start
-			if t.active_element /= Void then
-				t.forth
-			end
-			assert ("l'active element è 3 , dopo forth è 4", attached t.active_element as ta implies ta.value = 4)
+				-- porto il cursore all'inzio
+			t.forth
+				-- porto il cursore al secondo elemento che quindi non dovrebbe essere né void né il primo
+			assert ("il forth ha portato active element a void", t.active_element /= Void)
+			assert ("il forth non ha spostato il cursore", t.active_element /= t.first_element)
+			assert ("il forth non ha portato active a last element", t.active_element = t.last_element)
+			assert ("l'indice non è count nonostante active sia last element", t.index = t.count)
+		end
+
+feature -- go_i_th
+
+	t_go_i_th_zero
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (other_element_1)
+			t.append (other_element_2)
+			t.go_i_th (0)
+			assert ("active non è stato spostato a Void", t.active_element = Void)
+			assert ("index non è stato messo ad 0", t.index = 0)
+		end
+
+	t_go_i_th_first
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (other_element_1)
+			t.append (other_element_2)
+			t.go_i_th (1)
+			assert ("active non è stato spostato a first", t.active_element = t.first_element)
+			assert ("index non è stato messo ad 1", t.index = 1)
+		end
+
+	t_go_i_th_last
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (other_element_1)
+			t.append (other_element_2)
+			t.go_i_th (t.count)
+			assert ("active non è stato spostato all'ultimo elemento", t.active_element = t.last_element)
+			assert ("index non è stato messo a 3", t.index = t.count)
+		end
+
+	t_go_i_th_middle
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			t.append (other_element_1)
+			t.append (other_element_2)
+			t.go_i_th (2)
+			assert ("active non è stato spostato al secondo elemento", t.active_element = t.get_element (other_element_1))
+			assert ("index non è stato messo ad 2", t.index = 2)
 		end
 
 end
