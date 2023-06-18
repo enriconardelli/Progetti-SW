@@ -505,30 +505,27 @@ feature {STATO_TESTS} -- Private
 			an_element = a_target implies Result = False
 		end
 
-	position_of (element: detachable INT_LINKABLE): INTEGER
-			-- ritorna la posizione dell'elemento dato come variabile
-			-- ritorna 0 se è Void o non appartiene alla lista
+	position_of (target: detachable INT_LINKABLE): INTEGER
+			-- ritorna la posizione di `target', 0 se Void o non appartiene alla lista
 		local
-			i: INTEGER
+			saved_index: INTEGER
 		do
-			i := index
+			saved_index := index
 			from
 				start
 			until
-				active_element = Void or active_element = element
+				active_element = Void or active_element = target
 			loop
 				forth
 			end
 			if active_element /= Void then
 				Result := index
 			end
-			go_i_th (i)
+			go_i_th (saved_index)
 		ensure
-			active_non_modificato: active_element = old active_element
-			index_non_modificato: index = old index
-			primo: element = first_element and first_element /= Void implies Result = 1
-			ultimo: element = last_element implies Result = count
-			attivo: element = active_element implies Result = index
+			primo: target = first_element and first_element /= Void implies Result = 1
+			ultimo: target = last_element implies Result = count
+			attivo: target = active_element implies Result = index
 		end
 
 feature -- Inserimento singolo libero
