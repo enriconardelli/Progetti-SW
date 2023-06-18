@@ -347,6 +347,34 @@ feature -- single feature test
 			print (t.index_earliest_of (7).out + r)
 		end
 
+	test_value_at_SENZA_GO_I_TH
+		do
+			print (r + "test di value_at_SENZA_GO_I_TH" + r)
+			create t
+			print ("t vuota, appendo 5" + r)
+			t.append(5)
+			-- [5]
+			t.printout
+			print ("in posizione 1 c'e' valore: ")
+			print (t.value_at_SENZA_GO_I_TH (1).out + r)
+			print ("poi prependo 4" + r)
+			t.prepend(4)
+			-- [4, 5]
+			t.printout
+			print ("in posizione 1 c'e' valore: ")
+			print (t.value_at_SENZA_GO_I_TH (1).out + r)
+			print ("in posizione 2 c'e' valore: ")
+			print (t.value_at_SENZA_GO_I_TH (2).out + r)
+			print ("poi appendo 7" + r)
+			t.append(7)
+			-- [4, 5, 7]
+			t.printout
+			print ("in posizione 3 c'e' valore: ")
+			print (t.value_at_SENZA_GO_I_TH (3).out + r)
+			print ("in posizione 2 c'e' valore: ")
+			print (t.value_at_SENZA_GO_I_TH (2).out + r)
+		end
+
 feature -- Inizialization
 	make
 			-- Run application.
@@ -370,6 +398,7 @@ feature -- Inizialization
 --			test_value_precedes_CON_start_forth
 --			test_value_precedes_SENZA_has
 			test_index_earliest_of
+			test_value_at_SENZA_GO_I_TH
 		end
 
 

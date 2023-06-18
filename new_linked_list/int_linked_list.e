@@ -396,14 +396,14 @@ feature -- Stato
 				previous_element := Void
 			invariant
 				attached previous_element as pe implies pe.value /= a_value
-			variant
-				count - Result
 			until
 				current_element = Void or else (attached current_element as ce implies ce.value = a_value)
 			loop
 				Result := Result + 1
 				previous_element := active_element
 				current_element := current_element.next
+			variant
+				count - Result
 			end
 			if current_element = Void then
 				Result := 0
@@ -430,11 +430,10 @@ feature -- Stato
 		end
 
 	value_at (position: INTEGER): INTEGER
-			-- ritorna il valore dell'elemento collocato alla posizione data come variabile
-			-- ritorna 0 se si è data come position=0
+			-- ritorna il valore dell'elemento in posizione `position' posizione
 		require
 			position <= count
-			position >= 0
+			position >= 1
 		local
 			current_index: INTEGER
 		do
@@ -444,10 +443,36 @@ feature -- Stato
 				Result := ae.value
 			end
 			go_i_th (current_index)
-		ensure
-			position = 0 implies Result = 0
-			active_non_modificato: old active_element = active_element
-			index_non_modificato: old index = index
+		end
+
+	value_at_SENZA_GO_I_TH (position: INTEGER): INTEGER
+			-- ritorna il valore dell'elemento in posizione `position'
+		require
+			position <= count
+			position >= 1
+		local
+			current_element: like first_element
+			current_position: INTEGER
+		do
+			from
+				current_element := first_element
+				current_position := 1
+			invariant
+				current_position >= 1
+				current_position <= count
+			until
+				current_position = position
+			loop
+				if current_element /= Void then
+					current_element := current_element.next
+				end
+				current_position := current_position + 1
+			variant
+				position - current_position
+			end
+			if current_element /= Void then
+				Result := current_element.value
+			end
 		end
 
 feature {STATO_TESTS} -- Private
