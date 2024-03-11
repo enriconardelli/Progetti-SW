@@ -400,7 +400,7 @@ feature -- Stato
 				current_element = Void or else (attached current_element as ce implies ce.value = a_value)
 			loop
 				Result := Result + 1
-				previous_element := active_element
+				previous_element := current_element
 				current_element := current_element.next
 			variant
 				count - Result
@@ -429,27 +429,55 @@ feature -- Stato
 			zero_se_non_esiste: not has (a_value) = (Result = 0)
 		end
 
-	value_at (position: INTEGER): INTEGER
+	index_latest_of_SENZA_INVERT (a_value: INTEGER): INTEGER
+			-- ritorna la posizione dell'ultimo elemento che contiene `a_value' oppure 0 se non esiste
+		local
+			current_element: like first_element
+			current_position: INTEGER
+		do
+			from
+				current_element := first_element
+				current_position := 1
+			invariant
+				current_position >= 1
+				current_position <= count + 1
+			until
+				current_element = Void
+			loop
+				if current_element.value = a_value then
+					Result := current_position
+				end
+				current_element := current_element.next
+				current_position := current_position + 1
+			variant
+				count - current_position + 1
+			end
+		ensure
+			corretto_se_esiste: has (a_value) = (0 < Result and Result <= count)
+			zero_se_non_esiste: not has (a_value) = (Result = 0)
+		end
+
+	value_at (target_position: INTEGER): INTEGER
 			-- ritorna il valore dell'elemento in posizione `position' posizione
 		require
-			position <= count
-			position >= 1
+			target_position >= 1
+			target_position <= count
 		local
 			current_index: INTEGER
 		do
 			current_index := index
-			go_i_th (position)
+			go_i_th (target_position)
 			if attached active_element as ae then
 				Result := ae.value
 			end
 			go_i_th (current_index)
 		end
 
-	value_at_SENZA_GO_I_TH (position: INTEGER): INTEGER
+	value_at_SENZA_GO_I_TH (target_position: INTEGER): INTEGER
 			-- ritorna il valore dell'elemento in posizione `position'
 		require
-			position <= count
-			position >= 1
+			target_position >= 1
+			target_position <= count
 		local
 			current_element: like first_element
 			current_position: INTEGER
@@ -461,14 +489,14 @@ feature -- Stato
 				current_position >= 1
 				current_position <= count
 			until
-				current_position = position
+				current_position = target_position
 			loop
 				if current_element /= Void then
 					current_element := current_element.next
 				end
 				current_position := current_position + 1
 			variant
-				position - current_position
+				target_position - current_position
 			end
 			if current_element /= Void then
 				Result := current_element.value

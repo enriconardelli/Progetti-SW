@@ -98,7 +98,7 @@ feature -- single feature test
 			create t
 			print ("t e' vuota, t restituisce 3?" + r)
 			print (t.get_element (3))
-			print (r) -- get_element è detachable e non si può invocare direttamente .out che consentirebbe concatenzazione con `r'
+			print (r) -- get_element e' detachable e non si può invocare direttamente .out che consentirebbe concatenzazione con `r'
 			t.append (3)
 			print ("t contiene 3, t restituisce 3?" + r)
 			print (t.get_element (3))
@@ -347,6 +347,55 @@ feature -- single feature test
 			print (t.index_earliest_of (7).out + r)
 		end
 
+	test_index_earliest_of_BIS
+			do
+				print (r + "test di index_earliest_of" + r)
+				create t
+				print ("t vuota, lo earliest_index di 5 e': ")
+				print (t.index_earliest_of (5).out + r)
+				print ("t vuota, appendo 5, 7, 5, 4, 7, 5" + r)
+				t.append(5)
+				t.append(7)
+				t.append(5)
+				t.append(4)
+				t.append(7)
+				t.append(5)
+				-- [5, 7, 5, 4, 7, 5]
+				t.printout
+				print ("lo earliest_index di 5 e': ")
+				print (t.index_earliest_of (5).out + r)
+				print ("lo earliest_index di 7 e': ")
+				print (t.index_earliest_of (7).out + r)
+				print ("lo earliest_index di 4 e': ")
+				print (t.index_earliest_of (4).out + r)
+				print ("lo earliest_index di -3 e': ")
+				print (t.index_earliest_of (-3).out + r)
+				print ("poi prependo 1" + r)
+				t.prepend(1)
+				-- [1, 5, 7, 5, 4, 7, 5]
+				t.printout
+				print ("lo earliest_index di 4 e': ")
+				print (t.index_earliest_of (4).out + r)
+				print ("lo earliest_index di 5 e': ")
+				print (t.index_earliest_of (5).out + r)
+				print ("lo earliest_index di 7 e': ")
+				print (t.index_earliest_of (7).out + r)
+				print ("lo earliest_index di -3 e': ")
+				print (t.index_earliest_of (-3).out + r)
+				print ("poi appendo 5" + r)
+				t.append(5)
+				-- [1, 5, 7, 5, 4, 7, 5, 5]
+				t.printout
+				print ("lo earliest_index di 7 e': ")
+				print (t.index_earliest_of (7).out + r)
+				print ("lo earliest_index di 4 e': ")
+				print (t.index_earliest_of (4).out + r)
+				print ("lo earliest_index di 5 e': ")
+				print (t.index_earliest_of (5).out + r)
+				print ("lo earliest_index di -3 e': ")
+				print (t.index_earliest_of (-3).out + r)
+			end
+
 	test_value_at_SENZA_GO_I_TH
 		do
 			print (r + "test di value_at_SENZA_GO_I_TH" + r)
@@ -375,6 +424,55 @@ feature -- single feature test
 			print (t.value_at_SENZA_GO_I_TH (2).out + r)
 		end
 
+	test_index_latest_of_SENZA_INVERT
+			do
+				print (r + "test di index_latest_of_SENZA_INVERT" + r)
+				create t
+				print ("t vuota, il latest_index di 5 e': ")
+				print (t.index_latest_of_SENZA_INVERT (5).out + r)
+				print ("t vuota, appendo 5, 7, 5, 4, 7, 5" + r)
+				t.append(5)
+				t.append(7)
+				t.append(5)
+				t.append(4)
+				t.append(7)
+				t.append(5)
+				-- [5, 7, 5, 4, 7, 5]
+				t.printout
+				print ("il latest_index di 4 e': ")
+				print (t.index_latest_of_SENZA_INVERT (4).out + r)
+				print ("il latest_index di 7 e': ")
+				print (t.index_latest_of_SENZA_INVERT (7).out + r)
+				print ("il latest_index di 5 e': ")
+				print (t.index_latest_of_SENZA_INVERT (5).out + r)
+				print ("il latest_index di -3 e': ")
+				print (t.index_latest_of_SENZA_INVERT (-3).out + r)
+				print ("poi prependo 1" + r)
+				t.prepend(1)
+				-- [1, 5, 7, 5, 4, 7, 5]
+				t.printout
+				print ("il latest_index di 7 e': ")
+				print (t.index_latest_of_SENZA_INVERT (7).out + r)
+				print ("il latest_index di 5 e': ")
+				print (t.index_latest_of_SENZA_INVERT (5).out + r)
+				print ("il latest_index di 4 e': ")
+				print (t.index_latest_of_SENZA_INVERT (4).out + r)
+				print ("il latest_index di -3 e': ")
+				print (t.index_latest_of_SENZA_INVERT (-3).out + r)
+				print ("poi appendo 5" + r)
+				t.append(5)
+				-- [1, 5, 7, 5, 4, 7, 5, 5]
+				t.printout
+				print ("il latest_index di 5 e': ")
+				print (t.index_latest_of_SENZA_INVERT (5).out + r)
+				print ("il latest_index di 4 e': ")
+				print (t.index_latest_of_SENZA_INVERT (4).out + r)
+				print ("il latest_index di 7 e': ")
+				print (t.index_latest_of_SENZA_INVERT (7).out + r)
+				print ("il latest_index di -3 e': ")
+				print (t.index_latest_of_SENZA_INVERT (-3).out + r)
+			end
+
 feature -- Inizialization
 	make
 			-- Run application.
@@ -397,8 +495,10 @@ feature -- Inizialization
 --			test_value_precedes
 --			test_value_precedes_CON_start_forth
 --			test_value_precedes_SENZA_has
-			test_index_earliest_of
-			test_value_at_SENZA_GO_I_TH
+--			test_index_earliest_of
+--			test_index_earliest_of_BIS
+--			test_value_at_SENZA_GO_I_TH
+			test_index_latest_of_SENZA_INVERT
 		end
 
 
