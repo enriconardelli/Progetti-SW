@@ -417,16 +417,25 @@ feature -- index__latest_of
 
 feature -- value_at
 
-	t_value_at_zero
+	t_value_at_start_in_a_list_of_1
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
 			t.append (a_value)
-			assert ("l'elemento a posizione 0 non è 0", t.value_at (0) = 0)
+			assert ("l'elemento a posizione 1 non è a_value", t.value_at (1) = a_value)
 		end
 
-	t_value_at_first
+	t_value_at_last_in_a_list_of_1
+		local
+			t: INT_LINKED_LIST
+		do
+			create t
+			t.append (a_value)
+			assert ("l'elemento a posizione 1 non è a_value", t.value_at (1) = a_value)
+		end
+
+	t_value_at_start_in_a_list_of_3
 		local
 			t: INT_LINKED_LIST
 		do
@@ -437,7 +446,7 @@ feature -- value_at
 			assert ("l'elemento a posizione 1 non è a_value", t.value_at (1) = a_value)
 		end
 
-	t_value_at_last
+	t_value_at_last_in_a_list_of_3
 		local
 			t: INT_LINKED_LIST
 		do
@@ -448,7 +457,7 @@ feature -- value_at
 			assert ("l'elemento a posizione count non è a_value", t.value_at (t.count) = a_value)
 		end
 
-	t_value_at_middle
+	t_value_at_middle_in_a_list_of_3
 		local
 			t: INT_LINKED_LIST
 		do
