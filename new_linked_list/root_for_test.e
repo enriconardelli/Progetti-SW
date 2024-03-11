@@ -494,7 +494,7 @@ feature -- Inizialization
 			test_value_follows
 --			test_value_precedes
 --			test_value_precedes_CON_start_forth
-			test_value_precedes_SENZA_has
+--			test_value_precedes_SENZA_has
 			test_index_earliest_of
 			test_index_earliest_of_BIS
 			test_value_at_SENZA_GO_I_TH
