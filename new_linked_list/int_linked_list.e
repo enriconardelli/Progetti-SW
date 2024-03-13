@@ -285,8 +285,10 @@ feature -- Stato
 			sono_diversi: a_value /= target
 		local
 			previous_element, currently_active: like first_element
+			temp_index: INTEGER
 		do
 			currently_active := active_element
+			temp_index := index
 			from
 				start
 				previous_element := Void
@@ -302,6 +304,7 @@ feature -- Stato
 				Result := True
 			end
 			active_element := currently_active
+			index := temp_index
 		ensure
 			a_value_precede_target: Result implies index_earliest_of (a_value) < index_earliest_of (target)
 			old active_element = active_element
@@ -318,8 +321,10 @@ feature -- Stato
 		local
 			previous_element, currently_active: like first_element
 			target_found: BOOLEAN
+			temp_index: INTEGER
 		do
 			currently_active := active_element
+			temp_index := index
 				-- ricerca di `a_value'
 			from
 				start
@@ -354,6 +359,7 @@ feature -- Stato
 				end
 			end
 			active_element := currently_active
+			index := temp_index
 		ensure
 			correttezza_se_target_non_esiste: not has (target) implies not Result -- premessa equivalente index_of(target) = 0
 			correttezza_se_value_non_esiste: index_earliest_of (a_value) = 0 implies not Result -- premessa equivalente not has(a_value)
