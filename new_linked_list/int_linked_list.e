@@ -141,8 +141,10 @@ feature -- Ricerca
 		local
 			currently_active, previous_element: like first_element
 			k: INTEGER
+			temp_index: INTEGER
 		do
 			currently_active := active_element
+			temp_index := index
 			from
 				start
 				previous_element := Void
@@ -163,6 +165,7 @@ feature -- Ricerca
 				count - k
 			end
 			active_element := currently_active
+			index := temp_index
 		ensure
 			old active_element = active_element
 			old index = index
