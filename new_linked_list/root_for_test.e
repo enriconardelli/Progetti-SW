@@ -501,6 +501,6 @@ feature -- Inizialization
 			test_index_latest_of_SENZA_INVERT
 		end
 
-
+-- insert_before_con_has_prepend e insert_multiple_before_senza_prepend sono senza test
 
 end
