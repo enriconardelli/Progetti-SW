@@ -19,7 +19,7 @@ feature -- parametri
 
 	other_element_2: INTEGER = 7
 
-feature --first
+feature --start
 	-- Claudia Agulini, 2020/03/06
 
 	t_first_one_element

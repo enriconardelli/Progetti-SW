@@ -98,7 +98,7 @@ feature -- single feature test
 			create t
 			print ("t e' vuota, t restituisce 3?" + r)
 			print (t.get_element (3))
-			print (r) -- get_element e' detachable e non si può invocare direttamente .out che consentirebbe concatenzazione con `r'
+			print (r) -- get_element e' detachable e non si puÃ² invocare direttamente .out che consentirebbe concatenzazione con `r'
 			t.append (3)
 			print ("t contiene 3, t restituisce 3?" + r)
 			print (t.get_element (3))
@@ -483,24 +483,24 @@ feature -- Inizialization
 --			print (Void)
 --			print ("<- End attempt to print VOID" + r)
 			test_append
-			test_prepend
+ 			test_prepend
 			test_has
---			test_has_CON_active
+			test_has_CON_active
 			test_get_element
 			test_insert_after
 			test_insert_after_CON_get_element_append
 			test_insert_before
 			test_insert_before_CON_2_CURSORI
 			test_value_follows
---			test_value_precedes
---			test_value_precedes_CON_start_forth
---			test_value_precedes_SENZA_has
+			test_value_precedes
+			test_value_precedes_CON_start_forth
+ 			test_value_precedes_SENZA_has
 			test_index_earliest_of
 			test_index_earliest_of_BIS
 			test_value_at_SENZA_GO_I_TH
 			test_index_latest_of_SENZA_INVERT
 		end
 
-
+-- insert_before_con_has_prepend e insert_multiple_before_senza_prepend sono senza test
 
 end
