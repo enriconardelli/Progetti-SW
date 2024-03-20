@@ -98,7 +98,7 @@ feature -- single feature test
 			create t
 			print ("t e' vuota, t restituisce 3?" + r)
 			print (t.get_element (3))
-			print (r) -- get_element e' detachable e non si può invocare direttamente .out che consentirebbe concatenzazione con `r'
+			print (r) -- get_element e' detachable e non si puÃ² invocare direttamente .out che consentirebbe concatenzazione con `r'
 			t.append (3)
 			print ("t contiene 3, t restituisce 3?" + r)
 			print (t.get_element (3))
