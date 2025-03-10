@@ -512,6 +512,33 @@ feature -- Stato
 			end
 		end
 
+	value_at_CON_ACTIVE (target_position: INTEGER): INTEGER
+			-- ritorna il valore dell'elemento in posizione `position'
+		require
+			target_position >= 1
+			target_position <= count
+		local
+			current_position: INTEGER
+		do
+			from
+				start
+				current_position := 1
+			invariant
+				current_position >= 1
+				current_position <= count
+			until
+				current_position = target_position
+			loop
+				forth
+				current_position := current_position + 1
+			variant
+				target_position - current_position
+			end
+			if attached active_element as ae then
+				Result := ae.value
+			end
+		end
+
 feature {STATO_TESTS} -- Private
 	-- non viene messa a disposizione perche' gestisce gli indirizzi assoluti degli elementi
 	-- puo' invece essere invocata dalle altre feature in modo unqualified

@@ -424,6 +424,34 @@ feature -- single feature test
 			print (t.value_at_SENZA_GO_I_TH (2).out + r)
 		end
 
+	test_value_at_CON_ACTIVE
+		do
+			print (r + "test di value_at_CON_ACTIVE" + r)
+			create t
+			print ("t vuota, appendo 5" + r)
+			t.append(5)
+			-- [5]
+			t.printout
+			print ("in posizione 1 c'e' valore: ")
+			print (t.value_at_CON_ACTIVE (1).out + r)
+			print ("poi prependo 4" + r)
+			t.prepend(4)
+			-- [4, 5]
+			t.printout
+			print ("in posizione 1 c'e' valore: ")
+			print (t.value_at_CON_ACTIVE (1).out + r)
+			print ("in posizione 2 c'e' valore: ")
+			print (t.value_at_CON_ACTIVE (2).out + r)
+			print ("poi appendo 7" + r)
+			t.append(7)
+			-- [4, 5, 7]
+			t.printout
+			print ("in posizione 3 c'e' valore: ")
+			print (t.value_at_CON_ACTIVE (3).out + r)
+			print ("in posizione 2 c'e' valore: ")
+			print (t.value_at_CON_ACTIVE (2).out + r)
+		end
+
 	test_index_latest_of_SENZA_INVERT
 			do
 				print (r + "test di index_latest_of_SENZA_INVERT" + r)
@@ -498,6 +526,7 @@ feature -- Inizialization
 			test_index_earliest_of
 			test_index_earliest_of_BIS
 			test_value_at_SENZA_GO_I_TH
+			test_value_at_CON_ACTIVE
 			test_index_latest_of_SENZA_INVERT
 		end
 

@@ -5,6 +5,14 @@
 
 ===>> QUESTO DOC È PER IL CORSO DI PROGETTAZIONE <<===
 
+2024
+	-	c'è un TODO relativo al fatto che nell'ambiente di TEST sono state introdotte alcune funzioni di supporto per le quali però adesso ci sono feature apposite in int_linked_list e quindi andrebbero sostituite
+	- le feature 
+			insert_before_con_has_prepend
+			insert_multiple_before_senza_prepend
+		non hanno test di nessun tipo né nell'ambiente di test né in root
+	- rimane da verificare che per tutte le feature ci siano i test in AUTOTEST (per qualcuna vengono fatti test solo in root)
+		
 2021
   continuo come per 2020.
 NOTA: mettere i commenti e i tag degli invarianti in italiano, perché mi serve per didattica in italiano

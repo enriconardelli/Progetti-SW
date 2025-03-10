@@ -48,7 +48,7 @@ Status
  + value_precedes
  + value_before
  + index_of
-  value_at
+ + value_at
 
 Insertion single free
  + append
