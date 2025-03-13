@@ -29,6 +29,7 @@ feature -- single feature test
 			-- [3]
 			--commento prova
 			--questo e' un altro commento
+			--prova 3
 			t.printout
 			print ("t contiene 3? ")
 			print (t.has (3).out + r)
