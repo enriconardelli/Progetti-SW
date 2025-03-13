@@ -27,7 +27,7 @@ feature -- single feature test
 --			print (t.has (3).out + r)
 			t.append (3)
 			-- [3]
-			--commento prova
+			-- questo commento non mi piace
 			t.printout
 			print ("t contiene 3? ")
 			print (t.has (3).out + r)
