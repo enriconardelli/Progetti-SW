@@ -424,6 +424,11 @@ feature -- Stato
 			zero_se_non_esiste: not has (a_value) = (Result = 0)
 		end
 
+	index_earliest_of_CON_INVERT_DA_FARE (a_value: INTEGER): INTEGER
+			-- ritorna la posizione del primo elemento che contiene `a_value' oppure 0 se non esiste
+		do
+		end
+
 	index_latest_of (a_value: INTEGER): INTEGER
 			-- ritorna la posizione dell'ultimo elemento che contiene `a_value' oppure 0 se non esiste
 		do
@@ -467,7 +472,7 @@ feature -- Stato
 		end
 
 	value_at (target_position: INTEGER): INTEGER
-			-- ritorna il valore dell'elemento in posizione `position' posizione
+			-- ritorna il valore dell'elemento in posizione `position'
 		require
 			target_position >= 1
 			target_position <= count
@@ -518,9 +523,10 @@ feature -- Stato
 			target_position >= 1
 			target_position <= count
 		local
-			current_position: INTEGER
+			list_index, current_position: INTEGER
 		do
 			from
+				list_index := index
 				start
 				current_position := 1
 			invariant
@@ -537,6 +543,7 @@ feature -- Stato
 			if attached active_element as ae then
 				Result := ae.value
 			end
+			go_i_th (list_index)
 		end
 
 feature {STATO_TESTS} -- Private
