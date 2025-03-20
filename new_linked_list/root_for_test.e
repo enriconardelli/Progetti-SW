@@ -30,6 +30,7 @@ feature -- single feature test
 			--questo commento non mi piace
 			--questo e' un altro commento
 			--prova 3
+			--prova branch
 			t.printout
 			print ("t contiene 3? ")
 			print (t.has (3).out + r)
@@ -43,6 +44,7 @@ feature -- single feature test
 			print ("t contiene 4? ")
 			print (t.has (4).out + r)
 			print ("t contiene 7? ")
+			print (t.has (7).out + r)
 			print (t.has (7).out + r)
 		end
 
