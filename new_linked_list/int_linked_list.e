@@ -546,7 +546,7 @@ feature -- Stato
 			go_i_th (list_index)
 		end
 
-feature {STATO_TESTS} -- Private
+feature {STATO_TESTS, STATO_TESTS2} -- Private
 	-- non viene messa a disposizione perche' gestisce gli indirizzi assoluti degli elementi
 	-- puo' invece essere invocata dalle altre feature in modo unqualified
 	-- viene ovviamente esportata verso la classe di test
