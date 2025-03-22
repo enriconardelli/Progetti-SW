@@ -31,6 +31,7 @@ feature -- single feature test
 			--questo e' un altro commento
 			--prova 3
 			--prova branch
+			--provo
 			t.printout
 			print ("t contiene 3? ")
 			print (t.has (3).out + r)
