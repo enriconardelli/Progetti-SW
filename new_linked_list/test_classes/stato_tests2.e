@@ -251,24 +251,19 @@ feature -- is_before
 			assert ("active element non è assegnato quindi non può stare prima di first element", not (list_builder.list_V).is_before ((list_builder.list_V).active_element, (list_builder.list_V).first_element))
 		end
 
-t_is_before_multiple_element
-		local
-			t: INT_LINKED_LIST
+	t_is_before_multiple_element
 		do
-			create t
-			t.append (a_value)
-			t.append (other_element_1)
-			t.append (other_element_2)
-			t.last
+			(list_builder.list_Ve1e2).last
 				-- imposto active_element a last_element
-			assert ("last_element dovrebbe essere dopo first_element", t.is_before (t.first_element, t.active_element))
-			assert ("in caso di a_value=an_element dovrebbe dare falso come risultato", not t.is_before (t.last_element, t.active_element))
-			t.start
-			t.forth
+			assert ("last_element dovrebbe essere dopo first_element", (list_builder.list_Ve1e2).is_before ((list_builder.list_Ve1e2).first_element, (list_builder.list_Ve1e2).active_element))
+			assert ("in caso di a_value=an_element dovrebbe dare falso come risultato", not (list_builder.list_Ve1e2).is_before ((list_builder.list_Ve1e2).last_element, (list_builder.list_Ve1e2).active_element))
+			(list_builder.list_Ve1e2).go_i_th(1)
+			(list_builder.list_Ve1e2).forth
 				-- imposto active_element al secondo elemento
-			assert ("il secondo elemento dovrebbe essere dopo first_element", not t.is_before (t.active_element, t.first_element))
-			assert ("il secondo elemento dovrebbe essere prima di last_element", t.is_before (t.active_element, t.last_element))
-			assert ("l'ultimo elemento dovrebbe essere dopo primo", not t.is_before (t.last_element, t.first_element))
+			assert ("il secondo elemento dovrebbe essere dopo first_element", not (list_builder.list_Ve1e2).is_before ((list_builder.list_Ve1e2).active_element, (list_builder.list_Ve1e2).first_element))
+			assert ("il secondo elemento dovrebbe essere prima di last_element", (list_builder.list_Ve1e2).is_before ((list_builder.list_Ve1e2).active_element, (list_builder.list_Ve1e2).last_element))
+			assert ("l'ultimo elemento dovrebbe essere dopo primo", not (list_builder.list_Ve1e2).is_before ((list_builder.list_Ve1e2).last_element, (list_builder.list_Ve1e2).first_element))
+			(list_builder.list_Ve1e2).go_i_th(1)
 		end
 
 feature -- position_of
@@ -290,32 +285,24 @@ feature -- position_of
 			assert ("active element non esiste eppure la sua posizione non è 0", (list_builder.list_V).position_of ((list_builder.list_V).active_element) = 0)
 		end
 
-	t_position_of_multiple_element --da fare
-		local
-			t: INT_LINKED_LIST
+	t_position_of_multiple_element
 		do
-			create t
-			t.append (a_value)
-			t.append (other_element_1)
-			t.append (other_element_2)
-			assert ("il primo elemento non esiste eppure la sua posizione non è 1", t.position_of (t.first_element) = 1)
-			assert ("l'ultimo elemento non esiste eppure la sua posizione non è 3", t.position_of (t.last_element) = 3)
-			assert ("active element non esiste eppure la sua posizione non è 0", t.position_of (t.active_element) = 0)
-			t.go_i_th (2)
-			assert ("active element è in seconda posizione ma la sua posizione non è 2", t.position_of (t.active_element) = 2)
+			assert ("il primo elemento non esiste eppure la sua posizione non è 1", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).first_element) = 1)
+			assert ("l'ultimo elemento non esiste eppure la sua posizione non è 3", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).last_element) = 3)
+			assert ("active element non esiste eppure la sua posizione non è 0", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).active_element) = 0)
+			(list_builder.list_Ve1e2).go_i_th (2)
+			assert ("active element è in seconda posizione ma la sua posizione non è 2", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).active_element) = 2)
+			(list_builder.list_Ve1e2).go_i_th(1)
 		end
 
 	t_position_of_with_external
 		local
-			t: INT_LINKED_LIST
-			r: INT_LINKED_LIST
+			list_V_duplicate: INT_LINKED_LIST
 		do
-			create t
-			create r
-			t.append (a_value)
-			r.append (a_value)
-			assert ("gli elementi di r appartengono a quelli di t", t.position_of (r.first_element) = 0)
-			assert ("gli elementi di t appartengono a quelli di r", r.position_of (t.first_element) = 0)
+			create list_V_duplicate
+			list_V_duplicate.append (a_value)
+			assert ("gli elementi di list_V_duplicate appartengono a quelli di (list_builder.list_V)", (list_builder.list_V).position_of (list_V_duplicate.first_element) = 0)
+			assert ("gli elementi di (list_builder.list_V) appartengono a quelli di list_V_duplicate", list_V_duplicate.position_of ((list_builder.list_V).first_element) = 0)
 		end
 
 end

@@ -221,4 +221,10 @@ feature -- Istanze di liste
         once
             create Result
         end
+
+     list_V_duplicate : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+        end
 end
