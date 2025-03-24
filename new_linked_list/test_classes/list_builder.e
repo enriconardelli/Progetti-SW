@@ -41,4 +41,76 @@ feature -- Istanze di liste
             Result.append(a_target)
         end
 
+   	list_TV : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_target)
+            Result.append(a_value)
+        end
+
+   	list_VTV : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+            Result.append(a_target)
+            Result.append(a_value)
+        end
+
+   	list_VVTT : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+            Result.append(a_value)
+            Result.append(a_target)
+            Result.append(a_target)
+        end
+
+    list_VTVT : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+            Result.append(a_target)
+            Result.append(a_value)
+            Result.append(a_target)
+        end
+
+    list_e1Ve2e1e2e1e2e1T : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(other_element_1)
+            Result.append(a_value)
+            Result.append(other_element_2)
+            Result.append(other_element_1)
+            Result.append(other_element_2)
+            Result.append(other_element_1)
+            Result.append(other_element_2)
+            Result.append(other_element_1)
+            Result.append(a_target)
+        end
+
+   	list_VTTV : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+            Result.append(a_target)
+            Result.append(a_target)
+            Result.append(a_value)
+        end
+
+    list_Ve1TV : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+            Result.append(other_element_1)
+            Result.append(a_target)
+            Result.append(a_value)
+        end
+
+    list_VT : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+          	Result.append(a_target)
+        end
+
 end

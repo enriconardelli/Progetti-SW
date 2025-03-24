@@ -40,148 +40,69 @@ feature -- value_follows
 		end
 
 	t_value_follows_single_target_single_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_target)
-			t.append (a_value)
-			assert ("non trova a_value dopo a_target", t.value_follows (a_value, a_target))
+			assert ("non trova a_value dopo a_target", (list_builder.list_TV).value_follows (a_value, a_target))
 		end
 
 	t_value_follows_single_target_multiple_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_target)
-			t.append (a_value)
-			assert ("non trova a_value dopo a_target", t.value_follows (a_value, a_target))
+			assert ("non trova a_value dopo a_target",(list_builder.list_VTV).value_follows (a_value, a_target))
 		end
 
 	t_value_follows_multiple_target_multiple_value_all_before
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_value)
-			t.append (a_target)
-			t.append (a_target)
-			assert ("trova a_value dopo a_target", not t.value_follows (a_value, a_target))
+			assert ("trova a_value dopo a_target", not (list_builder.list_VVTT).value_follows (a_value, a_target))
 		end
 
 	t_value_follows_multiple_target_multiple_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_target)
-			t.append (a_value)
-			t.append (a_target)
-			assert ("non trova a_value dopo a_target", t.value_follows (a_value, a_target))
+			assert ("non trova a_value dopo a_target", (list_builder.list_VTVT).value_follows (a_value, a_target))
 		end
 
 	t_value_follows_target_far_from_value
 			--questo test serve per testare se la feature riesce a trovare a_value molto distante da a_target
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (other_element_1)
-			t.append (a_target)
-			t.append (other_element_2)
-			t.append (other_element_1)
-			t.append (other_element_2)
-			t.append (other_element_1)
-			t.append (other_element_2)
-			t.append (other_element_1)
-			t.append (a_value)
-			t.append (other_element_2)
-			assert (" non trova a_value dopo a_target", t.value_follows (a_value, a_target))
+			assert (" non trova a_value dopo a_target", (list_builder.list_e1Ve2e1e2e1e2e1T).value_follows (a_value, a_target))
 		end
 
 feature -- value_after
-	-- Enrico Nardelli, 2021/03/23
 
 	t_value_after_single_target_no_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_target)
-			assert ("t contiene solo a_target, ma t trova a_value subito dopo a_target", not t.value_after (a_value, a_target))
+			assert ("la lista contiene solo a_target, ma t trova a_value subito dopo a_target", not (list_builder.list_T).value_after (a_value, a_target))
 		end
 
 	t_value_after_single_target_single_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_target)
-			t.append (a_value)
-			assert ("non trova a_value subito dopo a_target", t.value_after (a_value, a_target))
+			assert ("non trova a_value subito dopo a_target", (list_builder.list_TV).value_after (a_value, a_target))
 		end
 
 	t_value_after_single_target_multiple_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_target)
-			t.append (a_value)
-			assert ("non trova a_value subito dopo a_target", t.value_after (a_value, a_target))
+			assert ("non trova a_value subito dopo a_target", (list_builder.list_VTV).value_after (a_value, a_target))
 		end
 
 	t_value_after_no_after_first
 			-- In questo test c'è un a_value dopo un a_target ma è dopo il secondo
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_target)
-			t.append (a_target)
-			t.append (a_value)
-			assert ("trova a_value subito dopo il primo a_target", not t.value_after (a_value, a_target))
+			assert ("trova a_value subito dopo il primo a_target", not (list_builder.list_VTTV).value_after (a_value, a_target))
 		end
 
 	t_value_after_multiple_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (other_element_1)
-			t.append (a_target)
-			t.append (a_value)
-			assert ("non trova a_value subito dopo il primo a_target", t.value_after (a_value, a_target))
+			assert ("non trova a_value subito dopo il primo a_target", (list_builder.list_Ve1TV).value_after (a_value, a_target))
 		end
 
 feature -- value_precedes
 
-		-- Maria Ludovica Sarandrea, 2021/04/03
-
 	t_value_precedes_single_target_no_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_target)
-			assert ("t contiene solo a_target, ma t trova a_value prima di a_target", not t.value_precedes (a_value, a_target))
+			assert ("t contiene solo a_target, ma t trova a_value prima di a_target", not (list_builder.list_T).value_precedes (a_value, a_target))
 		end
 
 	t_value_precedes_single_target_single_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_target)
-			assert ("non trova a_value prima di a_target", t.value_precedes (a_value, a_target))
+			assert ("non trova a_value prima di a_target", (list_builder.list_VT).value_precedes (a_value, a_target))
 		end
 
 	t_value_precedes_single_target_multiple_value
