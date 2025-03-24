@@ -62,7 +62,7 @@ feature -- value_follows
 	t_value_follows_target_far_from_value
 			--questo test serve per testare se la feature riesce a trovare a_value molto distante da a_target
 		do
-			assert (" non trova a_value dopo a_target", (list_builder.list_e1Ve2e1e2e1e2e1T).value_follows (a_value, a_target))
+			assert (" non trova a_value dopo a_target", (list_builder.list_e1Te2e1e2e1e2e1Ve2).value_follows (a_value, a_target))
 		end
 
 feature -- value_after
@@ -106,114 +106,53 @@ feature -- value_precedes
 		end
 
 	t_value_precedes_single_target_multiple_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_target)
-			t.append (a_value)
-			assert ("non trova a_value prima di a_target", t.value_precedes (a_value, a_target))
+			assert ("non trova a_value prima di a_target", (list_builder.list_VTV).value_precedes (a_value, a_target))
 		end
 
 	t_value_precedes_multiple_target_multiple_value_all_after
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_target)
-			t.append (a_target)
-			t.append (a_value)
-			t.append (a_value)
-			assert ("trova a_value prima di a_target", not t.value_precedes (a_value, a_target))
+			assert ("trova a_value prima di a_target", not (list_builder.list_TTVV).value_precedes (a_value, a_target))
 		end
 
 	t_value_precedes_multiple_target_multiple_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_target)
-			t.append (a_value)
-			t.append (a_target)
-			assert (" non trova a_value prima di a_target", t.value_precedes (a_value, a_target))
+			assert (" non trova a_value prima di a_target", (list_builder.list_VTVT).value_precedes (a_value, a_target))
 		end
 
 	t_value_precedes_target_far_from_value
 			--questo test serve per testare se la feature riesce a trovare a_value molto distante da a_target
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (other_element_1)
-			t.append (a_value)
-			t.append (other_element_2)
-			t.append (other_element_1)
-			t.append (other_element_2)
-			t.append (other_element_1)
-			t.append (other_element_2)
-			t.append (other_element_1)
-			t.append (a_target)
-			assert (" non trova a_value prima di a_target", t.value_precedes (a_value, a_target))
+			assert (" non trova a_value prima di a_target", (list_builder.list_e1Ve2e1e2e1e2e1T).value_precedes (a_value, a_target))
 		end
 
 feature -- value_before
-	--Sara Forte 2021/03/31
 
 	t_value_before_single_target_no_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_target)
-			assert ("t contiene solo a_target, ma t trova a_value subito prima di a_target", not t.value_before (a_value, a_target))
+			assert ("t contiene solo a_target, ma t trova a_value subito prima di a_target", not (list_builder.list_T).value_before (a_value, a_target))
 		end
 
 	t_value_before_single_target_single_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_target)
-			assert ("non trova a_value subito prima di a_target", t.value_before (a_value, a_target))
+			assert ("non trova a_value subito prima di a_target", (list_builder.list_VT).value_before (a_value, a_target))
 		end
 
 	t_value_before_single_target_multiple_value
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_value)
-			t.append (a_target)
-			t.append (a_value)
-			assert ("non trova a_value subito prima di a_target", t.value_before (a_value, a_target))
+			assert ("non trova a_value subito prima di a_target", (list_builder.list_VTV).value_before (a_value, a_target))
 		end
 
 	t_value_before_void_before_first
 			-- In questo test c'è un a_value prima di un a_target ma è prima del secondo
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_target)
-			t.append (a_value)
-			t.append (a_target)
-			assert ("trova a_value subito prima del primo a_target", not t.value_before (a_value, a_target))
+			assert ("trova a_value subito prima del primo a_target", not (list_builder.list_TVT).value_before (a_value, a_target))
 		end
 
 	t_value_before_no_before_first
 			-- In questo test c'è un a_value prima di un a_target ma è prima del secondo
-		local
-			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (other_element_1)
-			t.append (a_target)
-			t.append (a_value)
-			t.append (a_target)
-			assert ("trova a_value subito prima del primo a_target", not t.value_before (a_value, a_target))
+			assert ("trova a_value subito prima del primo a_target", not (list_builder.list_e1TVT).value_before (a_value, a_target))
 		end
 
 	t_value_before_multiple_value

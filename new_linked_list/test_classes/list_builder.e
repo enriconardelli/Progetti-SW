@@ -74,18 +74,19 @@ feature -- Istanze di liste
             Result.append(a_target)
         end
 
-    list_e1Ve2e1e2e1e2e1T : INT_LINKED_LIST
+    list_e1Te2e1e2e1e2e1Ve2 : INT_LINKED_LIST
         once
             create Result
             Result.append(other_element_1)
+            Result.append(a_target)
+            Result.append(other_element_2)
+            Result.append(other_element_1)
+            Result.append(other_element_2)
+            Result.append(other_element_1)
+            Result.append(other_element_2)
+            Result.append(other_element_1)
             Result.append(a_value)
             Result.append(other_element_2)
-            Result.append(other_element_1)
-            Result.append(other_element_2)
-            Result.append(other_element_1)
-            Result.append(other_element_2)
-            Result.append(other_element_1)
-            Result.append(a_target)
         end
 
    	list_VTTV : INT_LINKED_LIST
@@ -113,4 +114,43 @@ feature -- Istanze di liste
           	Result.append(a_target)
         end
 
+  	list_TTVV : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_target)
+            Result.append(a_target)
+            Result.append(a_value)
+            Result.append(a_value)
+        end
+
+    list_e1Ve2e1e2e1e2e1T : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(other_element_1)
+            Result.append(a_value)
+            Result.append(other_element_2)
+            Result.append(other_element_1)
+            Result.append(other_element_2)
+            Result.append(other_element_1)
+            Result.append(other_element_2)
+            Result.append(other_element_1)
+            Result.append(a_target)
+        end
+
+    list_TVT : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_target)
+            Result.append(a_value)
+            Result.append(a_target)
+        end
+
+    list_e1TVT : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(other_element_1)
+            Result.append(a_target)
+            Result.append(a_value)
+            Result.append(a_target)
+        end
 end
