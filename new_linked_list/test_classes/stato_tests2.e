@@ -95,35 +95,52 @@ feature -- value_after
 
 feature -- value_precedes
 
-	t_value_precedes_single_target_no_value
-		do
-			assert ("t contiene solo a_target, ma t trova a_value prima di a_target", not (list_builder.list_T).value_precedes (a_value, a_target))
-		end
+    t_value_precedes_single_target_no_value
+        local
+            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
+        do
+            value_precedes_agent := agent (list_builder.list_T).value_precedes_con_start_forth
+            assert ("t contiene solo a_target, ma t trova a_value prima di a_target",not value_precedes_agent.item ([a_value, a_target]))
+        end
 
 	t_value_precedes_single_target_single_value
+		local
+            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
 		do
-			assert ("non trova a_value prima di a_target", (list_builder.list_VT).value_precedes (a_value, a_target))
+            value_precedes_agent := agent (list_builder.list_VT).value_precedes
+			assert ("non trova a_value prima di a_target", value_precedes_agent.item ([a_value, a_target]))
 		end
 
 	t_value_precedes_single_target_multiple_value
+		local
+            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
 		do
-			assert ("non trova a_value prima di a_target", (list_builder.list_VTV).value_precedes (a_value, a_target))
+            value_precedes_agent := agent (list_builder.list_VTV).value_precedes_senza_has
+			assert ("non trova a_value prima di a_target",value_precedes_agent.item ([a_value, a_target]))
 		end
 
 	t_value_precedes_multiple_target_multiple_value_all_after
+		local
+            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
 		do
-			assert ("trova a_value prima di a_target", not (list_builder.list_TTVV).value_precedes (a_value, a_target))
+            value_precedes_agent := agent (list_builder.list_TTVV).value_precedes_con_start_forth
+			assert ("trova a_value prima di a_target", not value_precedes_agent.item ([a_value, a_target]))
 		end
 
 	t_value_precedes_multiple_target_multiple_value
+		local
+            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
 		do
-			assert (" non trova a_value prima di a_target", (list_builder.list_VTVT).value_precedes (a_value, a_target))
+            value_precedes_agent := agent (list_builder.list_VTVT).value_precedes
+			assert (" non trova a_value prima di a_target", value_precedes_agent.item ([a_value, a_target]))
 		end
 
 	t_value_precedes_target_far_from_value
-			--questo test serve per testare se la feature riesce a trovare a_value molto distante da a_target
+		local
+            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
 		do
-			assert (" non trova a_value prima di a_target", (list_builder.list_e1Ve2e1e2e1e2e1T).value_precedes (a_value, a_target))
+            value_precedes_agent := agent (list_builder.list_e1Ve2e1e2e1e2e1T).value_precedes
+			assert (" non trova a_value prima di a_target", value_precedes_agent.item([a_value, a_target]))
 		end
 
 feature -- value_before
