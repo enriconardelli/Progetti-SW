@@ -153,4 +153,72 @@ feature -- Istanze di liste
             Result.append(a_value)
             Result.append(a_target)
         end
+
+    list_Ve1VT : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+            Result.append(other_element_1)
+            Result.append(a_value)
+            Result.append(a_target)
+        end
+
+    list_e1 : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(other_element_1)
+        end
+
+    list_Ve1e2 : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+            Result.append(other_element_1)
+            Result.append(other_element_2)
+        end
+
+     list_e1e2V : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(other_element_1)
+            Result.append(other_element_2)
+            Result.append(a_value)
+        end
+
+     list_e1Ve2 : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(other_element_1)
+            Result.append(a_value)
+            Result.append(other_element_2)
+        end
+
+     list_e1VVe2 : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(other_element_1)
+            Result.append(a_value)
+            Result.append(a_value)
+            Result.append(other_element_2)
+        end
+
+     list_V : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+        end
+
+     list_Ve1e2V : INT_LINKED_LIST
+        once
+            create Result
+            Result.append(a_value)
+            Result.append(other_element_1)
+            Result.append(other_element_2)
+            Result.append(a_value)
+        end
+
+     list_empty : INT_LINKED_LIST
+        once
+            create Result
+        end
 end
