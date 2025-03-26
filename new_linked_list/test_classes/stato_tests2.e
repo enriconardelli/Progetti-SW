@@ -183,7 +183,7 @@ feature -- index_earliest_of
 		local
             index_earliest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			index_earliest_of_agent := agent (list_builder.list_e1).index_earliest_of
+			index_earliest_of_agent := agent (list_builder.list_e1).index_earliest_of_CON_INVERT
 			assert ("la lista non contiene a_value eppure index_earliest non è 0", index_earliest_of_agent.item (a_value) = 0)
 		end
 
@@ -199,7 +199,7 @@ feature -- index_earliest_of
 		local
             index_earliest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			index_earliest_of_agent := agent (list_builder.list_e1e2V).index_earliest_of
+			index_earliest_of_agent := agent (list_builder.list_e1e2V).index_earliest_of_CON_INVERT
 			assert ("la lista contiene a_value come ultimo eppure index_earliest non è count", index_earliest_of_agent.item (a_value) = (list_builder.list_e1e2V).count)
 		end
 
@@ -215,7 +215,7 @@ feature -- index_earliest_of
 		local
             index_earliest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			index_earliest_of_agent := agent (list_builder.list_e1VVe2).index_earliest_of
+			index_earliest_of_agent := agent (list_builder.list_e1VVe2).index_earliest_of_CON_INVERT
 			assert ("la lista contiene a_value in seconda posizione eppure index_earliest non è 2", index_earliest_of_agent.item (a_value) = 2)
 			assert ("ha selezionato la terza istanza di a_value", index_earliest_of_agent.item (a_value) /= 3)
 		end
