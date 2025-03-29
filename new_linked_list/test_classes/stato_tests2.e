@@ -95,40 +95,10 @@ feature -- value_after
 
 feature -- value_precedes
 
-<<<<<<< HEAD
-feature -- value_precedes_con_start_forth
-
-feature -- value_precedes_senza_has
-
-    t_value_precedes_single_target_no_value
-        local
---            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
-        do
---            value_precedes_agent := agent (list_builder.list_T).value_precedes_con_start_forth(?, ?)
---            assert ("t contiene solo a_target, ma t trova a_value prima di a_target",not value_precedes_agent.item ([a_value, a_target]))
---            assert ("t contiene solo a_target, ma t trova a_value prima di a_target",
---            	not (agent (list_builder.list_T).value_precedes_con_start_forth).item ([a_value, a_target]))
-            assert ("list_T: t contiene solo a_target, ma t trova a_value prima di a_target",
-            	not ((list_builder.list_T).value_precedes_con_start_forth(a_value, a_target)))
---            assert ("t contiene solo a_target, ma t trova a_value prima di a_target",
---            	not (agent (list_builder.list_T).value_precedes).item ([a_value, a_target]))
-            assert ("list_T: t contiene solo a_target, ma t trova a_value prima di a_target",
-            	not ((list_builder.list_T).value_precedes(a_value, a_target)))
---            assert ("t contiene solo a_target, ma t trova a_value prima di a_target",
---            	not (agent (list_builder.list_T).value_precedes_senza_has).item ([a_value, a_target]))
-            assert ("list_T: t contiene solo a_target, ma t trova a_value prima di a_target",
-            	not ((list_builder.list_T).value_precedes_senza_has(a_value, a_target)))
-        end
-=======
 	t_value_precedes_single_target_no_value
 		do
 			assert ("t contiene solo a_target, ma t trova a_value prima di a_target", not (list_builder.list_T).value_precedes (a_value, a_target))
 		end
-
---feature -- value_precedes_con_start_forth
->>>>>>> 2b0aef0169625ba0917a353b362f2c518b1d9962
-
-        --prova
 
 	t_value_precedes_single_target_single_value
 		do
