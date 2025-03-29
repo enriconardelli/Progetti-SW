@@ -32,36 +32,31 @@ feature -- parametri
 
 	other_element_2: INTEGER = 7
 
-feature -- value_follows
+feature
+    value_follows_tests
 
-	t_value_follows_single_target_no_value
+--	t_value_follows_single_target_no_value
 		do
 			assert ("la lista contiene solo a_target, ma la lista trova a_value dopo a_target", not (list_builder.list_T).value_follows (a_value, a_target))
-		end
 
-	t_value_follows_single_target_single_value
-		do
+--	t_value_follows_single_target_single_value
+
 			assert ("non trova a_value dopo a_target", (list_builder.list_TV).value_follows (a_value, a_target))
-		end
 
-	t_value_follows_single_target_multiple_value
-		do
+--	t_value_follows_single_target_multiple_value
+
 			assert ("non trova a_value dopo a_target",(list_builder.list_VTV).value_follows (a_value, a_target))
-		end
 
-	t_value_follows_multiple_target_multiple_value_all_before
-		do
+--  t_value_follows_multiple_target_multiple_value_all_before
+
 			assert ("trova a_value dopo a_target", not (list_builder.list_VVTT).value_follows (a_value, a_target))
-		end
 
-	t_value_follows_multiple_target_multiple_value
-		do
+--	t_value_follows_multiple_target_multiple_value
+
 			assert ("non trova a_value dopo a_target", (list_builder.list_VTVT).value_follows (a_value, a_target))
-		end
 
-	t_value_follows_target_far_from_value
+--	t_value_follows_target_far_from_value
 			--questo test serve per testare se la feature riesce a trovare a_value molto distante da a_target
-		do
 			assert (" non trova a_value dopo a_target", (list_builder.list_e1Te2e1e2e1e2e1Ve2).value_follows (a_value, a_target))
 		end
 
