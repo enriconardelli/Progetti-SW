@@ -95,59 +95,44 @@ feature -- value_after
 
 feature -- value_precedes
 
-    t_value_precedes_single_target_no_value
-        local
-            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
-        do
-            value_precedes_agent := agent (list_builder.list_T).value_precedes_con_start_forth
-            assert ("t contiene solo a_target, ma t trova a_value prima di a_target",not value_precedes_agent.item ([a_value, a_target]))
-        end
+	t_value_precedes_single_target_no_value
+		do
+			assert ("t contiene solo a_target, ma t trova a_value prima di a_target", not (list_builder.list_T).value_precedes (a_value, a_target))
+		end
+
+--feature -- value_precedes_con_start_forth
 
 	t_value_precedes_single_target_single_value
-		local
-            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
 		do
-            value_precedes_agent := agent (list_builder.list_VT).value_precedes
-			assert ("non trova a_value prima di a_target", value_precedes_agent.item ([a_value, a_target]))
+			assert ("non trova a_value prima di a_target", (list_builder.list_VT).value_precedes (a_value, a_target))
 		end
 
 	t_value_precedes_single_target_multiple_value
-		local
-            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
 		do
-            value_precedes_agent := agent (list_builder.list_VTV).value_precedes_senza_has
-			assert ("non trova a_value prima di a_target",value_precedes_agent.item ([a_value, a_target]))
+			assert ("non trova a_value prima di a_target", (list_builder.list_VTV).value_precedes (a_value, a_target))
 		end
 
 	t_value_precedes_multiple_target_multiple_value_all_after
-		local
-            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
 		do
-            value_precedes_agent := agent (list_builder.list_TTVV).value_precedes_con_start_forth
-			assert ("trova a_value prima di a_target", not value_precedes_agent.item ([a_value, a_target]))
+			assert ("trova a_value prima di a_target", not (list_builder.list_TTVV).value_precedes (a_value, a_target))
 		end
 
 	t_value_precedes_multiple_target_multiple_value
-		local
-            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
 		do
-            value_precedes_agent := agent (list_builder.list_VTVT).value_precedes
-			assert (" non trova a_value prima di a_target", value_precedes_agent.item ([a_value, a_target]))
+			assert (" non trova a_value prima di a_target", (list_builder.list_VTVT).value_precedes (a_value, a_target))
 		end
 
 	t_value_precedes_target_far_from_value
-		local
-            value_precedes_agent: FUNCTION [TUPLE [INTEGER, INTEGER], BOOLEAN]
+			--questo test serve per testare se la feature riesce a trovare a_value molto distante da a_target
 		do
-            value_precedes_agent := agent (list_builder.list_e1Ve2e1e2e1e2e1T).value_precedes
-			assert (" non trova a_value prima di a_target", value_precedes_agent.item([a_value, a_target]))
+			assert (" non trova a_value prima di a_target", (list_builder.list_e1Ve2e1e2e1e2e1T).value_precedes (a_value, a_target))
 		end
 
 feature -- value_before
 
 	t_value_before_single_target_no_value
 		do
-			assert ("la lista contiene solo a_target, ma t trova a_value subito prima di a_target", not (list_builder.list_T).value_before (a_value, a_target))
+			assert ("t contiene solo a_target, ma t trova a_value subito prima di a_target", not (list_builder.list_T).value_before (a_value, a_target))
 		end
 
 	t_value_before_single_target_single_value
@@ -177,133 +162,87 @@ feature -- value_before
 			assert ("non trova a_value subito prima del primo a_target", (list_builder.list_Ve1VT).value_before (a_value, a_target))
 		end
 
-feature -- index_earliest_of
+feature -- index__earliest_of
 
 	t_index_earliest_of_no_value
-		local
-            index_earliest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			index_earliest_of_agent := agent (list_builder.list_e1).index_earliest_of_CON_INVERT
-			assert ("la lista non contiene a_value eppure index_earliest non è 0", index_earliest_of_agent.item (a_value) = 0)
+			assert ("la lista non contiene a_value eppure index_earliest non è 0", (list_builder.list_e1).index_earliest_of (a_value) = 0)
 		end
 
 	t_index_earliest_of_single_value_first
-		local
-            index_earliest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			index_earliest_of_agent := agent (list_builder.list_Ve1e2).index_earliest_of
-			assert ("la lista contiene a_value come primo eppure index_earliest non è 1", index_earliest_of_agent.item (a_value) = 1)
+			assert ("la lista contiene a_value come primo eppure index_earliest non è 1", (list_builder.list_Ve1e2).index_earliest_of (a_value) = 1)
 		end
 
 	t_index_earliest_of_single_value_last
-		local
-            index_earliest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			index_earliest_of_agent := agent (list_builder.list_e1e2V).index_earliest_of_CON_INVERT
-			assert ("la lista contiene a_value come ultimo eppure index_earliest non è count", index_earliest_of_agent.item (a_value) = (list_builder.list_e1e2V).count)
+			assert ("la lista contiene a_value come ultimo eppure index_earliest non è count", (list_builder.list_e1e2V).index_earliest_of (a_value) = (list_builder.list_e1e2V).count)
 		end
 
 	t_index_earliest_of_single_value_middle
-		local
-            index_earliest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			index_earliest_of_agent := agent (list_builder.list_e1Ve2).index_earliest_of
-			assert ("la lista contiene a_value in seconda posizione eppure index_earliest non è 2", index_earliest_of_agent.item (a_value) = 2)
+			assert ("la lista contiene a_value in seconda posizione eppure index_earliest non è 2", (list_builder.list_e1Ve2).index_earliest_of (a_value) = 2)
 		end
 
 	t_index_earliest_of_multiple_value
-		local
-            index_earliest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			index_earliest_of_agent := agent (list_builder.list_e1VVe2).index_earliest_of_CON_INVERT
-			assert ("la lista contiene a_value in seconda posizione eppure index_earliest non è 2", index_earliest_of_agent.item (a_value) = 2)
-			assert ("ha selezionato la terza istanza di a_value", index_earliest_of_agent.item (a_value) /= 3)
+			assert ("la lista contiene a_value in seconda posizione eppure index_earliest non è 2", (list_builder.list_e1VVe2).index_earliest_of (a_value) = 2)
+			assert ("ha selezionato la terza istanza di a_value", (list_builder.list_e1VVe2).index_earliest_of (a_value) /= 3)
 		end
 
-feature -- index_latest_of
+feature -- index__latest_of
 
 	t_index_latest_of_no_value
-
-        local
-            index_latest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
-        do
-            index_latest_of_agent := agent (list_builder.list_e1).index_latest_of
-			assert ("la lista non contiene a_value eppure index_latest non è 0", index_latest_of_agent.item (a_value) = 0)
+		do
+			assert ("la lista non contiene a_value eppure index_latest non è 0", (list_builder.list_e1).index_latest_of (a_value) = 0)
 		end
 
 	t_index_latest_of_single_value_first
-        local
-            index_latest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
-        do
-            index_latest_of_agent := agent (list_builder.list_Ve1e2).index_latest_of_senza_invert
-			assert ("la lista contiene a_value come primo eppure index_latest non è 1", index_latest_of_agent.item (a_value) = 1)
+		do
+			assert ("la lista contiene a_value come primo eppure index_latest non è 1", (list_builder.list_Ve1e2).index_latest_of (a_value) = 1)
 		end
 
 	t_index_latest_of_single_value_last
-        local
-            index_latest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
-        do
-            index_latest_of_agent := agent (list_builder.list_e1e2V).index_latest_of
-			assert ("la lista contiene a_value come ultimo eppure index_latest non è count", index_latest_of_agent.item (a_value) = (list_builder.list_e1e2V).count)
+		do
+			assert ("la lista contiene a_value come ultimo eppure index_latest non è count", (list_builder.list_e1e2V).index_latest_of (a_value) = (list_builder.list_e1e2V).count)
 		end
 
 	t_index_latest_of_single_value_middle
-        local
-            index_latest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
-        do
-            index_latest_of_agent := agent (list_builder.list_e1Ve2).index_latest_of_senza_invert
-			assert ("la lista contiene a_value in seconda posizione eppure index_latest non è 2", index_latest_of_agent.item (a_value) = 2)
+		do
+			assert ("la lista contiene a_value in seconda posizione eppure index_latest non è 2", (list_builder.list_e1Ve2).index_latest_of (a_value) = 2)
 		end
 
 	t_index_latest_of_multiple_value
-  		 local
-            index_latest_of_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
-        do
-            index_latest_of_agent := agent (list_builder.list_e1VVe2).index_latest_of
-			assert ("la lista contiene a_value in terza posizione eppure index_latest non è 3", index_latest_of_agent.item (a_value) = 3)
-			assert ("ha selezionato la seconda istanza di a_value", index_latest_of_agent.item (a_value) /= 2)
+		do
+			assert ("la lista contiene a_value in terza posizione eppure index_latest non è 3", (list_builder.list_e1VVe2).index_latest_of (a_value) = 3)
+			assert ("ha selezionato la seconda istanza di a_value", (list_builder.list_e1VVe2).index_latest_of (a_value) /= 2)
 		end
 
 feature -- value_at
 
 	t_value_at_start_in_a_list_of_1
-	    local
-            value_at_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			value_at_agent := agent (list_builder.list_V).value_at
-			assert ("l'elemento a posizione 1 non è a_value", value_at_agent.item (1) = a_value)
+			assert ("l'elemento a posizione 1 non è a_value", (list_builder.list_V).value_at (1) = a_value)
 		end
 
 	t_value_at_last_in_a_list_of_1
-	    local
-            value_at_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			value_at_agent := agent (list_builder.list_V).value_at_senza_go_i_th
-			assert ("l'elemento a posizione 1 non è a_value", value_at_agent.item (1) = a_value)
+			assert ("l'elemento a posizione 1 non è a_value", (list_builder.list_V).value_at (1) = a_value)
 		end
 
 	t_value_at_start_in_a_list_of_3
-	    local
-            value_at_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			value_at_agent := agent (list_builder.list_Ve1e2).value_at_senza_go_i_th
-			assert ("l'elemento a posizione 1 non è a_value", value_at_agent.item (1) = a_value)
+			assert ("l'elemento a posizione 1 non è a_value", (list_builder.list_Ve1e2).value_at (1) = a_value)
 		end
 
 	t_value_at_last_in_a_list_of_3
-	    local
-            value_at_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			value_at_agent := agent (list_builder.list_e1e2V).value_at_con_active
-			assert ("l'elemento a posizione count non è a_value", value_at_agent.item ((list_builder.list_e1e2V).count) = a_value)
+			assert ("l'elemento a posizione count non è a_value", (list_builder.list_e1e2V).value_at ((list_builder.list_e1e2V).count) = a_value)
 		end
 
 	t_value_at_middle_in_a_list_of_3
-	    local
-            value_at_agent: FUNCTION [TUPLE [INTEGER], INTEGER]
 		do
-			value_at_agent := agent (list_builder.list_e1Ve2).value_at
-			assert ("l'elemento ha posizione 2 non è a_value", value_at_agent.item (2) = a_value)
+			assert ("l'elemento ha posizione 2 non è a_value", (list_builder.list_e1Ve2).value_at (2) = a_value)
 		end
 
 feature -- is_before
