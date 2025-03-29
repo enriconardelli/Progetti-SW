@@ -234,7 +234,8 @@ feature --test
 		end
 
 	position_of_tests
-
+		local
+			list_V_duplicate: INT_LINKED_LIST
 			--	t_position_of_empty
 		do
 			assert ("il primo elemento non esiste eppure la sua posizione non è 0", (list_builder.list_empty).position_of ((list_builder.list_empty).first_element) = 0)
@@ -255,12 +256,9 @@ feature --test
 			(list_builder.list_Ve1e2).go_i_th (2)
 			assert ("active element è in seconda posizione ma la sua posizione non è 2", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).active_element) = 2)
 			(list_builder.list_Ve1e2).go_i_th (1)
-		end
 
-	position_of_with_external
-		local
-			list_V_duplicate: INT_LINKED_LIST
-		do
+				--	t_position_of_with_external
+
 			create list_V_duplicate
 			list_V_duplicate.append (a_value)
 			assert ("gli elementi di list_V_duplicate appartengono a quelli di (list_builder.list_V)", (list_builder.list_V).position_of (list_V_duplicate.first_element) = 0)
