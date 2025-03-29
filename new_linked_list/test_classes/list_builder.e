@@ -104,6 +104,13 @@ feature -- Istanze di liste
 			Result.append (a_value)
 		end
 
+	list_Ve1: INT_LINKED_LIST
+		once
+			create Result
+			Result.append (a_value)
+			Result.append (other_element_1)
+		end
+
 	list_VT: INT_LINKED_LIST
 		once
 			create Result
