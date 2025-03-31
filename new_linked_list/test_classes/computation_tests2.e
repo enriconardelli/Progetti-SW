@@ -29,9 +29,9 @@ feature -- parametri
 	other_element_1: INTEGER = 5
 	other_element_2: INTEGER = 7
 
-feature
+feature -- test
 
-	count_of
+	t_count_of
 			-- già nelle postcondizioni della feature ci garantisce che se l'elemento non c'è il risultato è 0, quindi ci saranno solo test su quante istanze effettivamente conta
 		do
 			-- t_count_one_start
@@ -48,7 +48,7 @@ feature
 			assert ("ha contato troppe volte", (list_builder.list_VVe1).count_of (a_value) <= 2)
 		end
 
-	count_of_before
+	t_count_of_before
 		do
 			-- t_count_of_before_no_good_value_first
 			assert ("ha contato troppe volte", (list_builder.list_TV).count_of_before (a_value, a_target) = 0)
@@ -65,7 +65,7 @@ feature
 			assert ("ha contato troppe volte", (list_builder.list_Ve1VTVT).count_of_before (a_value, a_target) <= 2)
 		end
 
-	count_of_after
+	t_count_of_after
 		do
 			--	t_count_of_after_no_good_value_last
 			assert ("ha contato troppe volte", (list_builder.list_VT).count_of_after (a_value, a_target) = 0)
@@ -82,7 +82,7 @@ feature
 			assert ("ha contato troppe volte", (list_builder.list_Ve1VTVTVe2).count_of_before (a_value, a_target) <= 2)
 		end
 
-	highest
+	t_highest
 		do
 			-- t__highest_one_element
 			-- test con lista di un elemento
@@ -98,7 +98,7 @@ feature
 			assert ("errore il massimo non è il secondo elemento", (list_builder.list_Vmin1VVmin4).highest = a_value)
 		end
 
-	sum_of_positive
+	t_sum_of_positive
 		do
 			--	t_sop_negative
 			-- somma con elementi negativi
