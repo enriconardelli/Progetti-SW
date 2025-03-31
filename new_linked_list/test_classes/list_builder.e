@@ -4,8 +4,14 @@ note
 	date: "22/03/2025"
 	revision: "$Revision$"
 
-class
+once class
 	LIST_BUILDER
+
+--inherit
+--	ANY
+--	redefine
+--		default_create
+--	end
 
 create
 	default_create, make
@@ -17,8 +23,13 @@ feature -- Creation
 	other_element_1: INTEGER = 5
 	other_element_2: INTEGER = 7
 
+--	default_create
+--		once
+--			Precursor
+--		end
+
 	make (input_value: INTEGER; input_target: INTEGER; input_element_1: INTEGER; input_element_2: INTEGER)
-		do
+		once
 --			a_value := input_value
 --			a_target := input_target
 --			other_element_1 := input_element_1
