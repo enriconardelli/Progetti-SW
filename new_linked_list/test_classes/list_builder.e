@@ -8,27 +8,29 @@ class
 	LIST_BUILDER
 
 create
-	make
+	default_create, make
 
 feature -- Creation
 
+	a_value: INTEGER = 1
+	a_target: INTEGER = 2
+	other_element_1: INTEGER = 5
+	other_element_2: INTEGER = 7
+
 	make (input_value: INTEGER; input_target: INTEGER; input_element_1: INTEGER; input_element_2: INTEGER)
 		do
-			a_value := input_value
-			a_target := input_target
-			other_element_1 := input_element_1
-			other_element_2 := input_element_2
+--			a_value := input_value
+--			a_target := input_target
+--			other_element_1 := input_element_1
+--			other_element_2 := input_element_2
 		end
 
 feature -- parametri
 
-	a_value: INTEGER
-
-	a_target: INTEGER
-
-	other_element_1: INTEGER
-
-	other_element_2: INTEGER
+--	a_value: INTEGER
+--	a_target: INTEGER
+--	other_element_1: INTEGER
+--	other_element_2: INTEGER
 
 feature -- Istanze di liste
 
