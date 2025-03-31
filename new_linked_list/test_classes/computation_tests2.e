@@ -24,13 +24,9 @@ feature -- creazione istanza di List_Builder
 feature -- parametri
 
 	list_builder: LIST_BUILDER
-
 	a_value: INTEGER = 1
-
 	a_target: INTEGER = 2
-
 	other_element_1: INTEGER = 5
-
 	other_element_2: INTEGER = 7
 
 feature
