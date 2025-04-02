@@ -345,4 +345,12 @@ feature -- Istanze di liste
 			Result.append (a_value)
 		end
 
+	list_Ve1V: INT_LINKED_LIST
+		once
+			create Result
+			Result.append (a_value)
+			Result.append (other_element_1)
+			Result.append (a_value)
+		end
+
 end

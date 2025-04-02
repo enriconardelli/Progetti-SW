@@ -28,7 +28,7 @@ feature -- parametri
 
 feature --test
 
-	value_follows_tests
+	t_value_follows_tests
 		do --t_value_follows_single_target_no_value
 			assert ("la lista contiene solo a_target, ma la lista trova a_value dopo a_target", not (a_list_builder.list_T).value_follows (a_list_builder.a_value, a_list_builder.a_target))
 
@@ -53,7 +53,7 @@ feature --test
 			assert (" non trova a_value dopo a_target", (a_list_builder.list_e1Te2e1e2e1e2e1Ve2).value_follows (a_list_builder.a_value, a_list_builder.a_target))
 		end
 
-	value_after_tests
+	t_value_after_tests
 		do --t_value_after_single_target_no_value
 
 			assert ("la lista contiene solo a_target, ma t trova a_value subito dopo a_target", not (a_list_builder.list_T).value_after (a_list_builder.a_value, a_list_builder.a_target))
@@ -76,7 +76,7 @@ feature --test
 			assert ("non trova a_value subito dopo il primo a_target", (a_list_builder.list_Ve1TV).value_after (a_list_builder.a_value, a_list_builder.a_target))
 		end
 
-	value_precedes_tests
+	t_value_precedes_tests
 
 			--	t_value_precedes_single_target_no_value
 		do
@@ -104,7 +104,7 @@ feature --test
 			assert (" non trova a_value prima di a_target", (a_list_builder.list_e1Ve2e1e2e1e2e1T).value_precedes (a_list_builder.a_value, a_list_builder.a_target))
 		end
 
-	value_before_tests
+	t_value_before_tests
 
 			--	t_value_before_single_target_no_value
 		do
@@ -133,7 +133,7 @@ feature --test
 			assert ("non trova a_value subito prima del primo a_target", (a_list_builder.list_Ve1VT).value_before (a_list_builder.a_value, a_list_builder.a_target))
 		end
 
-	index__earliest_of_test
+	t_index__earliest_of_test
 
 			--t_index_earliest_of_no_value
 		do
@@ -157,7 +157,7 @@ feature --test
 			assert ("ha selezionato la terza istanza di a_value", (a_list_builder.list_e1VVe2).index_earliest_of (a_list_builder.a_value) /= 3)
 		end
 
-	index__latest_of_tests
+	t_index__latest_of_tests
 
 			--t_index_latest_of_no_value
 		do
@@ -181,7 +181,7 @@ feature --test
 			assert ("ha selezionato la seconda istanza di a_value", (a_list_builder.list_e1VVe2).index_latest_of (a_list_builder.a_value) /= 2)
 		end
 
-	value_at_tests
+	t_value_at_tests
 
 			--t_value_at_start_in_a_list_of_1
 		do

@@ -25,9 +25,9 @@ feature -- parametri
 
 	a_list_builder: LIST_BUILDER
 
-feature
+feature--t_append
 
-	append
+	t_append
 		do
 				--	t_append_empty
 			assert ("ERRORE: ho fatto append di a_value, ma t non contiene a_value", (a_list_builder.list_V).has (a_list_builder.a_value))
@@ -39,7 +39,7 @@ feature
 			assert ("ERRORE: l'elemento a_value-2 dovrebbe essere stato messo come ultimo elemento", (a_list_builder.list_Ve1).last_element /= Void and then attached (a_list_builder.list_Ve1).last_element as le implies le.value = a_list_builder.other_element_1)
 		end
 
-feature -- prepend
+feature -- t_prepend
 	-- Enrico Nardelli, 2021/03/02
 
 	t_prepend_empty
