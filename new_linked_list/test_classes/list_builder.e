@@ -247,7 +247,7 @@ feature -- Istanze di liste
 			Result.append (other_element_2)
 		end
 
-	list_VVmin1Vmin3: INT_LINKED_LIST
+	list_VVless1Vless3: INT_LINKED_LIST
 		once
 			create Result
 			Result.append (a_value)
@@ -255,7 +255,7 @@ feature -- Istanze di liste
 			Result.append (a_value - 3)
 		end
 
-	list_Vmin1Vmin4V: INT_LINKED_LIST
+	list_Vless1Vless4V: INT_LINKED_LIST
 		once
 			create Result
 			Result.append (a_value - 1)
@@ -263,7 +263,7 @@ feature -- Istanze di liste
 			Result.append (a_value)
 		end
 
-	list_Vmin1VVmin4: INT_LINKED_LIST
+	list_Vless1VVless4: INT_LINKED_LIST
 		once
 			create Result
 			Result.append (a_value - 1)
@@ -271,7 +271,7 @@ feature -- Istanze di liste
 			Result.append (a_value - 4)
 		end
 
-	list_minVabs_mine1abs_mine1abs: INT_LINKED_LIST
+	list_negabsV_negabse1_negabse1: INT_LINKED_LIST
 		once
 			create Result
 			Result.append (- a_value.abs)
@@ -279,14 +279,14 @@ feature -- Istanze di liste
 			Result.append (- other_element_1.abs)
 		end
 
-	list_Vabs_e1abs: INT_LINKED_LIST
+	list_absV_abse1: INT_LINKED_LIST
 		once
 			create Result
 			Result.append (a_value.abs)
 			Result.append (other_element_1.abs)
 		end
 
-	list_Vabs_e1abs_minVabs: INT_LINKED_LIST
+	list_absV_abse1_negabsV: INT_LINKED_LIST
 		once
 			create Result
 			Result.append (a_value.abs)

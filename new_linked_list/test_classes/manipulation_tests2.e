@@ -17,13 +17,12 @@ feature -- creazione istanza di List_Builder
 
 	on_prepare
 		do
-			create list_builder.default_creation
+			create a_list_builder.default_creation
 		end
 
 feature -- parametri
 
-	list_builder: LIST_BUILDER
-
+	a_list_builder: LIST_BUILDER
 	a_value: INTEGER = 1
 
 	a_target: INTEGER = 2
@@ -132,22 +131,22 @@ feature
 	--t_head_list_one_element
 			-- lista con solo un elemento
 
-			assert ("errore: l'unico elemento non coincide con quello della lista originale", attached (list_builder.list_V).head_list (1).first_element as fe implies fe.value = a_value)
+			assert ("errore: l'unico elemento non coincide con quello della lista originale", attached (a_list_builder.list_V).head_list (1).first_element as fe implies fe.value = a_value)
 
 
 	--t_head_list_three_element_copy_two
 			-- lista con tre elementi e ne copio due
 
-			assert ("errore: il primo elemento non coincide con quello della lista originale", attached (list_builder.list_Ve1e2).head_list (2).first_element as fe implies fe.value = a_value)
-			assert ("errore: il secondo elemento non coincide con quello della lista originale", attached (list_builder.list_Ve1e2).head_list (2).last_element as fe implies fe.value = other_element_1)
+			assert ("errore: il primo elemento non coincide con quello della lista originale", attached (a_list_builder.list_Ve1e2).head_list (2).first_element as fe implies fe.value = a_value)
+			assert ("errore: il secondo elemento non coincide con quello della lista originale", attached (a_list_builder.list_Ve1e2).head_list (2).last_element as fe implies fe.value = other_element_1)
 
 
 	--t_head_list_three_element_three_coopy
 			-- lista con tre elementi e ne copio tre
 
 
-			assert ("errore: il primo elemento non coincide con quello della lista originale", attached (list_builder.list_Ve1e2).head_list (3).first_element as fe implies fe.value = a_value)
-			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached (list_builder.list_Ve1e2).head_list (3).last_element as fe implies fe.value = other_element_2)
+			assert ("errore: il primo elemento non coincide con quello della lista originale", attached (a_list_builder.list_Ve1e2).head_list (3).first_element as fe implies fe.value = a_value)
+			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached (a_list_builder.list_Ve1e2).head_list (3).last_element as fe implies fe.value = other_element_2)
 
 
 	--t_head_list_does_not_copy_changes
@@ -189,21 +188,21 @@ feature
 
 --	t_tail_list_one_element
 
-			assert ("errore: l'unico elemento non coincide con quello della lista originale", attached (list_builder.list_V).tail_list (1).first_element as fe implies fe.value = a_value)
+			assert ("errore: l'unico elemento non coincide con quello della lista originale", attached (a_list_builder.list_V).tail_list (1).first_element as fe implies fe.value = a_value)
 
 
 --	t_tail_list_three_element_copy_two
 			-- lista con tre elementi e ne copio due
 
-			assert ("errore: il penultimo elemento non coincide con quello della lista originale", (list_builder.list_Ve1e2).tail_list (2).first_element /= Void and attached (list_builder.list_Ve1e2).tail_list (2).first_element as fe implies fe.value = other_element_1)
-			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached (list_builder.list_Ve1e2).tail_list (2).last_element as fe implies fe.value = other_element_2)
+			assert ("errore: il penultimo elemento non coincide con quello della lista originale", (a_list_builder.list_Ve1e2).tail_list (2).first_element /= Void and attached (a_list_builder.list_Ve1e2).tail_list (2).first_element as fe implies fe.value = other_element_1)
+			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached (a_list_builder.list_Ve1e2).tail_list (2).last_element as fe implies fe.value = other_element_2)
 
 
 --	t_tail_list_three_element_three_coopy
 			-- lista con tre elementi e ne copio tre
 
-			assert ("errore: il primo elemento non coincide con quello della lista originale", attached (list_builder.list_Ve1e2).tail_list (3).first_element as fe implies fe.value = a_value)
-			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached (list_builder.list_Ve1e2).tail_list (3).last_element as fe implies fe.value = other_element_2)
+			assert ("errore: il primo elemento non coincide con quello della lista originale", attached (a_list_builder.list_Ve1e2).tail_list (3).first_element as fe implies fe.value = a_value)
+			assert ("errore: l'ultimo elemento non coincide con quello della lista originale", attached (a_list_builder.list_Ve1e2).tail_list (3).last_element as fe implies fe.value = other_element_2)
 
 
 --	t_tail_list_does_not_copy_changes

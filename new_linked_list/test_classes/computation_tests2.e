@@ -70,23 +70,23 @@ feature -- test
 			-- test con lista di un elemento
 			assert ("errore il massimo non è il primo elemento", (a_list_builder.list_V).highest = a_list_builder.a_value)
 			-- test con lista di tre elementi e valore più alto all'inizio
-			assert ("errore il massimo non è il primo elemento", (a_list_builder.list_VVmin1Vmin3).highest = a_list_builder.a_value)
+			assert ("errore il massimo non è il primo elemento", (a_list_builder.list_VVless1Vless3).highest = a_list_builder.a_value)
 			-- test con lista di tre elementi e valore più alto alla fine
-			assert ("errore il massimo non è l'ultimo elemento", (a_list_builder.list_Vmin1Vmin4V).highest = a_list_builder.a_value)
+			assert ("errore il massimo non è l'ultimo elemento", (a_list_builder.list_Vless1Vless4V).highest = a_list_builder.a_value)
 			-- test con lista di tre elementi e valore più alto in mezzo
-			assert ("errore il massimo non è il secondo elemento", (a_list_builder.list_Vmin1VVmin4).highest = a_list_builder.a_value)
+			assert ("errore il massimo non è il secondo elemento", (a_list_builder.list_Vless1VVless4).highest = a_list_builder.a_value)
 		end
 
 	t_sum_of_positive
 		do
 			-- somma con elementi negativi
-			assert ("ha sommato dei numeri negativi", (a_list_builder.list_minVabs_mine1abs_mine1abs).sum_of_positive = 0)
+			assert ("ha sommato dei numeri negativi", (a_list_builder.list_negabsV_negabse1_negabse1).sum_of_positive = 0)
 			-- somma con lista vuota
 			assert ("ha sommato qualcosa anche se la lista è vuota", (a_list_builder.list_empty).sum_of_positive = 0)
 			-- somma con elementi positvi
-			assert ("non ha svolto la somma positiva correttamente", (a_list_builder.list_Vabs_e1abs).sum_of_positive = a_list_builder.a_value.abs + a_list_builder.other_element_1.abs)
+			assert ("non ha svolto la somma positiva correttamente", (a_list_builder.list_absV_abse1).sum_of_positive = a_list_builder.a_value.abs + a_list_builder.other_element_1.abs)
 			-- somma con elementi misti
-			assert ("non ha svolto la somma mista correttamente", (a_list_builder.list_Vabs_e1abs_minVabs).sum_of_positive = a_list_builder.a_value.abs + a_list_builder.other_element_1.abs)
+			assert ("non ha svolto la somma mista correttamente", (a_list_builder.list_absV_abse1_negabsV).sum_of_positive = a_list_builder.a_value.abs + a_list_builder.other_element_1.abs)
 		end
 
 end
