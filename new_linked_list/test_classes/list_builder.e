@@ -4,44 +4,28 @@ note
 	date: "22/03/2025"
 	revision: "$Revision$"
 
-once class
+class
 	LIST_BUILDER
 
---inherit
---	ANY
---	redefine
---		default_create
---	end
-
 create
-	default_create, make
+	default_creation
 
-feature -- Creation
+feature {NONE}
 
-	a_value: INTEGER = 1
-	a_target: INTEGER = 2
-	other_element_1: INTEGER = 5
-	other_element_2: INTEGER = 7
-
---	default_create
---		once
---			Precursor
---		end
-
-	make (input_value: INTEGER; input_target: INTEGER; input_element_1: INTEGER; input_element_2: INTEGER)
+	default_creation
 		once
---			a_value := input_value
---			a_target := input_target
---			other_element_1 := input_element_1
---			other_element_2 := input_element_2
+			a_value := 1
+			a_target := 2
+			other_element_1 := 5
+			other_element_2 := 7
 		end
 
 feature -- parametri
 
---	a_value: INTEGER
---	a_target: INTEGER
---	other_element_1: INTEGER
---	other_element_2: INTEGER
+	a_value: INTEGER
+	a_target: INTEGER
+	other_element_1: INTEGER
+	other_element_2: INTEGER
 
 feature -- Istanze di liste
 
