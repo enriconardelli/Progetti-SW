@@ -33,9 +33,10 @@ feature -- parametri
 
 	other_element_2: INTEGER = 7
 
-feature --start
+feature
+	t_start
 
-	t_first_one_element
+	--t_first_one_element
 			-- test su lista da un elemento solo
 		do
 			(a_list_builder.list_V).start
@@ -45,29 +46,28 @@ feature --start
 			assert ("il primo elemento risulta vuoto", (a_list_builder.list_V).first_element /= Void)
 				-- la listta non è vuota quindi il primo elemento non deve essere associato a void
 			assert ("l'indice non è stato spostato ad 1", (a_list_builder.list_V).index = 1)
-		end
-
-	t_first_multiple_element
+	--t_first_multiple_element
 			-- test su lista con più di un elemento
-		do
+			(a_list_builder.list_Ve1e2).start
 			if attached (a_list_builder.list_Ve1e2).active_element as ae and attached (a_list_builder.list_Ve1e2).first_element as fe then
 				assert ("il primo elemto della lista risulta sbagliato", ae.value = fe.value)
 			end
 			assert ("il primo elemento risulta vuoto", (a_list_builder.list_Ve1e2).first_element /= Void)
 				-- la lista non è vuota quindi il primo elemento non deve essere associato a void
 			assert ("l'indice non è stato spostato ad 1", (a_list_builder.list_Ve1e2).index = 1)
-		end
+			(a_list_builder.list_Ve1e2).go_i_th (0)
 
-	t_first_void
-		do
+	--t_first_void
 			(a_list_builder.list_empty).start
 			assert ("il primo elemento non risulta vuoto", (a_list_builder.list_empty).first_element = Void)
 				-- la lista è vuota quindi il primo elemento deve essere associato a void
 			assert ("l'indice non è 0 nonostante la lista sia vuota", (a_list_builder.list_empty).index = 0)
+			(a_list_builder.list_empty).go_i_th (0)
 		end
 
-feature --last
-	t_last_one_element
+feature
+	t_last
+	--t_last_one_element
 			-- test su lista da un elemento solo
 		do
 			(a_list_builder.list_V).last
@@ -77,34 +77,25 @@ feature --last
 			assert ("l'ultimo elemento risulta vuoto", (a_list_builder.list_V).last_element /= void)
 				-- la listta non è vuota quindi l'ultimo elemento non deve essere associato a void
 			assert ("l'indice non è stato spostato ad count", (a_list_builder.list_V).index = (a_list_builder.list_V).count)
-		end
-
-	t_last_multiple_element
-			-- test su lista con più di un elemento
-		do
-
+	--t_last_multiple_element
+			-- test su lista con più di un element
 			(a_list_builder.list_Ve1e2).last
 			if attached (a_list_builder.list_Ve1e2).active_element as ae and attached (a_list_builder.list_Ve1e2).last_element as fe then
 				assert ("l'ultimo elemto della lista risulta sbagliato", ae.value = fe.value)
-
 			end
 			assert ("l'ultimo elemento risulta vuoto", (a_list_builder.list_Ve1e2).last_element /= Void)
 				-- la lista non è vuota quindi l'ultimo elemento non deve essere associato a void
 			assert ("l'indice non è stato spostato ad count", (a_list_builder.list_Ve1e2).index = (a_list_builder.list_Ve1e2).count)
-		(a_list_builder.list_Ve1e2).start
-		end
-
-	t_last_void
-		do
+			(a_list_builder.list_Ve1e2).go_i_th (0)
+	--t_last_void
 			(a_list_builder.list_empty).last
 			assert ("l'ultimo elemento non risulta vuoto", (a_list_builder.list_empty).last_element = Void)
 				-- la lista è vuota quindi l'ultimo elemento deve essere associato a void
 			assert ("l'indice non è 0 nonostante la lista sia vuota", (a_list_builder.list_empty).index = 0)
-		(a_list_builder.list_empty).start
+			(a_list_builder.list_empty).go_i_th (0)
 		end
 
 feature -- forth
-	-- Alessandro Filippo 2020/03/08
 
 	t_forth_to_void_one_element
 		local
