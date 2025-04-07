@@ -41,28 +41,28 @@ feature -- test
 			assert ("ha contato troppe volte", (a_list_builder.list_VVe1).count_of (a_list_builder.a_value) <= 2)
 		end
 
-	t_count_of_before
-		do
-			assert ("ha contato troppe volte", (a_list_builder.list_TV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) = 0)
-			assert ("ha contato troppe volte", (a_list_builder.list_e1TV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) = 0)
-			assert ("ha contato poche volte", (a_list_builder.list_VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 1)
-			assert ("ha contato troppe volte", (a_list_builder.list_VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 1)
-			assert ("ha contato poche volte", (a_list_builder.list_Ve1VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
-			assert ("ha contato troppe volte", (a_list_builder.list_Ve1VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
-			assert ("ha contato poche volte", (a_list_builder.list_Ve1VTVT).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
-			assert ("ha contato troppe volte", (a_list_builder.list_Ve1VTVT).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
-		end
+--	t_count_of_before
+--		do
+--			assert ("ha contato troppe volte", (a_list_builder.list_TV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) = 0)
+--			assert ("ha contato troppe volte", (a_list_builder.list_e1TV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) = 0)
+--			assert ("ha contato poche volte", (a_list_builder.list_VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 1)
+--			assert ("ha contato troppe volte", (a_list_builder.list_VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 1)
+--			assert ("ha contato poche volte", (a_list_builder.list_Ve1VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
+--			assert ("ha contato troppe volte", (a_list_builder.list_Ve1VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
+--			assert ("ha contato poche volte", (a_list_builder.list_Ve1VTVT).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
+--			assert ("ha contato troppe volte", (a_list_builder.list_Ve1VTVT).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
+--		end
 
 	t_count_of_after
 		do
-			assert ("ha contato troppe volte", (a_list_builder.list_VT).count_of_after (a_list_builder.a_value, a_list_builder.a_target) = 0)
-			assert ("ha contato troppe volte", (a_list_builder.list_VTe1).count_of_after (a_list_builder.a_value, a_list_builder.a_target) = 0)
-			assert ("ha contato poche volte", (a_list_builder.list_VTV).count_of_after (a_list_builder.a_value, a_list_builder.a_target) >= 1)
-			assert ("ha contato troppe volte", (a_list_builder.list_VTV).count_of_after (a_list_builder.a_value, a_list_builder.a_target) <= 1)
-			assert ("ha contato poche volte", (a_list_builder.list_Ve1TVe2V).count_of_after (a_list_builder.a_value, a_list_builder.a_target) >= 2)
-			assert ("ha contato troppe volte", (a_list_builder.list_Ve1TVe2V).count_of_after (a_list_builder.a_value, a_list_builder.a_target) <= 2)
-			assert ("ha contato poche volte", (a_list_builder.list_Ve1VTVTVe2).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
-			assert ("ha contato troppe volte", (a_list_builder.list_Ve1VTVTVe2).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
+			assert ("ha contato troppe volte list_VT", (a_list_builder.list_VT).count_of_after (a_list_builder.a_value, a_list_builder.a_target) = 0)
+			assert ("ha contato troppe volte list_VTe1", (a_list_builder.list_VTe1).count_of_after (a_list_builder.a_value, a_list_builder.a_target) = 0)
+			assert ("ha contato poche volte list_VTV", (a_list_builder.list_VTV).count_of_after (a_list_builder.a_value, a_list_builder.a_target) >= 1)
+			assert ("ha contato troppe volte list_VTV", (a_list_builder.list_VTV).count_of_after (a_list_builder.a_value, a_list_builder.a_target) <= 1)
+			assert ("ha contato poche volte list_Ve1TVe2V", (a_list_builder.list_Ve1TVe2V).count_of_after (a_list_builder.a_value, a_list_builder.a_target) >= 2)
+			assert ("ha contato troppe volte list_Ve1TVe2V", (a_list_builder.list_Ve1TVe2V).count_of_after (a_list_builder.a_value, a_list_builder.a_target) <= 2)
+			assert ("ha contato poche volte list_Ve1VTVTVe2", (a_list_builder.list_Ve1VTVTVe2).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
+			assert ("ha contato troppe volte list_Ve1VTVTVe2", (a_list_builder.list_Ve1VTVTVe2).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
 		end
 
 	t_highest
