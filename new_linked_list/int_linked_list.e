@@ -424,9 +424,18 @@ feature -- Stato
 			zero_se_non_esiste: not has (a_value) = (Result = 0)
 		end
 
-	index_earliest_of_CON_INVERT_DA_FARE (a_value: INTEGER): INTEGER
+	index_earliest_of_CON_INVERT (a_value: INTEGER): INTEGER
 			-- ritorna la posizione del primo elemento che contiene `a_value' oppure 0 se non esiste
 		do
+			if has (a_value) then
+				invert
+				Result := count - index_latest_of_SENZA_INVERT(a_value) + 1
+				invert
+			end
+		ensure
+			invert_corretti: first_element = old first_element and last_element = old last_element and active_element = old active_element
+			corretto_se_esiste: has (a_value) = (0 < Result and Result <= count)
+			zero_se_non_esiste: not has (a_value) = (Result = 0)
 		end
 
 	index_latest_of (a_value: INTEGER): INTEGER
@@ -546,7 +555,7 @@ feature -- Stato
 			go_i_th (list_index)
 		end
 
-feature {STATO_TESTS, STATO_TESTS2} -- Private
+feature {STATO_TESTS, PRIVATE_TESTS} -- Private
 	-- non viene messa a disposizione perche' gestisce gli indirizzi assoluti degli elementi
 	-- puo' invece essere invocata dalle altre feature in modo unqualified
 	-- viene ovviamente esportata verso la classe di test
