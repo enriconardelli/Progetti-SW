@@ -65,19 +65,19 @@ feature --test
 		do
 			assert ("il primo elemento non esiste eppure la sua posizione non è 0", (list_builder.list_empty).position_of ((list_builder.list_empty).first_element) = 0)
 			assert ("l'ultimo elemento non esiste eppure la sua posizione non è 0", (list_builder.list_empty).position_of ((list_builder.list_empty).last_element) = 0)
-			assert ("active element non esiste eppure la sua posizione non è 0", (list_builder.list_empty).position_of ((list_builder.list_empty).active_element) = 0)
+			assert ("active element non esiste eppure la sua posizione non è 0 - t_position_of_empty", (list_builder.list_empty).position_of ((list_builder.list_empty).active_element) = 0)
 
 				--	t_position_of_one_element
 
 			assert ("il primo elemento è il primo eppure la sua posizione non è 1", (list_builder.list_V).position_of ((list_builder.list_V).first_element) = 1)
 			assert ("l'ultimo elemento l'ultimo eppure la sua posizione non è 1", (list_builder.list_V).position_of ((list_builder.list_V).last_element) = 1)
-			assert ("active element non esiste eppure la sua posizione non è 0", (list_builder.list_V).position_of ((list_builder.list_V).active_element) = 0)
+			assert ("active element non esiste eppure la sua posizione non è 0 - t_position_of_one_element", (list_builder.list_V).position_of ((list_builder.list_V).active_element) = 0)
 
 				--	t_position_of_multiple_element
 
 			assert ("il primo elemento non esiste eppure la sua posizione non è 1", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).first_element) = 1)
 			assert ("l'ultimo elemento non esiste eppure la sua posizione non è 3", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).last_element) = 3)
-			assert ("active element non esiste eppure la sua posizione non è 0", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).active_element) = 0)
+			assert ("active element non esiste eppure la sua posizione non è 0 - t_position_of_multiple_element", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).active_element) = 0)
 			(list_builder.list_Ve1e2).go_i_th (2)
 			assert ("active element è in seconda posizione ma la sua posizione non è 2", (list_builder.list_Ve1e2).position_of ((list_builder.list_Ve1e2).active_element) = 2)
 			(list_builder.list_Ve1e2).go_i_th (1)

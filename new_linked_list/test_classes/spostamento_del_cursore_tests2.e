@@ -18,7 +18,7 @@ feature -- creazione istanza di List_Builder
 
 	on_prepare
 		do
-			create a_list_builder.default_create
+			create a_list_builder
 		end
 
 feature -- parametri
@@ -44,13 +44,15 @@ feature
 				assert ("l'unico elemento della lista non è considerato come primo", ae.value = fe.value)
 			end
 			assert ("il primo elemento risulta vuoto", (a_list_builder.list_V).first_element /= Void)
-				-- la listta non è vuota quindi il primo elemento non deve essere associato a void
+				-- la lista non è vuota quindi il primo elemento non deve essere associato a void
 			assert ("l'indice non è stato spostato ad 1", (a_list_builder.list_V).index = 1)
+			(a_list_builder.list_V).go_i_th (0)
+
 	--t_first_multiple_element
 			-- test su lista con più di un elemento
 			(a_list_builder.list_Ve1e2).start
 			if attached (a_list_builder.list_Ve1e2).active_element as ae and attached (a_list_builder.list_Ve1e2).first_element as fe then
-				assert ("il primo elemto della lista risulta sbagliato", ae.value = fe.value)
+				assert ("il primo elemento della lista risulta sbagliato", ae.value = fe.value)
 			end
 			assert ("il primo elemento risulta vuoto", (a_list_builder.list_Ve1e2).first_element /= Void)
 				-- la lista non è vuota quindi il primo elemento non deve essere associato a void
@@ -75,18 +77,21 @@ feature
 				assert ("l'unico elemento della lista non è considerato come ultimo", ae.value = fe.value)
 			end
 			assert ("l'ultimo elemento risulta vuoto", (a_list_builder.list_V).last_element /= void)
-				-- la listta non è vuota quindi l'ultimo elemento non deve essere associato a void
+				-- la lista non è vuota quindi l'ultimo elemento non deve essere associato a void
 			assert ("l'indice non è stato spostato ad count", (a_list_builder.list_V).index = (a_list_builder.list_V).count)
+			(a_list_builder.list_V).go_i_th (0)
+
 	--t_last_multiple_element
 			-- test su lista con più di un element
 			(a_list_builder.list_Ve1e2).last
 			if attached (a_list_builder.list_Ve1e2).active_element as ae and attached (a_list_builder.list_Ve1e2).last_element as fe then
-				assert ("l'ultimo elemto della lista risulta sbagliato", ae.value = fe.value)
+				assert ("l'ultimo elemento della lista risulta sbagliato", ae.value = fe.value)
 			end
 			assert ("l'ultimo elemento risulta vuoto", (a_list_builder.list_Ve1e2).last_element /= Void)
 				-- la lista non è vuota quindi l'ultimo elemento non deve essere associato a void
 			assert ("l'indice non è stato spostato ad count", (a_list_builder.list_Ve1e2).index = (a_list_builder.list_Ve1e2).count)
 			(a_list_builder.list_Ve1e2).go_i_th (0)
+
 	--t_last_void
 			(a_list_builder.list_empty).last
 			assert ("l'ultimo elemento non risulta vuoto", (a_list_builder.list_empty).last_element = Void)
@@ -148,20 +153,17 @@ feature -- go_i_th
 
 	t_go_i_th_zero
 		do
-
 			(a_list_builder.list_Ve1e2).go_i_th (0)
 			assert ("active non è stato spostato a Void", (a_list_builder.list_Ve1e2).active_element = Void)
 			assert ("index non è stato messo ad 0", (a_list_builder.list_Ve1e2).index = 0)
 		end
 
 	t_go_i_th_first
-
 		do
-
 			(a_list_builder.list_Ve1e2).go_i_th (1)
 			assert ("active non è stato spostato a first", (a_list_builder.list_Ve1e2).active_element = (a_list_builder.list_Ve1e2).first_element)
 			assert ("index non è stato messo ad 1", (a_list_builder.list_Ve1e2).index = 1)
-		(a_list_builder.list_Ve1e2).go_i_th (0)
+			(a_list_builder.list_Ve1e2).go_i_th (0)
 		end
 
 	t_go_i_th_last
@@ -170,16 +172,15 @@ feature -- go_i_th
 			(a_list_builder.list_Ve1e2).go_i_th ((a_list_builder.list_Ve1e2).count)
 			assert ("active non è stato spostato all'ultimo elemento", (a_list_builder.list_Ve1e2).active_element = (a_list_builder.list_Ve1e2).last_element)
 			assert ("index non è stato messo a 3", (a_list_builder.list_Ve1e2).index = (a_list_builder.list_Ve1e2).count)
+			(a_list_builder.list_Ve1e2).go_i_th (0)
 		end
 
 	t_go_i_th_middle
-
 		do
-
 			(a_list_builder.list_Ve1e2).go_i_th (2)
 			assert ("active non è stato spostato al secondo elemento", (a_list_builder.list_Ve1e2).active_element = (a_list_builder.list_Ve1e2).get_element (other_element_1))
 			assert ("index non è stato messo ad 2", (a_list_builder.list_Ve1e2).index = 2)
-		(a_list_builder.list_Ve1e2).go_i_th (0)
+			(a_list_builder.list_Ve1e2).go_i_th (0)
 		end
 
 end
