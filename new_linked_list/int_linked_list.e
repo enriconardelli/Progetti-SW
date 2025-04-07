@@ -224,10 +224,7 @@ feature -- Stato
 				Result := True
 			end
 		ensure
-				--			a_value_segue_target: Result implies index_earliest_of (a_value) > index_earliest_of (target)
-				-- TODO: va usata la condizione di sotto ma bisogno implementare index_latest_of()
-				--			a_value_segue_target: Result implies index_latest_of (a_value) > index_earliest_of (target)
-
+			a_value_segue_target: Result implies index_latest_of (a_value) > index_earliest_of (target)
 		end
 
 	value_after (a_value, target: INTEGER): BOOLEAN

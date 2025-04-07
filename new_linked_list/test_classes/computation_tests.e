@@ -5,7 +5,7 @@ note
 	revision: "$Revision$"
 
 class
-	COMPUTATION_TESTS2
+	COMPUTATION_TESTS
 
 inherit
 

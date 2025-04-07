@@ -1,7 +1,8 @@
 note
 	description: "Test per feature di tipo Ricerca"
-	author: "Gianluca Pastorini"
-	date: "08/04/23"
+	author_1: "Gianluca Pastorini - 03/04/23"
+	author_2: "Marco Aragona & Gabriele Messina"
+	date: "29/03/25"
 	revision: "$Revision$"
 
 class
