@@ -35,7 +35,7 @@ feature -- t_invert
 			t.append (a_list_builder.a_value)
 			t.append (a_list_builder.other_element_1)
 			t.append (a_list_builder.other_element_2)
-			t.append (a_list_builder.a_value)
+			t.append (- a_list_builder.a_value)
 			t.invert
 			assert ("errore: il numero di elementi della lista è cambiato", t.count = 4)
 			t.start

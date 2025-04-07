@@ -10,22 +10,17 @@ class
 create
 	default_creation
 
-feature {NONE}
-
+feature
 	default_creation
 		once
-			a_value := 1
-			a_target := 2
-			other_element_1 := 5
-			other_element_2 := 7
 		end
 
 feature -- parametri
 
-	a_value: INTEGER
-	a_target: INTEGER
-	other_element_1: INTEGER
-	other_element_2: INTEGER
+	a_value: INTEGER = 1
+	a_target: INTEGER = 2
+	other_element_1: INTEGER = 5
+	other_element_2: INTEGER = 7
 
 feature -- Istanze di liste
 
