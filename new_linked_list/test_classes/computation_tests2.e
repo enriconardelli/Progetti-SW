@@ -18,7 +18,7 @@ feature -- creazione istanza di List_Builder
 
 	on_prepare
 		do
-			create a_list_builder.default_creation
+			create a_list_builder
 		end
 
 feature -- parametri
@@ -41,17 +41,17 @@ feature -- test
 			assert ("ha contato troppe volte", (a_list_builder.list_VVe1).count_of (a_list_builder.a_value) <= 2)
 		end
 
---	t_count_of_before
---		do
---			assert ("ha contato troppe volte", (a_list_builder.list_TV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) = 0)
---			assert ("ha contato troppe volte", (a_list_builder.list_e1TV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) = 0)
---			assert ("ha contato poche volte", (a_list_builder.list_VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 1)
---			assert ("ha contato troppe volte", (a_list_builder.list_VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 1)
---			assert ("ha contato poche volte", (a_list_builder.list_Ve1VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
---			assert ("ha contato troppe volte", (a_list_builder.list_Ve1VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
---			assert ("ha contato poche volte", (a_list_builder.list_Ve1VTVT).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
---			assert ("ha contato troppe volte", (a_list_builder.list_Ve1VTVT).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
---		end
+	t_count_of_before
+		do
+			assert ("ha contato troppe volte", (a_list_builder.list_TV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) = 0)
+			assert ("ha contato troppe volte", (a_list_builder.list_e1TV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) = 0)
+			assert ("ha contato poche volte", (a_list_builder.list_VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 1)
+			assert ("ha contato troppe volte", (a_list_builder.list_VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 1)
+			assert ("ha contato poche volte", (a_list_builder.list_Ve1VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
+			assert ("ha contato troppe volte", (a_list_builder.list_Ve1VTV).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
+			assert ("ha contato poche volte", (a_list_builder.list_Ve1VTVT).count_of_before (a_list_builder.a_value, a_list_builder.a_target) >= 2)
+			assert ("ha contato troppe volte", (a_list_builder.list_Ve1VTVT).count_of_before (a_list_builder.a_value, a_list_builder.a_target) <= 2)
+		end
 
 	t_count_of_after
 		do
@@ -67,6 +67,7 @@ feature -- test
 
 	t_highest
 		do
+
 			-- test con lista di un elemento
 			assert ("errore il massimo non è il primo elemento", (a_list_builder.list_V).highest = a_list_builder.a_value)
 			-- test con lista di tre elementi e valore più alto all'inizio

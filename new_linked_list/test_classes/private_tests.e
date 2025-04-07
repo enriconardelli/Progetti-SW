@@ -19,7 +19,7 @@ feature -- creazione istanza di List_Builder
 
 	on_prepare
 		do
-			create list_builder.default_creation
+			create list_builder
 		end
 
 

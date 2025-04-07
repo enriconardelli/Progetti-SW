@@ -17,7 +17,7 @@ feature -- creazione istanza di List_Builder
 
 	on_prepare
 		do
-			create a_list_builder.default_creation
+			create a_list_builder
 		end
 
 feature -- parametri

@@ -7,16 +7,7 @@ note
 class
 	LIST_BUILDER
 
-create
-	default_creation
-
-feature
-	default_creation
-		once
-		end
-
 feature -- parametri
-
 	a_value: INTEGER = 1
 	a_target: INTEGER = 2
 	other_element_1: INTEGER = 5
