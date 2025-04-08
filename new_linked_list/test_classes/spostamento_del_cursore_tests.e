@@ -26,15 +26,7 @@ feature -- parametri
 
 	a_list_builder: LIST_BUILDER
 
-	feature -- parametri
-
-	a_value: INTEGER = 1
-
-	other_element_1: INTEGER = 5
-
-	other_element_2: INTEGER = 7
-
-feature
+feature --	t_start
 	t_start
 
 	--t_first_one_element
@@ -68,7 +60,7 @@ feature
 			(a_list_builder.list_empty).go_i_th (0)
 		end
 
-feature
+feature	--	t_last
 	t_last
 	--t_last_one_element
 			-- test su lista da un elemento solo
@@ -102,13 +94,13 @@ feature
 		end
 
 feature -- forth
-
+--Non funzionano con le liste di list_builder
 	t_forth_to_void_one_element
 		local
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value)
+			t.append (a_list_builder.a_value)
 			t.start
 				-- serve t.start perché append non sposta active element, quindi se non lo inzializzi sta su void
 			t.forth
@@ -122,8 +114,8 @@ feature -- forth
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value)
-			t.append (other_element_1)
+			t.append (a_list_builder.a_value)
+			t.append (a_list_builder.other_element_1)
 			t.start
 				-- porto il cursore all'inizio
 			t.forth
@@ -138,8 +130,8 @@ feature -- forth
 			t: INT_LINKED_LIST
 		do
 			create t
-			t.append (a_value)
-			t.append (other_element_1)
+			t.append (a_list_builder.a_value)
+			t.append (a_list_builder.other_element_1)
 			t.start
 				-- porto il cursore all'inzio
 			t.forth
@@ -179,7 +171,7 @@ feature -- go_i_th
 	t_go_i_th_middle
 		do
 			(a_list_builder.list_Ve1e2).go_i_th (2)
-			assert ("active non è stato spostato al secondo elemento", (a_list_builder.list_Ve1e2).active_element = (a_list_builder.list_Ve1e2).get_element (other_element_1))
+			assert ("active non è stato spostato al secondo elemento", (a_list_builder.list_Ve1e2).active_element = (a_list_builder.list_Ve1e2).get_element (a_list_builder.other_element_1))
 			assert ("index non è stato messo ad 2", (a_list_builder.list_Ve1e2).index = 2)
 			(a_list_builder.list_Ve1e2).go_i_th (0)
 		end
