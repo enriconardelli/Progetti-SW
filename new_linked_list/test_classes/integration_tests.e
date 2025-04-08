@@ -13,83 +13,6 @@ inherit
 
 feature -- servizio
 
-		-- parte di AGULINI_FIORINI
-
-		-- TO DO: le funzioni di supporto how_many/how_many_after/how_many_before possono essere sostituite dalle feature interne
-		-- di INT_LINKED_LIST count_of/count_of_after/count_of_before
-
-	how_many (t: INT_LINKED_LIST; value: INTEGER): INTEGER
-			-- return how many times `a_value' occurs in `t'
-			-- è identica a count_of, solo che è una funzione esterna alla lista
-		local
-			current_element: INT_LINKABLE
-		do
-			if t.count = 0 then
-				Result := 0
-			else
-				from
-					current_element := t.first_element
-				until
-					current_element = Void
-				loop
-					if current_element.value = value then
-						Result := Result + 1
-					end
-					current_element := current_element.next
-				end
-			end
-		end
-
-	how_many_before (t: INT_LINKED_LIST; a_value, target: INTEGER): INTEGER
-			--ci dice quante occorrenze di value prima di target ci sono nella lista
-		require
-			ha_almeno_target: t.has (target)
-		local
-			current_element: INT_LINKABLE
-		do
-			Result := 0
-			from
-				current_element := t.first_element
-			until
-				current_element = t.get_element (target)
-			loop
-				if attached current_element as ce then
-					if ce.value = a_value then
-						Result := Result + 1
-					end
-					current_element := current_element.next
-				end
-			end
-		ensure
-			ha_contato_qualche_a_value_presente: t.value_follows (target, a_value) implies Result > 0
-			non_ha_contato_se_non_presente: not (t.value_follows (target, a_value)) implies Result = 0
-		end
-
-	how_many_after (t: INT_LINKED_LIST; a_value, target: INTEGER): INTEGER
-			--ci dice quante occorrenze di value dopo target ci sono nella lista
-		require
-			ha_almeno_target: t.has (target)
-		local
-			current_element: INT_LINKABLE
-		do
-			Result := 0
-			from
-				current_element := t.get_element (target)
-			until
-				current_element = Void
-			loop
-				if attached current_element as ce then
-					if ce.value = a_value and current_element /= t.get_element (target) then
-						Result := Result + 1
-					end
-					current_element := current_element.next
-				end
-			end
-		ensure
-			ha_contato_qualche_a_value_presente: t.value_follows (a_value, target) implies Result > 0
-			non_ha_contato_se_non_presente: not (t.value_follows (a_value, target)) implies Result = 0
-		end
-
 	check_is_last (t: INT_LINKED_LIST; a_value: INTEGER): BOOLEAN
 			--controlla che a_value è l'ultimo
 		do
@@ -198,7 +121,7 @@ feature -- test
 			assert ("Errore 12.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 5)
 			assert ("Errore 12.3: last_element non è corretto", attached t.last_element as le and then le.value = 9)
 			assert ("Errore 12.4: active_element non è corretto", attached t.active_element as ae and then ae.value = 5)
-			assert ("Errore 12.5: il numero di 9 non è quello che mi aspetto", how_many (t, 9) = 4)
+			assert ("Errore 12.5: il numero di 9 non è quello che mi aspetto", t.count_of ( 9) = 4)
 			t.prepend (9)
 			t.start
 				--[9,5,2,1,4,9,9,6,3,7,8,9,9] active element è il primo 9
@@ -208,7 +131,7 @@ feature -- test
 			assert ("Errore 13.2: first_element non è corretto", attached t.first_element as fe and then fe.value = 4)
 			assert ("Errore 13.3: last_element non è corretto", attached t.last_element as le and then le.value = 9)
 			assert ("Errore 13.4: active_element non è corretto", attached t.active_element as ae and then ae.value = 9)
-			assert ("Errore 13.5: il numero di 4 non è quello che mi aspetto", how_many (t, 4) = 6)
+			assert ("Errore 13.5: il numero di 4 non è quello che mi aspetto", t.count_of ( 4) = 6)
 			t.wipeout
 				--[]
 			assert ("Errore 14.1: il numero di elementi non è corretto", t.count = 0)
@@ -259,40 +182,40 @@ feature -- test
 			t.append (5)
 			t.append (a_value)
 			t.append (a_value) -- t = [a_value, 3, a_value, a_value, target, a_value, 4, a_value, a_value]
-			count_prima := how_many_before (t, a_value, target)
+			count_prima := t.count_of_before (a_value, target)
 			t.remove_earliest_preceding (a_value, target) -- t = [3, a_value, a_value, target, a_value, 4, a_value, a_value]
-			count_dopo := how_many_before (t, a_value, target)
+			count_dopo := t.count_of_before (a_value, target)
 			assert ("Errore 19.1 count prima e dopo non corretto", count_prima = count_dopo + 1)
 			assert ("Errore 19.2: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 3)
 			assert ("Errore 19.3: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 3)
 			t.forth -- t.active_element.value = a_value
-			count_prima := how_many_before (t, a_value, target)
+			count_prima := t.count_of_before (a_value, target)
 			t.remove_latest_preceding (a_value, target)
-			count_dopo := how_many_before (t, a_value, target)
+			count_dopo := t.count_of_before (a_value, target)
 			assert ("Errore 20: count prima e dopo non corretto", count_prima = count_dopo + 1)
 			t.prepend (a_value) -- t = [a_value, 3, a_value, target, a_value, 4, a_value, a_value]
 			t.remove_all_preceding (a_value, target) -- t = [3, target, a_value, 4, a_value, a_value]
 				-- t.active_element.value = target
-			assert ("Errore 21.1: non ha rimosso tutte le occorrenze di a_value", how_many_before (t, a_value, target) = 0)
+			assert ("Errore 21.1: non ha rimosso tutte le occorrenze di a_value",t.count_of_before (a_value, target) = 0)
 			assert ("Errore 21.2: first element non aggiornato correttamente", attached t.first_element as fe and then fe.value = 3)
 			assert ("Errore 21.3: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = target)
-			count_prima := how_many_after (t, a_value, target)
+			count_prima := t.count_of_after (a_value, target)
 			t.forth -- t.active_element.value = a_value
 			t.remove_earliest_following (a_value, target) -- t = [3, target, 4, a_value, a_value], t.active_element.value = 4
-			count_dopo := how_many_after (t, a_value, target)
+			count_dopo :=t.count_of_after (a_value, target)
 			assert ("Errore 22.1: count prima e dopo non corretto", count_prima = count_dopo + 1)
 			assert ("Errore 22.2: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 4)
 			t.remove_all_following (a_value, target) -- t = [3, target, 4]
-			assert ("Errore 23.1: non ha rimosso tutte le occorrenze di a_value", how_many_after (t, a_value, target) = 0)
+			assert ("Errore 23.1: non ha rimosso tutte le occorrenze di a_value",t.count_of_after (a_value, target) = 0)
 				-- assert ("Errore 23.2: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 4)
 
 			t.append (a_value)
 			t.append (5)
 			t.append (a_value) -- t = [3, target, 4, a_value, 5, a_value]
 			t.last -- t.active_element.value = a_value
-			count_prima := how_many_after (t, a_value, target)
+			count_prima := t.count_of_after (a_value, target)
 			t.remove_latest_following (a_value, target) -- t = [3, target, 4, a_value, 5]
-			count_dopo := how_many_after (t, a_value, target)
+			count_dopo := t.count_of_after (a_value, target)
 			assert ("Errore 24.1: count prima e dopo non corretto", count_prima = count_dopo + 1)
 			assert ("Errore 24.2: active element non aggiornato correttamente", attached t.active_element as ae and then ae.value = 5)
 			assert ("Errore 24.3: last element non aggiornato correttamente", attached t.last_element as le and then le.value = 5)
@@ -327,9 +250,9 @@ feature -- Test routines
 			t.append (3)
 			assert ("last non punta ad a_value", attached t.active_element as ae and then ae.value = a_value)
 			assert ("last non punta ad a_value", attached t.active_element as ae and then attached ae.next as aen and then aen.value = 3)
-			old_count := how_many (t, a_value)
+			old_count := t.count_of(a_value)
 			t.remove_latest (a_value)
-			count := how_many (t, a_value)
+			count := t.count_of (a_value)
 			assert ("non ho cancellato a_value nonostante ci sia un a_value dopo target", old_count - count = 1)
 			assert ("non ha cancellato a_value dopo target", not t.value_follows (a_value, target))
 			assert ("ha cancellato tutti gli a_value", t.has (a_value))
@@ -369,25 +292,25 @@ feature -- Test routines
 			assert ("invert non inverte la lista", (attached t.first_element as fe and attached t_inv.last_element as le) and then fe.value = le.value)
 			assert ("le liste hanno dimensioni diverse", t.count = t_inv.count)
 			t.remove_earliest_preceding (a_value, target)
-			assert ("non è stato rimosso il valore", how_many (t, a_value) = 1)
+			assert ("non è stato rimosso il valore", t.count_of(a_value) = 1)
 			t_inv.remove_latest_preceding (a_value, target)
-			assert ("è stato rimosso il valore", how_many (t_inv, a_value) = 2)
+			assert ("è stato rimosso il valore", t_inv.count_of (a_value) = 2)
 			t_inv.remove_latest_following (a_value, target)
-			assert ("non è stato rimosso il valore", how_many (t_inv, a_value) = 1)
+			assert ("non è stato rimosso il valore", t_inv.count_of ( a_value) = 1)
 			t_inv.wipeout
 			assert ("non ha svuotato la lista", t_inv.first_element = void and t_inv.last_element = void)
 
 				-- t = [a_value,2,3,target,3]
 			t.insert_after (target, target)
-			assert ("non è stato aggiunto l'elemento", how_many (t, target) = 2)
+			assert ("non è stato aggiunto l'elemento", t.count_of (target) = 2)
 			t.insert_multiple_before (5, target)
 				-- t = [a_value,2,3,5,target,5,target,3]
-			assert ("non sono stati aggiunti i valori", how_many (t, 5) = 2)
+			assert ("non sono stati aggiunti i valori", t.count_of ( 5) = 2)
 			assert ("non è stato aggiunto il valore nel posto giusto", attached t.get_element (5) as ge and then attached ge.next as gen and then gen.value = target)
 			t.start
 			t.remove_active
 				-- t = [a_value,2,3,5,target,5,target,3]
-			assert ("non è stato rimosso il valore", how_many (t, a_value) = 0)
+			assert ("non è stato rimosso il valore", t.count_of(a_value) = 0)
 			assert ("non è stato spostato il first_element", attached t.first_element as fe and then fe.value = 2)
 			t.insert_before (a_value, 2)
 			assert ("non è stato spostato il first_element", attached t.first_element as fe and then fe.value = a_value)
@@ -419,7 +342,7 @@ feature -- Test routines
 			old_count := t.count
 			t.insert_multiple_before (a_value, target)
 			count := t.count
-			assert ("non ha aggiunto tutti gli a_value", count - old_count = how_many (t, target))
+			assert ("non ha aggiunto tutti gli a_value", count - old_count = t.count_of (target))
 			assert ("non ha cambiato first_elementt", attached t.first_element as fe and then fe.value = a_value)
 			t.wipeout
 			assert ("non ha svuotato", t.count = 0)
@@ -509,7 +432,7 @@ feature -- Test routines
 			t.prepend (a_value)
 			t.remove_all_preceding (a_value, target)
 			assert ("non ha rimosso solo i precedenti", t.has (a_value))
-			assert ("il count di a_value è sbagliato", how_many (t, a_value) = 1)
+			assert ("il count di a_value è sbagliato", t.count_of(a_value) = 1)
 		end
 
 	t_remove_following
@@ -538,18 +461,18 @@ feature -- Test routines
 			t.append (a_value)
 				-- t = [a_value,3,target,5,a_value,9,a_value]
 
-			old_count := how_many (t, a_value)
+			old_count := t.count_of(a_value)
 			t.remove_latest_following (a_value, target)
-			count := how_many (t, a_value)
+			count := t.count_of(a_value)
 			assert ("non ha rimosso l'ultimo a_value dopo target", attached t.last_element as le and then le.value = 9)
 			assert ("non ha rimosso a_value", old_count - count = 1)
 				-- t = [a_value,3,target,5,a_value,9]
 
 			t.append (a_value)
 				-- t = [a_value,3,target,5,a_value,9,a_value]
-			old_count := how_many (t, a_value)
+			old_count :=t.count_of(a_value)
 			t.remove_all_following (a_value, target)
-			count := how_many (t, a_value)
+			count := t.count_of(a_value)
 			assert ("non ha rimosso a_value dopo target", old_count - count = 2)
 			assert ("ha rimosso il primo a_value", attached t.first_element as fe and then fe.value = a_value)
 				-- t = [a_value,3,target,5,9]
@@ -578,33 +501,25 @@ feature -- Test routines
 			t.append (a_value)
 				-- [2,1,3,1,1,2,1]
 
-			count_prima := how_many (t, a_value)
+			count_prima := t.count_of(a_value)
 			t.remove_all_preceding (a_value, target)
-			count_dopo := how_many (t, a_value)
+			count_dopo := t.count_of(a_value)
 			assert ("errore: qualche elemento è stato eliminato", count_prima = count_dopo)
 			t.remove_latest_preceding (a_value, target)
-			count_dopo := how_many (t, a_value)
+			count_dopo := t.count_of (a_value)
 			assert ("errore: qualche elemento è stato eliminato", count_prima = count_dopo)
 			t.remove_earliest_preceding (a_value, target)
-			count_dopo := how_many (t, a_value)
+			count_dopo := t.count_of (a_value)
 			assert ("errore: qualche elemento è stato eliminato", count_prima = count_dopo)
-
-				--			assert("errore: qualche a_value non è stato eliminato", count_dopo > 1)
-				--			assert("errore: sono stati eliminati tutti a_value", count_dopo < 1)
-				--		--  problema con a_value = target
-				--			count_dopo := how_many(t,a_value)
-				--			assert("errore: qualche elemento è stato eliminato", count_prima = count_dopo)
-				-- TODO: cancellare fino a qua perché bisogna inserire il require a_value /= target in remove_all_preceding e remove_latest_preceding
-
-			count_prima := how_many (t, a_value)
+			count_prima := t.count_of(a_value)
 			t.remove_earliest_following (a_value, target)
-			count_dopo := how_many (t, a_value)
+			count_dopo :=t.count_of(a_value)
 			assert ("errore: non ha eliminato il singolo elemento", count_prima = count_dopo + 1)
 			assert ("errore: non ha eliminato l'elemento giusto", (attached t.get_element (a_value) as ge and then attached ge.next as gen) and then gen.value = 3)
 			t.remove_latest_following (a_value, target)
 			assert ("errore: ha rimosso l'elemento sbagliato", attached t.last_element as le and then le.value = 2)
 			t.remove_all_following (a_value, target)
-			assert ("errore: non ha eliminato tutti gli elementi successivi al target", how_many (t, a_value) = 1)
+			assert ("errore: non ha eliminato tutti gli elementi successivi al target", t.count_of(a_value) = 1)
 		end
 
 feature -- Controllo lista

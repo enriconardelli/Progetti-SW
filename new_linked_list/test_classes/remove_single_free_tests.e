@@ -19,30 +19,6 @@ feature -- parametri
 
 	other_element_2: INTEGER = 7
 
-feature -- supporto
-
-	how_many (t: INT_LINKED_LIST; value: INTEGER): INTEGER
-			-- return how many times `a_value' occurs in `t'
-			-- è identica a count_of, solo che è una funzione esterna alla lista
-		local
-			current_element: INT_LINKABLE
-		do
-			if t.count = 0 then
-				Result := 0
-			else
-				from
-					current_element := t.first_element
-				until
-					current_element = Void
-				loop
-					if current_element.value = value then
-						Result := Result + 1
-					end
-					current_element := current_element.next
-				end
-			end
-		end
-
 feature -- remove_active
 	-- Riccardo Malandruccolo, 2020/03/07
 
@@ -289,9 +265,9 @@ feature -- remove_latest
 			t.append (a_value)
 			t.append (other_element_1)
 			t.append (other_element_2)
-			count_prima := how_many (t, a_value)
+			count_prima := t.count_of (a_value)
 			t.remove_latest (a_value)
-			count_dopo := how_many (t, a_value)
+			count_dopo := t.count_of (a_value)
 			assert ("count prima e dopo scorretto", count_prima = count_dopo + 1)
 		end
 
@@ -304,9 +280,9 @@ feature -- remove_latest
 			t.append (other_element_1)
 			t.append (a_value)
 			t.append (other_element_2)
-			count_prima := how_many (t, a_value)
+			count_prima := t.count_of (a_value)
 			t.remove_latest (a_value)
-			count_dopo := how_many (t, a_value)
+			count_dopo := t.count_of (a_value)
 			assert ("count prima e dopo scorretto", count_prima = count_dopo + 1)
 		end
 
@@ -319,9 +295,9 @@ feature -- remove_latest
 			t.append (other_element_1)
 			t.append (other_element_2)
 			t.append (a_value)
-			count_prima := how_many (t, a_value)
+			count_prima := t.count_of (a_value)
 			t.remove_latest (a_value)
-			count_dopo := how_many (t, a_value)
+			count_dopo := t.count_of (a_value)
 			assert ("count prima e dopo scorretto", count_prima = count_dopo + 1)
 		end
 
@@ -335,9 +311,9 @@ feature -- remove_latest
 			t.append (other_element_1)
 			t.append (a_value)
 			t.append (other_element_2)
-			count_prima := how_many (t, a_value)
+			count_prima := t.count_of (a_value)
 			t.remove_latest (a_value)
-			count_dopo := how_many (t, a_value)
+			count_dopo := t.count_of (a_value)
 			assert ("count prima e dopo scorretto", count_prima = count_dopo + 1)
 			assert ("rimosso elemento sbagliato in testa", attached t.first_element as tf implies tf.value = a_value)
 		end
@@ -351,9 +327,9 @@ feature -- remove_latest
 			t.append (a_value)
 			t.append (other_element_1)
 			t.append (a_value)
-			count_prima := how_many (t, a_value)
+			count_prima := t.count_of (a_value)
 			t.remove_latest (a_value)
-			count_dopo := how_many (t, a_value)
+			count_dopo := t.count_of (a_value)
 			assert ("count prima e dopo scorretto", count_prima = count_dopo + 1)
 			assert ("rimosso elemento sbagliato in testa", attached t.first_element as tf implies tf.value = a_value)
 			assert ("rimosso elemento sbagliato in coda", attached t.last_element as tl implies tl.value /= a_value)
@@ -369,9 +345,9 @@ feature -- remove_latest
 			t.append (a_value)
 			t.append (other_element_2)
 			t.append (a_value)
-			count_prima := how_many (t, a_value)
+			count_prima := t.count_of (a_value)
 			t.remove_latest (a_value)
-			count_dopo := how_many (t, a_value)
+			count_dopo := t.count_of (a_value)
 			assert ("count prima e dopo scorretto", count_prima = count_dopo + 1)
 			assert ("rimosso elemento sbagliato in coda", attached t.last_element as tl implies tl.value /= a_value)
 		end
