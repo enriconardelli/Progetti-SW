@@ -94,52 +94,46 @@ feature	--	t_last
 		end
 
 feature -- forth
---Non funzionano con le liste di list_builder
 	t_forth_to_void_one_element
 		local
 			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_list_builder.a_value)
-			t.start
-				-- serve t.start perché append non sposta active element, quindi se non lo inzializzi sta su void
+			t := a_list_builder.list_V
+			t.start	-- serve t.start perché append non sposta active element, quindi se non lo inzializzi sta su void
 			t.forth
 				-- active_element era anche il last_element quindi dopo di lui ci dovrebbe essere void
 			assert ("il forth non ha portato active element a void", t.active_element = Void)
 			assert ("l'indice non è 0 nonostante active sia Void", t.index = 0)
+			t.go_i_th (0) -- si rimette il cursore dov'era
 		end
 
 	t_forth_to_void_multiple_element
 		local
 			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_list_builder.a_value)
-			t.append (a_list_builder.other_element_1)
-			t.start
-				-- porto il cursore all'inizio
+			t := a_list_builder.list_ve1
+			t.start  -- porto il cursore all'inizio
 			t.forth
 			t.forth
 				-- ho spostato di due volte quindi dopo ci dovrebbe essere void
 			assert ("il forth non ha portato active element a Void", t.active_element = Void)
 			assert ("l'indice non è 0 nonostante active sia Void", t.index = 0)
+			t.go_i_th (0) -- si rimette il cursore dov'era
 		end
 
 	t_forth_to_not_void
 		local
 			t: INT_LINKED_LIST
 		do
-			create t
-			t.append (a_list_builder.a_value)
-			t.append (a_list_builder.other_element_1)
-			t.start
-				-- porto il cursore all'inzio
+			t := a_list_builder.list_ve1
+			t.start	-- porto il cursore all'inzio
 			t.forth
 				-- porto il cursore al secondo elemento che quindi non dovrebbe essere né void né il primo
 			assert ("il forth ha portato active element a void", t.active_element /= Void)
 			assert ("il forth non ha spostato il cursore", t.active_element /= t.first_element)
 			assert ("il forth non ha portato active a last element", t.active_element = t.last_element)
 			assert ("l'indice non è count nonostante active sia last element", t.index = t.count)
+			t.go_i_th (0) -- si rimette il cursore dov'era
 		end
 
 feature -- go_i_th
@@ -160,7 +154,6 @@ feature -- go_i_th
 		end
 
 	t_go_i_th_last
-
 		do
 			(a_list_builder.list_Ve1e2).go_i_th ((a_list_builder.list_Ve1e2).count)
 			assert ("active non è stato spostato all'ultimo elemento", (a_list_builder.list_Ve1e2).active_element = (a_list_builder.list_Ve1e2).last_element)
