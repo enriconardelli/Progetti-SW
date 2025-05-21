@@ -91,7 +91,7 @@ feature -- Spostamento del cursore
 				active_element := Void
 			else
 				from
-					first
+					start
 					k := 1
 				until
 					k = i
@@ -137,13 +137,11 @@ feature -- Ricerca
 
 	has_CON_ACTIVE (a_value: INTEGER): BOOLEAN
 			-- La lista contiene `a_value'?
-			-- Si usa currently active per salvare la posizione di `active_element', una volta introdotti index e go_i_th forse si può sostituire con quelli?
 		local
-			currently_active, previous_element: like first_element
+			previous_element: like first_element
 			k: INTEGER
-			temp_index: INTEGER
+			temp_index: like index
 		do
-			currently_active := active_element
 			temp_index := index
 			from
 				start
@@ -164,8 +162,7 @@ feature -- Ricerca
 			variant
 				count - k
 			end
-			active_element := currently_active
-			index := temp_index
+			go_i_th (temp_index)
 		ensure
 			old active_element = active_element
 			old index = index
@@ -691,6 +688,57 @@ feature -- Inserimento singolo vincolato
 			end
 			count := count + 1
 		ensure
+			uno_in_piu: count = old count + 1
+			valore_aggiunto: has (a_value)
+			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
+			accodato_se_non_presente: (not old has (target) and attached last_element as le) implies le.value = a_value
+				--	il seguente invariante funziona completamente solo quando `target'  è unico nella lista
+			collegato_se_presente: old has (target) implies (attached get_element (target) as ge implies (attached ge.next as gen and then gen.value = a_value))
+		end
+
+	insert_after_CON_ACTIVE (a_value, target: INTEGER)
+			-- Aggiunge `a_value' subito dopo la prima occorrenza di `target', se esiste,
+			-- altrimenti lo aggiunge alla fine della lista.
+		local
+			previous_element, new_element: like first_element
+			temp_index: like index
+		do
+			temp_index := index
+			create new_element.set_value (a_value)
+			from
+				previous_element := Void
+				start
+			invariant
+				previous_element /= Void implies previous_element.value /= target
+			until
+				active_element = Void or (attached active_element as ae implies ae.value = target)
+			loop
+				previous_element := active_element
+				forth
+			end
+			if attached active_element as ae then
+				new_element.link_after (ae)
+				if last_element = ae then
+					last_element := new_element
+				end
+				if is_before (new_element, ae) then
+					index := index + 1
+				end
+			else -- la lista non contiene `target'
+				if count = 0 then
+					first_element := new_element
+				else
+					if attached last_element as le then
+						new_element.link_after (le)
+					end
+				end
+				last_element := new_element
+			end
+			count := count + 1
+			go_i_th (temp_index)
+		ensure
+			active_preservato: old active_element = active_element
+			index_preservato: old index = index
 			uno_in_piu: count = old count + 1
 			valore_aggiunto: has (a_value)
 			conteggio_incrementato_di_uno: count_of (a_value) = old count_of (a_value) + 1
