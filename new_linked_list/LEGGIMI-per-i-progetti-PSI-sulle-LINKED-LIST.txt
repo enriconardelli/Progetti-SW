@@ -5,12 +5,17 @@
 
 ===>> QUESTO DOC È PER IL CORSO DI PROGETTAZIONE <<===
 
+2026
+	per le varie varianti di insert_after e insert_before si possono avere dei test agentizzati ai quali si passano le varie varianti?
+	il discorso era stato affrontato nel 2025, vedere il diario dell'anno
+
 2025
 	- diverse feature in 
 			insert_single, 
 			insert_single_targeted
 			insert_multiple_targeted
 		non hanno test di nessun tipo né nell'ambiente di test né in root perché sono varianti delle insert_before e insert_after di base
+		
 
 2024
 	-	c'è un TODO relativo al fatto che nell'ambiente di TEST sono state introdotte alcune funzioni di supporto per le quali però adesso ci sono feature apposite in int_linked_list e quindi andrebbero sostituite
