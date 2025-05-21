@@ -721,9 +721,6 @@ feature -- Inserimento singolo vincolato
 				if last_element = ae then
 					last_element := new_element
 				end
-				if is_before (new_element, ae) then
-					index := index + 1
-				end
 			else -- la lista non contiene `target'
 				if count = 0 then
 					first_element := new_element
