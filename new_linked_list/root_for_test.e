@@ -138,6 +138,19 @@ feature -- single feature test
 			t.printout
 		end
 
+	test_insert_after_CON_ACTIVE
+		do
+			print (r + "test di insert_after_CON_ACTIVE" + r)
+			create t
+			print ("t vuota, inserisco 4 dopo 7" + r)
+			t.insert_after_CON_ACTIVE(4,7)
+			print ("inserisco 5 dopo 7" + r)
+			t.insert_after_CON_ACTIVE(5,7)
+			print ("inserisco -1 dopo 4" + r)
+			t.insert_after_CON_ACTIVE(-1,4)
+			t.printout
+		end
+
 	test_insert_after_CON_get_element_append
 		do
 			print (r + "test di insert_after_CON_get_element_append" + r)
