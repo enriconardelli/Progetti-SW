@@ -25,8 +25,8 @@ feature -- Accesso
 			-- Il numero di elementi della lista.
 
 	index: INTEGER
-			-- L'intero che corrisponde alla posizione di active_element
-			-- E' 0 se active_element è Void
+			-- L'intero che corrisponde alla posizione di `active_element'
+			-- E' 0 se `active_element' è Void
 
 feature -- Spostamento del cursore
 
@@ -35,10 +35,10 @@ feature -- Spostamento del cursore
 		do
 			active_element := first_element
 			if count = 0 then
-					-- se la lista è vuota first_element è void quindi active va su void quindi index deve essere 0
+					-- se la lista è vuota `first_element' è void quindi `active_element' diventa Void quindi `index' deve essere 0
 				index := 0
 			else
-					-- se la lista non è vuota index deve valere 1
+					-- se la lista non è vuota `index' deve essere 1
 				index := 1
 			end
 		ensure
@@ -52,7 +52,7 @@ feature -- Spostamento del cursore
 		do
 			active_element := last_element
 			index := count
-				-- se la lista è vuota count è 0 quindi va bene come valore di index
+				-- se la lista è vuota `count' è 0 quindi va bene come valore di `index'
 		ensure
 			active_element = last_element
 			index = count
@@ -67,10 +67,10 @@ feature -- Spostamento del cursore
 				active_element := ae.next
 			end
 			if attached active_element as ae then
-					-- se active_element è ancora attached allora posso aumentare l'indice
+					-- se `active_element' è ancora attached allora posso incrementare `index'
 				index := index + 1
 			else
-					-- se active_element è finito a void metto index 0
+					-- se `active_element' è diventato Void metto `index' a 0
 				index := 0
 			end
 		ensure
@@ -79,9 +79,10 @@ feature -- Spostamento del cursore
 		end
 
 	go_i_th (i: INTEGER)
-			-- sposta l'elemento corrente alla posizione iesima
+			-- sposta l'elemento corrente alla posizione i-esima
+			-- i=0 implica che `active_element' viene messo a Void
 		require
-			i >= 0 --  se metto i=0 allora assegna ad active_element Void
+			i >= 0
 			i <= count
 		local
 			k: INTEGER
@@ -90,8 +91,8 @@ feature -- Spostamento del cursore
 				active_element := Void
 			else
 				from
+					first
 					k := 1
-					active_element := first_element
 				until
 					k = i
 				loop
@@ -136,8 +137,7 @@ feature -- Ricerca
 
 	has_CON_ACTIVE (a_value: INTEGER): BOOLEAN
 			-- La lista contiene `a_value'?
-
-			-- Qui si usa currently active per salvare la posizione di active_element, una volta introdotti index e go_i_th forse si può sostituire con quelli?
+			-- Si usa currently active per salvare la posizione di `active_element', una volta introdotti index e go_i_th forse si può sostituire con quelli?
 		local
 			currently_active, previous_element: like first_element
 			k: INTEGER
