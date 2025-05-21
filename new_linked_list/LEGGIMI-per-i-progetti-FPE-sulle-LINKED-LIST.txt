@@ -5,6 +5,7 @@
 
 ===>> QUESTO DOC È PER IL CORSO DI FONDAMENTI <<===
 
+
 Questa cartella
   D:\ENRICO\DIDATTICA\INTERAZIONE-UOMO-CALCOLATORE\Progetti-SW\new_linked_list
 contiene la versione del progetto per la gestione di liste di interi che uso durante la lezione e gli esami.
@@ -21,6 +22,11 @@ E' replicata nel repository GIT
   https://github.com/enriconardelli/Progetti-SW
 
 ===>> BISOGNA SOSTITUIRE LA SCANSIONE ESPLICITA CON FORTH <<===
+Però bisogna fare attenzione a salvare e ripristinare il cursore.
+
+===>> BISOGNA CONTROLLARE INDEX SE SI SCANDISCE CON CURRENT_ELEMENT <<===
+Bisogna fare attenzione che con l'aggiunta di INDEX nei casi di inserimento o cancellazione può essere necessario modificare il valore di INDEX
+
 
 ELENCO FEATURE (col + le ho convertite a VoidSafe con DAFARE non sono proprio scritte)
 
