@@ -198,26 +198,79 @@ feature -- Ricerca
 
 feature -- Stato
 
+-- Per tutte le feature di stato rendere consistenti i requisiti
+--  - la lista deve contenere `target'
+--  - `a_value' deve essere diverso da `target'
+
 	value_follows (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' in qualunque posizione dopo la prima occorrenza di `target'?
+			-- la lista deve contenere `target' che deve essere diverso da `a_value'
 			-- Claudia Agulini, 2020/03/08
+			-- Enrico Nardelli, 2025/06/24
 		require
 			contiene_il_target: has (target)
+			sono_diversi: a_value /= target
 		local
 			previous_element, current_element: like first_element
 		do
 			from
 				current_element := get_element (target)
 				previous_element := Void
-			invariant
-				attached current_element as ce implies (ce.value /= a_value implies (attached previous_element as pe implies pe.value /= a_value))
+			invariant -- 2 invarianti equivalenti
+				attached current_element as ce implies
+					(ce.value /= a_value implies (attached previous_element as pe implies pe.value /= a_value))
+				current_element /= Void implies
+					(current_element.value /= a_value implies
+						(previous_element /= Void implies previous_element.value /= a_value))
 			until
-				(current_element = Void) or (attached current_element as ce and then ce.value = a_value)
+				current_element = Void or else current_element.value = a_value
 			loop
 				previous_element := current_element
 				current_element := current_element.next
 			end
-			if attached current_element as ce and then ce.value = a_value then
+			if current_element /= Void and then current_element.value = a_value then
+				Result := True
+			end
+		ensure
+			a_value_segue_target: Result implies index_latest_of (a_value) > index_earliest_of (target)
+		end
+
+	value_follows_SENZA_get_element (a_value, target: INTEGER): BOOLEAN
+			-- la lista contiene `a_value' in qualunque posizione dopo la prima occorrenza di `target'?
+			-- la lista deve contenere `target' che deve essere diverso da `a_value'
+			-- versione che NON utilizza get_element()
+			-- Enrico Nardelli, 2025/06/24
+		require
+			contiene_il_target: has (target)
+			sono_diversi: a_value /= target
+		local
+			previous_element, current_element: like first_element
+		do
+			from
+				current_element := first_element
+				previous_element := Void
+			invariant -- 2 invarianti equivalenti
+				attached previous_element as pe implies pe.value /= target
+				previous_element = Void or else previous_element.value /= target
+			until
+				current_element = Void or else current_element.value = target
+			loop
+				previous_element := current_element
+				current_element := current_element.next
+			end
+			-- qui current_element punta a `target' e previous_element deve essere reinizializzato
+			from
+				previous_element := Void
+			invariant -- 2 invarianti equivalenti
+				attached previous_element as pe implies pe.value /= a_value
+				previous_element = Void or else previous_element.value /= a_value
+			until
+				current_element = Void or else current_element.value = a_value
+			loop
+				previous_element := current_element
+				current_element := current_element.next
+			end
+			if current_element /= Void and then current_element.value = a_value then
 				Result := True
 			end
 		ensure
@@ -226,8 +279,11 @@ feature -- Stato
 
 	value_after (a_value, target: INTEGER): BOOLEAN
 			-- la lista contiene `a_value' subito dopo la prima occorrenza di `target'?
+			-- la lista deve contenere `target' che deve essere diverso da `a_value'
+			-- Enrico Nardelli, 2025/06/24
 		require
 			contiene_il_target: has (target)
+			sono_diversi: a_value /= target
 		local
 			current_element: like first_element
 		do
@@ -263,6 +319,8 @@ feature -- Stato
 				previous_element := current_element
 				current_element := current_element.next
 			end
+			-- dal momento che `target' è senz'altro presente nella lista, dei due motivi per cui mi sono fermato
+			-- quello buono è solo quello in cui mi sono fermato perché ho incontrato `a_value'
 			if attached current_element as ce and then ce.value = a_value then
 				Result := True
 			end

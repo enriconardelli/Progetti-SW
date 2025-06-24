@@ -231,6 +231,35 @@ feature -- single feature test
 			print (t.value_follows (5,7).out + r)
 		end
 
+	test_value_follows_SENZA_get_element
+			-- require has(target)
+		do
+			print (r + "test di value_follows_SENZA_get_element" + r)
+			create t
+			print ("t vuota, appendo 5" + r)
+			t.append(5)
+			-- [5]
+			print ("poi prependo 4" + r)
+			t.prepend(4)
+			-- [4, 5]
+			print ("poi appendo 7" + r)
+			t.append(7)
+			-- [4, 5, 7]
+			t.printout
+			print ("5 segue 4? ")
+			print (t.value_follows_SENZA_get_element (5,4).out + r)
+			print ("7 segue 4? ")
+			print (t.value_follows_SENZA_get_element (7,4).out + r)
+			print ("7 segue 5? ")
+			print (t.value_follows_SENZA_get_element (7,5).out + r)
+			print ("4 segue 5? ")
+			print (t.value_follows_SENZA_get_element (4,5).out + r)
+			print ("4 segue 7? ")
+			print (t.value_follows_SENZA_get_element (4,7).out + r)
+			print ("5 segue 7? ")
+			print (t.value_follows_SENZA_get_element (5,7).out + r)
+		end
+
 	test_value_precedes
 			-- require has(target)
 		do
@@ -246,22 +275,24 @@ feature -- single feature test
 			t.append(7)
 			-- [4, 5, 7]
 			t.printout
-			print ("3 precede 4? ")
-			print (t.value_precedes (3,4).out + r)
-			print ("3 precede 7? ")
-			print (t.value_precedes (3,7).out + r)
-			print ("4 precede 5? ")
-			print (t.value_precedes (4,5).out + r)
-			print ("4 precede 7? ")
-			print (t.value_precedes (4,7).out + r)
-			print ("5 precede 7? ")
-			print (t.value_precedes (5,7).out + r)
-			print ("appendo 4" + r)
+--			print ("3 precede 4? ")
+--			print (t.value_precedes (3,4).out + r)
+--			print ("3 precede 7? ")
+--			print (t.value_precedes (3,7).out + r)
+--			print ("4 precede 5? ")
+--			print (t.value_precedes (4,5).out + r)
+--			print ("4 precede 7? ")
+--			print (t.value_precedes (4,7).out + r)
+--			print ("5 precede 7? ")
+--			print (t.value_precedes (5,7).out + r)
+--			print ("appendo 4" + r)
 			t.append(4)
 			-- [4, 5, 7, 4]
 			t.printout
 			print ("5 precede 4? ")
 			print (t.value_precedes (5,4).out + r)
+			print ("5 precede 3? ")
+			print (t.value_precedes (5,3).out + r)
 			print ("7 precede 4? ")
 			print (t.value_precedes (7,4).out + r)
 			print ("7 precede 5? ")
@@ -531,24 +562,25 @@ feature -- Inizialization
 --			print ("Attempt to print VOID ->")
 --			print (Void)
 --			print ("<- End attempt to print VOID" + r)
-			test_append
- 			test_prepend
-			test_has
-			test_has_CON_active
-			test_get_element
-			test_insert_after
-			test_insert_after_CON_get_element_append
-			test_insert_before
-			test_insert_before_CON_2_CURSORI
+--			test_append
+-- 			test_prepend
+--			test_has
+--			test_has_CON_active
+--			test_get_element
+--			test_insert_after
+--			test_insert_after_CON_get_element_append
+--			test_insert_before
+--			test_insert_before_CON_2_CURSORI
 			test_value_follows
-			test_value_precedes
-			test_value_precedes_CON_start_forth
- 			test_value_precedes_SENZA_has
-			test_index_earliest_of
-			test_index_earliest_of_BIS
-			test_value_at_SENZA_GO_I_TH
-			test_value_at_CON_ACTIVE
-			test_index_latest_of_SENZA_INVERT
+			test_value_follows_SENZA_get_element
+--			test_value_precedes
+--			test_value_precedes_CON_start_forth
+-- 			test_value_precedes_SENZA_has
+--			test_index_earliest_of
+--			test_index_earliest_of_BIS
+--			test_value_at_SENZA_GO_I_TH
+--			test_value_at_CON_ACTIVE
+--			test_index_latest_of_SENZA_INVERT
 		end
 
 -- insert_before_con_has_prepend e insert_multiple_before_senza_prepend sono senza test
